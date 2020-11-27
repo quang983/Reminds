@@ -1,2 +1,5 @@
+include ':mylibrary'
+include ':domain'
+include ':data'
 include ':app'
 rootProject.name = "BaseProjects"

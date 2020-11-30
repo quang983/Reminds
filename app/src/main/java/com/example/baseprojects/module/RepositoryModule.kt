@@ -10,7 +10,6 @@ import dagger.hilt.android.components.ActivityComponent
 @InstallIn(ActivityComponent::class)
 @Module
 abstract class RepositoryModule {
-
     @Binds
     abstract fun bindTryRepository(repository: TryRepositoryImpl): TryRepository
 }

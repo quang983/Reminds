@@ -9,6 +9,8 @@ import dagger.hilt.android.components.ApplicationComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -17,8 +19,13 @@ object NetworkModule {
     @Provides
     @Singleton
     fun providesOkHttpClient(): OkHttpClient {
+        val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
         return OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
+            .connectTimeout(30L, TimeUnit.SECONDS)
+            .readTimeout(30L, TimeUnit.SECONDS)
+            .addInterceptor(httpLoggingInterceptor)
             .build()
     }
 
@@ -26,6 +33,7 @@ object NetworkModule {
     @Singleton
     fun providesRetrofitInstance(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
+            .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(Constants.BASE_URL)
             .client(okHttpClient)
             .build()

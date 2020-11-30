@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity() {
         }
         viewModel.getDataApi.observe(this){
             Log.d("getDataApi","getDataApi")
-
         }
     }
 

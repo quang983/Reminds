@@ -7,6 +7,8 @@ import javax.inject.Inject
 
 class TryRepositoryImpl @Inject constructor(val jsonApi : JsonApi) : TryRepository {
     override suspend fun getTryApi(): MainResponse? {
-        return jsonApi.getImageList("","",1).body()
+        return let { jsonApi.getImageList("","",1).body() } ?: kotlin.run {
+            throw RuntimeException("Param must not be null")
+        }
     }
 }

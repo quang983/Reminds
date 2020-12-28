@@ -3,22 +3,22 @@ package com.example.reminds.ui.adapter
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import com.example.domain.model.TopicData
+import com.example.domain.model.TopicGroupEntity
 import com.example.reminds.R
 import com.example.reminds.common.BaseAdapter
 import net.citigo.kiotviet.common.utils.extension.inflate
 
-class TopicAdapter : BaseAdapter<TopicData>(object : DiffUtil.ItemCallback<TopicData>() {
+class TopicAdapter : BaseAdapter<TopicGroupEntity>(object : DiffUtil.ItemCallback<TopicGroupEntity>() {
 
-    override fun areItemsTheSame(oldItem: TopicData, newItem: TopicData): Boolean {
+    override fun areItemsTheSame(oldItem: TopicGroupEntity, newItem: TopicGroupEntity): Boolean {
         return false
     }
 
-    override fun areContentsTheSame(oldItem: TopicData, newItem: TopicData): Boolean {
+    override fun areContentsTheSame(oldItem: TopicGroupEntity, newItem: TopicGroupEntity): Boolean {
         return false
     }
 
-    override fun getChangePayload(oldItem: TopicData, newItem: TopicData): Any? {
+    override fun getChangePayload(oldItem: TopicGroupEntity, newItem: TopicGroupEntity): Any? {
         return super.getChangePayload(oldItem, newItem)
     }
 
@@ -27,6 +27,6 @@ class TopicAdapter : BaseAdapter<TopicData>(object : DiffUtil.ItemCallback<Topic
         return parent.inflate(R.layout.item_topic)
     }
 
-    override fun bind(view: View, viewType: Int, position: Int, item: TopicData) {
+    override fun bind(view: View, viewType: Int, position: Int, item: TopicGroupEntity) {
     }
 }

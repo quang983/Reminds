@@ -1,4 +1,5 @@
-include ':mylibrary'
+include ':common'
+include ':framework'
 include ':domain'
 include ':data'
 include ':app'

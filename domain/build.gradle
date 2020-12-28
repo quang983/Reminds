@@ -7,6 +7,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
+//Là lớp trìu tượng nhất chứa bussiness logic
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 

@@ -4,7 +4,7 @@ import com.example.domain.model.MainResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
-
+/*Chuyển sang tầng framework*/
 interface JsonApi {
     @GET("/api/v1/search/")
     suspend fun getImageList(

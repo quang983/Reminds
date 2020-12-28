@@ -1,4 +1,4 @@
-package com.example.baseprojects
+package com.example.reminds
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

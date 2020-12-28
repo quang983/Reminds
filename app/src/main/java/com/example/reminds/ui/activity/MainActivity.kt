@@ -1,4 +1,4 @@
-package com.example.baseprojects.ui.activity
+package com.example.reminds.ui.activity
 
 import android.os.Bundle
 import android.util.Log
@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
-import com.example.baseprojects.R
-import com.example.baseprojects.ui.viewmodel.MainActivityViewModel
+import com.example.reminds.R
+import com.example.reminds.ui.viewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

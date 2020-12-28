@@ -1,4 +1,4 @@
-package com.example.baseprojects.ui.fragment
+package com.example.reminds.ui.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.findNavController
-import com.example.baseprojects.R
+import com.example.reminds.R
 import dagger.hilt.android.AndroidEntryPoint
 
 /**

@@ -1,4 +1,4 @@
-package com.example.baseprojects.module
+package com.example.reminds.module
 
 import com.example.data.remote.implement.TryRepositoryImpl
 import com.example.domain.repository.TryRepository

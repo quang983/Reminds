@@ -1,8 +1,8 @@
-package com.example.baseprojects.ui.viewmodel
+package com.example.reminds.ui.viewmodel
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
-import com.example.baseprojects.common.BaseViewModel
+import com.example.reminds.common.BaseViewModel
 import com.example.domain.model.MainResponse
 import com.example.domain.repository.BaseUseCase
 import com.example.domain.usecase.GetTryApiUseCase

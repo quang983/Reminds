@@ -1,6 +1,6 @@
-package com.example.baseprojects.module
+package com.example.reminds.module
 
-import com.example.baseprojects.common.Constants
+import com.example.reminds.common.Constants
 import com.example.data.remote.api.JsonApi
 import dagger.Module
 import dagger.Provides

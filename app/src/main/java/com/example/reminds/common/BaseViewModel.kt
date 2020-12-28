@@ -1,4 +1,4 @@
-package com.example.baseprojects.common
+package com.example.reminds.common
 
 import SingleLiveEvent
 import androidx.lifecycle.LiveData

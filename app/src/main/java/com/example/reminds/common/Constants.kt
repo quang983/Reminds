@@ -1,4 +1,4 @@
-package com.example.baseprojects.common
+package com.example.reminds.common
 
 object Constants {
     const val BASE_URL = "https://wallhaven.cc/"

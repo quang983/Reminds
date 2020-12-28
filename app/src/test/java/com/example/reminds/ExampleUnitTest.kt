@@ -1,4 +1,4 @@
-package com.example.baseprojects
+package com.example.reminds
 
 import org.junit.Test
 

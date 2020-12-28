@@ -1,4 +1,4 @@
-package com.example.domain.usecase
+package com.example.domain.usecase.remote
 
 import com.example.domain.model.MainResponse
 import com.example.domain.repository.BaseUseCase

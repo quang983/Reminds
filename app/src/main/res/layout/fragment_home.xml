@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingStart="@dimen/_16sdp"
+    android:background="@color/gallery"
     android:paddingEnd="@dimen/_16sdp"
-    tools:context=".ui.fragment.HomeFragment">
+    tools:context=".ui.fragment.home.HomeFragment">
 
     <TextView
         android:id="@+id/tvTitle"
@@ -23,13 +24,19 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
+        app:cardCornerRadius="@dimen/_12sdp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_6sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitle">
 
         <androidx.recyclerview.widget.RecyclerView
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_2sdp"
+            android:clipToPadding="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="10"
+            tools:listitem="@layout/item_topic" />
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.example.reminds.ui.fragment
+package com.example.reminds.ui.fragment.home
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -9,7 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import com.example.reminds.R
-import com.example.reminds.ui.viewmodel.MainActivityViewModel
+import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

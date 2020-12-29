@@ -1,6 +1,6 @@
 package com.example.reminds.module
 
-import com.example.framework.local.database.dao.LocalTopicGroupDao
+import com.example.data.local.source.TopicGroupSource
 import com.example.framework.source.TopicGroupSourceImpl
 import dagger.Binds
 import dagger.Module
@@ -11,5 +11,5 @@ import dagger.hilt.android.components.ActivityComponent
 @Module
 abstract class DataSourceModule {
     @Binds
-    abstract fun bindLocalTopicSource(dataSource: TopicGroupSourceImpl): LocalTopicGroupDao
+    abstract fun bindLocalTopicSource(dataSource: TopicGroupSourceImpl): TopicGroupSource
 }

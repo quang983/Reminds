@@ -1,14 +1,21 @@
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+android {
+    compileSdkVersion 30
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
 }
 
 //Là lớp trìu tượng nhất chứa bussiness logic
 dependencies {
+    implementation project(path: ':common')
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     // Hilt

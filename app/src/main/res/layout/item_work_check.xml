@@ -3,16 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_marginTop="@dimen/_8sdp"
-    android:background="?android:attr/selectableItemBackground"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/imgTopic"
-        android:layout_width="@dimen/_32sdp"
-        android:layout_height="@dimen/_32sdp"
-        android:padding="@dimen/_5sdp"
-        android:src="@drawable/ic_calendar"
+    <RadioButton
+        android:id="@+id/rbChecked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,19 +16,16 @@
         android:id="@+id/tvContent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/_6sdp"
-        android:paddingEnd="@dimen/_6sdp"
-        android:textSize="@dimen/_14sdp"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="@id/imgTopic"
-        app:layout_constraintStart_toEndOf="@id/imgTopic"
-        app:layout_constraintTop_toTopOf="@id/imgTopic"
-        tools:text="Day la de muc" />
+        app:layout_constraintBaseline_toBaselineOf="@id/rbChecked"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/rbChecked"
+        tools:text="Nội dung" />
 
     <View
         android:layout_width="0dp"
         android:layout_height="0.5dp"
-        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_6sdp"
         android:background="@color/bg_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/tvContent"

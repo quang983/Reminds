@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.framework.local.database.AppDataBase
 import com.example.framework.local.database.dao.LocalTopicGroupDao
+import com.example.framework.local.database.dao.LocalWorkFromTopicDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,4 +26,8 @@ object DataBaseModule {
     @Singleton
     @Provides
     fun provideNoteDao(database: AppDataBase): LocalTopicGroupDao = database.getLocalTopicDao()
+
+    @Singleton
+    @Provides
+    fun provideWorkDao(database: AppDataBase): LocalWorkFromTopicDao = database.getLocalWorkFromTopicDao()
 }

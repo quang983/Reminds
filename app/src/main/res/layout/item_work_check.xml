@@ -12,10 +12,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <EditText
         android:id="@+id/tvContent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@null"
         android:textColor="@color/black"
         app:layout_constraintBaseline_toBaselineOf="@id/rbChecked"
         app:layout_constraintEnd_toEndOf="parent"

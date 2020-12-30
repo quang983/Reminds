@@ -38,7 +38,6 @@ class HomeFragment : Fragment() {
 
     private fun setupUI() {
         adapter = TopicAdapter {
-            Log.d("TAG", "setupUI: it")
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }.apply {
             recyclerTopic.adapter = this
@@ -47,8 +46,7 @@ class HomeFragment : Fragment() {
 
     private fun observeData() {
         with(viewModel) {
-            topicData.observe(viewLifecycleOwner, Observer {
-                Log.d("quangtd", "observeData: ${it.size}")
+            topicData.observe(viewLifecycleOwner, {
                 adapter.submitList(it)
             })
         }

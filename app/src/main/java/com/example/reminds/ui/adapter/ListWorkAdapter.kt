@@ -32,7 +32,7 @@ class ListWorkAdapter(private val onClickDetail: (id: Long) -> Unit) :
 
     }) {
     override fun createView(parent: ViewGroup, viewType: Int?): View {
-        return parent.inflate(R.layout.item_topic)
+        return parent.inflate(R.layout.item_work_check)
     }
 
     override fun bind(view: View, viewType: Int, position: Int, item: WorkDataEntity) {

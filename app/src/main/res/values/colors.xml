@@ -10,4 +10,6 @@
     <color name="bg_gray">#757575</color>
     <color name="alt">#d9d9d9</color>
     <color name="gallery">#f0f0f0</color>
+    <color name="blue_700">#1976D2</color>
+    <color name="blue_900">#0D47A1</color>
 </resources>

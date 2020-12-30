@@ -9,6 +9,6 @@ import net.citigo.kiotviet.pos.fnb.ui.viewmodels.BaseViewModel
 
 class HomeViewModel @ViewModelInject constructor(fetchTopicUseCase: FetchTopicUseCase) : BaseViewModel() {
     val topicData : LiveData<List<TopicGroupEntity>> = liveDataEmit {
-        fetchTopicUseCase.invoke(BaseUseCase.Param())
+        kotlin.runCatching { fetchTopicUseCase.invoke(BaseUseCase.Param()) }.getOrNull() ?: listOf()
     }
 }

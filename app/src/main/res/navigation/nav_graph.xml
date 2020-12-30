@@ -14,10 +14,19 @@
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_NewTopicFragment"
+            app:destination="@id/NewTopicFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
         android:name="com.example.reminds.ui.fragment.detail.ListWorkFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_list_work" />
+
+    <fragment
+        android:id="@+id/NewTopicFragment"
+        android:name="com.example.reminds.ui.fragment.newtopic.NewTopicBtsFragment"
+        android:label="@string/new_topic_fragment_label"
+        tools:layout="@layout/fragment_new_topic_bts" />
 </navigation>

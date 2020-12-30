@@ -8,7 +8,8 @@ import javax.inject.Inject
 class FetchWorksUseCase @Inject constructor(private val topicRepository: WorkFromTopicRepository) :
     BaseUseCase<BaseUseCase.Param, List<WorkDataEntity>> {
     override suspend fun invoke(params: BaseUseCase.Param): List<WorkDataEntity> {
-        return topicRepository.fetchAllWorkFromTopic().toMutableList().apply {
+        /*return topicRepository.fetchAllWorkFromTopic()*/
+        return mutableListOf<WorkDataEntity>().apply {
             this.add(WorkDataEntity(1, "Công việc 1"))
             this.add(WorkDataEntity(2, "Công việc 2"))
             this.add(WorkDataEntity(3, "Công việc 3"))

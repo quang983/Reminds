@@ -40,4 +40,16 @@
             tools:itemCount="10"
             tools:listitem="@layout/item_topic" />
     </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/btnNewTopic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_24sdp"
+        android:text="Tạo mới"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

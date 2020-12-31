@@ -4,11 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import com.example.domain.model.TopicGroupEntity
 import com.example.reminds.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_new_topic_bts.*
 
+@AndroidEntryPoint
 class NewTopicBtsFragment : BottomSheetDialogFragment() {
+    private val viewModel: NewTopicBtsViewModel by viewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -22,9 +28,9 @@ class NewTopicBtsFragment : BottomSheetDialogFragment() {
         setListener()
     }
 
-    private fun setListener(){
+    private fun setListener() {
         btnDone.setOnClickListener {
-
+            viewModel.insertTopic(TopicGroupEntity(1, edtTopic.text.toString()))
         }
     }
 }

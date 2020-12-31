@@ -12,7 +12,10 @@ class TopicGroup : BaseDataMapper<TopicGroup, TopicDataModel> {
     var name: String = ""
 
     override fun toModel(entity: TopicDataModel): TopicGroup {
-        return this
+        val topicGroup = TopicGroup()
+        topicGroup.id = entity.id
+        topicGroup.name = entity.name
+        return topicGroup
     }
 
     override fun toEntity(model: TopicGroup): TopicDataModel {

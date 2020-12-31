@@ -1,7 +1,7 @@
 package com.example.domain.usecase.remote
 
 import com.example.domain.model.MainResponse
-import com.example.domain.repository.BaseUseCase
+import com.example.domain.base.BaseUseCase
 import com.example.domain.repository.TryRepository
 import javax.inject.Inject
 

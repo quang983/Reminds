@@ -1,4 +1,4 @@
-package net.citigo.kiotviet.pos.fnb.ui.viewmodels
+package com.example.reminds.common
 
 import SingleLiveEvent
 import androidx.annotation.AnyThread

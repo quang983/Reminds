@@ -10,17 +10,10 @@ class TopicGroupSourceImpl @Inject constructor(
     private val dao: LocalTopicGroupDao
 ) : TopicGroupSource {
     override suspend fun fetchAll(): List<TopicDataModel> {
-        return dao.fetchTopicGroupData().toMutableList().map {
+        return dao.fetchTopicGroupData().map {
             TopicDataModel(
                 id = it.id, name = it.name
             )
-        }.toMutableList().apply {
-            this.add(TopicDataModel(1, "Chủ đề 1"))
-            this.add(TopicDataModel(2, "Chủ đề 2"))
-            this.add(TopicDataModel(3, "Chủ đề 3"))
-            this.add(TopicDataModel(4, "Chủ đề 4"))
-            this.add(TopicDataModel(5, "Chủ đề 5"))
-            this.add(TopicDataModel(6, "Chủ đề 6"))
         }
     }
 

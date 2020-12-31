@@ -168,6 +168,7 @@ abstract class BaseViewModel : ViewModel {
     }.flowOn(Dispatchers.Main).map {
         onChanged.invoke(it)
     }.flowOn(context).launchIn(viewModelScope)
+
 }
 
 @Deprecated("")

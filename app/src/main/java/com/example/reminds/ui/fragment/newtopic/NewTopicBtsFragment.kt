@@ -30,7 +30,13 @@ class NewTopicBtsFragment : BottomSheetDialogFragment() {
 
     private fun setListener() {
         btnDone.setOnClickListener {
-            viewModel.insertTopic(TopicGroupEntity(1, edtTopic.text.toString()))
+            viewModel.insertTopic(
+                TopicGroupEntity(
+                    System.currentTimeMillis(),
+                    edtTopic.text.toString()
+                )
+            )
+            dismiss()
         }
     }
 }

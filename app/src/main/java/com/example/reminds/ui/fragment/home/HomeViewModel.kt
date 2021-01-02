@@ -1,5 +1,6 @@
 package com.example.reminds.ui.fragment.home
 
+import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import com.example.domain.base.BaseUseCase
@@ -12,6 +13,7 @@ class HomeViewModel @ViewModelInject constructor(private val fetchTopicUseCase: 
     BaseViewModel() {
     val topicData: LiveData<List<TopicGroupEntity>> = liveData {
         fetchTopicUseCase.invoke(BaseUseCase.Param()).collect {
+            Log.d("quangtd", "observeData: ${it.size}")
             emit(it)
         }
     }

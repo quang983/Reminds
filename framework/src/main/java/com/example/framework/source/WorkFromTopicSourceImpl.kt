@@ -1,10 +1,7 @@
 package com.example.framework.source
 
 import com.example.common.base.model.WorkDataEntity
-import com.example.data.local.model.TopicDataModel
-import com.example.data.local.source.TopicGroupSource
 import com.example.data.local.source.WorkFromTopicSource
-import com.example.framework.local.database.dao.LocalTopicGroupDao
 import com.example.framework.local.database.dao.LocalWorkFromTopicDao
 import javax.inject.Inject
 

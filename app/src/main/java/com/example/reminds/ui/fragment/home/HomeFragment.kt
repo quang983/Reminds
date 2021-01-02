@@ -1,7 +1,6 @@
 package com.example.reminds.ui.fragment.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,7 +49,6 @@ class HomeFragment : Fragment() {
     private fun observeData() {
         with(viewModel) {
             topicData.observe(viewLifecycleOwner, {
-                Log.d("quangtd", "observeData: ${it.size}")
                 adapter.submitList(it)
             })
         }

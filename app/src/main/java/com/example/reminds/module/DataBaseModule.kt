@@ -5,7 +5,6 @@ import androidx.room.Room
 import com.example.framework.local.database.AppDataBase
 import com.example.framework.local.database.dao.LocalTopicGroupDao
 import com.example.framework.local.database.dao.LocalWorkFromTopicDao
-import com.example.framework.model.TopicGroup
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

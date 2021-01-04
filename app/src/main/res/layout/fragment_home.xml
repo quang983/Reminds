@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/gallery"
     android:paddingStart="@dimen/_16sdp"
-    android:paddingEnd="@dimen/_16sdp"
-    tools:context=".ui.fragment.home.HomeFragment">
+    android:id="@+id/layoutRoot"
+    android:paddingEnd="@dimen/_16sdp">
 
     <TextView
         android:id="@+id/tvTitle"

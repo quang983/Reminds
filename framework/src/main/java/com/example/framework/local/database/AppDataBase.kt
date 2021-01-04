@@ -4,8 +4,8 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.framework.local.database.dao.LocalTopicGroupDao
 import com.example.framework.local.database.dao.LocalWorkFromTopicDao
-import com.example.framework.model.TopicGroup
-import com.example.framework.model.WorkFoTopic
+import com.example.framework.local.database.model.TopicGroup
+import com.example.framework.local.database.model.WorkFoTopic
 
 
 @Database(

@@ -22,7 +22,12 @@
         android:id="@+id/SecondFragment"
         android:name="com.example.reminds.ui.fragment.detail.ListWorkFragment"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_list_work" />
+        tools:layout="@layout/fragment_list_work">
+
+        <argument
+            android:name="idGroup"
+            app:argType="long" />
+    </fragment>
 
     <fragment
         android:id="@+id/NewTopicFragment"

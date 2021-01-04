@@ -7,7 +7,7 @@ import com.example.common.base.model.WorkDataEntity
 import com.example.reminds.R
 import com.example.reminds.common.BaseAdapter
 import kotlinx.android.synthetic.main.item_topic.view.*
-import net.citigo.kiotviet.common.utils.extension.inflate
+import com.example.reminds.utils.inflate
 
 class ListWorkAdapter(private val onClickDetail: (id: Long) -> Unit) :
     BaseAdapter<WorkDataEntity>(object : DiffUtil.ItemCallback<WorkDataEntity>() {

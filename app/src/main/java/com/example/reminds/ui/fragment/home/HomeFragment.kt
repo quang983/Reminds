@@ -10,8 +10,10 @@ import androidx.navigation.fragment.findNavController
 import com.example.reminds.R
 import com.example.reminds.ui.adapter.TopicAdapter
 import com.example.reminds.ui.fragment.newtopic.NewTopicBtsFragment
+import com.example.reminds.utils.setOnClickListenerBlock
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
+
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -41,12 +43,33 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupListener() {
-        btnNewTopic.setOnClickListener {
+        btnNewTopic.setOnClickListenerBlock {
             showBottomSheet()
         }
     }
 
-    private fun observeData() {
+/*private fun enableSwipeToDeleteAndUndo() {
+    val swipeToDeleteCallback: SwipeToDeleteCallback = object : SwipeToDeleteCallback(this) {
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, i: Int) {
+            val position = viewHolder.adapterPosition
+            val item: String = adapter.1().get(position)
+            adapter.removeItem(position)
+            val snackbar = Snackbar
+                .make(layoutRoot, "Item was removed from the list.", Snackbar.LENGTH_LONG)
+            snackbar.setAction("UNDO") {
+                adapter.restoreItem(item, position)
+                recyclerTopic.scrollToPosition(position)
+            }
+            snackbar.setActionTextColor(Color.YELLOW)
+            snackbar.show()
+        }
+    }
+    val itemTouchhelper = ItemTouchHelper(swipeToDeleteCallback)
+    itemTouchhelper.attachToRecyclerView(recyclerTopic)
+}*/
+
+
+private fun observeData() {
         with(viewModel) {
             topicData.observe(viewLifecycleOwner, {
                 adapter.submitList(it)

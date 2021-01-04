@@ -1,4 +1,4 @@
-package net.citigo.kiotviet.common.utils.extension
+package com.example.reminds.utils
 
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
@@ -176,6 +176,16 @@ fun TextView.setTextHtml(text: String) {
         setText(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY))
     } else {
         setText(Html.fromHtml(text))
+    }
+}
+
+fun View.setOnClickListenerBlock(block: () -> Unit) {
+    setOnClickListener {
+        isEnabled = false
+        postDelayed({
+            isEnabled = true
+        }, 1000)
+        block()
     }
 }
 

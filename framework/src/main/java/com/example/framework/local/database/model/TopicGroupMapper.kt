@@ -1,8 +1,5 @@
-package com.example.framework.model
+package com.example.framework.local.database.model
 
-import com.example.common.base.BaseDataMapper
-import com.example.data.local.model.TopicDataModel
-import javax.inject.Inject
 /*
 
 class TopicGroupMapper @Inject constructor() : BaseDataMapper<TopicGroup, TopicDataModel> {

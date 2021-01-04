@@ -1,5 +1,6 @@
 package com.example.reminds.ui.fragment.home
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +8,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import com.example.domain.model.TopicGroupEntity
 import com.example.reminds.R
+import com.example.reminds.common.SwipeToDeleteCallback
 import com.example.reminds.ui.adapter.TopicAdapter
 import com.example.reminds.ui.fragment.newtopic.NewTopicBtsFragment
+import com.example.reminds.utils.navigate
 import com.example.reminds.utils.setOnClickListenerBlock
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -36,7 +43,7 @@ class HomeFragment : Fragment() {
 
     private fun setupUI() {
         adapter = TopicAdapter {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+            navigate(HomeFragmentDirections.actionFirstFragmentToSecondFragment(it))
         }.apply {
             recyclerTopic.adapter = this
         }
@@ -46,30 +53,34 @@ class HomeFragment : Fragment() {
         btnNewTopic.setOnClickListenerBlock {
             showBottomSheet()
         }
+        enableSwipeToDeleteAndUndo()
     }
 
-/*private fun enableSwipeToDeleteAndUndo() {
-    val swipeToDeleteCallback: SwipeToDeleteCallback = object : SwipeToDeleteCallback(this) {
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, i: Int) {
-            val position = viewHolder.adapterPosition
-            val item: String = adapter.1().get(position)
-            adapter.removeItem(position)
-            val snackbar = Snackbar
-                .make(layoutRoot, "Item was removed from the list.", Snackbar.LENGTH_LONG)
-            snackbar.setAction("UNDO") {
-                adapter.restoreItem(item, position)
-                recyclerTopic.scrollToPosition(position)
+    private fun enableSwipeToDeleteAndUndo() {
+        val swipeToDeleteCallback: SwipeToDeleteCallback =
+            object : SwipeToDeleteCallback(requireContext()) {
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, i: Int) {
+                    val position = viewHolder.adapterPosition
+                    val item: TopicGroupEntity = adapter.currentList[position]
+                    adapter.removeItem(position)
+                    viewModel.deleteTopicData(item)
+                    val snackbar = Snackbar
+                        .make(layoutRoot, "Item was removed from the list.", Snackbar.LENGTH_LONG)
+                    snackbar.setAction("UNDO") {
+                        adapter.restoreItem(item, position)
+                        viewModel.undoTopicData(item)
+                        recyclerTopic.scrollToPosition(position)
+                    }
+                    snackbar.setActionTextColor(Color.YELLOW)
+                    snackbar.show()
+                }
             }
-            snackbar.setActionTextColor(Color.YELLOW)
-            snackbar.show()
-        }
+        val itemTouchhelper = ItemTouchHelper(swipeToDeleteCallback)
+        itemTouchhelper.attachToRecyclerView(recyclerTopic)
     }
-    val itemTouchhelper = ItemTouchHelper(swipeToDeleteCallback)
-    itemTouchhelper.attachToRecyclerView(recyclerTopic)
-}*/
 
 
-private fun observeData() {
+    private fun observeData() {
         with(viewModel) {
             topicData.observe(viewLifecycleOwner, {
                 adapter.submitList(it)
@@ -77,7 +88,7 @@ private fun observeData() {
         }
     }
 
-    private fun showBottomSheet(){
+    private fun showBottomSheet() {
         val bottomSheetFragment = NewTopicBtsFragment()
         bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
     }

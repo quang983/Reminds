@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import com.example.domain.model.TopicGroupEntity
 import com.example.reminds.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_new_topic_bts.*
 
@@ -37,6 +38,22 @@ class NewTopicBtsFragment : BottomSheetDialogFragment() {
                 )
             )
             dismiss()
+        }
+
+        btnDatePicker.setOnClickListener {
+            showDatePicker()
+        }
+    }
+
+    private fun showDatePicker() {
+        val builder = MaterialDatePicker.Builder.datePicker()
+        val picker = builder.build()
+        picker.show(parentFragmentManager, picker.toString())
+        picker.addOnCancelListener {
+
+        }
+        picker.addOnNegativeButtonClickListener {
+
         }
     }
 }

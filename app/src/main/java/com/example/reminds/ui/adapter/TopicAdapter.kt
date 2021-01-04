@@ -6,8 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import com.example.domain.model.TopicGroupEntity
 import com.example.reminds.R
 import com.example.reminds.common.BaseAdapter
-import kotlinx.android.synthetic.main.item_topic.view.*
 import com.example.reminds.utils.inflate
+import kotlinx.android.synthetic.main.item_topic.view.*
+
 
 class TopicAdapter(private val onClickDetail: (id: Long) -> Unit) :
     BaseAdapter<TopicGroupEntity>(object : DiffUtil.ItemCallback<TopicGroupEntity>() {
@@ -40,5 +41,21 @@ class TopicAdapter(private val onClickDetail: (id: Long) -> Unit) :
         view.rootView.setOnClickListener {
             onClickDetail.invoke(item.id)
         }
+    }
+
+    fun removeItem(position: Int) {
+        val newList = ArrayList<TopicGroupEntity>().apply {
+            addAll(currentList)
+        }
+        newList.removeAt(position)
+        submitList(newList)
+    }
+
+    fun restoreItem(item: TopicGroupEntity, position: Int) {
+        val newList = ArrayList<TopicGroupEntity>().apply {
+            addAll(currentList)
+        }
+        newList.add(position, item)
+        submitList(newList)
     }
 }

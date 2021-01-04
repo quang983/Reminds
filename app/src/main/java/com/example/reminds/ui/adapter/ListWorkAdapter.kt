@@ -3,11 +3,13 @@ package com.example.reminds.ui.adapter
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import com.example.common.base.model.WorkDataEntity
 import com.example.reminds.R
 import com.example.reminds.common.BaseAdapter
-import kotlinx.android.synthetic.main.item_topic.view.*
 import com.example.reminds.utils.inflate
+import kotlinx.android.synthetic.main.item_topic.view.*
+import kotlinx.android.synthetic.main.item_work_group.view.*
 
 class ListWorkAdapter(private val onClickDetail: (id: Long) -> Unit) :
     BaseAdapter<WorkDataEntity>(object : DiffUtil.ItemCallback<WorkDataEntity>() {
@@ -31,8 +33,10 @@ class ListWorkAdapter(private val onClickDetail: (id: Long) -> Unit) :
         }
 
     }) {
+    private val viewPool = RecyclerView.RecycledViewPool()
+
     override fun createView(parent: ViewGroup, viewType: Int?): View {
-        return parent.inflate(R.layout.item_work_check)
+        return parent.inflate(R.layout.item_work_group)
     }
 
     override fun bind(view: View, viewType: Int, position: Int, item: WorkDataEntity) {
@@ -40,5 +44,14 @@ class ListWorkAdapter(private val onClickDetail: (id: Long) -> Unit) :
         view.rootView.setOnClickListener {
             onClickDetail.invoke(item.id)
         }
+        view.recyclerWorks.apply {
+            val adapter = ListContentCheckAdapter {
+
+            }
+            setAdapter(adapter)
+            setRecycledViewPool(viewPool)
+        }
     }
+
+
 }

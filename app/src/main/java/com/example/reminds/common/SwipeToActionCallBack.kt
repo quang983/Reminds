@@ -13,7 +13,7 @@ import com.example.reminds.R
 
 abstract class SwipeToDeleteCallback internal constructor(context: Context) :
     ItemTouchHelper.Callback() {
-    private lateinit var mContext: Context
+    private var mContext: Context
     private val mClearPaint: Paint
     private val mBackground: ColorDrawable
     private val backgroundColor: Int
@@ -99,6 +99,7 @@ abstract class SwipeToDeleteCallback internal constructor(context: Context) :
     }
 
     init {
+        mContext = context
         mBackground = ColorDrawable()
         backgroundColor = Color.parseColor("#b80f0a")
         mClearPaint = Paint()

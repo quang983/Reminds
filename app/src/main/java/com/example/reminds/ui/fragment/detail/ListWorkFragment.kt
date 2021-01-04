@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.navigation.fragment.navArgs
 import com.example.reminds.R
 import com.example.reminds.ui.adapter.ListWorkAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,6 +17,8 @@ import kotlinx.android.synthetic.main.fragment_list_work.*
  */
 @AndroidEntryPoint
 class ListWorkFragment : Fragment() {
+    private val args by navArgs<ListWorkFragmentArgs>()
+
     private val viewModel: ListWorkViewModel by viewModels()
     private lateinit var adapter: ListWorkAdapter
 
@@ -24,6 +26,7 @@ class ListWorkFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel.getListWork(args.idGroup)
         return inflater.inflate(R.layout.fragment_list_work, container, false)
     }
 
@@ -43,7 +46,7 @@ class ListWorkFragment : Fragment() {
 
     private fun observeData() {
         with(viewModel) {
-            listWorkData.observe(viewLifecycleOwner, Observer {
+            listWorkData.observe(viewLifecycleOwner, {
                 adapter.submitList(it)
             })
         }

@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class  ListWorkViewModel @ViewModelInject constructor(
+class ListWorkViewModel @ViewModelInject constructor(
     private val fetchWorksUseCase: FetchWorksUseCase
 ) :
     BaseViewModel() {

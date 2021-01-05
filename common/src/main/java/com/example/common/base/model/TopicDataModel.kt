@@ -1,4 +1,4 @@
-package com.example.data.local.model
+package com.example.common.base.model
 
 import androidx.room.Entity
 

@@ -2,6 +2,7 @@ package com.example.framework.source
 
 import com.example.common.base.model.WorkDataEntity
 import com.example.data.local.source.WorkFromTopicSource
+import com.example.framework.local.database.dao.LocalTopicGroupWithWorkDao
 import com.example.framework.local.database.dao.LocalWorkFromTopicDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
@@ -15,7 +16,7 @@ class WorkFromTopicSourceImpl @Inject constructor(
         return dao.fetchWorkFromTopicData(idGroup).map { it ->
             it.listWork.map {
                 WorkDataEntity(
-                    it.id, it.name
+                    it.id, it.name, it.idOwnerGroup
                 )
             }
         }.conflate()

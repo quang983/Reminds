@@ -3,7 +3,7 @@ package com.example.reminds.ui.adapter
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import com.example.domain.model.TopicGroupEntity
+import com.example.common.base.model.TopicGroupEntity
 import com.example.reminds.R
 import com.example.reminds.common.BaseAdapter
 import com.example.reminds.utils.inflate

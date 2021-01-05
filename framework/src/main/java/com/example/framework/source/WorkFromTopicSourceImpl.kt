@@ -1,5 +1,6 @@
 package com.example.framework.source
 
+import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.WorkDataEntity
 import com.example.data.local.source.WorkFromTopicSource
 import com.example.framework.local.database.dao.LocalWorkFromTopicDao
@@ -13,9 +14,12 @@ class WorkFromTopicSourceImpl @Inject constructor(
 ) : WorkFromTopicSource {
     override suspend fun fetchAll(idGroup: Long): Flow<List<WorkDataEntity>> {
         return dao.fetchWorkFromTopicData(idGroup).map { it ->
-            it.listWork.map {
+            it.listWork.map { it ->
                 WorkDataEntity(
-                    it.id, it.name
+                    it.workGroup.id,
+                    it.workGroup.name,
+                    it.workGroup.idOwnerGroup,
+                    it.listContent.map { ContentDataEntity(it.idContent, it.name, it.idOwnerWork) }
                 )
             }
         }.conflate()

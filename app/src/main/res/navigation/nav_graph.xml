@@ -23,10 +23,12 @@
         android:name="com.example.reminds.ui.fragment.detail.ListWorkFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_list_work">
-
         <argument
-            android:name="idGroup"
-            app:argType="long" />
+            android:name="works"
+            android:defaultValue="@null"
+            app:argType="com.example.common.base.model.WorkDataEntity"
+            app:nullable="true" />
+
     </fragment>
 
     <fragment

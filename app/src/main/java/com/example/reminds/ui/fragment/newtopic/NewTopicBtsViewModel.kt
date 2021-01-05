@@ -2,7 +2,7 @@ package com.example.reminds.ui.fragment.newtopic
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
-import com.example.domain.model.TopicGroupEntity
+import com.example.common.base.model.TopicGroupEntity
 import com.example.domain.usecase.db.topic.InsertTopicUseCase
 import com.example.reminds.common.BaseViewModel
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +12,7 @@ class NewTopicBtsViewModel @ViewModelInject constructor(private val insertTopicU
     BaseViewModel() {
     fun insertTopic(data: TopicGroupEntity) {
         viewModelScope.launch(handler + Dispatchers.IO) {
-            insertTopicUseCase.invoke(InsertTopicUseCase.Param(listOf(data)))
+            insertTopicUseCase.invoke(InsertTopicUseCase.Param(data))
         }
     }
 }

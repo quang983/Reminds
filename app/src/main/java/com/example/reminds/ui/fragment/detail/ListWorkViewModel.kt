@@ -1,5 +1,6 @@
 package com.example.reminds.ui.fragment.detail
 
+import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,17 +12,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class  ListWorkViewModel @ViewModelInject constructor(
+class ListWorkViewModel @ViewModelInject constructor(
     private val fetchWorksUseCase: FetchWorksUseCase
-) :
-    BaseViewModel() {
-    init {
-
-    }
-
+) : BaseViewModel() {
     fun getListWork(idGroup: Long) {
         viewModelScope.launch(handler + Dispatchers.IO) {
             fetchWorksUseCase.invoke(FetchWorksUseCase.Param(idGroup)).collect {
+                Log.d("quangtd", "getListWork: ${it.size}")
                 listWorkData.postValue(it)
             }
         }

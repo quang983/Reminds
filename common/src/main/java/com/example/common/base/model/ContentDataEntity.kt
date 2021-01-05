@@ -1,3 +1,6 @@
 package com.example.common.base.model
 
-data class ContentDataEntity(val id: Long, val name: String)
+import androidx.room.Entity
+
+@Entity
+data class ContentDataEntity(val id: Long, val name: String, var idOwnerWork: Long = 0)

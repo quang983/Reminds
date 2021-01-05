@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.example.common.base.model.ContentDataEntity
 import com.example.reminds.R
 import com.example.reminds.ui.adapter.ListWorkAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,7 +47,10 @@ class ListWorkFragment : Fragment() {
 
     private fun observeData() {
         with(viewModel) {
-            listWorkData.observe(viewLifecycleOwner, {
+            listWorkData.observe(viewLifecycleOwner, { it ->
+                it.forEach {
+                    it.listContent.toMutableList().add(ContentDataEntity(0, "Phần tử 1"))
+                }
                 adapter.submitList(it)
             })
         }

@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.model.TopicGroupEntity
+import com.example.common.base.model.TopicGroupEntity
 import com.example.reminds.R
 import com.example.reminds.common.SwipeToDeleteCallback
 import com.example.reminds.ui.adapter.TopicAdapter

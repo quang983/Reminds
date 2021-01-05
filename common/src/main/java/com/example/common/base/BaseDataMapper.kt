@@ -1,6 +1,6 @@
 package com.example.common.base
 
 interface BaseDataMapper<M, E> {
-    fun toModel(entity: E): M
-    fun toEntity(model: M): E
+    fun toData(entity: E): M
+    fun toDomain(model: M): E
 }

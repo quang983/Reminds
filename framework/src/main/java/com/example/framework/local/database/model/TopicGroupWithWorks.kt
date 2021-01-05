@@ -8,10 +8,10 @@ import androidx.room.Relation
 data class TopicGroupWithWorks(
     @Embedded val topicGroup: TopicGroup,
     @Relation(
-        parentColumn = "id",
-        entityColumn = "idOwnerGroup",
+        parentColumn = "idTopic",
+        entityColumn = "idOwnerGroup"
     )
-    val listWork: List<WorkFoTopic>
+    val listWork: List<WorkWithContent>
 )
 
 data class WorkWithContent(
@@ -20,5 +20,5 @@ data class WorkWithContent(
         parentColumn = "id",
         entityColumn = "idOwnerWork",
     )
-    val list: List<ContentFoWork>
+    val listContent: List<ContentFoWork>
 )

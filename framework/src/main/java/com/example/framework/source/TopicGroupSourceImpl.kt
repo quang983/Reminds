@@ -1,6 +1,6 @@
 package com.example.framework.source
 
-import android.util.Log
+import androidx.room.Transaction
 import com.example.common.base.model.TopicGroupEntity
 import com.example.data.local.source.TopicGroupSource
 import com.example.framework.local.database.dao.LocalTopicGroupDao
@@ -21,11 +21,10 @@ class TopicGroupSourceImpl @Inject constructor(
         }
     }
 
+    @Transaction
     override suspend fun insert(data: TopicGroupEntity) {
-        Log.d("quangtd", "inserts: ")
         val topicGroupDbId = dao.insert(TopicGroup().toData(data))
-        daoWork.insert(WorkFoTopic(name = "Cơ bản", idOwnerGroup = topicGroupDbId))
-        Log.d("quangtd", "inserts: success")
+        daoWork.insert(WorkFoTopic(id = 0, name = "Cơ bản", idOwnerGroup = topicGroupDbId))
     }
 
     override suspend fun inserts(datas: TopicGroupEntity) {

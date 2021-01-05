@@ -9,8 +9,11 @@ import com.example.framework.local.database.model.WorkFoTopic
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface LocalWorkFromTopicDao : BaseDao<WorkFoTopic>{
+interface LocalWorkFromTopicDao : BaseDao<WorkFoTopic> {
     @Transaction
-    @Query("SELECT * FROM WorkFoTopic where id LIKE :id")
+    @Query("SELECT * FROM TopicGroup where idTopic=:id")
     fun fetchWorkFromTopicData(id: Long): Flow<TopicGroupWithWorks>
+
+    @Query("SELECT * FROM WorkFoTopic")
+    fun fetchWork(): List<WorkFoTopic>
 }

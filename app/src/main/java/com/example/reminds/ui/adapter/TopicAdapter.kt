@@ -10,7 +10,7 @@ import com.example.reminds.utils.inflate
 import kotlinx.android.synthetic.main.item_topic.view.*
 
 
-class TopicAdapter(private val onClickDetail: (id: Long) -> Unit) :
+class TopicAdapter(private val onClickDetail: (item: TopicGroupEntity) -> Unit) :
     BaseAdapter<TopicGroupEntity>(object : DiffUtil.ItemCallback<TopicGroupEntity>() {
 
         override fun areItemsTheSame(
@@ -39,7 +39,7 @@ class TopicAdapter(private val onClickDetail: (id: Long) -> Unit) :
     override fun bind(view: View, viewType: Int, position: Int, item: TopicGroupEntity) {
         view.tvContent.text = item.name
         view.rootView.setOnClickListener {
-            onClickDetail.invoke(item.id)
+            onClickDetail.invoke(item)
         }
     }
 

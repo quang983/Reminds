@@ -7,12 +7,15 @@ import com.example.common.base.model.WorkDataEntity
 
 @Entity
 class WorkFoTopic(
-    @PrimaryKey(autoGenerate = true)
-    var id: Long = 0,
-    var name: String,
-    var idOwnerGroup: Long
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val name: String,
+    val idOwnerGroup: Long,
 ) : BaseDataMapper<WorkFoTopic, WorkDataEntity> {
-    override fun toDomain(model: WorkFoTopic) = WorkDataEntity(id, name, idOwnerGroup)
+    override fun toDomain(model: WorkFoTopic) = WorkDataEntity(
+        id,
+        name,
+        idOwnerGroup
+    )
 
     override fun toData(entity: WorkDataEntity) = this
 

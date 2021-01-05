@@ -1,11 +1,10 @@
 package com.example.reminds.ui.fragment.home
 
-import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.example.domain.base.BaseUseCase
 import com.example.common.base.model.TopicGroupEntity
+import com.example.domain.base.BaseUseCase
 import com.example.domain.usecase.db.topic.DeleteTopicUseCase
 import com.example.domain.usecase.db.topic.FetchTopicUseCase
 import com.example.domain.usecase.db.topic.InsertTopicUseCase
@@ -18,9 +17,7 @@ class HomeViewModel @ViewModelInject constructor(
     private val fetchTopicUseCase: FetchTopicUseCase,
     private val deleteTopicUseCase: DeleteTopicUseCase,
     private val insertTopicUseCase: InsertTopicUseCase
-) :
-    BaseViewModel() {
-
+) : BaseViewModel() {
     val topicData: LiveData<List<TopicGroupEntity>> = liveData {
         fetchTopicUseCase.invoke(BaseUseCase.Param()).collect {
             emit(it)

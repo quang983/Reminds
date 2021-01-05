@@ -1,13 +1,12 @@
 package com.example.framework.local.database.model
 
 import androidx.room.Embedded
-import androidx.room.Entity
 import androidx.room.Relation
 
-@Entity
 data class TopicGroupWithWorks(
     @Embedded val topicGroup: TopicGroup,
     @Relation(
+        entity = WorkFoTopic::class,
         parentColumn = "idTopic",
         entityColumn = "idOwnerGroup"
     )

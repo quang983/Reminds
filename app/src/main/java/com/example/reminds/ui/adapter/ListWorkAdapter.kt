@@ -49,7 +49,7 @@ class ListWorkAdapter(private val onClickDetail: (id: Long) -> Unit) :
             }
             setAdapter(adapter)
             setRecycledViewPool(viewPool)
-            adapter.submitList(item.contents)
+            adapter.submitList(item.listContent)
         }
     }
 }

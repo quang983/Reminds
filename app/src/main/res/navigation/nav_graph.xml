@@ -24,10 +24,8 @@
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_list_work">
         <argument
-            android:name="works"
-            android:defaultValue="@null"
-            app:argType="com.example.common.base.model.WorkDataEntity"
-            app:nullable="true" />
+            android:name="idGroup"
+            app:argType="long" />
 
     </fragment>
 

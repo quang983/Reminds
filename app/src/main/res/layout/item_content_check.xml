@@ -13,15 +13,28 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/tvContent"
+        android:id="@+id/tvContentCheck"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@null"
+        android:imeOptions="actionNext"
+        android:inputType="text"
         android:textColor="@color/black"
         app:layout_constraintBaseline_toBaselineOf="@id/rbChecked"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/rbChecked"
         tools:text="Nội dung" />
+
+    <ImageView
+        android:id="@+id/imgCheckDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_6sdp"
+        android:src="@drawable/ic_check_24px"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:layout_width="0dp"
@@ -29,6 +42,6 @@
         android:layout_marginTop="@dimen/_6sdp"
         android:background="@color/bg_gray"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/tvContent"
-        app:layout_constraintTop_toBottomOf="@id/tvContent" />
+        app:layout_constraintStart_toStartOf="@id/tvContentCheck"
+        app:layout_constraintTop_toBottomOf="@id/tvContentCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>

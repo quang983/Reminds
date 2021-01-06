@@ -32,5 +32,6 @@ fun Fragment.finish() {
 }
 
 fun Fragment.navigateUp() {
+    hideSoftKeyboard()
     findNavController().navigateUp()
 }

@@ -19,7 +19,13 @@ class WorkFromTopicSourceImpl @Inject constructor(
                     it.workGroup.id,
                     it.workGroup.name,
                     it.workGroup.idOwnerGroup,
-                    it.listContent.map { ContentDataEntity(it.idContent, it.name, it.idOwnerWork) }
+                    it.listContent.map {
+                        ContentDataEntity(
+                            it.idContent,
+                            it.name,
+                            it.idOwnerWork
+                        )
+                    } as ArrayList<ContentDataEntity>
                 )
             }
         }.conflate()

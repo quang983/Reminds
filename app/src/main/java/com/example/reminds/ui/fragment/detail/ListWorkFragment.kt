@@ -1,17 +1,16 @@
 package com.example.reminds.ui.fragment.detail
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import com.example.common.base.model.ContentDataEntity
 import com.example.reminds.R
 import com.example.reminds.ui.adapter.ListWorkAdapter
+import com.example.reminds.utils.navigateUp
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_list_work.*
+
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -33,26 +32,50 @@ class ListWorkFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupToolbar()
         setupUI()
         observeData()
     }
 
-    private fun setupUI() {
-        adapter = ListWorkAdapter {
+    private fun setupToolbar() {
+        setHasOptionsMenu(true)
+    }
 
-        }.apply {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.top_app_bar, menu)
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.favorite -> true
+            android.R.id.home -> {
+                navigateUp()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun setupUI() {
+        adapter = ListWorkAdapter({
+
+        }, { content, work, workPosition ->
+            viewModel.insertContentToWork(content, work, workPosition)
+        }).apply {
             recyclerWorks.adapter = this
         }
     }
 
     private fun observeData() {
         with(viewModel) {
-            listWorkData.observe(viewLifecycleOwner, { it ->
-                it.forEach {
-                    it.listContent.toMutableList().add(ContentDataEntity(0, "Phần tử 1"))
-                }
+            listWorkData.observe(viewLifecycleOwner, {
                 adapter.submitList(it)
             })
+
+            /*    listContentData.observe(viewLifecycleOwner, {
+                    adapter.submitListContent(it)
+                })*/
         }
     }
 }

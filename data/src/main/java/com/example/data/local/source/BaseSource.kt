@@ -1,7 +1,7 @@
 package com.example.data.local.source
 
 interface BaseSource<T> {
-    suspend fun insert(data: T)
+    suspend fun insert(data: T) : Long
 
     suspend fun inserts(datas: T)
 

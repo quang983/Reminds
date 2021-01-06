@@ -1,7 +1,10 @@
 package com.example.reminds.ui.fragment.detail
 
 import android.os.Bundle
+import android.text.InputType
 import android.view.*
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -35,6 +38,13 @@ class ListWorkFragment : Fragment() {
         setupToolbar()
         setupUI()
         observeData()
+        setupListener()
+    }
+
+    private fun setupListener() {
+        extendedFab.setOnClickListener {
+            showDialogInputWorkTopic()
+        }
     }
 
     private fun setupToolbar() {
@@ -70,12 +80,24 @@ class ListWorkFragment : Fragment() {
     private fun observeData() {
         with(viewModel) {
             listWorkData.observe(viewLifecycleOwner, {
-                adapter.submitList(it)
+                adapter.submitList(it.toMutableList())
             })
-
-            /*    listContentData.observe(viewLifecycleOwner, {
-                    adapter.submitListContent(it)
-                })*/
         }
+    }
+
+    private fun showDialogInputWorkTopic() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Title")
+        val input = EditText(requireContext())
+        input.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        builder.setView(input)
+        builder.setPositiveButton("OK") { _, _ ->
+            val text = input.text.toString()
+            viewModel.insertWork(text)
+
+        }
+        builder.setNegativeButton("Cancel") { dialog, which -> dialog.cancel() }
+
+        builder.show()
     }
 }

@@ -22,9 +22,10 @@ class TopicGroupSourceImpl @Inject constructor(
     }
 
     @Transaction
-    override suspend fun insert(data: TopicGroupEntity) {
+    override suspend fun insert(data: TopicGroupEntity): Long {
         val topicGroupDbId = dao.insert(TopicGroup().toData(data))
-        daoWork.insert(WorkFoTopic(id = 0, name = "Cơ bản", idOwnerGroup = topicGroupDbId))
+        daoWork.insert(WorkFoTopic(id = System.currentTimeMillis(), name = "Cơ bản", idOwnerGroup = topicGroupDbId))
+        return topicGroupDbId
     }
 
     override suspend fun inserts(datas: TopicGroupEntity) {

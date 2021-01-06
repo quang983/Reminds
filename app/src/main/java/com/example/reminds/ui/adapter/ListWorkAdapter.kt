@@ -1,6 +1,5 @@
 package com.example.reminds.ui.adapter
 
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -11,7 +10,7 @@ import com.example.reminds.R
 import com.example.reminds.common.BaseAdapter
 import com.example.reminds.utils.inflate
 import kotlinx.android.synthetic.main.item_work_group.view.*
-import java.util.ArrayList
+import java.util.*
 
 class ListWorkAdapter(
     private val onClickDetail: (id: Long) -> Unit,
@@ -30,7 +29,7 @@ class ListWorkAdapter(
             oldItem: WorkDataEntity,
             newItem: WorkDataEntity
         ): Boolean {
-            return oldItem.listContent == newItem.listContent
+            return oldItem == newItem
         }
 
         override fun getChangePayload(oldItem: WorkDataEntity, newItem: WorkDataEntity): Any? {

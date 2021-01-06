@@ -1,8 +1,9 @@
 package com.example.domain.repository
 
 import com.example.common.base.model.WorkDataEntity
+import com.example.domain.base.BaseRepository
 import kotlinx.coroutines.flow.Flow
 
-interface WorkFromTopicRepository {
-    suspend fun fetchAllWorkFromTopic(idGroup : Long): Flow<List<WorkDataEntity>>
+interface WorkFromTopicRepository : BaseRepository<WorkDataEntity> {
+    suspend fun fetchAllWorkFromTopic(idGroup: Long): Flow<List<WorkDataEntity>>
 }

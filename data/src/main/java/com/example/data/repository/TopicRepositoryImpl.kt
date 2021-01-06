@@ -15,8 +15,8 @@ class TopicRepositoryImpl @Inject constructor(
     override suspend fun fetchAllTopicGroups(): Flow<List<TopicGroupEntity>> = source
         .fetchAll().conflate()
 
-    override suspend fun insertData(data: TopicGroupEntity) {
-        source.insert(TopicGroupEntity(data.id, data.name))
+    override suspend fun insertData(data: TopicGroupEntity): Long {
+        return source.insert(TopicGroupEntity(data.id, data.name))
     }
 
     override suspend fun insertDatas(datas: List<TopicGroupEntity>) {
@@ -27,6 +27,6 @@ class TopicRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteDatas(datas: List<TopicGroupEntity>) {
-        TODO("Not yet implemented")
+        return source.deletes(datas = datas)
     }
 }

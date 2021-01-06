@@ -1,8 +1,10 @@
 package com.example.reminds.module
 
 import com.example.data.remote.implement.TryRepositoryImpl
+import com.example.data.repository.ContentRepositoryImpl
 import com.example.data.repository.TopicRepositoryImpl
 import com.example.data.repository.WorkFromTopicRepositoryImpl
+import com.example.domain.repository.ContentRepository
 import com.example.domain.repository.TopicRepository
 import com.example.domain.repository.TryRepository
 import com.example.domain.repository.WorkFromTopicRepository
@@ -22,4 +24,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindWorkFromTopicRepository(repository: WorkFromTopicRepositoryImpl): WorkFromTopicRepository
+
+    @Binds
+    abstract fun bindContentFromWorkRepository(repository: ContentRepositoryImpl): ContentRepository
 }

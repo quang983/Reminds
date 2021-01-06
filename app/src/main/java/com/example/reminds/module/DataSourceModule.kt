@@ -1,7 +1,9 @@
 package com.example.reminds.module
 
+import com.example.data.local.source.ContentFromWorkSource
 import com.example.data.local.source.TopicGroupSource
 import com.example.data.local.source.WorkFromTopicSource
+import com.example.framework.source.ContentFromWorkSourceImpl
 import com.example.framework.source.TopicGroupSourceImpl
 import com.example.framework.source.WorkFromTopicSourceImpl
 import dagger.Binds
@@ -17,4 +19,7 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindLocalWorkFromTopicSource(dataSource: WorkFromTopicSourceImpl): WorkFromTopicSource
+
+    @Binds
+    abstract fun bindLocalContentFromWorkSource(dataSource: ContentFromWorkSourceImpl): ContentFromWorkSource
 }

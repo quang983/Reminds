@@ -3,9 +3,7 @@ package com.example.reminds.module
 import android.content.Context
 import androidx.room.Room
 import com.example.framework.local.database.AppDataBase
-import com.example.framework.local.database.dao.LocalTopicGroupDao
-import com.example.framework.local.database.dao.LocalTopicGroupWithWorkDao
-import com.example.framework.local.database.dao.LocalWorkFromTopicDao
+import com.example.framework.local.database.dao.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,4 +36,14 @@ object DataBaseModule {
     @Provides
     fun provideTopicWithWorkDao(database: AppDataBase): LocalTopicGroupWithWorkDao =
         database.getLocalTopicWithWorkDao()
+
+    @Singleton
+    @Provides
+    fun provideContentFromWorkDao(database: AppDataBase): LocalContentFromWorkDao =
+        database.getContentFromWorkDao()
+
+    @Singleton
+    @Provides
+    fun provideWorkWithChildDao(database: AppDataBase): LocalWorkWithChildDao =
+        database.getWorkWithChildDao()
 }

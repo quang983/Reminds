@@ -1,6 +1,7 @@
 package com.example.framework.local.database.model
 
 import androidx.room.Embedded
+import androidx.room.Entity
 import androidx.room.Relation
 
 data class TopicGroupWithWorks(

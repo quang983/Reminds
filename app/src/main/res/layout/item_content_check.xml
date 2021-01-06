@@ -17,7 +17,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:imeOptions="actionNext"
+        android:imeOptions="actionDone"
         android:inputType="text"
         android:textColor="@color/black"
         app:layout_constraintBaseline_toBaselineOf="@id/rbChecked"

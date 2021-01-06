@@ -22,7 +22,7 @@ class ListContentCheckAdapter(
     }
 
     override fun areContentsTheSame(oldItem: ContentDataEntity, newItem: ContentDataEntity): Boolean {
-        return oldItem.name == newItem.name && oldItem.idOwnerWork == newItem.idOwnerWork
+        return oldItem == newItem
     }
 
     override fun getChangePayload(oldItem: ContentDataEntity, newItem: ContentDataEntity): Any? {
@@ -56,32 +56,35 @@ class ListContentCheckAdapter(
             view.rootView.setOnClickListener {
                 onClickDetail.invoke(item.id)
             }
-            if(position == currentList.size - 1){
+            if (position == currentList.size - 1) {
                 view.tvContentCheck.requestFocus()
             }
             if (currentList.size == 1) {
                 KeyboardUtils.showKeyboard(view.tvContentCheck, view.context)
             }
             view.tvContentCheck.setOnEditorActionListener { v, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_NEXT && view.tvContentCheck.text.toString().isNotBlank()) {
+                if (actionId == EditorInfo.IME_ACTION_DONE && view.tvContentCheck.text.toString().isNotBlank()) {
                     insertItemClick(item.apply {
                         name = view.tvContentCheck.text.toString()
                     })
                     true
                 } else {
+                    view.tvContentCheck.clearFocus()
+                    insertItemClick(item.apply {
+                        name = view.tvContentCheck.text.toString()
+                    })
                     false
                 }
             }
         } else if (viewType == TYPE_ADD_ITEM) {
             view.rootView.setOnClickListener {
-//                insertItemClick.invoke(item, position)
                 changeItemCheck(view, position)
             }
         }
     }
 
     private fun changeItemCheck(view: View, position: Int) {
-        currentList[position].id = 1L
+        currentList[position].id = System.currentTimeMillis()
         notifyItemChanged(position)
     }
 

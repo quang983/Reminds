@@ -8,6 +8,7 @@ import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.WorkDataEntity
 import com.example.reminds.R
 import com.example.reminds.common.BaseAdapter
+import com.example.reminds.ui.fragment.detail.ListWorkViewModel
 import com.example.reminds.utils.inflate
 import kotlinx.android.synthetic.main.item_work_group.view.*
 import java.util.*
@@ -16,23 +17,23 @@ class ListWorkAdapter(
     private val onClickDetail: (id: Long) -> Unit,
     private val insertContentToWork: (content: ContentDataEntity, work: WorkDataEntity, workPosition: Int) -> Unit
 ) :
-    BaseAdapter<WorkDataEntity>(object : DiffUtil.ItemCallback<WorkDataEntity>() {
+    BaseAdapter<ListWorkViewModel.WorkDataItemView>(object : DiffUtil.ItemCallback<ListWorkViewModel.WorkDataItemView>() {
 
         override fun areItemsTheSame(
-            oldItem: WorkDataEntity,
-            newItem: WorkDataEntity
+            oldItem: ListWorkViewModel.WorkDataItemView,
+            newItem: ListWorkViewModel.WorkDataItemView
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.work.id == newItem.work.id
         }
 
         override fun areContentsTheSame(
-            oldItem: WorkDataEntity,
-            newItem: WorkDataEntity
+            oldItem: ListWorkViewModel.WorkDataItemView,
+            newItem: ListWorkViewModel.WorkDataItemView
         ): Boolean {
             return oldItem == newItem
         }
 
-        override fun getChangePayload(oldItem: WorkDataEntity, newItem: WorkDataEntity): Any? {
+        override fun getChangePayload(oldItem: ListWorkViewModel.WorkDataItemView, newItem: ListWorkViewModel.WorkDataItemView): Any? {
             val payloads = ArrayList<Any>()
 
             if (oldItem.listContent != newItem.listContent) {
@@ -54,24 +55,24 @@ class ListWorkAdapter(
         return parent.inflate(R.layout.item_work_group)
     }
 
-    override fun bind(view: View, viewType: Int, position: Int, item: WorkDataEntity, payloads: MutableList<Any>) {
+    override fun bind(view: View, viewType: Int, position: Int, item: ListWorkViewModel.WorkDataItemView, payloads: MutableList<Any>) {
         super.bind(view, viewType, position, item, payloads)
 
-        if(payloads.contains("PAYLOAD_CONTENT")){
+        if (payloads.contains("PAYLOAD_CONTENT")) {
             (view.recyclerWorks.adapter as? ListContentCheckAdapter)?.submitList(item.listContent)
         }
     }
 
-    override fun bind(view: View, viewType: Int, position: Int, item: WorkDataEntity) {
-        view.tvTitle.text = item.name
+    override fun bind(view: View, viewType: Int, position: Int, item: ListWorkViewModel.WorkDataItemView) {
+        view.tvTitle.text = item.work.name
         view.rootView.setOnClickListener {
-            onClickDetail.invoke(item.id)
+            onClickDetail.invoke(item.work.id)
         }
         view.recyclerWorks.apply {
             contentsAdapter = ListContentCheckAdapter({
 
             }, { content ->
-                insertContentToWork.invoke(content, item,position)
+                insertContentToWork.invoke(content.content, item.work, position)
             })
             adapter = contentsAdapter
             setRecycledViewPool(viewPool)

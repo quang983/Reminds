@@ -20,14 +20,30 @@ class ListWorkViewModel @ViewModelInject constructor(
     private val insertWorkUseCase: InsertWorkUseCase
 ) : BaseViewModel() {
     private var isInsert: Boolean = false
-    val listWorkData: LiveData<List<WorkDataEntity>> = MutableLiveData()
+    private var idWorkFocus: Long = 0
+    val listWorkData: LiveData<List<WorkDataItemView>> = MutableLiveData()
 
     fun getListWork(idGroup: Long) {
         viewModelScope.launch(handler + Dispatchers.IO) {
             fetchWorksUseCase.invoke(FetchWorksUseCase.Param(idGroup)).collect { it ->
-                listWorkData.postValue(it.onEach {
-                    it.listContent.add(ContentDataEntity(if (!isInsert) 0 else System.currentTimeMillis(), "", it.id))
-                })
+                val listMap = it.map {
+                    WorkDataItemView(it, it.listContent.map { ContentDataItemView(it, false) }
+                            as ArrayList<ContentDataItemView>)
+                }.onEach {
+                    var isFocus = false
+                    if (it.work.id == idWorkFocus && isInsert) {
+                        isFocus = true
+                    }
+                    it.listContent.add(
+                        ContentDataItemView(
+                            ContentDataEntity(
+                                if (!isInsert) 0
+                                else System.currentTimeMillis(), "", it.work.id
+                            ), isFocus
+                        )
+                    )
+                }
+                listWorkData.postValue(listMap)
             }
         }
     }
@@ -35,6 +51,7 @@ class ListWorkViewModel @ViewModelInject constructor(
     fun insertContentToWork(content: ContentDataEntity, work: WorkDataEntity, workPosition: Int) {
         viewModelScope.launch(handler + Dispatchers.IO) {
             isInsert = if (content.name.isNotBlank()) {
+                idWorkFocus = content.idOwnerWork
                 insertContentUseCase.invoke(InsertContentUseCase.Param(content))
                 true
             } else {
@@ -49,11 +66,16 @@ class ListWorkViewModel @ViewModelInject constructor(
                 InsertWorkUseCase.Param(
                     WorkDataEntity(
                         System.currentTimeMillis(),
-                        name, listWorkData.value?.get(0)?.groupId ?: 0, arrayListOf()
+                        name, listWorkData.value?.get(0)?.work?.groupId ?: 0, arrayListOf()
                     )
                 )
             )
         }
     }
 
+    data class ContentDataItemView(var content: ContentDataEntity, var isFocus: Boolean)
+    data class WorkDataItemView(
+        val work: WorkDataEntity,
+        var listContent: ArrayList<ContentDataItemView>
+    )
 }

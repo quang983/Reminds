@@ -11,8 +11,8 @@ import com.example.reminds.common.BaseAdapter
 import com.example.reminds.ui.fragment.detail.ListWorkViewModel
 import com.example.reminds.utils.KeyboardUtils
 import com.example.reminds.utils.inflate
-import com.example.reminds.utils.setVisible
 import kotlinx.android.synthetic.main.item_content_check.view.*
+import java.util.*
 
 
 class ListContentCheckAdapter(
@@ -37,6 +37,8 @@ class ListContentCheckAdapter(
 
     }) {
     private var isChangeItem: Boolean = false
+    private var timer: Timer = Timer()
+    private val DELAY: Long = 2000
 
     override fun getItemViewType(position: Int): Int {
         return when (currentList[position].content.id) {
@@ -60,7 +62,6 @@ class ListContentCheckAdapter(
 
     override fun bind(view: View, viewType: Int, position: Int, item: ListWorkViewModel.ContentDataItemView) {
         if (viewType == TYPE_CHECK_ITEM) {
-            view.rootView.setVisible(!item.content.isChecked)
             view.tvContentCheck.setText(item.content.name)
             view.rootView.setOnClickListener {
                 onClickDetail.invoke(item.content.id)
@@ -94,10 +95,19 @@ class ListContentCheckAdapter(
             }
 
             view.rbChecked.setOnCheckedChangeListener { _, isChecked ->
+                timer.cancel()
+                timer = Timer()
+                item.content.isChecked = isChecked
                 if (isChecked) {
-                    view.tvContentCheck.isEnabled = false
                     view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.bg_gray))
-                    handlerCheckItem.invoke(isChecked, item.content)
+                    timer.schedule(
+                        object : TimerTask() {
+                            override fun run() {
+                                handlerCheckItem.invoke(isChecked, item.content)
+                            }
+                        },
+                        DELAY
+                    )
                 } else {
                     view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
                     handlerCheckItem.invoke(isChecked, item.content)
@@ -105,16 +115,18 @@ class ListContentCheckAdapter(
             }
         } else if (viewType == TYPE_ADD_ITEM) {
             view.rootView.setOnClickListener {
-                changeItemCheck(view, position)
+                changeItemCheck(position)
             }
         }
     }
 
-    private fun changeItemCheck(view: View, position: Int) {
-        isChangeItem = true
-        currentList[position].content.id = System.currentTimeMillis()
-        currentList[position].isFocus = true
-        notifyItemChanged(position)
+    private fun changeItemCheck(position: Int) {
+        if (position <= currentList.size - 1) {
+            isChangeItem = true
+            currentList[position].content.id = System.currentTimeMillis()
+            currentList[position].isFocus = true
+            notifyItemChanged(position)
+        }
     }
 
     companion object {

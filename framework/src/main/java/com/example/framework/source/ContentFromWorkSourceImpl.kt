@@ -9,8 +9,8 @@ import javax.inject.Inject
 class ContentFromWorkSourceImpl @Inject constructor(
     private val dao: LocalContentFromWorkDao
 ) : ContentFromWorkSource {
-    override suspend fun insert(data: ContentDataEntity) : Long {
-       return dao.insert(ContentFoWork(data.id, data.name, data.idOwnerWork))
+    override suspend fun insert(data: ContentDataEntity): Long {
+        return dao.insert(ContentFoWork(data.id, data.name, data.idOwnerWork, data.isChecked))
     }
 
     override suspend fun inserts(datas: List<ContentDataEntity>) {

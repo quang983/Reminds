@@ -25,11 +25,12 @@ class WorkFromTopicSourceImpl @Inject constructor(
                     it.workGroup.id,
                     it.workGroup.name,
                     it.workGroup.idOwnerGroup,
-                    it.listContent.map {
+                    it.listContent.filter { !it.isChecked }.map {
                         ContentDataEntity(
                             it.idContent,
                             it.name,
-                            it.idOwnerWork
+                            it.idOwnerWork,
+                            it.isChecked
                         )
                     } as ArrayList<ContentDataEntity>
                 )
@@ -39,14 +40,14 @@ class WorkFromTopicSourceImpl @Inject constructor(
 
     override suspend fun insert(data: WorkDataEntity): Long {
         return dao.insert(WorkFoTopic(data.id, data.name, data.groupId)).apply {
-            localContentFromWorkDao.inserts(*data.listContent.map { ContentFoWork(it.id, it.name, it.idOwnerWork) }.toTypedArray())
+            localContentFromWorkDao.inserts(*data.listContent.map { ContentFoWork(it.id, it.name, it.idOwnerWork,it.isChecked) }.toTypedArray())
         }
     }
 
     override suspend fun inserts(datas: List<WorkDataEntity>) {
         dao.inserts(*datas.map { WorkFoTopic(it.id, it.name, it.groupId) }.toTypedArray()).apply {
             datas.forEach { it ->
-                localContentFromWorkDao.inserts(*it.listContent.map { ContentFoWork(it.id, it.name, it.idOwnerWork) }.toTypedArray())
+                localContentFromWorkDao.inserts(*it.listContent.map { ContentFoWork(it.id, it.name, it.idOwnerWork,it.isChecked) }.toTypedArray())
             }
         }
     }

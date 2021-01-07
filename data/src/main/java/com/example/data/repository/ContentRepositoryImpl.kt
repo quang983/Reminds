@@ -9,7 +9,7 @@ class ContentRepositoryImpl @Inject constructor(
     private val source: ContentFromWorkSource
 ) : ContentRepository {
     override suspend fun insertData(data: ContentDataEntity) : Long{
-       return source.insert(ContentDataEntity(data.id, data.name, data.idOwnerWork))
+       return source.insert(ContentDataEntity(data.id, data.name, data.idOwnerWork,data.isChecked))
     }
 
     override suspend fun insertDatas(datas: List<ContentDataEntity>) {

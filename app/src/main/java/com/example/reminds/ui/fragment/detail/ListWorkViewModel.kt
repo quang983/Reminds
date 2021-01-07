@@ -11,8 +11,10 @@ import com.example.domain.usecase.db.workintopic.FetchWorksUseCase
 import com.example.domain.usecase.db.workintopic.InsertListWorkUseCase
 import com.example.domain.usecase.db.workintopic.InsertWorkUseCase
 import com.example.reminds.common.BaseViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class ListWorkViewModel @ViewModelInject constructor(
     private val fetchWorksUseCase: FetchWorksUseCase,
@@ -80,19 +82,9 @@ class ListWorkViewModel @ViewModelInject constructor(
         }
     }
 
-    fun handlerCheckItem(isChecked: Boolean, content: ContentDataEntity) {
-        viewModelScope.launch {
-            if (isChecked) {
-                launch {
-                    delay(1000L)
-                    content.isChecked = true
-                    insertContentUseCase.invoke(InsertContentUseCase.Param(content))
-                    this.cancel()
-                }
-            } else {
-                content.isChecked = false
-                insertContentUseCase.invoke(InsertContentUseCase.Param(content))
-            }
+    fun handlerCheckItem(content: ContentDataEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            insertContentUseCase.invoke(InsertContentUseCase.Param(content))
         }
     }
 

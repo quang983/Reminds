@@ -46,8 +46,8 @@ class ListWorkFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         val list = adapter.currentList.map { it ->
-            WorkDataEntity(it.work.id, it.work.name, it.work.groupId, it.listContent.filter { it.content.id != 0L || it.content.name.isNotBlank()}.map {
-                ContentDataEntity(it.content.id, it.content.name, it.content.idOwnerWork)
+            WorkDataEntity(it.work.id, it.work.name, it.work.groupId, it.listContent.filter { it.content.id != 0L || it.content.name.isNotBlank() }.map {
+                ContentDataEntity(it.content.id, it.content.name, it.content.idOwnerWork, it.content.isChecked)
             } as ArrayList<ContentDataEntity>)
         }
         viewModel.insertWorksObject(list)
@@ -84,8 +84,8 @@ class ListWorkFragment : Fragment() {
 
         }, { content, work, workPosition ->
             viewModel.insertContentToWork(content, work, workPosition)
-        },{ isChecked, item ->
-            viewModel.handlerCheckItem(isChecked,item)
+        }, { isChecked, item ->
+            viewModel.handlerCheckItem(item)
         }).apply {
             recyclerWorks.adapter = this
         }

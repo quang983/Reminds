@@ -12,6 +12,7 @@ import com.example.reminds.ui.fragment.detail.ListWorkViewModel
 import com.example.reminds.utils.KeyboardUtils
 import com.example.reminds.utils.inflate
 import kotlinx.android.synthetic.main.item_content_check.view.*
+import net.citigo.kiotviet.common.utils.extension.getLastOrNull
 import java.util.*
 
 
@@ -121,12 +122,10 @@ class ListContentCheckAdapter(
     }
 
     private fun changeItemCheck(position: Int) {
-        if (position <= currentList.size - 1) {
-            isChangeItem = true
-            currentList[position].content.id = System.currentTimeMillis()
-            currentList[position].isFocus = true
-            notifyItemChanged(position)
-        }
+        isChangeItem = true
+        currentList.getLastOrNull()?.content?.id = System.currentTimeMillis()
+        currentList.getLastOrNull()?.isFocus = true
+        notifyItemChanged(position)
     }
 
     companion object {

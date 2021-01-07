@@ -43,8 +43,12 @@ class WorkFromTopicSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun inserts(datas: WorkDataEntity) {
-        TODO("Not yet implemented")
+    override suspend fun inserts(datas: List<WorkDataEntity>) {
+        dao.inserts(*datas.map { WorkFoTopic(it.id, it.name, it.groupId) }.toTypedArray()).apply {
+            datas.forEach { it ->
+                localContentFromWorkDao.inserts(*it.listContent.map { ContentFoWork(it.id, it.name, it.idOwnerWork) }.toTypedArray())
+            }
+        }
     }
 
     override suspend fun update(datas: WorkDataEntity) {

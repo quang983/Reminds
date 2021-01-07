@@ -7,9 +7,9 @@ import javax.inject.Inject
 
 class InsertWorkUseCase @Inject constructor(private val workFromTopicRepository: WorkFromTopicRepository) :
     BaseUseCase<InsertWorkUseCase.Param, Long> {
-    class Param(val content: WorkDataEntity)
+    class Param(val work: WorkDataEntity)
 
     override suspend fun invoke(params: Param): Long {
-        return workFromTopicRepository.insertData(params.content)
+        return workFromTopicRepository.insertData(params.work)
     }
 }

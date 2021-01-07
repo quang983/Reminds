@@ -8,16 +8,17 @@ import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.WorkDataEntity
 import com.example.domain.usecase.db.content.InsertContentUseCase
 import com.example.domain.usecase.db.workintopic.FetchWorksUseCase
+import com.example.domain.usecase.db.workintopic.InsertListWorkUseCase
 import com.example.domain.usecase.db.workintopic.InsertWorkUseCase
 import com.example.reminds.common.BaseViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 class ListWorkViewModel @ViewModelInject constructor(
     private val fetchWorksUseCase: FetchWorksUseCase,
     private val insertContentUseCase: InsertContentUseCase,
-    private val insertWorkUseCase: InsertWorkUseCase
+    private val insertWorkUseCase: InsertWorkUseCase,
+    private val insertListWorkUseCase: InsertListWorkUseCase
 ) : BaseViewModel() {
     private var isInsert: Boolean = false
     private var idWorkFocus: Long = 0
@@ -26,7 +27,7 @@ class ListWorkViewModel @ViewModelInject constructor(
     fun getListWork(idGroup: Long) {
         viewModelScope.launch(handler + Dispatchers.IO) {
             fetchWorksUseCase.invoke(FetchWorksUseCase.Param(idGroup)).collect { it ->
-                val listMap = it.map {
+                val listMap = it.map { it ->
                     WorkDataItemView(it, it.listContent.map { ContentDataItemView(it, false) }
                             as ArrayList<ContentDataItemView>)
                 }.onEach {
@@ -60,6 +61,12 @@ class ListWorkViewModel @ViewModelInject constructor(
         }
     }
 
+    fun insertWorksObject(works: List<WorkDataEntity>) {
+        GlobalScope.launch(handler + Dispatchers.IO) {
+            insertListWorkUseCase.invoke(InsertListWorkUseCase.Param(works))
+        }
+    }
+
     fun insertWork(name: String) {
         viewModelScope.launch(handler + Dispatchers.IO) {
             insertWorkUseCase.invoke(
@@ -73,7 +80,24 @@ class ListWorkViewModel @ViewModelInject constructor(
         }
     }
 
+    fun handlerCheckItem(isChecked: Boolean, content: ContentDataEntity) {
+        viewModelScope.launch {
+            if (isChecked) {
+                launch {
+                    delay(1000L)
+                    content.isChecked = true
+                    insertContentUseCase.invoke(InsertContentUseCase.Param(content))
+                    this.cancel()
+                }
+            } else {
+                content.isChecked = false
+                insertContentUseCase.invoke(InsertContentUseCase.Param(content))
+            }
+        }
+    }
+
     data class ContentDataItemView(var content: ContentDataEntity, var isFocus: Boolean)
+
     data class WorkDataItemView(
         val work: WorkDataEntity,
         var listContent: ArrayList<ContentDataItemView>

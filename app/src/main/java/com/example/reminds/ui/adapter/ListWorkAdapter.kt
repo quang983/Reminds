@@ -15,7 +15,8 @@ import java.util.*
 
 class ListWorkAdapter(
     private val onClickDetail: (id: Long) -> Unit,
-    private val insertContentToWork: (content: ContentDataEntity, work: WorkDataEntity, workPosition: Int) -> Unit
+    private val insertContentToWork: (content: ContentDataEntity, work: WorkDataEntity, workPosition: Int) -> Unit,
+    private val handlerCheckItem: (isChecked: Boolean, item: ContentDataEntity) -> Unit
 ) :
     BaseAdapter<ListWorkViewModel.WorkDataItemView>(object : DiffUtil.ItemCallback<ListWorkViewModel.WorkDataItemView>() {
 
@@ -73,6 +74,8 @@ class ListWorkAdapter(
 
             }, { content ->
                 insertContentToWork.invoke(content.content, item.work, position)
+            }, { isChecked, item ->
+                handlerCheckItem.invoke(isChecked, item)
             })
             adapter = contentsAdapter
             setRecycledViewPool(viewPool)

@@ -13,8 +13,7 @@ class ContentFromWorkSourceImpl @Inject constructor(
        return dao.insert(ContentFoWork(data.id, data.name, data.idOwnerWork))
     }
 
-    override suspend fun inserts(datas: ContentDataEntity) {
-        TODO("Not yet implemented")
+    override suspend fun inserts(datas: List<ContentDataEntity>) {
     }
 
     override suspend fun update(datas: ContentDataEntity) {

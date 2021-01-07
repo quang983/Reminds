@@ -28,8 +28,7 @@ class TopicGroupSourceImpl @Inject constructor(
         return topicGroupDbId
     }
 
-    override suspend fun inserts(datas: TopicGroupEntity) {
-        TODO("Not yet implemented")
+    override suspend fun inserts(datas: List<TopicGroupEntity>) {
     }
 
     override suspend fun update(datas: TopicGroupEntity) {

@@ -17,14 +17,14 @@ class WorkFromTopicRepositoryImpl @Inject constructor(private val workFromTopicS
     }
 
     override suspend fun insertDatas(datas: List<WorkDataEntity>) {
-        TODO("Not yet implemented")
+        workFromTopicSource.inserts(datas)
     }
 
     override suspend fun updateDatas(datas: List<WorkDataEntity>) {
-        TODO("Not yet implemented")
+        workFromTopicSource.updates(datas)
     }
 
     override suspend fun deleteDatas(datas: List<WorkDataEntity>) {
-        TODO("Not yet implemented")
+        workFromTopicSource.deletes(datas)
     }
 }

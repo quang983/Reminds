@@ -8,6 +8,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.example.common.base.model.ContentDataEntity
+import com.example.common.base.model.WorkDataEntity
 import com.example.reminds.R
 import com.example.reminds.ui.adapter.ListWorkAdapter
 import com.example.reminds.utils.navigateUp
@@ -41,6 +43,16 @@ class ListWorkFragment : Fragment() {
         setupListener()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        val list = adapter.currentList.map { it ->
+            WorkDataEntity(it.work.id, it.work.name, it.work.groupId, it.listContent.filter { it.content.id != 0L || it.content.name.isNotBlank()}.map {
+                ContentDataEntity(it.content.id, it.content.name, it.content.idOwnerWork)
+            } as ArrayList<ContentDataEntity>)
+        }
+        viewModel.insertWorksObject(list)
+    }
+
     private fun setupListener() {
         extendedFab.setOnClickListener {
             showDialogInputWorkTopic()
@@ -72,6 +84,8 @@ class ListWorkFragment : Fragment() {
 
         }, { content, work, workPosition ->
             viewModel.insertContentToWork(content, work, workPosition)
+        },{ isChecked, item ->
+            viewModel.handlerCheckItem(isChecked,item)
         }).apply {
             recyclerWorks.adapter = this
         }
@@ -89,7 +103,7 @@ class ListWorkFragment : Fragment() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Title")
         val input = EditText(requireContext())
-        input.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        input.inputType = InputType.TYPE_CLASS_TEXT
         builder.setView(input)
         builder.setPositiveButton("OK") { _, _ ->
             val text = input.text.toString()

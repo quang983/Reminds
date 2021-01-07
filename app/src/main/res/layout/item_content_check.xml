@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RadioButton
+    <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/rbChecked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

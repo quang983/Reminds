@@ -12,6 +12,7 @@ import com.example.reminds.R
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 

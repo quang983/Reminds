@@ -22,8 +22,9 @@ class ListWorkViewModel @ViewModelInject constructor(
     private val insertWorkUseCase: InsertWorkUseCase,
     private val insertListWorkUseCase: InsertListWorkUseCase
 ) : BaseViewModel() {
-    private var isInsert: Boolean = false
+    private var isWorkChanged: Boolean = false
     private var idWorkFocus: Long = 0
+    private var mWorkPosition: Int = -1
     val listWorkData: LiveData<List<WorkDataItemView>> = MutableLiveData()
 
     fun getListWork(idGroup: Long) {
@@ -32,28 +33,33 @@ class ListWorkViewModel @ViewModelInject constructor(
                 val listMap = it.map { it ->
                     WorkDataItemView(it, it.listContent.map { ContentDataItemView(it, false) }
                             as ArrayList<ContentDataItemView>)
-                }.onEach {
-                    var isFocus = false
-                    if (it.work.id == idWorkFocus && isInsert) {
-                        isFocus = true
-                    }
-                    it.listContent.add(
-                        ContentDataItemView(
-                            ContentDataEntity(
-                                if (!isInsert) 0
-                                else System.currentTimeMillis(), "", it.work.id
-                            ), isFocus
+                }.apply {
+                    if (mWorkPosition != -1 && isWorkChanged) {
+                        this[mWorkPosition].listContent.add(
+                            ContentDataItemView(
+                                ContentDataEntity(
+                                    System.currentTimeMillis(), "", this[mWorkPosition].work.id
+                                ), true
+                            )
                         )
-                    )
+                    }
                 }
                 listWorkData.postValue(listMap)
+                setDefaultValue()
             }
         }
     }
 
+    private fun setDefaultValue() {
+        mWorkPosition = -1
+        isWorkChanged = false
+        idWorkFocus = 0
+    }
+
     fun insertContentToWork(content: ContentDataEntity, work: WorkDataEntity, workPosition: Int) {
         viewModelScope.launch(handler + Dispatchers.IO) {
-            isInsert = if (content.name.isNotBlank()) {
+            mWorkPosition = workPosition
+            isWorkChanged = if (content.name.isNotBlank()) {
                 idWorkFocus = content.idOwnerWork
                 insertContentUseCase.invoke(InsertContentUseCase.Param(content))
                 true
@@ -69,8 +75,8 @@ class ListWorkViewModel @ViewModelInject constructor(
         }
     }
 
-    fun insertWork(name: String) {
-        viewModelScope.launch(handler + Dispatchers.IO) {
+    fun insertWorkInCurrent(name: String) {
+        viewModelScope.launch(Dispatchers.IO) {
             insertWorkUseCase.invoke(
                 InsertWorkUseCase.Param(
                     WorkDataEntity(
@@ -82,8 +88,20 @@ class ListWorkViewModel @ViewModelInject constructor(
         }
     }
 
-    fun handlerCheckItem(content: ContentDataEntity) {
+    fun updateWork(work: WorkDataEntity, workPosition: Int) {
         viewModelScope.launch(Dispatchers.IO) {
+            mWorkPosition = workPosition
+            isWorkChanged = true
+            insertWorkUseCase.invoke(
+                InsertWorkUseCase.Param(
+                    work
+                )
+            )
+        }
+    }
+
+    fun handlerCheckItem(content: ContentDataEntity) {
+        viewModelScope.launch(handler + Dispatchers.IO) {
             insertContentUseCase.invoke(InsertContentUseCase.Param(content))
         }
     }
@@ -92,6 +110,6 @@ class ListWorkViewModel @ViewModelInject constructor(
 
     data class WorkDataItemView(
         val work: WorkDataEntity,
-        var listContent: ArrayList<ContentDataItemView>
+        var listContent: MutableList<ContentDataItemView>
     )
 }

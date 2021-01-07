@@ -108,4 +108,7 @@ dependencies {
 
     def auto_dp_version = '1.0.6'
     api "com.intuit.sdp:sdp-android:$auto_dp_version"
+
+
+    implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:3.0.0-RC2'
 }

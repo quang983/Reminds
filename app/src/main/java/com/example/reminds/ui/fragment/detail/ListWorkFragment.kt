@@ -15,6 +15,8 @@ import com.example.reminds.ui.adapter.ListWorkAdapter
 import com.example.reminds.utils.navigateUp
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_list_work.*
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 
 
 /**
@@ -46,10 +48,10 @@ class ListWorkFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         val list = adapter.currentList.map { it ->
-            WorkDataEntity(it.work.id, it.work.name, it.work.groupId, it.listContent.filter { it.content.id != 0L || it.content.name.isNotBlank() }.map {
+            WorkDataEntity(it.work.id, it.work.name, it.work.groupId, it.listContent.map {
                 ContentDataEntity(it.content.id, it.content.name, it.content.idOwnerWork, it.content.isChecked)
-            } as ArrayList<ContentDataEntity>)
-        }
+            }.filter { it.id != 0L && it.name.isNotEmpty() } as ArrayList<ContentDataEntity>)
+        }.filter { !it.listContent.isNullOrEmpty() }
         viewModel.insertWorksObject(list)
     }
 
@@ -80,11 +82,11 @@ class ListWorkFragment : Fragment() {
     }
 
     private fun setupUI() {
-        adapter = ListWorkAdapter({
-
+        adapter = ListWorkAdapter({ workPosition, work ->
+            viewModel.updateWork(work, workPosition)
         }, { content, work, workPosition ->
             viewModel.insertContentToWork(content, work, workPosition)
-        }, { isChecked, item ->
+        }, { _, item ->
             viewModel.handlerCheckItem(item)
         }).apply {
             recyclerWorks.adapter = this
@@ -107,11 +109,30 @@ class ListWorkFragment : Fragment() {
         builder.setView(input)
         builder.setPositiveButton("OK") { _, _ ->
             val text = input.text.toString()
-            viewModel.insertWork(text)
-
+            viewModel.insertWorkInCurrent(text)
         }
-        builder.setNegativeButton("Cancel") { dialog, which -> dialog.cancel() }
+        builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
 
         builder.show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        catchEventKeyboard()
+    }
+
+    private fun catchEventKeyboard() {
+        KeyboardVisibilityEvent.setEventListener(
+            requireActivity(),
+            viewLifecycleOwner,
+            object : KeyboardVisibilityEventListener {
+                override fun onVisibilityChanged(isOpen: Boolean) {
+                    when (isOpen) {
+                        false -> {
+
+                        }
+                    }
+                }
+            })
     }
 }

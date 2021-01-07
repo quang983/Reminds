@@ -38,14 +38,10 @@ class ListContentCheckAdapter(
 
     }) {
     private var isChangeItem: Boolean = false
-    private var timer: Timer = Timer()
-    private val DELAY: Long = 2000
+    private val DELAY: Long = 1000
 
     override fun getItemViewType(position: Int): Int {
-        return when (currentList[position].content.id) {
-            0L -> TYPE_ADD_ITEM
-            else -> TYPE_CHECK_ITEM
-        }
+        return TYPE_CHECK_ITEM
     }
 
     override fun createView(parent: ViewGroup, viewType: Int?): View {
@@ -67,21 +63,19 @@ class ListContentCheckAdapter(
             view.rootView.setOnClickListener {
                 onClickDetail.invoke(item.content.id)
             }
-            if (position == currentList.size - 1 && item.isFocus) {
+            if (position == currentList.size - 1 && item.isFocus && currentList.size - 1 >= 0) {
                 view.tvContentCheck.requestFocus()
             }
-            if (currentList.size == 1 || isChangeItem) {
+            if (isChangeItem) {
                 KeyboardUtils.showKeyboard(view.tvContentCheck, view.context)
                 isChangeItem = false
             }
             view.tvContentCheck.addTextChangedListener {
-                if (it.toString().isNotBlank()) {
-                    item.content.name = it.toString()
-                }
+                item.content.name = it.toString()
             }
 
             view.tvContentCheck.setOnEditorActionListener { v, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_DONE && view.tvContentCheck.text.toString().isNotBlank()) {
+                if (actionId == EditorInfo.IME_ACTION_DONE && view.tvContentCheck.text.toString().isNotEmpty()) {
                     insertItemClick(item.apply {
                         this.content.name = view.tvContentCheck.text.toString()
                     })
@@ -96,8 +90,7 @@ class ListContentCheckAdapter(
             }
 
             view.rbChecked.setOnCheckedChangeListener { _, isChecked ->
-                timer.cancel()
-                timer = Timer()
+                val timer = Timer()
                 item.content.isChecked = isChecked
                 if (isChecked) {
                     view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.bg_gray))
@@ -105,6 +98,7 @@ class ListContentCheckAdapter(
                         object : TimerTask() {
                             override fun run() {
                                 handlerCheckItem.invoke(isChecked, item.content)
+                                timer.cancel()
                             }
                         },
                         DELAY

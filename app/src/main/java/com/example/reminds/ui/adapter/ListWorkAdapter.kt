@@ -11,10 +11,11 @@ import com.example.reminds.common.BaseAdapter
 import com.example.reminds.ui.fragment.detail.ListWorkViewModel
 import com.example.reminds.utils.inflate
 import kotlinx.android.synthetic.main.item_work_group.view.*
+import net.citigo.kiotviet.common.utils.extension.getLastOrNull
 import java.util.*
 
 class ListWorkAdapter(
-    private val onClickDetail: (id: Long) -> Unit,
+    private val onClickDetail: (position: Int, work: WorkDataEntity) -> Unit,
     private val insertContentToWork: (content: ContentDataEntity, work: WorkDataEntity, workPosition: Int) -> Unit,
     private val handlerCheckItem: (isChecked: Boolean, item: ContentDataEntity) -> Unit
 ) :
@@ -67,11 +68,12 @@ class ListWorkAdapter(
     override fun bind(view: View, viewType: Int, position: Int, item: ListWorkViewModel.WorkDataItemView) {
         view.tvTitle.text = item.work.name
         view.rootView.setOnClickListener {
-            onClickDetail.invoke(item.work.id)
+            if(!item.work.listContent.getLastOrNull()?.name.isNullOrEmpty()){
+                onClickDetail.invoke(position, item.work)
+            }
         }
         view.recyclerWorks.apply {
             contentsAdapter = ListContentCheckAdapter({
-
             }, { content ->
                 insertContentToWork.invoke(content.content, item.work, position)
             }, { isChecked, item ->

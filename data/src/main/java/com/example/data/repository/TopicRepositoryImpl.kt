@@ -22,6 +22,10 @@ class TopicRepositoryImpl @Inject constructor(
     override suspend fun insertDatas(datas: List<TopicGroupEntity>) {
     }
 
+    override suspend fun updateData(data: TopicGroupEntity) {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun updateDatas(datas: List<TopicGroupEntity>) {
         TODO("Not yet implemented")
     }

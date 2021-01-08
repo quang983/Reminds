@@ -11,6 +11,10 @@ interface BaseDao<T> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun inserts(vararg datas: T)
 
+    @Transaction
+    @Update
+    suspend fun updateData(data: T)
+
     @Update
     suspend fun updateDatas(vararg datas: T)
 

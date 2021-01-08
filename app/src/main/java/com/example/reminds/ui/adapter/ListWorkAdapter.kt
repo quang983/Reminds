@@ -15,7 +15,7 @@ import net.citigo.kiotviet.common.utils.extension.getLastOrNull
 import java.util.*
 
 class ListWorkAdapter(
-    private val onClickDetail: (position: Int, work: WorkDataEntity) -> Unit,
+    private val onClickDetail: (content: ContentDataEntity?, position: Int, work: WorkDataEntity) -> Unit,
     private val insertContentToWork: (content: ContentDataEntity, work: WorkDataEntity, workPosition: Int) -> Unit,
     private val handlerCheckItem: (isChecked: Boolean, item: ContentDataEntity) -> Unit
 ) :
@@ -68,7 +68,7 @@ class ListWorkAdapter(
     override fun bind(view: View, viewType: Int, position: Int, item: ListWorkViewModel.WorkDataItemView) {
         view.tvTitle.text = item.work.name
         view.rootView.setOnClickListener {
-                onClickDetail.invoke(position, item.work)
+            onClickDetail.invoke(contentsAdapter.currentList.getLastOrNull()?.content, position, item.work)
         }
         view.recyclerWorks.apply {
             contentsAdapter = ListContentCheckAdapter({

@@ -15,6 +15,10 @@ class ContentRepositoryImpl @Inject constructor(
     override suspend fun insertDatas(datas: List<ContentDataEntity>) {
     }
 
+    override suspend fun updateData(data: ContentDataEntity) {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun updateDatas(datas: List<ContentDataEntity>) {
         source.updates(datas)
     }

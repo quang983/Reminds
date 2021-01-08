@@ -82,8 +82,12 @@ class ListWorkFragment : Fragment() {
     }
 
     private fun setupUI() {
-        adapter = ListWorkAdapter({ workPosition, work ->
-            viewModel.updateWork(work, workPosition)
+        adapter = ListWorkAdapter({ content, workPosition, work ->
+            if (content == null) {
+                viewModel.updateWork(work, workPosition)
+            } else {
+                viewModel.insertContentToWork(content, work, workPosition)
+            }
         }, { content, work, workPosition ->
             viewModel.insertContentToWork(content, work, workPosition)
         }, { _, item ->

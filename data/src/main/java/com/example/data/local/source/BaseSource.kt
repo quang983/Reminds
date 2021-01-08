@@ -5,7 +5,7 @@ interface BaseSource<T> {
 
     suspend fun inserts(datas: List<T>)
 
-    suspend fun update(datas: T)
+    suspend fun update(data: T)
 
     suspend fun updates(datas: List<T>)
 

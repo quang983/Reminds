@@ -20,6 +20,10 @@ class WorkFromTopicRepositoryImpl @Inject constructor(private val workFromTopicS
         workFromTopicSource.inserts(datas)
     }
 
+    override suspend fun updateData(data: WorkDataEntity) {
+        workFromTopicSource.update(data)
+    }
+
     override suspend fun updateDatas(datas: List<WorkDataEntity>) {
         workFromTopicSource.updates(datas)
     }

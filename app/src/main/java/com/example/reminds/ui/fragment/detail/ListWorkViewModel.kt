@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.WorkDataEntity
 import com.example.domain.usecase.db.content.InsertContentUseCase
+import com.example.domain.usecase.db.content.UpdateContentsUseCase
 import com.example.domain.usecase.db.workintopic.FetchWorksUseCase
 import com.example.domain.usecase.db.workintopic.InsertListWorkUseCase
 import com.example.domain.usecase.db.workintopic.InsertWorkUseCase
@@ -20,7 +21,8 @@ class ListWorkViewModel @ViewModelInject constructor(
     private val fetchWorksUseCase: FetchWorksUseCase,
     private val insertContentUseCase: InsertContentUseCase,
     private val insertWorkUseCase: InsertWorkUseCase,
-    private val insertListWorkUseCase: InsertListWorkUseCase
+    private val insertListWorkUseCase: InsertListWorkUseCase,
+    private val updateContentsUseCase: UpdateContentsUseCase
 ) : BaseViewModel() {
     private var isWorkChanged: Boolean = false
     private var idWorkFocus: Long = 0
@@ -92,11 +94,13 @@ class ListWorkViewModel @ViewModelInject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             mWorkPosition = workPosition
             isWorkChanged = true
-            insertWorkUseCase.invoke(
+            /*insertWorkUseCase.invoke(
                 InsertWorkUseCase.Param(
                     work
                 )
-            )
+            )*/
+            updateContentsUseCase.invoke(UpdateContentsUseCase.Param(work.listContent))
+
         }
     }
 

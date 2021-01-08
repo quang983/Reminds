@@ -68,9 +68,7 @@ class ListWorkAdapter(
     override fun bind(view: View, viewType: Int, position: Int, item: ListWorkViewModel.WorkDataItemView) {
         view.tvTitle.text = item.work.name
         view.rootView.setOnClickListener {
-            if(!item.work.listContent.getLastOrNull()?.name.isNullOrEmpty()){
                 onClickDetail.invoke(position, item.work)
-            }
         }
         view.recyclerWorks.apply {
             contentsAdapter = ListContentCheckAdapter({

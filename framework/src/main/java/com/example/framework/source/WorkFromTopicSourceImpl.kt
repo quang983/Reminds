@@ -10,6 +10,7 @@ import com.example.framework.local.database.model.ContentFoWork
 import com.example.framework.local.database.model.WorkFoTopic
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 

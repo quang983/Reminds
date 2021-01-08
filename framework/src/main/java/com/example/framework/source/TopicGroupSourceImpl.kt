@@ -24,7 +24,12 @@ class TopicGroupSourceImpl @Inject constructor(
     @Transaction
     override suspend fun insert(data: TopicGroupEntity): Long {
         val topicGroupDbId = dao.insert(TopicGroup().toData(data))
-        daoWork.insert(WorkFoTopic(id = System.currentTimeMillis(), name = "Cơ bản", idOwnerGroup = topicGroupDbId))
+        daoWork.insert(
+            WorkFoTopic(
+                id = System.currentTimeMillis(),
+                name = "Cơ bản", idOwnerGroup = topicGroupDbId, listContent = mutableListOf()
+            )
+        )
         return topicGroupDbId
     }
 

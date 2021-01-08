@@ -1,7 +1,6 @@
 package com.example.framework.local.database.model
 
 import androidx.room.Embedded
-import androidx.room.Entity
 import androidx.room.Relation
 
 data class TopicGroupWithWorks(
@@ -11,7 +10,7 @@ data class TopicGroupWithWorks(
         parentColumn = "idTopic",
         entityColumn = "idOwnerGroup"
     )
-    val listWork: List<WorkWithContent>
+    val listWork: List<WorkFoTopic>
 )
 
 data class WorkWithContent(

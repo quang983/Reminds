@@ -8,10 +8,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.WorkDataEntity
 import com.example.reminds.R
 import com.example.reminds.ui.adapter.ListWorkAdapter
+import com.example.reminds.ui.fragment.detail.ListWorkViewModel.Companion.TYPE_CHECK_ITEM
+import com.example.reminds.ui.fragment.detail.ListWorkViewModel.Companion.TYPE_OTHER
 import com.example.reminds.utils.navigateUp
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_list_work.*
@@ -47,12 +48,7 @@ class ListWorkFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        val list = adapter.currentList.map { it ->
-            WorkDataEntity(it.work.id, it.work.name, it.work.groupId, it.listContent.map {
-                ContentDataEntity(it.content.id, it.content.name, it.content.idOwnerWork, it.content.isChecked)
-            }.filter { it.id != 0L && it.name.isNotEmpty() } as ArrayList<ContentDataEntity>)
-        }.filter { !it.listContent.isNullOrEmpty() }
-        viewModel.insertWorksObject(list)
+        viewModel.insertWorksObject(getListWorkAdapter())
     }
 
     private fun setupListener() {
@@ -82,16 +78,12 @@ class ListWorkFragment : Fragment() {
     }
 
     private fun setupUI() {
-        adapter = ListWorkAdapter({ content, workPosition, work ->
-            if (content == null) {
-                viewModel.updateWork(work, workPosition)
-            } else {
-                viewModel.insertContentToWork(content, work, workPosition)
-            }
-        }, { content, work, workPosition ->
-            viewModel.insertContentToWork(content, work, workPosition)
-        }, { _, item ->
-            viewModel.handlerCheckItem(item)
+        adapter = ListWorkAdapter(onClickDetail = { workPosition ->
+            viewModel.updateListWork(getListWorkAdapter(), workPosition)
+        }, insertContentToWork = { work, workPosition ->
+            viewModel.updateWork(work, workPosition, TYPE_OTHER)
+        }, handlerCheckItem = { work, position ->
+            viewModel.updateWork(getListWorkAdapter()[position], position, TYPE_CHECK_ITEM)
         }).apply {
             recyclerWorks.adapter = this
         }
@@ -118,6 +110,10 @@ class ListWorkFragment : Fragment() {
         builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
 
         builder.show()
+    }
+
+    private fun getListWorkAdapter(): List<WorkDataEntity> {
+        return adapter.currentList
     }
 
     override fun onResume() {

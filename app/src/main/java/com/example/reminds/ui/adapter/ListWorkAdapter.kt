@@ -4,38 +4,35 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.WorkDataEntity
 import com.example.reminds.R
 import com.example.reminds.common.BaseAdapter
-import com.example.reminds.ui.fragment.detail.ListWorkViewModel
 import com.example.reminds.utils.inflate
 import kotlinx.android.synthetic.main.item_work_group.view.*
-import net.citigo.kiotviet.common.utils.extension.getLastOrNull
 import java.util.*
 
 class ListWorkAdapter(
-    private val onClickDetail: (content: ContentDataEntity?, position: Int, work: WorkDataEntity) -> Unit,
-    private val insertContentToWork: (content: ContentDataEntity, work: WorkDataEntity, workPosition: Int) -> Unit,
-    private val handlerCheckItem: (isChecked: Boolean, item: ContentDataEntity) -> Unit
+    private val onClickDetail: (position: Int) -> Unit,
+    private val insertContentToWork: (work: WorkDataEntity, workPosition: Int) -> Unit,
+    private val handlerCheckItem: (work: WorkDataEntity, workPosition: Int) -> Unit
 ) :
-    BaseAdapter<ListWorkViewModel.WorkDataItemView>(object : DiffUtil.ItemCallback<ListWorkViewModel.WorkDataItemView>() {
+    BaseAdapter<WorkDataEntity>(object : DiffUtil.ItemCallback<WorkDataEntity>() {
 
         override fun areItemsTheSame(
-            oldItem: ListWorkViewModel.WorkDataItemView,
-            newItem: ListWorkViewModel.WorkDataItemView
+            oldItem: WorkDataEntity,
+            newItem: WorkDataEntity
         ): Boolean {
-            return oldItem.work.id == newItem.work.id
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: ListWorkViewModel.WorkDataItemView,
-            newItem: ListWorkViewModel.WorkDataItemView
+            oldItem: WorkDataEntity,
+            newItem: WorkDataEntity
         ): Boolean {
             return oldItem == newItem
         }
 
-        override fun getChangePayload(oldItem: ListWorkViewModel.WorkDataItemView, newItem: ListWorkViewModel.WorkDataItemView): Any? {
+        override fun getChangePayload(oldItem: WorkDataEntity, newItem: WorkDataEntity): Any? {
             val payloads = ArrayList<Any>()
 
             if (oldItem.listContent != newItem.listContent) {
@@ -57,7 +54,7 @@ class ListWorkAdapter(
         return parent.inflate(R.layout.item_work_group)
     }
 
-    override fun bind(view: View, viewType: Int, position: Int, item: ListWorkViewModel.WorkDataItemView, payloads: MutableList<Any>) {
+    override fun bind(view: View, viewType: Int, position: Int, item: WorkDataEntity, payloads: MutableList<Any>) {
         super.bind(view, viewType, position, item, payloads)
 
         if (payloads.contains("PAYLOAD_CONTENT")) {
@@ -65,17 +62,23 @@ class ListWorkAdapter(
         }
     }
 
-    override fun bind(view: View, viewType: Int, position: Int, item: ListWorkViewModel.WorkDataItemView) {
-        view.tvTitle.text = item.work.name
+    override fun bind(view: View, viewType: Int, position: Int, item: WorkDataEntity) {
+        view.tvTitle.text = item.name
         view.rootView.setOnClickListener {
-            onClickDetail.invoke(contentsAdapter.currentList.getLastOrNull()?.content, position, item.work)
+            onClickDetail.invoke(position)
         }
         view.recyclerWorks.apply {
             contentsAdapter = ListContentCheckAdapter({
             }, { content ->
-                insertContentToWork.invoke(content.content, item.work, position)
-            }, { isChecked, item ->
-                handlerCheckItem.invoke(isChecked, item)
+                if (content.name.isNotEmpty()) {
+                    insertContentToWork.invoke(
+                        item.apply {
+                            listContent.add(content)
+                        }, position
+                    )
+                }
+            }, {
+                handlerCheckItem.invoke(item, position)
             })
             adapter = contentsAdapter
             setRecycledViewPool(viewPool)

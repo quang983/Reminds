@@ -6,26 +6,19 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.WorkDataEntity
-import com.example.domain.usecase.db.content.InsertContentUseCase
-import com.example.domain.usecase.db.content.UpdateContentsUseCase
-import com.example.domain.usecase.db.workintopic.FetchWorksUseCase
-import com.example.domain.usecase.db.workintopic.InsertListWorkUseCase
-import com.example.domain.usecase.db.workintopic.InsertWorkUseCase
-import com.example.domain.usecase.db.workintopic.UpdateWorkUseCase
+import com.example.domain.usecase.db.workintopic.*
 import com.example.reminds.common.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class ListWorkViewModel @ViewModelInject constructor(
     private val fetchWorksUseCase: FetchWorksUseCase,
-    private val insertContentUseCase: InsertContentUseCase,
     private val insertWorkUseCase: InsertWorkUseCase,
     private val insertListWorkUseCase: InsertListWorkUseCase,
-    private val updateContentsUseCase: UpdateContentsUseCase,
-    private val updateWorkUseCase: UpdateWorkUseCase
+    private val updateWorkUseCase: UpdateWorkUseCase,
+    private val updateListWorkUseCase: UpdateListWorkUseCase,
 ) : BaseViewModel() {
     private var isWorkChanged: Boolean = false
     private var idWorkFocus: Long = 0
@@ -33,24 +26,19 @@ class ListWorkViewModel @ViewModelInject constructor(
 
     private val idGroup: MediatorLiveData<Long> = MediatorLiveData<Long>()
 
-    private val listWorkDataLocal: LiveData<List<WorkDataItemView>> = idGroup.switchMapLiveData {
-        fetchWorksUseCase.invoke(FetchWorksUseCase.Param(idGroup.value ?: return@switchMapLiveData)).map { it ->
-            it.map { it ->
-                WorkDataItemView(it, it.listContent.map { ContentDataItemView(it, false) }
-                        as ArrayList<ContentDataItemView>)
+    private val listWorkDataLocal: LiveData<List<WorkDataEntity>> = idGroup.switchMapLiveData {
+        fetchWorksUseCase.invoke(FetchWorksUseCase.Param(idGroup.value ?: return@switchMapLiveData))
+            .collect {
+                emit(it)
             }
-        }.collect {
-            emit(it)
-        }
     }
 
     val listWorkData = listWorkDataLocal.switchMapLiveDataEmit {
         if (mWorkPosition != -1 && isWorkChanged) {
             it[mWorkPosition].listContent.add(
-                ContentDataItemView(
-                    ContentDataEntity(
-                        System.currentTimeMillis(), "", it[mWorkPosition].work.id
-                    ), true
+                ContentDataEntity(
+                    System.currentTimeMillis(), "",
+                    it[mWorkPosition].id, isChecked = false, isFocus = true
                 )
             )
             setDefaultValue()
@@ -68,23 +56,32 @@ class ListWorkViewModel @ViewModelInject constructor(
         idWorkFocus = 0
     }
 
-    fun insertContentToWork(content: ContentDataEntity, work: WorkDataEntity, workPosition: Int) {
-        viewModelScope.launch(handler + Dispatchers.IO) {
-            mWorkPosition = workPosition
-            isWorkChanged = if (content.name.isNotBlank()) {
-                idWorkFocus = content.idOwnerWork
-                insertContentUseCase.invoke(InsertContentUseCase.Param(content))
-                true
-            } else {
-                false
-            }
-        }
-    }
-
     fun insertWorksObject(works: List<WorkDataEntity>) {
         GlobalScope.launch(handler + Dispatchers.IO) {
             insertListWorkUseCase.invoke(InsertListWorkUseCase.Param(works))
         }
+    }
+
+    fun updateListWork(works: List<WorkDataEntity>, workPosition: Int) {
+        if (!works[workPosition].listContent.isNullOrEmpty()) {
+            viewModelScope.launch(handler + Dispatchers.IO) {
+                mWorkPosition = workPosition
+                isWorkChanged = true
+                val list = works.map { it ->
+                    WorkDataEntity(it.id, it.name, it.groupId,
+                        it.listContent.filter { it.name.isNotBlank() } as ArrayList<ContentDataEntity>)
+                }
+                updateListWorkUseCase.invoke(UpdateListWorkUseCase.Param(list))
+            }
+        } else {
+            insertNewContentToWork(workPosition)
+        }
+    }
+
+    fun insertNewContentToWork(workPosition: Int) {
+        mWorkPosition = workPosition
+        isWorkChanged = true
+        idGroup.postValue(idGroup.value)
     }
 
     fun insertWorkInCurrent(name: String) {
@@ -93,40 +90,25 @@ class ListWorkViewModel @ViewModelInject constructor(
                 InsertWorkUseCase.Param(
                     WorkDataEntity(
                         System.currentTimeMillis(),
-                        name, listWorkData.value?.get(0)?.work?.groupId ?: 0, arrayListOf()
+                        name, listWorkData.value?.get(0)?.groupId ?: 0, arrayListOf()
                     )
                 )
             )
         }
     }
 
-    fun updateWork(work: WorkDataEntity, workPosition: Int) {
+    fun updateWork(work: WorkDataEntity, workPosition: Int, type: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            mWorkPosition = workPosition
-            isWorkChanged = true
-            updateContentToWork(work, workPosition)
+            if (type != TYPE_CHECK_ITEM) {
+                mWorkPosition = workPosition
+                isWorkChanged = true
+            }
             updateWorkUseCase.invoke(UpdateWorkUseCase.Param(work))
         }
     }
 
-    suspend fun updateContentToWork(work: WorkDataEntity, workPosition: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            mWorkPosition = workPosition
-            isWorkChanged = true
-            updateContentsUseCase.invoke(UpdateContentsUseCase.Param(work.listContent))
-        }
+    companion object {
+        const val TYPE_CHECK_ITEM = 0
+        const val TYPE_OTHER = 1
     }
-
-    fun handlerCheckItem(content: ContentDataEntity) {
-        viewModelScope.launch(handler + Dispatchers.IO) {
-            insertContentUseCase.invoke(InsertContentUseCase.Param(content))
-        }
-    }
-
-    data class ContentDataItemView(var content: ContentDataEntity, var isFocus: Boolean)
-
-    data class WorkDataItemView(
-        val work: WorkDataEntity,
-        var listContent: MutableList<ContentDataItemView>
-    )
 }

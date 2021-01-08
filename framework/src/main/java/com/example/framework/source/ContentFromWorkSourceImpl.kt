@@ -4,7 +4,6 @@ import com.example.common.base.model.ContentDataEntity
 import com.example.data.local.source.ContentFromWorkSource
 import com.example.framework.local.database.dao.LocalContentFromWorkDao
 import com.example.framework.local.database.model.ContentFoWork
-import com.example.framework.local.database.model.TopicGroup
 import javax.inject.Inject
 
 class ContentFromWorkSourceImpl @Inject constructor(
@@ -17,7 +16,7 @@ class ContentFromWorkSourceImpl @Inject constructor(
     override suspend fun inserts(datas: List<ContentDataEntity>) {
     }
 
-    override suspend fun update(datas: ContentDataEntity) {
+    override suspend fun update(data: ContentDataEntity) {
     }
 
     override suspend fun updates(datas: List<ContentDataEntity>) {

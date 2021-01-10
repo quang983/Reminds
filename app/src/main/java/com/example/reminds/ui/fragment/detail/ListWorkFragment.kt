@@ -11,8 +11,6 @@ import androidx.navigation.fragment.navArgs
 import com.example.common.base.model.WorkDataEntity
 import com.example.reminds.R
 import com.example.reminds.ui.adapter.ListWorkAdapter
-import com.example.reminds.ui.fragment.detail.ListWorkViewModel.Companion.TYPE_CHECK_ITEM
-import com.example.reminds.ui.fragment.detail.ListWorkViewModel.Companion.TYPE_OTHER
 import com.example.reminds.utils.navigateUp
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_list_work.*
@@ -78,12 +76,12 @@ class ListWorkFragment : Fragment() {
     }
 
     private fun setupUI() {
-        adapter = ListWorkAdapter(onClickDetail = { workPosition ->
+        adapter = ListWorkAdapter(onClickTitle = { workPosition ->
             viewModel.updateListWork(getListWorkAdapter(), workPosition)
-        }, insertContentToWork = { work, workPosition ->
-            viewModel.updateWork(work, workPosition, TYPE_OTHER)
-        }, handlerCheckItem = { work, position ->
-            viewModel.updateWork(getListWorkAdapter()[position], position, TYPE_CHECK_ITEM)
+        }, insertContentToWork = { content, contentPosition, position ->
+            viewModel.updateAndAddContent(content, contentPosition, position)
+        }, handlerCheckItem = { content, contentPosition, position ->
+            viewModel.updateContent(content, contentPosition, position)
         }).apply {
             recyclerWorks.adapter = this
         }
@@ -92,14 +90,14 @@ class ListWorkFragment : Fragment() {
     private fun observeData() {
         with(viewModel) {
             listWorkData.observe(viewLifecycleOwner, {
-                adapter.submitList(it.toMutableList())
+                adapter.submitList(it)
             })
         }
     }
 
     private fun showDialogInputWorkTopic() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Title")
+        builder.setTitle("Thêm mới")
         val input = EditText(requireContext())
         input.inputType = InputType.TYPE_CLASS_TEXT
         builder.setView(input)

@@ -16,8 +16,8 @@ import java.util.*
 
 class ListContentCheckAdapter(
     private val onClickDetail: (id: Long) -> Unit,
-    private val insertItemClick: (item: ContentDataEntity) -> Unit,
-    private val handlerCheckItem: () -> Unit
+    private val insertItemClick: (item: ContentDataEntity, position: Int) -> Unit,
+    private val handlerCheckItem: (item: ContentDataEntity, position: Int) -> Unit
 ) : BaseAdapter<ContentDataEntity>(
 
     object : DiffUtil.ItemCallback<ContentDataEntity>() {
@@ -27,7 +27,8 @@ class ListContentCheckAdapter(
         }
 
         override fun areContentsTheSame(oldItem: ContentDataEntity, newItem: ContentDataEntity): Boolean {
-            return oldItem == newItem
+            return oldItem.isFocus == newItem.isFocus && oldItem.isChecked == newItem.isChecked && oldItem.name == newItem.name && oldItem.idOwnerWork == newItem.idOwnerWork
+
         }
 
         override fun getChangePayload(oldItem: ContentDataEntity, newItem: ContentDataEntity): Any? {
@@ -37,6 +38,8 @@ class ListContentCheckAdapter(
     }) {
     private var isChangeItem: Boolean = false
     private val DELAY: Long = 1000
+    val timer = Timer()
+
 
     override fun getItemViewType(position: Int): Int {
         return TYPE_CHECK_ITEM
@@ -58,6 +61,7 @@ class ListContentCheckAdapter(
     override fun bind(view: View, viewType: Int, position: Int, item: ContentDataEntity) {
         if (viewType == TYPE_CHECK_ITEM) {
             view.tvContentCheck.setText(item.name)
+            view.rbChecked.isChecked = item.isChecked
             view.rootView.setOnClickListener {
                 onClickDetail.invoke(item.id)
             }
@@ -76,35 +80,34 @@ class ListContentCheckAdapter(
                 if (actionId == EditorInfo.IME_ACTION_DONE && view.tvContentCheck.text.toString().isNotEmpty()) {
                     insertItemClick(item.apply {
                         this.name = view.tvContentCheck.text.toString()
-                    })
+                    }, position)
                     true
                 } else {
                     view.tvContentCheck.clearFocus()
                     insertItemClick(item.apply {
                         this.name = view.tvContentCheck.text.toString()
-                    })
+                    }, position)
                     false
                 }
             }
 
-            view.rbChecked.isChecked = item.isChecked
             view.rbChecked.setOnCheckedChangeListener { _, isChecked ->
-                val timer = Timer()
+                item.isChecked = isChecked
                 if (isChecked) {
                     view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.bg_gray))
-                    timer.schedule(
+                    handlerCheckItem.invoke(item, position)
+                    /*timer.schedule(
                         object : TimerTask() {
                             override fun run() {
                                 item.isChecked = isChecked
-                                handlerCheckItem.invoke()
-                                timer.cancel()
+                                handlerCheckItem.invoke(item, position)
                             }
                         },
                         DELAY
-                    )
+                    )*/
                 } else {
                     view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
-                    handlerCheckItem.invoke()
+                    handlerCheckItem.invoke(item, position)
                 }
             }
         }

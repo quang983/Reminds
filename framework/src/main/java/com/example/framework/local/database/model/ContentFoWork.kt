@@ -9,5 +9,5 @@ data class ContentFoWork(
     var idContent: Long = 0,
     var name: String = "",
     var idOwnerWork: Long = 0,
-    var isChecked: Boolean = false
+    var isChecked: Boolean
 )

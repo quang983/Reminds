@@ -23,7 +23,7 @@ class WorkFromTopicSourceImpl @Inject constructor(
                     it.id,
                     it.name,
                     it.idOwnerGroup,
-                    it.listContent.filter { !it.isChecked }.map {
+                    it.listContent.map {
                         ContentDataEntity(
                             it.idContent,
                             it.name,
@@ -51,7 +51,7 @@ class WorkFromTopicSourceImpl @Inject constructor(
     }
 
     override suspend fun inserts(datas: List<WorkDataEntity>) {
-        dao.inserts(*datas.map {
+        dao.inserts(*datas.map { it ->
             WorkFoTopic(
                 it.id, it.name, it.groupId,
                 it.listContent.map {

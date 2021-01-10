@@ -4,17 +4,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.WorkDataEntity
 import com.example.reminds.R
 import com.example.reminds.common.BaseAdapter
 import com.example.reminds.utils.inflate
 import kotlinx.android.synthetic.main.item_work_group.view.*
-import java.util.*
 
 class ListWorkAdapter(
-    private val onClickDetail: (position: Int) -> Unit,
-    private val insertContentToWork: (work: WorkDataEntity, workPosition: Int) -> Unit,
-    private val handlerCheckItem: (work: WorkDataEntity, workPosition: Int) -> Unit
+    private val onClickTitle: (position: Int) -> Unit,
+    private val insertContentToWork: (content: ContentDataEntity, contentPosition: Int, workPosition: Int) -> Unit,
+    private val handlerCheckItem: (content: ContentDataEntity, contentPosition: Int, workPosition: Int) -> Unit
 ) :
     BaseAdapter<WorkDataEntity>(object : DiffUtil.ItemCallback<WorkDataEntity>() {
 
@@ -29,7 +29,7 @@ class ListWorkAdapter(
             oldItem: WorkDataEntity,
             newItem: WorkDataEntity
         ): Boolean {
-            return oldItem == newItem
+            return oldItem.listContent == newItem.listContent && oldItem.name == newItem.name && oldItem.groupId == newItem.groupId
         }
 
         override fun getChangePayload(oldItem: WorkDataEntity, newItem: WorkDataEntity): Any? {
@@ -65,24 +65,22 @@ class ListWorkAdapter(
     override fun bind(view: View, viewType: Int, position: Int, item: WorkDataEntity) {
         view.tvTitle.text = item.name
         view.rootView.setOnClickListener {
-            onClickDetail.invoke(position)
+            onClickTitle.invoke(position)
         }
         view.recyclerWorks.apply {
             contentsAdapter = ListContentCheckAdapter({
-            }, { content ->
+            }, { content, index ->
                 if (content.name.isNotEmpty()) {
                     insertContentToWork.invoke(
-                        item.apply {
-                            listContent.add(content)
-                        }, position
+                        content, index, position
                     )
                 }
-            }, {
-                handlerCheckItem.invoke(item, position)
+            }, { content, index ->
+                handlerCheckItem.invoke(content, index, position)
             })
             adapter = contentsAdapter
             setRecycledViewPool(viewPool)
-            contentsAdapter.submitList(item.listContent)
+            contentsAdapter.submitList(item.listContent.toMutableList())
         }
     }
 }

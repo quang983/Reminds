@@ -2,12 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gallery"
-    android:paddingStart="@dimen/_16sdp"
-    android:id="@+id/layoutRoot"
-    android:paddingEnd="@dimen/_16sdp">
+    android:paddingStart="@dimen/_10sdp"
+    android:paddingEnd="@dimen/_10sdp">
 
     <TextView
         android:id="@+id/tvTitle"
@@ -16,7 +16,7 @@
         android:layout_marginTop="@dimen/_16sdp"
         android:text="@string/title_home"
         android:textColor="@color/black"
-        android:textSize="@dimen/_20sdp"
+        android:textSize="@dimen/_18sdp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,8 +25,9 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_6sdp"
         android:layout_marginTop="@dimen/_6sdp"
-        app:cardCornerRadius="@dimen/_12sdp"
+        app:cardCornerRadius="@dimen/_6sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitle">
 
@@ -41,12 +42,13 @@
             tools:listitem="@layout/item_topic" />
     </androidx.cardview.widget.CardView>
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnNewTopic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_24sdp"
-        android:text="Tạo mới"
+        android:src="@drawable/ic_plus"
+        android:text="@string/title_create"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

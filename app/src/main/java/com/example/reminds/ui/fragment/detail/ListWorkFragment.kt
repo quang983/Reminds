@@ -82,6 +82,8 @@ class ListWorkFragment : Fragment() {
             viewModel.updateAndAddContent(content, contentPosition, position)
         }, handlerCheckItem = { content, position ->
             viewModel.handlerCheckItem(content, position)
+        },{ content, position ->
+            viewModel.updateNameContent(content, position)
         }).apply {
             recyclerWorks.adapter = this
         }

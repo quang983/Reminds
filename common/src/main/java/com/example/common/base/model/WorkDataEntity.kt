@@ -4,7 +4,7 @@ import androidx.room.Entity
 
 @Entity
 data class WorkDataEntity(
-    val id: Long,
+    var id: Long,
     val name: String,
     val groupId: Long,
     var listContent: MutableList<ContentDataEntity>,
@@ -15,8 +15,9 @@ data class WorkDataEntity(
     )
 
     fun copyAndClearFocus() = WorkDataEntity(
-        id, name, groupId, listContent.filter { it.name.isNotEmpty() }.map { it.copyAndClearFocus() } as MutableList<ContentDataEntity>,
-        listContentDone.map { it.copyAndClearFocus() } as MutableList<ContentDataEntity>
+        id, name, groupId,
+        listContent.filter { it.name.isNotEmpty() }.map { it.copy() } as MutableList<ContentDataEntity>,
+        listContentDone.map { it.copy() } as MutableList<ContentDataEntity>
     )
 
     override fun equals(other: Any?): Boolean {

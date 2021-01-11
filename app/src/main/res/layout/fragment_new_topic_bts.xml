@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -6,7 +7,7 @@
     android:paddingStart="@dimen/_16sdp"
     android:paddingTop="@dimen/_16sdp"
     android:paddingEnd="@dimen/_16sdp"
-    android:paddingBottom="@dimen/_86sdp">
+    android:paddingBottom="@dimen/_16sdp">
 
     <TextView
         android:id="@+id/btnBack"
@@ -49,7 +50,14 @@
         android:id="@+id/btnDatePicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Chọn khoảng ngày"
+        android:layout_marginStart="@dimen/_26sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_26sdp"
+        android:drawableStart="@drawable/ic_calendar"
+        android:text="@string/select_date_range"
         android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edtTopic" />
 </androidx.constraintlayout.widget.ConstraintLayout>

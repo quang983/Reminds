@@ -9,6 +9,7 @@
         android:id="@+id/FirstFragment"
         android:name="com.example.reminds.ui.fragment.home.HomeFragment"
         android:label="@string/first_fragment_label"
+        android:transitionName="@string/transaction_topic_to_detail"
         tools:layout="@layout/fragment_home">
 
         <action

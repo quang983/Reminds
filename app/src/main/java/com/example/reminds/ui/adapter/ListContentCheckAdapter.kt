@@ -17,7 +17,8 @@ import java.util.*
 class ListContentCheckAdapter(
     private val onClickDetail: (id: Long) -> Unit,
     private val insertItemClick: (item: ContentDataEntity, position: Int) -> Unit,
-    private val handlerCheckItem: (item: ContentDataEntity) -> Unit
+    private val handlerCheckItem: (item: ContentDataEntity) -> Unit,
+    private val updateNameContent: (item: ContentDataEntity) -> Unit,
 ) : BaseAdapter<ContentDataEntity>(
 
     object : DiffUtil.ItemCallback<ContentDataEntity>() {
@@ -83,7 +84,6 @@ class ListContentCheckAdapter(
     override fun bind(view: View, viewType: Int, position: Int, item: ContentDataEntity) {
         if (viewType == TYPE_CHECK_ITEM) {
             view.tvContentCheck.setText(item.name)
-            view.rbChecked.isChecked = false
             view.rootView.setOnClickListener {
                 onClickDetail.invoke(item.id)
             }
@@ -96,6 +96,7 @@ class ListContentCheckAdapter(
             }
             view.tvContentCheck.addTextChangedListener {
                 item.name = it.toString()
+                updateNameContent(item)
             }
 
             view.tvContentCheck.setOnFocusChangeListener { v, hasFocus ->
@@ -118,7 +119,7 @@ class ListContentCheckAdapter(
                     false
                 }
             }
-
+            view.rbChecked.setOnCheckedChangeListener(null)
             view.rbChecked.setOnCheckedChangeListener { _, isChecked ->
                 item.isFocus = view.tvContentCheck.isFocusable
                 if (isChecked && view.tvContentCheck.text.toString().isNotEmpty()) {
@@ -135,9 +136,10 @@ class ListContentCheckAdapter(
                     )*/
                 } else {
                     view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
-                    handlerCheckItem.invoke(item)
+//                    handlerCheckItem.invoke(item)
                 }
             }
+            view.rbChecked.isChecked = false
         }
     }
 

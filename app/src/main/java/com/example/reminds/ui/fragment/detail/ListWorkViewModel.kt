@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import net.citigo.kiotviet.common.utils.extension.getLastOrNull
 
 class ListWorkViewModel @ViewModelInject constructor(
     private val fetchWorksUseCase: FetchWorksUseCase,
@@ -60,13 +61,15 @@ class ListWorkViewModel @ViewModelInject constructor(
     }
 
     private fun addNewContentToListWork(wPosition: Int) {
-        listWorkViewModel[wPosition].listContent.removeAll { it.id == 0L }
-        listWorkViewModel[wPosition].listContent.add(
-            ContentDataEntity(
-                0, "",
-                listWorkViewModel[wPosition].id, isFocus = true
-            )
+        if (listWorkViewModel[wPosition].listContent.getLastOrNull() == null ||
+            listWorkViewModel[wPosition].listContent.getLastOrNull()?.name?.isNotBlank() != false
         )
+            listWorkViewModel[wPosition].listContent.add(
+                ContentDataEntity(
+                    System.currentTimeMillis(), "",
+                    listWorkViewModel[wPosition].id, isFocus = true
+                )
+            )
     }
 
     fun insertWorksObject(works: List<WorkDataEntity>) {
@@ -84,6 +87,15 @@ class ListWorkViewModel @ViewModelInject constructor(
             workPosition = wPosition
             updateListWorkUseCase.invoke(UpdateListWorkUseCase.Param(list))
         }
+
+    fun updateNameContent(content: ContentDataEntity, workPosition: Int) {
+        listWorkViewModel[workPosition].listContent.forEachIndexed { _, contentDataEntity ->
+            if (content.id == contentDataEntity.id) {
+                contentDataEntity.name = content.name
+                return@forEachIndexed
+            }
+        }
+    }
 
     fun handlerCheckItem(content: ContentDataEntity, workPosition: Int) {
         viewModelScope.launch(handler + Dispatchers.IO) {

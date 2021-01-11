@@ -14,7 +14,8 @@ import kotlinx.android.synthetic.main.item_work_group.view.*
 class ListWorkAdapter(
     private val onClickTitle: (position: Int) -> Unit,
     private val insertContentToWork: (content: ContentDataEntity, contentPosition: Int, workPosition: Int) -> Unit,
-    private val handlerCheckItem: (content: ContentDataEntity, workPosition: Int) -> Unit
+    private val handlerCheckItem: (content: ContentDataEntity, workPosition: Int) -> Unit,
+    private val updateNameContent: (content: ContentDataEntity, workPosition: Int) -> Unit
 ) :
     BaseAdapter<WorkDataEntity>(object : DiffUtil.ItemCallback<WorkDataEntity>() {
 
@@ -86,6 +87,8 @@ class ListWorkAdapter(
                 }
             }, { content ->
                 handlerCheckItem.invoke(content, position)
+            }, { content ->
+                updateNameContent.invoke(content, position)
             })
             adapter = contentsAdapter
             setRecycledViewPool(viewPool)

@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/_8sdp"
-    android:background="?android:attr/selectableItemBackground"
-    android:layout_height="wrap_content">
+    android:background="?android:attr/selectableItemBackground">
 
     <ImageView
         android:id="@+id/imgTopic"
         android:layout_width="@dimen/_32sdp"
         android:layout_height="@dimen/_32sdp"
         android:padding="@dimen/_5sdp"
-        android:src="@drawable/ic_calendar"
+        android:src="@drawable/ic_reminders"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,16 +20,27 @@
         android:id="@+id/tvContent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/_6sdp"
-        android:paddingEnd="@dimen/_6sdp"
-        android:textSize="@dimen/_14sdp"
+        android:padding="@dimen/_6sdp"
         android:textColor="@color/black"
+        android:textSize="@dimen/_14sdp"
         app:layout_constraintBottom_toBottomOf="@id/imgTopic"
         app:layout_constraintStart_toEndOf="@id/imgTopic"
         app:layout_constraintTop_toTopOf="@id/imgTopic"
         tools:text="Day la de muc" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/ic_chevron_right_24px"
+        android:drawableTint="@color/bg_gray"
+        android:padding="@dimen/_6sdp"
+        android:text="10"
+        android:textSize="@dimen/_14sdp"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvContent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <View
+        android:id="@+id/viewDivider"
         android:layout_width="0dp"
         android:layout_height="0.5dp"
         android:layout_marginTop="@dimen/_8sdp"

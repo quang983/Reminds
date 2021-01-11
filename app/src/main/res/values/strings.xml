@@ -13,5 +13,8 @@
     <string name="title_home">Danh sách của tôi</string>
     <string name="search">search</string>
     <string name="favorite">favorite</string>
+    <string name="title_create">Tạo mới</string>
+    <string name="transaction_topic_to_detail">topic to detail</string>
+    <string name="select_date_range">Chọn khoảng ngày</string>
 
 </resources>

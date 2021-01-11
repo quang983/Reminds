@@ -7,9 +7,12 @@ import com.example.framework.local.database.convert.DataConverter
 
 @Entity
 class WorkFoTopic(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
     val name: String,
     val idOwnerGroup: Long,
     @TypeConverters(DataConverter::class)
-    val listContent: MutableList<ContentFoWork>
+    val listContent: MutableList<ContentFoWork>,
+    @TypeConverters(DataConverter::class)
+    val listContentDone: MutableList<ContentFoWork>
 )

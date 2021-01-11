@@ -7,10 +7,17 @@ data class WorkDataEntity(
     val id: Long,
     val name: String,
     val groupId: Long,
-    var listContent: List<ContentDataEntity>
+    var listContent: MutableList<ContentDataEntity>,
+    var listContentDone: MutableList<ContentDataEntity>
 ) {
+    fun copy() = WorkDataEntity(
+        id, name, groupId, listContent.map { it.copy() } as MutableList<ContentDataEntity>, listContentDone.map { it.copy() } as MutableList<ContentDataEntity>
+    )
 
-    fun clone(): WorkDataEntity = WorkDataEntity(id, name, groupId, listContent.map { it.clone() })
+    fun copyAndClearFocus() = WorkDataEntity(
+        id, name, groupId, listContent.filter { it.name.isNotEmpty() }.map { it.copyAndClearFocus() } as MutableList<ContentDataEntity>,
+        listContentDone.map { it.copyAndClearFocus() } as MutableList<ContentDataEntity>
+    )
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -19,12 +26,10 @@ data class WorkDataEntity(
         other as WorkDataEntity
 
         if (id != other.id) return false
-
         return true
     }
 
     override fun hashCode(): Int {
-        var result = id.hashCode()
-        return result
+        return id.hashCode()
     }
 }

@@ -1,17 +1,15 @@
 package com.example.common.base.model
 
-import androidx.room.Entity
 
-@Entity
 data class ContentDataEntity(
     var id: Long,
     var name: String,
     var idOwnerWork: Long,
-    var isChecked: Boolean = false,
     var isFocus: Boolean = false
 ) {
+    fun copy() = ContentDataEntity(id, name, idOwnerWork, isFocus)
 
-    fun clone():ContentDataEntity = ContentDataEntity(id, name, idOwnerWork, isChecked, isFocus)
+    fun copyAndClearFocus() = ContentDataEntity(id, name, idOwnerWork, false)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

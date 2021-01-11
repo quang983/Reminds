@@ -5,4 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface WorkFromTopicSource :BaseSource<WorkDataEntity>{
     suspend fun fetchAll(idGroup: Long): Flow<List<WorkDataEntity>>
+
+    suspend fun fetchAllIncludeChecked(idGroup: Long): Flow<List<WorkDataEntity>>
 }

@@ -80,8 +80,8 @@ class ListWorkFragment : Fragment() {
             viewModel.updateListWork(getListWorkAdapter(), workPosition)
         }, insertContentToWork = { content, contentPosition, position ->
             viewModel.updateAndAddContent(content, contentPosition, position)
-        }, handlerCheckItem = { content, contentPosition, position ->
-            viewModel.updateContent(content, contentPosition, position)
+        }, handlerCheckItem = { content, position ->
+            viewModel.handlerCheckItem(content, position)
         }).apply {
             recyclerWorks.adapter = this
         }

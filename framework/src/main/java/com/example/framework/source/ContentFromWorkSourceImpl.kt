@@ -10,7 +10,7 @@ class ContentFromWorkSourceImpl @Inject constructor(
     private val dao: LocalContentFromWorkDao
 ) : ContentFromWorkSource {
     override suspend fun insert(data: ContentDataEntity): Long {
-        return dao.insert(ContentFoWork(data.id, data.name, data.idOwnerWork, data.isChecked))
+        return dao.insert(ContentFoWork(data.id, data.name, data.idOwnerWork))
     }
 
     override suspend fun inserts(datas: List<ContentDataEntity>) {
@@ -20,7 +20,7 @@ class ContentFromWorkSourceImpl @Inject constructor(
     }
 
     override suspend fun updates(datas: List<ContentDataEntity>) {
-        dao.updateDatas(*datas.map { ContentFoWork(it.id, it.name, it.idOwnerWork, it.isChecked) }.toTypedArray())
+        dao.updateDatas(*datas.map { ContentFoWork(it.id, it.name, it.idOwnerWork) }.toTypedArray())
     }
 
     override suspend fun delete(datas: ContentDataEntity) {

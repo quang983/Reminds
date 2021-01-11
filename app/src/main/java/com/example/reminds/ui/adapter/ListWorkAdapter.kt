@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.item_work_group.view.*
 class ListWorkAdapter(
     private val onClickTitle: (position: Int) -> Unit,
     private val insertContentToWork: (content: ContentDataEntity, contentPosition: Int, workPosition: Int) -> Unit,
-    private val handlerCheckItem: (content: ContentDataEntity, contentPosition: Int, workPosition: Int) -> Unit
+    private val handlerCheckItem: (content: ContentDataEntity, workPosition: Int) -> Unit
 ) :
     BaseAdapter<WorkDataEntity>(object : DiffUtil.ItemCallback<WorkDataEntity>() {
 
@@ -38,10 +38,10 @@ class ListWorkAdapter(
             if (oldItem.listContent != newItem.listContent) {
                 payloads.add(PAYLOAD_CONTENT)
             }
-            if(oldItem.name != newItem.name){
+            if (oldItem.name != newItem.name) {
                 payloads.add(PAYLOAD_NAME)
             }
-            if(oldItem.groupId != newItem.groupId){
+            if (oldItem.groupId != newItem.groupId) {
                 payloads.add(PAYLOAD_GROUP_ID)
             }
 
@@ -84,8 +84,8 @@ class ListWorkAdapter(
                         content, index, position
                     )
                 }
-            }, { content, index ->
-                handlerCheckItem.invoke(content, index, position)
+            }, { content ->
+                handlerCheckItem.invoke(content, position)
             })
             adapter = contentsAdapter
             setRecycledViewPool(viewPool)
@@ -93,7 +93,7 @@ class ListWorkAdapter(
         }
     }
 
-    companion object{
+    companion object {
         const val PAYLOAD_CONTENT = "PAYLOAD_CONTENT"
         const val PAYLOAD_NAME = "PAYLOAD_NAME"
         const val PAYLOAD_GROUP_ID = "PAYLOAD_GROUP_ID"

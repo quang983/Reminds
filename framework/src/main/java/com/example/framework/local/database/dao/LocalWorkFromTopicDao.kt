@@ -6,7 +6,6 @@ import androidx.room.Transaction
 import com.example.framework.local.database.base.BaseDao
 import com.example.framework.local.database.model.TopicGroupWithWorks
 import com.example.framework.local.database.model.WorkFoTopic
-import com.example.framework.local.database.model.WorkWithContent
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -17,4 +16,8 @@ interface LocalWorkFromTopicDao : BaseDao<WorkFoTopic> {
 
     @Query("SELECT * FROM WorkFoTopic")
     fun fetchWork(): List<WorkFoTopic>
+
+    @Query("SELECT * FROM WorkFoTopic where id=:id")
+    fun findById(id: Long): List<WorkFoTopic>
+
 }

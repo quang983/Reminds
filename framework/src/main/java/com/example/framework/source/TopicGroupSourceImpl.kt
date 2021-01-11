@@ -27,7 +27,10 @@ class TopicGroupSourceImpl @Inject constructor(
         daoWork.insert(
             WorkFoTopic(
                 id = System.currentTimeMillis(),
-                name = "Cơ bản", idOwnerGroup = topicGroupDbId, listContent = mutableListOf()
+                name = "Cơ bản",
+                idOwnerGroup = topicGroupDbId,
+                listContent = mutableListOf(),
+                listContentDone = mutableListOf()
             )
         )
         return topicGroupDbId

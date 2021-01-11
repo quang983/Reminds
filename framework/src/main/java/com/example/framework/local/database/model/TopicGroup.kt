@@ -8,7 +8,9 @@ import com.example.common.base.model.TopicGroupEntity
 @Entity
 data class TopicGroup(
     @PrimaryKey(autoGenerate = true) var idTopic: Long = 0,
-    var name: String = ""
+    var name: String = "",
+    var startDate: Long? = null,
+    var endDate: Long? = null
 ) : BaseDataMapper<TopicGroup, TopicGroupEntity> {
 
     override fun toData(entity: TopicGroupEntity): TopicGroup {

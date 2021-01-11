@@ -27,8 +27,40 @@ class WorkFromTopicSourceImpl @Inject constructor(
                         ContentDataEntity(
                             it.idContent,
                             it.name,
-                            it.idOwnerWork,
-                            it.isChecked
+                            it.idOwnerWork
+                        )
+                    } as ArrayList<ContentDataEntity>,
+                    it.listContentDone.map {
+                        ContentDataEntity(
+                            it.idContent,
+                            it.name,
+                            it.idOwnerWork
+                        )
+                    } as ArrayList<ContentDataEntity>
+                )
+            }
+        }.conflate()
+    }
+
+    override suspend fun fetchAllIncludeChecked(idGroup: Long): Flow<List<WorkDataEntity>> {
+        return dao.fetchWorkFromTopicData(idGroup).distinctUntilChanged().map { it ->
+            it.listWork.map { it ->
+                WorkDataEntity(
+                    it.id,
+                    it.name,
+                    it.idOwnerGroup,
+                    it.listContent.map {
+                        ContentDataEntity(
+                            it.idContent,
+                            it.name,
+                            it.idOwnerWork
+                        )
+                    } as ArrayList<ContentDataEntity>,
+                    it.listContentDone.map {
+                        ContentDataEntity(
+                            it.idContent,
+                            it.name,
+                            it.idOwnerWork
                         )
                     } as ArrayList<ContentDataEntity>
                 )
@@ -43,7 +75,11 @@ class WorkFromTopicSourceImpl @Inject constructor(
                 data.listContent.map {
                     ContentFoWork(
                         it.id, it.name, it.idOwnerWork,
-                        it.isChecked
+                    )
+                }.toMutableList(),
+                data.listContentDone.map {
+                    ContentFoWork(
+                        it.id, it.name, it.idOwnerWork,
                     )
                 }.toMutableList()
             )
@@ -56,8 +92,12 @@ class WorkFromTopicSourceImpl @Inject constructor(
                 it.id, it.name, it.groupId,
                 it.listContent.map {
                     ContentFoWork(
-                        it.id, it.name, it.idOwnerWork,
-                        it.isChecked
+                        it.id, it.name, it.idOwnerWork
+                    )
+                }.toMutableList(),
+                it.listContentDone.map {
+                    ContentFoWork(
+                        it.id, it.name, it.idOwnerWork
                     )
                 }.toMutableList()
             )
@@ -71,8 +111,12 @@ class WorkFromTopicSourceImpl @Inject constructor(
                 data.id, data.name, data.groupId,
                 data.listContent.map {
                     ContentFoWork(
-                        it.id, it.name, it.idOwnerWork,
-                        it.isChecked
+                        it.id, it.name, it.idOwnerWork
+                    )
+                }.toMutableList(),
+                data.listContentDone.map {
+                    ContentFoWork(
+                        it.id, it.name, it.idOwnerWork
                     )
                 }.toMutableList()
             )
@@ -85,8 +129,12 @@ class WorkFromTopicSourceImpl @Inject constructor(
                 it.id, it.name, it.groupId,
                 it.listContent.map {
                     ContentFoWork(
-                        it.id, it.name, it.idOwnerWork,
-                        it.isChecked
+                        it.id, it.name, it.idOwnerWork
+                    )
+                }.toMutableList(),
+                it.listContentDone.map {
+                    ContentFoWork(
+                        it.id, it.name, it.idOwnerWork
                     )
                 }.toMutableList()
             )

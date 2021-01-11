@@ -32,7 +32,26 @@ class ListContentCheckAdapter(
         }
 
         override fun getChangePayload(oldItem: ContentDataEntity, newItem: ContentDataEntity): Any? {
-            return super.getChangePayload(oldItem, newItem)
+            val payloads = ArrayList<Any>()
+
+            if (oldItem.isChecked != newItem.isChecked) {
+                payloads.add(PAYLOAD_CHECKED)
+            }
+            if (oldItem.name != newItem.name) {
+                payloads.add(PAYLOAD_NAME)
+            }
+            if (oldItem.idOwnerWork != newItem.idOwnerWork) {
+                payloads.add(PAYLOAD_ID_WORK)
+            }
+            if (oldItem.isFocus != newItem.isFocus) {
+                payloads.add(PAYLOAD_FOCUS)
+            }
+
+            return if (payloads.size > 0) {
+                payloads
+            } else {
+                super.getChangePayload(oldItem, newItem)
+            }
         }
 
     }) {
@@ -55,7 +74,17 @@ class ListContentCheckAdapter(
 
     override fun bind(view: View, viewType: Int, position: Int, item: ContentDataEntity, payloads: MutableList<Any>) {
         super.bind(view, viewType, position, item, payloads)
-
+        if (payloads.contains(PAYLOAD_CHECKED)) {
+            view.rbChecked.isChecked = item.isChecked
+        }
+        if (payloads.contains(PAYLOAD_FOCUS)) {
+            if (position == currentList.size - 1 && item.isFocus && currentList.size - 1 >= 0) {
+                view.tvContentCheck.requestFocus()
+            }
+        }
+        if (payloads.contains(PAYLOAD_NAME)) {
+            view.tvContentCheck.setText(item.name)
+        }
     }
 
     override fun bind(view: View, viewType: Int, position: Int, item: ContentDataEntity) {
@@ -80,12 +109,14 @@ class ListContentCheckAdapter(
                 if (actionId == EditorInfo.IME_ACTION_DONE && view.tvContentCheck.text.toString().isNotEmpty()) {
                     insertItemClick(item.apply {
                         this.name = view.tvContentCheck.text.toString()
+                        this.isFocus = false
                     }, position)
                     true
                 } else {
                     view.tvContentCheck.clearFocus()
                     insertItemClick(item.apply {
                         this.name = view.tvContentCheck.text.toString()
+                        this.isFocus = false
                     }, position)
                     false
                 }
@@ -93,7 +124,8 @@ class ListContentCheckAdapter(
 
             view.rbChecked.setOnCheckedChangeListener { _, isChecked ->
                 item.isChecked = isChecked
-                if (isChecked) {
+                item.isFocus = view.tvContentCheck.isFocusable
+                if (isChecked && view.tvContentCheck.text.toString().isNotEmpty()) {
                     view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.bg_gray))
                     handlerCheckItem.invoke(item, position)
                     /*timer.schedule(
@@ -116,5 +148,10 @@ class ListContentCheckAdapter(
     companion object {
         const val TYPE_ADD_ITEM = 1
         const val TYPE_CHECK_ITEM = 2
+
+        const val PAYLOAD_FOCUS = "PAYLOAD_FOCUS"
+        const val PAYLOAD_NAME = "PAYLOAD_NAME"
+        const val PAYLOAD_CHECKED = "PAYLOAD_CHECKED"
+        const val PAYLOAD_ID_WORK = "PAYLOAD_ID_WORK"
     }
 }

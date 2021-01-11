@@ -36,7 +36,13 @@ class ListWorkAdapter(
             val payloads = ArrayList<Any>()
 
             if (oldItem.listContent != newItem.listContent) {
-                payloads.add("PAYLOAD_CONTENT")
+                payloads.add(PAYLOAD_CONTENT)
+            }
+            if(oldItem.name != newItem.name){
+                payloads.add(PAYLOAD_NAME)
+            }
+            if(oldItem.groupId != newItem.groupId){
+                payloads.add(PAYLOAD_GROUP_ID)
             }
 
             return if (payloads.size > 0) {
@@ -57,8 +63,11 @@ class ListWorkAdapter(
     override fun bind(view: View, viewType: Int, position: Int, item: WorkDataEntity, payloads: MutableList<Any>) {
         super.bind(view, viewType, position, item, payloads)
 
-        if (payloads.contains("PAYLOAD_CONTENT")) {
+        if (payloads.contains(PAYLOAD_CONTENT)) {
             (view.recyclerWorks.adapter as? ListContentCheckAdapter)?.submitList(item.listContent)
+        }
+        if (payloads.contains(PAYLOAD_NAME)) {
+            view.tvTitle.text = item.name
         }
     }
 
@@ -82,5 +91,11 @@ class ListWorkAdapter(
             setRecycledViewPool(viewPool)
             contentsAdapter.submitList(item.listContent.toMutableList())
         }
+    }
+
+    companion object{
+        const val PAYLOAD_CONTENT = "PAYLOAD_CONTENT"
+        const val PAYLOAD_NAME = "PAYLOAD_NAME"
+        const val PAYLOAD_GROUP_ID = "PAYLOAD_GROUP_ID"
     }
 }

@@ -1,5 +1,6 @@
 package com.example.domain.usecase.db.workintopic
 
+import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.WorkDataEntity
 import com.example.domain.base.BaseUseCase
 import com.example.domain.repository.WorkFromTopicRepository
@@ -10,6 +11,17 @@ class UpdateListWorkUseCase @Inject constructor(private val workFromTopicReposit
     class Param(val works: List<WorkDataEntity>)
 
     override suspend fun invoke(params: Param) {
-        workFromTopicRepository.updateDatas(params.works)
+        val list = params.works.map { it ->
+            WorkDataEntity(it.id, it.name, it.groupId,
+                it.listContent.filter { it.name.isNotBlank() }
+                    .map {
+                        ContentDataEntity(
+                            it.id, it.name,
+                            it.idOwnerWork, it.isChecked, false
+                        )
+                    }
+                        as MutableList<ContentDataEntity>)
+        }
+        workFromTopicRepository.updateDatas(list)
     }
 }

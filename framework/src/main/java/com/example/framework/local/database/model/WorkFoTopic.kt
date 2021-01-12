@@ -14,5 +14,6 @@ class WorkFoTopic(
     @TypeConverters(DataConverter::class)
     val listContent: MutableList<ContentFoWork>,
     @TypeConverters(DataConverter::class)
-    val listContentDone: MutableList<ContentFoWork>
+    val listContentDone: MutableList<ContentFoWork>,
+    val longMinute: Long = -1,
 )

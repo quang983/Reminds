@@ -10,10 +10,10 @@ import kotlinx.coroutines.launch
 
 class NewTopicBtsViewModel @ViewModelInject constructor(private val insertTopicUseCase: InsertTopicUseCase) :
     BaseViewModel() {
-    val timeStamps = 0L
+    var timeStampsStartDate = 0L
     fun insertTopic(name: String) {
         viewModelScope.launch(handler + Dispatchers.IO) {
-            val data = TopicGroupEntity(System.currentTimeMillis(), name, timeStamps)
+            val data = TopicGroupEntity(System.currentTimeMillis(), name, timeStampsStartDate)
             insertTopicUseCase.invoke(InsertTopicUseCase.Param(data))
         }
     }

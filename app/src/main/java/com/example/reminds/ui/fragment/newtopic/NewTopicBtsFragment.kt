@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.example.common.base.model.TopicGroupEntity
 import com.example.reminds.R
 import com.example.reminds.utils.setTextChangedListener
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -33,10 +32,7 @@ class NewTopicBtsFragment : BottomSheetDialogFragment() {
     private fun setListener() {
         btnDone.setOnClickListener {
             viewModel.insertTopic(
-                TopicGroupEntity(
-                    System.currentTimeMillis(),
-                    edtTopic.text.toString()
-                )
+                edtTopic.text.toString()
             )
             dismiss()
         }
@@ -50,9 +46,9 @@ class NewTopicBtsFragment : BottomSheetDialogFragment() {
         }
 
         edtTopic.setTextChangedListener {
-            if(it.text.isNotBlank()){
+            if (it.text.isNotBlank()) {
                 btnDone.setTextColor(requireContext().resources.getColor(R.color.blue_700))
-            }else{
+            } else {
                 btnDone.setTextColor(requireContext().resources.getColor(R.color.bg_gray))
             }
         }
@@ -66,7 +62,7 @@ class NewTopicBtsFragment : BottomSheetDialogFragment() {
 
         }
         picker.addOnPositiveButtonClickListener {
-            it
+            viewModel.timeStampsStartDate = it
         }
     }
 }

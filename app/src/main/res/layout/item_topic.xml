@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
     android:paddingTop="@dimen/_3sdp"
-    android:paddingBottom="@dimen/_3sdp"
-    android:background="?android:attr/selectableItemBackground">
+    android:paddingBottom="@dimen/_3sdp">
 
     <ImageView
         android:id="@+id/imgTopic"
@@ -21,12 +21,28 @@
         android:id="@+id/tvContent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_6sdp"
+        android:paddingStart="@dimen/_6sdp"
+        android:paddingEnd="@dimen/_6sdp"
         android:textColor="@color/black"
         android:textSize="@dimen/_14sdp"
         app:layout_constraintBottom_toBottomOf="@id/imgTopic"
         app:layout_constraintStart_toEndOf="@id/imgTopic"
         app:layout_constraintTop_toTopOf="@id/imgTopic"
+        tools:text="Day la de muc" />
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/_6sdp"
+        android:visibility="gone"
+        android:paddingTop="@dimen/_2sdp"
+        android:paddingEnd="@dimen/_6sdp"
+        android:paddingBottom="@dimen/_2sdp"
+        android:textColor="@color/pink_500"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="@id/tvContent"
+        app:layout_constraintTop_toBottomOf="@id/tvContent"
         tools:text="Day la de muc" />
 
     <TextView
@@ -48,5 +64,5 @@
         android:background="@color/bg_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/tvContent"
-        app:layout_constraintTop_toBottomOf="@id/tvContent" />
+        app:layout_constraintTop_toBottomOf="@id/tvDate" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,7 +16,7 @@ class TopicRepositoryImpl @Inject constructor(
         .fetchAll().conflate()
 
     override suspend fun insertData(data: TopicGroupEntity): Long {
-        return source.insert(TopicGroupEntity(data.id, data.name))
+        return source.insert(TopicGroupEntity(data.id, data.name,data.startDate))
     }
 
     override suspend fun insertDatas(datas: List<TopicGroupEntity>) {

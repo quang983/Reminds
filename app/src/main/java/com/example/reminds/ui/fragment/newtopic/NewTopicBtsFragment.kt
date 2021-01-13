@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.common.base.model.TopicGroupEntity
 import com.example.reminds.R
+import com.example.reminds.utils.setTextChangedListener
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,8 +41,20 @@ class NewTopicBtsFragment : BottomSheetDialogFragment() {
             dismiss()
         }
 
+        btnBack.setOnClickListener {
+            dismiss()
+        }
+
         btnDatePicker.setOnClickListener {
             showDatePicker()
+        }
+
+        edtTopic.setTextChangedListener {
+            if(it.text.isNotBlank()){
+                btnDone.setTextColor(requireContext().resources.getColor(R.color.blue_700))
+            }else{
+                btnDone.setTextColor(requireContext().resources.getColor(R.color.bg_gray))
+            }
         }
     }
 
@@ -52,8 +65,8 @@ class NewTopicBtsFragment : BottomSheetDialogFragment() {
         picker.addOnCancelListener {
 
         }
-        picker.addOnNegativeButtonClickListener {
-
+        picker.addOnPositiveButtonClickListener {
+            it
         }
     }
 }

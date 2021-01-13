@@ -1,3 +1,3 @@
 package com.example.common.base.model
 
-data class TopicGroupEntity(val id: Long, val name: String)
+data class TopicGroupEntity(val id: Long, val name: String,val timeStamps : Long)

@@ -14,8 +14,6 @@ import com.example.reminds.ui.adapter.ListWorkAdapter
 import com.example.reminds.utils.navigateUp
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_list_work.*
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 
 
 /**
@@ -57,7 +55,9 @@ class ListWorkFragment : Fragment() {
 
     private fun setupToolbar() {
         setHasOptionsMenu(true)
+        activity?.actionBar?.setTitle(R.string.home_screen_title)
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -67,7 +67,9 @@ class ListWorkFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.favorite -> true
+            R.id.action_settings_task_view -> {
+
+            }
             android.R.id.home -> {
                 navigateUp()
             }
@@ -82,7 +84,7 @@ class ListWorkFragment : Fragment() {
             viewModel.updateAndAddContent(content, contentPosition, position)
         }, handlerCheckItem = { content, position ->
             viewModel.handlerCheckItem(content, position)
-        },{ content, position ->
+        }, { content, position ->
             viewModel.updateNameContent(content, position)
         }).apply {
             recyclerWorks.adapter = this
@@ -122,7 +124,7 @@ class ListWorkFragment : Fragment() {
     }
 
     private fun catchEventKeyboard() {
-        KeyboardVisibilityEvent.setEventListener(
+        /*KeyboardVisibilityEvent.setEventListener(
             requireActivity(),
             viewLifecycleOwner,
             object : KeyboardVisibilityEventListener {
@@ -133,6 +135,6 @@ class ListWorkFragment : Fragment() {
                         }
                     }
                 }
-            })
+            })*/
     }
 }

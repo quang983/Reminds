@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">BaseProjects</string>
     <string name="action_settings">Settings</string>
+    <string name="home_screen_title">Nhắc nhở</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="second_fragment_label">Danh sách</string>
     <string name="new_topic_fragment_label">New Topic Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
@@ -18,4 +19,6 @@
     <string name="select_date_range">Chọn khoảng ngày</string>
     <string name="format_today">Hôm nay,</string>
     <string name="format_yesterday">Hôm qua,</string>
+    <string name="setting_show_task_done_title">Hiển thị lời nhắc đã hoàn tất</string>
+    <string name="setting_hire_task_done_title">Ẩn lời nhắc đã hoàn tất</string>
 </resources>

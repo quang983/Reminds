@@ -1,15 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <item
-        android:id="@+id/favorite"
-        android:icon="@drawable/ic_favorite_24px"
-        android:title="@string/favorite"
-        app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/search"
-        android:icon="@drawable/ic_search_24"
-        android:title="@string/search"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/action_settings_task_view"
+        android:icon="@drawable/ic_baseline_visibility"
+        android:iconTint="@color/pink_500"
+        android:orderInCategory="100"
+        android:title="@string/setting_show_task_done_title"
+        app:showAsAction="never" />
 </menu>

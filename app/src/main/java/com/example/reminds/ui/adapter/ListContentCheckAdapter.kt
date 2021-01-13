@@ -139,7 +139,7 @@ class ListContentCheckAdapter(
                     timer.purge()
                 }
             }
-            view.rbChecked.isChecked = false
+            view.rbChecked.setChecked(false)
         }
     }
 

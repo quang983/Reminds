@@ -46,7 +46,7 @@ abstract class SwipeToDeleteCallback internal constructor(context: Context) :
     ) {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
         val itemView: View = viewHolder.itemView
-        val itemHeight: Int = itemView.getHeight()
+        val itemHeight: Int = itemView.height
         val isCancelled = dX == 0f && !isCurrentlyActive
         if (isCancelled) {
             clearCanvas(
@@ -95,7 +95,7 @@ abstract class SwipeToDeleteCallback internal constructor(context: Context) :
     }
 
     override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
-        return 0.7f
+        return 0.6f
     }
 
     init {

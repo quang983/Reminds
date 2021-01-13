@@ -19,8 +19,10 @@ class HomeViewModel @ViewModelInject constructor(
     private val insertTopicUseCase: InsertTopicUseCase
 ) : BaseViewModel() {
     val topicData: LiveData<List<TopicGroupEntity>> = liveData {
-        fetchTopicUseCase.invoke(BaseUseCase.Param()).collect {
-            emit(it)
+        fetchTopicUseCase.invoke(BaseUseCase.Param()).collect { it ->
+            val list = it.filter { it.startDate != 0L }.sortedBy { it.startDate }.toMutableList()
+            list.addAll(it.filter { it.startDate == 0L })
+            emit(list)
         }
     }
 

@@ -53,8 +53,8 @@ class ListContentCheckAdapter(
 
     }) {
     private var isChangeItem: Boolean = false
-    private val DELAY: Long = 1000
-    val timer = Timer()
+    private val DELAY: Long = 2000
+    var timer = Timer()
 
 
     override fun getItemViewType(position: Int): Int {
@@ -123,20 +123,20 @@ class ListContentCheckAdapter(
             view.rbChecked.setOnCheckedChangeListener { _, isChecked ->
                 item.isFocus = view.tvContentCheck.isFocusable
                 if (isChecked && view.tvContentCheck.text.toString().isNotEmpty()) {
+                    timer = Timer()
                     view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.bg_gray))
-                    handlerCheckItem.invoke(item)
-                    /*timer.schedule(
+                    timer.schedule(
                         object : TimerTask() {
                             override fun run() {
-                                item.isChecked = isChecked
-                                handlerCheckItem.invoke(item, position)
+                                handlerCheckItem.invoke(item)
                             }
                         },
                         DELAY
-                    )*/
+                    )
                 } else {
                     view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
-//                    handlerCheckItem.invoke(item)
+                    timer.cancel()
+                    timer.purge()
                 }
             }
             view.rbChecked.isChecked = false

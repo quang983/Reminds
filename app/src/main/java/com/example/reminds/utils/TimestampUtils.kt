@@ -239,4 +239,12 @@ object TimestampUtils {
         calendar.timeInMillis = time
         return calendar[Calendar.YEAR] * 1000L + calendar[Calendar.DAY_OF_YEAR]
     }
+
+    fun convertMinuteToTimeStr(minute: Long): String? {
+        return if (minute >= 0) {
+            "${minute / 60}:${minute % 60}"
+        } else {
+            null
+        }
+    }
 }

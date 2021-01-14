@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.chauthai.swipereveallayout.SwipeRevealLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/swipeLayout"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:dragEdge="right"
@@ -54,13 +54,14 @@
             android:id="@+id/rbChecked"
             android:layout_width="35dp"
             android:layout_height="30dp"
+            android:layout_marginTop="@dimen/_6sdp"
             android:padding="@dimen/_6sdp"
             app:borderThickness="2dp"
             app:circleBorderColor="@color/blue_900"
             app:innerCircleColor="@color/blue_900"
             app:innerCircleRadius="10dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvContentCheck"
             app:outerCircleColor="@color/blue_700"
             app:outerCircleRadius="2dp"
             app:showOuterCircle="true"
@@ -75,13 +76,29 @@
             android:imeOptions="actionDone"
             android:inputType="text"
             android:paddingStart="@dimen/_6sdp"
+            android:paddingTop="@dimen/_6sdp"
             android:paddingEnd="@dimen/_6sdp"
+            android:paddingBottom="@dimen/_3sdp"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="@id/rbChecked"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/rbChecked"
-            app:layout_constraintTop_toTopOf="@id/rbChecked"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="Nội dung" />
+
+        <TextView
+            android:id="@+id/tvTimer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/_6sdp"
+            android:paddingEnd="@dimen/_6sdp"
+            android:textColor="@color/pink_500"
+            android:textSize="@dimen/_10sdp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/tvContentCheck"
+            app:layout_constraintTop_toBottomOf="@id/tvContentCheck"
+            tools:text="Day la timer"
+            tools:visibility="visible" />
 
         <ImageView
             android:id="@+id/imgCheckDone"
@@ -97,10 +114,10 @@
         <View
             android:layout_width="0dp"
             android:layout_height="0.5dp"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:background="@color/bg_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tvContentCheck"
-            app:layout_constraintTop_toBottomOf="@id/tvContentCheck" />
+            app:layout_constraintTop_toBottomOf="@id/tvTimer" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.chauthai.swipereveallayout.SwipeRevealLayout>

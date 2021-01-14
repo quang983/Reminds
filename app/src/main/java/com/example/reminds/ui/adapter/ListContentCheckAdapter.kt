@@ -1,5 +1,6 @@
 package com.example.reminds.ui.adapter
 
+import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
@@ -10,7 +11,9 @@ import com.example.common.base.model.ContentDataEntity
 import com.example.reminds.R
 import com.example.reminds.common.BaseAdapter
 import com.example.reminds.utils.KeyboardUtils
+import com.example.reminds.utils.TimestampUtils
 import com.example.reminds.utils.inflate
+import com.example.reminds.utils.setVisible
 import kotlinx.android.synthetic.main.item_content_check.view.*
 import java.util.*
 
@@ -30,7 +33,8 @@ class ListContentCheckAdapter(
         }
 
         override fun areContentsTheSame(oldItem: ContentDataEntity, newItem: ContentDataEntity): Boolean {
-            return oldItem.isFocus == newItem.isFocus && oldItem.name == newItem.name && oldItem.idOwnerWork == newItem.idOwnerWork
+            return oldItem.isFocus == newItem.isFocus && oldItem.name == newItem.name
+                    && oldItem.idOwnerWork == newItem.idOwnerWork && oldItem.timer == newItem.timer
 
         }
 
@@ -44,6 +48,9 @@ class ListContentCheckAdapter(
             }
             if (oldItem.isFocus != newItem.isFocus) {
                 payloads.add(PAYLOAD_FOCUS)
+            }
+            if (oldItem.timer != newItem.timer) {
+                payloads.add(PAYLOAD_TIMER)
             }
 
             return if (payloads.size > 0) {
@@ -81,6 +88,10 @@ class ListContentCheckAdapter(
         if (payloads.contains(PAYLOAD_NAME)) {
             view.tvContentCheck.setText(item.name)
         }
+        if (payloads.contains(PAYLOAD_TIMER)) {
+            view.tvTimer.setVisible(item.timer >= 0)
+            view.tvTimer.text = TimestampUtils.convertMinuteToTimeStr(item.timer).toString()
+        }
     }
 
     override fun bind(view: View, viewType: Int, position: Int, item: ContentDataEntity) {
@@ -88,6 +99,8 @@ class ListContentCheckAdapter(
         viewBinderHelper.bind(view.swipeLayout, item.id.toString())
         if (viewType == TYPE_CHECK_ITEM) {
             view.tvContentCheck.setText(item.name)
+            view.tvTimer.setVisible(item.timer >= 0)
+            view.tvTimer.text = TimestampUtils.convertMinuteToTimeStr(item.timer).toString()
 
             view.rootView.setOnClickListener {
                 onClickDetail.invoke(item.id)
@@ -95,14 +108,19 @@ class ListContentCheckAdapter(
 
             view.imgTimer.setOnClickListener {
                 moreActionClick.invoke(item, TYPE_TIMER_CLICK)
+                Handler().postDelayed({
+                    view.swipeLayout.close(true)
+                }, 1000)
             }
 
             view.imgGim.setOnClickListener {
                 moreActionClick.invoke(item, TYPE_TAG_CLICK)
+                view.swipeLayout.close(true)
             }
 
             view.imgDelete.setOnClickListener {
                 moreActionClick.invoke(item, TYPE_DELETE_CLICK)
+                view.swipeLayout.close(true)
             }
 
             if (position == currentList.size - 1 && item.isFocus && currentList.size - 1 >= 0) {
@@ -169,6 +187,7 @@ class ListContentCheckAdapter(
         const val PAYLOAD_NAME = "PAYLOAD_NAME"
         const val PAYLOAD_CHECKED = "PAYLOAD_CHECKED"
         const val PAYLOAD_ID_WORK = "PAYLOAD_ID_WORK"
+        const val PAYLOAD_TIMER = "PAYLOAD_TIMER"
 
         const val TYPE_TIMER_CLICK = 100
         const val TYPE_TAG_CLICK = 101

@@ -5,6 +5,8 @@ import android.text.InputType
 import android.view.*
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -96,7 +98,20 @@ class ListWorkFragment : Fragment() {
                     setupTimePickerForContent(item, wPosition)
                 }
                 ListContentCheckAdapter.TYPE_TAG_CLICK -> {
-                    viewModel.hashTagContent(item, wPosition)
+//                    viewModel.hashTagContent(item, wPosition)
+
+                    val GROUP_KEY_WORK_EMAIL = "com.android.example.WORK_EMAIL"
+
+                    val newMessageNotification = NotificationCompat.Builder(requireContext(), "CHANNEL_ID")
+                        .setSmallIcon(R.drawable.ic_calendar)
+                        .setContentTitle("emailObject.getSenderName()")
+                        .setContentText("emailObject.getSubject()")
+                        .setGroup(GROUP_KEY_WORK_EMAIL)
+                        .build()
+                    NotificationManagerCompat.from(requireContext()).apply {
+                        notify(123, newMessageNotification)
+                    }
+
                 }
                 ListContentCheckAdapter.TYPE_DELETE_CLICK -> {
                     viewModel.deleteContent(item, wPosition)

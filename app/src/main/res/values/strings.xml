@@ -17,6 +17,7 @@
     <string name="title_create">Tạo mới</string>
     <string name="transaction_topic_to_detail">topic to detail</string>
     <string name="select_date_range">Chọn khoảng ngày</string>
+    <string name="select_timer_title">Chọn thời gian</string>
     <string name="format_today">Hôm nay,</string>
     <string name="format_yesterday">Hôm qua,</string>
     <string name="setting_show_task_done_title">Hiển thị lời nhắc đã hoàn tất</string>

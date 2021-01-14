@@ -135,7 +135,7 @@ class ListWorkFragment : Fragment() {
             .setTimeFormat(TimeFormat.CLOCK_24H)
             .setHour(12)
             .setMinute(0)
-            .setTitleText("Chọn thời gian")
+            .setTitleText(requireContext().getText(R.string.select_timer_title))
             .build()
         picker.show(childFragmentManager, "tag")
 

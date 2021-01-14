@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.DiffUtil
+import com.chauthai.swipereveallayout.ViewBinderHelper
 import com.example.common.base.model.ContentDataEntity
 import com.example.reminds.R
 import com.example.reminds.common.BaseAdapter
@@ -19,6 +20,7 @@ class ListContentCheckAdapter(
     private val insertItemClick: (item: ContentDataEntity, position: Int) -> Unit,
     private val handlerCheckItem: (item: ContentDataEntity) -> Unit,
     private val updateNameContent: (item: ContentDataEntity) -> Unit,
+    private val moreActionClick: (item: ContentDataEntity, type: Int) -> Unit
 ) : BaseAdapter<ContentDataEntity>(
 
     object : DiffUtil.ItemCallback<ContentDataEntity>() {
@@ -55,7 +57,7 @@ class ListContentCheckAdapter(
     private var isChangeItem: Boolean = false
     private val DELAY: Long = 2000
     var timer = Timer()
-
+    private val viewBinderHelper = ViewBinderHelper()
 
     override fun getItemViewType(position: Int): Int {
         return TYPE_CHECK_ITEM
@@ -82,11 +84,27 @@ class ListContentCheckAdapter(
     }
 
     override fun bind(view: View, viewType: Int, position: Int, item: ContentDataEntity) {
+        viewBinderHelper.setOpenOnlyOne(true)
+        viewBinderHelper.bind(view.swipeLayout, item.id.toString())
         if (viewType == TYPE_CHECK_ITEM) {
             view.tvContentCheck.setText(item.name)
+
             view.rootView.setOnClickListener {
                 onClickDetail.invoke(item.id)
             }
+
+            view.imgTimer.setOnClickListener {
+                moreActionClick.invoke(item, TYPE_TIMER_CLICK)
+            }
+
+            view.imgGim.setOnClickListener {
+                moreActionClick.invoke(item, TYPE_TAG_CLICK)
+            }
+
+            view.imgDelete.setOnClickListener {
+                moreActionClick.invoke(item, TYPE_DELETE_CLICK)
+            }
+
             if (position == currentList.size - 1 && item.isFocus && currentList.size - 1 >= 0) {
                 view.tvContentCheck.requestFocus()
             }
@@ -151,5 +169,9 @@ class ListContentCheckAdapter(
         const val PAYLOAD_NAME = "PAYLOAD_NAME"
         const val PAYLOAD_CHECKED = "PAYLOAD_CHECKED"
         const val PAYLOAD_ID_WORK = "PAYLOAD_ID_WORK"
+
+        const val TYPE_TIMER_CLICK = 100
+        const val TYPE_TAG_CLICK = 101
+        const val TYPE_DELETE_CLICK = 102
     }
 }

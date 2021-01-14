@@ -28,6 +28,6 @@ class ContentFromWorkSourceImpl @Inject constructor(
     }
 
     override suspend fun deletes(datas: List<ContentDataEntity>) {
-        TODO("Not yet implemented")
+        dao.deleteDatas(*datas.map { ContentFoWork(it.id, it.name, it.idOwnerWork) }.toTypedArray())
     }
 }

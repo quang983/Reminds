@@ -24,6 +24,6 @@ class ContentRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteDatas(datas: List<ContentDataEntity>) {
-        TODO("Not yet implemented")
+        return source.deletes(datas = datas)
     }
 }

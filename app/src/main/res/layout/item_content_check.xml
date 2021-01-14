@@ -1,69 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.chauthai.swipereveallayout.SwipeRevealLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeLayout"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    app:dragEdge="right"
+    app:mode="same_level">
 
-    <!-- <com.google.android.material.checkbox.MaterialCheckBox
-         android:id="@+id/rbChecked"
-         android:checked="false"
-         app:useMaterialThemeColors="true"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         app:layout_constraintStart_toStartOf="parent"
-         app:layout_constraintTop_toTopOf="parent" />-->
-
-    <com.example.reminds.utils.custom.CircleCheckBox
-        android:id="@+id/rbChecked"
-        android:layout_width="35dp"
-        android:layout_height="30dp"
-        android:padding="@dimen/_6sdp"
-        app:borderThickness="2dp"
-        app:circleBorderColor="@color/blue_900"
-        app:innerCircleColor="@color/blue_900"
-        app:innerCircleRadius="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:outerCircleColor="@color/blue_700"
-        app:outerCircleRadius="2dp"
-        app:showOuterCircle="true"
-        app:tickColor="#ffffff"
-        app:tickThickness="1dp" />
-
-    <EditText
-        android:id="@+id/tvContentCheck"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:imeOptions="actionDone"
-        android:paddingStart="@dimen/_6sdp"
-        android:paddingEnd="@dimen/_6sdp"
-        android:inputType="text"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="@id/rbChecked"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/rbChecked"
-        app:layout_constraintTop_toTopOf="@id/rbChecked"
-        tools:text="Nội dung" />
-
-    <ImageView
-        android:id="@+id/imgCheckDone"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/_6sdp"
-        android:src="@drawable/ic_check_24px"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent">
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="@dimen/_6sdp"
-        android:background="@color/bg_gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/tvContentCheck"
-        app:layout_constraintTop_toBottomOf="@id/tvContentCheck" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/imgTimer"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="match_parent"
+            android:background="@color/teal_700"
+            android:padding="@dimen/_6sdp"
+            android:src="@drawable/ic_baseline_timer" />
+
+        <ImageView
+            android:id="@+id/imgGim"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="match_parent"
+            android:background="@color/yellow_600"
+            android:padding="@dimen/_6sdp"
+            android:src="@drawable/ic_baseline_wb_sunny" />
+
+        <ImageView
+            android:id="@+id/imgDelete"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="match_parent"
+            android:background="@color/red_200"
+            android:padding="@dimen/_6sdp"
+            android:src="@drawable/ic_baseline_delete_24" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- <com.google.android.material.checkbox.MaterialCheckBox
+             android:id="@+id/rbChecked"
+             android:checked="false"
+             app:useMaterialThemeColors="true"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toTopOf="parent" />-->
+
+        <com.example.reminds.utils.custom.CircleCheckBox
+            android:id="@+id/rbChecked"
+            android:layout_width="35dp"
+            android:layout_height="30dp"
+            android:padding="@dimen/_6sdp"
+            app:borderThickness="2dp"
+            app:circleBorderColor="@color/blue_900"
+            app:innerCircleColor="@color/blue_900"
+            app:innerCircleRadius="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:outerCircleColor="@color/blue_700"
+            app:outerCircleRadius="2dp"
+            app:showOuterCircle="true"
+            app:tickColor="#ffffff"
+            app:tickThickness="1dp" />
+
+        <EditText
+            android:id="@+id/tvContentCheck"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:paddingStart="@dimen/_6sdp"
+            android:paddingEnd="@dimen/_6sdp"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/rbChecked"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/rbChecked"
+            app:layout_constraintTop_toTopOf="@id/rbChecked"
+            tools:text="Nội dung" />
+
+        <ImageView
+            android:id="@+id/imgCheckDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_6sdp"
+            android:src="@drawable/ic_check_24px"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@color/bg_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tvContentCheck"
+            app:layout_constraintTop_toBottomOf="@id/tvContentCheck" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.chauthai.swipereveallayout.SwipeRevealLayout>

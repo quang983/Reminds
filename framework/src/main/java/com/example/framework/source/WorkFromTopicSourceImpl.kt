@@ -27,14 +27,19 @@ class WorkFromTopicSourceImpl @Inject constructor(
                         ContentDataEntity(
                             it.idContent,
                             it.name,
-                            it.idOwnerWork
+                            it.idOwnerWork,
+                            hashTag = it.hashTag,
+                            timer = it.timer
+
                         )
                     } as ArrayList<ContentDataEntity>,
                     it.listContentDone.map {
                         ContentDataEntity(
                             it.idContent,
                             it.name,
-                            it.idOwnerWork
+                            it.idOwnerWork,
+                            hashTag = it.hashTag,
+                            timer = it.timer
                         )
                     } as ArrayList<ContentDataEntity>
                 )
@@ -53,14 +58,18 @@ class WorkFromTopicSourceImpl @Inject constructor(
                         ContentDataEntity(
                             it.idContent,
                             it.name,
-                            it.idOwnerWork
+                            it.idOwnerWork,
+                            hashTag = it.hashTag,
+                            timer = it.timer
                         )
                     } as ArrayList<ContentDataEntity>,
                     it.listContentDone.map {
                         ContentDataEntity(
                             it.idContent,
                             it.name,
-                            it.idOwnerWork
+                            it.idOwnerWork,
+                            hashTag = it.hashTag,
+                            timer = it.timer
                         )
                     } as ArrayList<ContentDataEntity>
                 )
@@ -74,12 +83,12 @@ class WorkFromTopicSourceImpl @Inject constructor(
                 data.id, data.name, data.groupId,
                 data.listContent.map {
                     ContentFoWork(
-                        it.id, it.name, it.idOwnerWork,
+                        it.id, it.name, it.idOwnerWork, hashTag = it.hashTag, timer = it.timer
                     )
                 }.toMutableList(),
                 data.listContentDone.map {
                     ContentFoWork(
-                        it.id, it.name, it.idOwnerWork,
+                        it.id, it.name, it.idOwnerWork, hashTag = it.hashTag, timer = it.timer
                     )
                 }.toMutableList()
             )
@@ -92,12 +101,12 @@ class WorkFromTopicSourceImpl @Inject constructor(
                 it.id, it.name, it.groupId,
                 it.listContent.map {
                     ContentFoWork(
-                        it.id, it.name, it.idOwnerWork
+                        it.id, it.name, it.idOwnerWork, hashTag = it.hashTag, timer = it.timer
                     )
                 }.toMutableList(),
                 it.listContentDone.map {
                     ContentFoWork(
-                        it.id, it.name, it.idOwnerWork
+                        it.id, it.name, it.idOwnerWork, hashTag = it.hashTag, timer = it.timer
                     )
                 }.toMutableList()
             )
@@ -111,12 +120,12 @@ class WorkFromTopicSourceImpl @Inject constructor(
                 data.id, data.name, data.groupId,
                 data.listContent.map {
                     ContentFoWork(
-                        it.id, it.name, it.idOwnerWork
+                        it.id, it.name, it.idOwnerWork, hashTag = it.hashTag, timer = it.timer
                     )
                 }.toMutableList(),
                 data.listContentDone.map {
                     ContentFoWork(
-                        it.id, it.name, it.idOwnerWork
+                        it.id, it.name, it.idOwnerWork, hashTag = it.hashTag, timer = it.timer
                     )
                 }.toMutableList()
             )
@@ -129,12 +138,12 @@ class WorkFromTopicSourceImpl @Inject constructor(
                 it.id, it.name, it.groupId,
                 it.listContent.map {
                     ContentFoWork(
-                        it.id, it.name, it.idOwnerWork
+                        it.id, it.name, it.idOwnerWork, hashTag = it.hashTag, timer = it.timer
                     )
                 }.toMutableList(),
                 it.listContentDone.map {
                     ContentFoWork(
-                        it.id, it.name, it.idOwnerWork
+                        it.id, it.name, it.idOwnerWork, hashTag = it.hashTag, timer = it.timer
                     )
                 }.toMutableList()
             )

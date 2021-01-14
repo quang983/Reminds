@@ -5,7 +5,9 @@ data class ContentDataEntity(
     var id: Long,
     var name: String,
     var idOwnerWork: Long,
-    var isFocus: Boolean = false
+    var isFocus: Boolean = false,
+    var hashTag: Boolean = false,
+    var timer: Long = -1
 ) {
     fun copy() = ContentDataEntity(id, name, idOwnerWork, isFocus)
 

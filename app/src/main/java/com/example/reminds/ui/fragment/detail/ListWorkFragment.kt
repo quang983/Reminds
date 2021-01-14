@@ -8,10 +8,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.WorkDataEntity
 import com.example.reminds.R
+import com.example.reminds.ui.adapter.ListContentCheckAdapter
 import com.example.reminds.ui.adapter.ListWorkAdapter
 import com.example.reminds.utils.navigateUp
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_list_work.*
 
@@ -84,8 +88,20 @@ class ListWorkFragment : Fragment() {
             viewModel.updateAndAddContent(content, contentPosition, position)
         }, handlerCheckItem = { content, position ->
             viewModel.handlerCheckItem(content, position)
-        }, { content, position ->
+        }, updateNameContent = { content, position ->
             viewModel.updateNameContent(content, position)
+        }, moreActionClick = { item, type, wPosition ->
+            when (type) {
+                ListContentCheckAdapter.TYPE_TIMER_CLICK -> {
+                    setupTimePickerForContent(item, wPosition)
+                }
+                ListContentCheckAdapter.TYPE_TAG_CLICK -> {
+                    viewModel.hashTagContent(item, wPosition)
+                }
+                ListContentCheckAdapter.TYPE_DELETE_CLICK -> {
+                    viewModel.deleteContent(item, wPosition)
+                }
+            }
         }).apply {
             recyclerWorks.adapter = this
         }
@@ -112,6 +128,30 @@ class ListWorkFragment : Fragment() {
         builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
 
         builder.show()
+    }
+
+    private fun setupTimePickerForContent(item: ContentDataEntity, workPosition: Int) {
+        val picker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setHour(12)
+            .setMinute(0)
+            .setTitleText("Chọn thời gian")
+            .build()
+        picker.show(childFragmentManager, "tag")
+
+        picker.addOnPositiveButtonClickListener {
+            val newHour: Int = picker.hour
+            val newMinute: Int = picker.minute
+            val longTimer = newHour * 60 + newMinute
+            item.timer = longTimer.toLong()
+            viewModel.setTimerContent(item, workPosition)
+        }
+        picker.addOnNegativeButtonClickListener {
+        }
+        picker.addOnCancelListener {
+        }
+        picker.addOnDismissListener {
+        }
     }
 
     private fun getListWorkAdapter(): List<WorkDataEntity> {

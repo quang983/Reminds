@@ -15,7 +15,8 @@ class ListWorkAdapter(
     private val onClickTitle: (position: Int) -> Unit,
     private val insertContentToWork: (content: ContentDataEntity, contentPosition: Int, workPosition: Int) -> Unit,
     private val handlerCheckItem: (content: ContentDataEntity, workPosition: Int) -> Unit,
-    private val updateNameContent: (content: ContentDataEntity, workPosition: Int) -> Unit
+    private val updateNameContent: (content: ContentDataEntity, workPosition: Int) -> Unit,
+    private val moreActionClick: (item: ContentDataEntity, type: Int, workPosition: Int) -> Unit
 ) :
     BaseAdapter<WorkDataEntity>(object : DiffUtil.ItemCallback<WorkDataEntity>() {
 
@@ -63,7 +64,6 @@ class ListWorkAdapter(
 
     override fun bind(view: View, viewType: Int, position: Int, item: WorkDataEntity, payloads: MutableList<Any>) {
         super.bind(view, viewType, position, item, payloads)
-
         if (payloads.contains(PAYLOAD_CONTENT)) {
             (view.recyclerWorks.adapter as? ListContentCheckAdapter)?.submitList(item.listContent)
         }
@@ -89,6 +89,8 @@ class ListWorkAdapter(
                 handlerCheckItem.invoke(content, position)
             }, { content ->
                 updateNameContent.invoke(content, position)
+            }, { item, type ->
+                moreActionClick.invoke(item, type, position)
             })
             adapter = contentsAdapter
             setRecycledViewPool(viewPool)

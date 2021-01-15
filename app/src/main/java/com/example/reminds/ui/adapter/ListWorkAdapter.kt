@@ -31,7 +31,8 @@ class ListWorkAdapter(
             oldItem: WorkDataEntity,
             newItem: WorkDataEntity
         ): Boolean {
-            return oldItem.listContent == newItem.listContent && oldItem.name == newItem.name && oldItem.groupId == newItem.groupId && oldItem.listContentDone == newItem.listContentDone
+            return oldItem.listContent == newItem.listContent && oldItem.name == newItem.name
+                    && oldItem.groupId== newItem.groupId && oldItem.listContentDone == newItem.listContentDone
         }
 
         override fun getChangePayload(oldItem: WorkDataEntity, newItem: WorkDataEntity): Any? {
@@ -70,9 +71,11 @@ class ListWorkAdapter(
         super.bind(view, viewType, position, item, payloads)
         if (payloads.contains(PAYLOAD_CONTENT)) {
             (view.recyclerWorks.adapter as? ListContentCheckAdapter)?.submitList(item.listContent)
+            (view.recyclerWorksDone.adapter as? ListContentCheckAdapter)?.submitList(item.listContentDone)
         }
         if (payloads.contains(PAYLOAD_CONTENT_DONE)) {
-            (view.recyclerWorks.adapter as? ListContentCheckAdapter)?.submitList(item.listContentDone)
+            (view.recyclerWorks.adapter as? ListContentCheckAdapter)?.submitList(item.listContent)
+            (view.recyclerWorksDone.adapter as? ListContentCheckAdapter)?.submitList(item.listContentDone)
         }
         if (payloads.contains(PAYLOAD_NAME)) {
             view.tvTitle.text = item.name

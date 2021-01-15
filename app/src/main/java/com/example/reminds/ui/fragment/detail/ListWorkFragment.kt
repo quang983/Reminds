@@ -87,16 +87,16 @@ class ListWorkFragment : Fragment() {
     private fun setupUI() {
         adapter = ListWorkAdapter(onClickTitle = { workPosition ->
             viewModel.updateListWork(getListWorkAdapter(), workPosition)
-        }, insertContentToWork = { content, contentPosition, position ->
-            viewModel.updateAndAddContent(content, position)
-        }, handlerCheckItem = { content, position ->
-            viewModel.handlerCheckedContent(content, position)
-        }, updateNameContent = { content, position ->
-            viewModel.updateNameContent(content, position)
-        }, moreActionClick = { item, type, wPosition ->
+        }, insertContentToWork = { content, position, checked ->
+            viewModel.updateAndAddContent(content, position, checked)
+        }, handlerCheckItem = { content, position, listChecked ->
+            viewModel.handlerCheckedContent(content, position, listChecked)
+        }, updateNameContent = { content, position, checked ->
+            viewModel.updateNameContent(content, position, checked)
+        }, moreActionClick = { item, type, wPosition, checked ->
             when (type) {
                 ListContentCheckAdapter.TYPE_TIMER_CLICK -> {
-                    setupTimePickerForContent(item, wPosition)
+                    setupTimePickerForContent(item, wPosition, checked)
                 }
                 ListContentCheckAdapter.TYPE_TAG_CLICK -> {
 //                    viewModel.updateContentData(item, wPosition)
@@ -115,7 +115,7 @@ class ListWorkFragment : Fragment() {
 
                 }
                 ListContentCheckAdapter.TYPE_DELETE_CLICK -> {
-                    viewModel.deleteContent(item, wPosition)
+                    viewModel.deleteContent(item, wPosition, checked)
                 }
             }
         }).apply {
@@ -146,7 +146,7 @@ class ListWorkFragment : Fragment() {
         builder.show()
     }
 
-    private fun setupTimePickerForContent(item: ContentDataEntity, workPosition: Int) {
+    private fun setupTimePickerForContent(item: ContentDataEntity, workPosition: Int, listChecked: Boolean) {
         val picker = MaterialTimePicker.Builder()
             .setTimeFormat(TimeFormat.CLOCK_24H)
             .setHour(12)
@@ -160,7 +160,7 @@ class ListWorkFragment : Fragment() {
             val newMinute: Int = picker.minute
             val longTimer = newHour * 60 + newMinute
             item.timer = longTimer.toLong()
-            viewModel.updateContentData(item, workPosition)
+            viewModel.updateContentData(item, workPosition, listChecked)
         }
         picker.addOnNegativeButtonClickListener {
         }

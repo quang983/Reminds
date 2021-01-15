@@ -90,17 +90,25 @@ class ListWorkViewModel @ViewModelInject constructor(
         }
     }
 
-    fun handlerCheckedContent(content: ContentDataEntity, workPosition: Int) =
+    fun handlerCheckedContent(content: ContentDataEntity, workPosition: Int, listChecked: Boolean) =
         viewModelScope.launch(handler + Dispatchers.IO) {
-            listWorkViewModel[workPosition].listContent.removeAll { it.id == content.id }
-            listWorkViewModel[workPosition].listContentDone.add(content)
+            var list = listWorkViewModel[workPosition].listContent
+            var listDone = listWorkViewModel[workPosition].listContentDone
+            if (listChecked) {
+                list = listWorkViewModel[workPosition].listContentDone
+                listDone = listWorkViewModel[workPosition].listContent
+            }
+            list.removeAll { it.id == content.id }
+            listDone.add(content)
             val work = listWorkViewModel[workPosition].copyAndClearFocus()
             updateWorkUseCase.invoke(UpdateWorkUseCase.Param(work))
 
         }
 
-    fun updateNameContent(content: ContentDataEntity, workPosition: Int) {
-        listWorkViewModel[workPosition].listContent.forEachIndexed { _, contentDataEntity ->
+    fun updateNameContent(content: ContentDataEntity, workPosition: Int, listChecked: Boolean) {
+        var list = listWorkViewModel[workPosition].listContent
+        if (listChecked) list = listWorkViewModel[workPosition].listContentDone
+        list.forEachIndexed { _, contentDataEntity ->
             if (content.id == contentDataEntity.id) {
                 contentDataEntity.name = content.name
                 return@forEachIndexed
@@ -108,16 +116,21 @@ class ListWorkViewModel @ViewModelInject constructor(
         }
     }
 
-    fun deleteContent(content: ContentDataEntity, wPosition: Int) =
+    fun deleteContent(content: ContentDataEntity, wPosition: Int, listChecked: Boolean) =
         viewModelScope.launch(handler + Dispatchers.IO) {
-            listWorkViewModel[wPosition].listContent.removeAll { it.id == content.id }
+            var list = listWorkViewModel[workPosition].listContent
+            if (listChecked) list = listWorkViewModel[workPosition].listContentDone
+            list.removeAll { it.id == content.id }
             val work = listWorkViewModel[wPosition].copyAndClearFocus()
             updateWorkUseCase.invoke(UpdateWorkUseCase.Param(work))
         }
 
-    fun updateContentData(content: ContentDataEntity, wPosition: Int) =
+    fun updateContentData(content: ContentDataEntity, wPosition: Int, listChecked: Boolean) =
+
         viewModelScope.launch(handler + Dispatchers.IO) {
-            listWorkViewModel[wPosition].listContent.forEachIndexed { _, contentDataEntity ->
+            var list = listWorkViewModel[workPosition].listContent
+            if (listChecked) list = listWorkViewModel[workPosition].listContentDone
+            list.forEachIndexed { _, contentDataEntity ->
                 if (content.id == contentDataEntity.id) {
                     contentDataEntity.idOwnerWork = content.idOwnerWork
                     contentDataEntity.isFocus = content.isFocus
@@ -132,9 +145,9 @@ class ListWorkViewModel @ViewModelInject constructor(
         }
 
 
-    fun updateAndAddContent(content: ContentDataEntity, wPosition: Int) {
+    fun updateAndAddContent(content: ContentDataEntity, wPosition: Int, listChecked: Boolean) {
         workPosition = wPosition
-        updateContentData(content, wPosition)
+        updateContentData(content, wPosition, listChecked)
     }
 
     fun insertNewWork(name: String) {

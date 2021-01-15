@@ -19,8 +19,9 @@ import java.util.*
 
 
 class ListContentCheckAdapter(
+    internal val isListChecked: Boolean,
     private val onClickDetail: (id: Long) -> Unit,
-    private val insertItemClick: (item: ContentDataEntity, position: Int) -> Unit,
+    private val insertItemClick: (item: ContentDataEntity) -> Unit,
     private val handlerCheckItem: (item: ContentDataEntity) -> Unit,
     private val updateNameContent: (item: ContentDataEntity) -> Unit,
     private val moreActionClick: (item: ContentDataEntity, type: Int) -> Unit
@@ -144,18 +145,19 @@ class ListContentCheckAdapter(
                     insertItemClick(item.apply {
                         this.name = view.tvContentCheck.text.toString()
                         this.isFocus = false
-                    }, position)
+                    })
                     true
                 } else {
                     view.tvContentCheck.clearFocus()
                     insertItemClick(item.apply {
                         this.name = view.tvContentCheck.text.toString()
                         this.isFocus = false
-                    }, position)
+                    })
                     false
                 }
             }
             view.rbChecked.setOnCheckedChangeListener(null)
+            view.rbChecked.setChecked(isListChecked)
             view.rbChecked.setOnCheckedChangeListener { _, isChecked ->
                 item.isFocus = view.tvContentCheck.isFocusable
                 if (isChecked && view.tvContentCheck.text.toString().isNotEmpty()) {
@@ -170,12 +172,15 @@ class ListContentCheckAdapter(
                         DELAY
                     )
                 } else {
-                    view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
-                    timer.cancel()
-                    timer.purge()
+                    if (!isListChecked) {
+                        view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
+                        timer.cancel()
+                        timer.purge()
+                    } else {
+                        handlerCheckItem.invoke(item)
+                    }
                 }
             }
-            view.rbChecked.setChecked(false)
         }
     }
 

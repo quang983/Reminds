@@ -13,10 +13,10 @@ import kotlinx.android.synthetic.main.item_work_group.view.*
 
 class ListWorkAdapter(
     private val onClickTitle: (position: Int) -> Unit,
-    private val insertContentToWork: (content: ContentDataEntity, contentPosition: Int, workPosition: Int) -> Unit,
-    private val handlerCheckItem: (content: ContentDataEntity, workPosition: Int) -> Unit,
-    private val updateNameContent: (content: ContentDataEntity, workPosition: Int) -> Unit,
-    private val moreActionClick: (item: ContentDataEntity, type: Int, workPosition: Int) -> Unit
+    private val insertContentToWork: (content: ContentDataEntity, workPosition: Int, listChecked: Boolean) -> Unit,
+    private val handlerCheckItem: (content: ContentDataEntity, workPosition: Int, isChecked: Boolean) -> Unit,
+    private val updateNameContent: (content: ContentDataEntity, workPosition: Int, listChecked: Boolean) -> Unit,
+    private val moreActionClick: (item: ContentDataEntity, type: Int, workPosition: Int, listChecked: Boolean) -> Unit
 ) :
     BaseAdapter<WorkDataEntity>(object : DiffUtil.ItemCallback<WorkDataEntity>() {
 
@@ -31,7 +31,7 @@ class ListWorkAdapter(
             oldItem: WorkDataEntity,
             newItem: WorkDataEntity
         ): Boolean {
-            return oldItem.listContent == newItem.listContent && oldItem.name == newItem.name && oldItem.groupId == newItem.groupId
+            return oldItem.listContent == newItem.listContent && oldItem.name == newItem.name && oldItem.groupId == newItem.groupId && oldItem.listContentDone == newItem.listContentDone
         }
 
         override fun getChangePayload(oldItem: WorkDataEntity, newItem: WorkDataEntity): Any? {
@@ -39,6 +39,9 @@ class ListWorkAdapter(
 
             if (oldItem.listContent != newItem.listContent) {
                 payloads.add(PAYLOAD_CONTENT)
+            }
+            if (oldItem.listContentDone != newItem.listContentDone) {
+                payloads.add(PAYLOAD_CONTENT_DONE)
             }
             if (oldItem.name != newItem.name) {
                 payloads.add(PAYLOAD_NAME)
@@ -57,6 +60,7 @@ class ListWorkAdapter(
     }) {
     private val viewPool = RecyclerView.RecycledViewPool()
     private lateinit var contentsAdapter: ListContentCheckAdapter
+    private lateinit var contentsDoneAdapter: ListContentCheckAdapter
 
     override fun createView(parent: ViewGroup, viewType: Int?): View {
         return parent.inflate(R.layout.item_work_group)
@@ -66,6 +70,9 @@ class ListWorkAdapter(
         super.bind(view, viewType, position, item, payloads)
         if (payloads.contains(PAYLOAD_CONTENT)) {
             (view.recyclerWorks.adapter as? ListContentCheckAdapter)?.submitList(item.listContent)
+        }
+        if (payloads.contains(PAYLOAD_CONTENT_DONE)) {
+            (view.recyclerWorks.adapter as? ListContentCheckAdapter)?.submitList(item.listContentDone)
         }
         if (payloads.contains(PAYLOAD_NAME)) {
             view.tvTitle.text = item.name
@@ -78,23 +85,45 @@ class ListWorkAdapter(
             onClickTitle.invoke(position)
         }
         view.recyclerWorks.apply {
-            contentsAdapter = ListContentCheckAdapter({
-            }, { content, index ->
+            val isChecked = false
+            contentsAdapter = ListContentCheckAdapter(isChecked, {
+            }, { content ->
                 if (content.name.isNotEmpty()) {
                     insertContentToWork.invoke(
-                        content, index, position
+                        content, position, isChecked
                     )
                 }
             }, { content ->
-                handlerCheckItem.invoke(content, position)
+                handlerCheckItem.invoke(content, position, isChecked)
             }, { content ->
-                updateNameContent.invoke(content, position)
+                updateNameContent.invoke(content, position, isChecked)
             }, { item, type ->
-                moreActionClick.invoke(item, type, position)
+                moreActionClick.invoke(item, type, position, isChecked)
             })
             adapter = contentsAdapter
             setRecycledViewPool(viewPool)
             contentsAdapter.submitList(item.listContent.toMutableList())
+        }
+
+        view.recyclerWorksDone.apply {
+            val isChecked = true
+            contentsDoneAdapter = ListContentCheckAdapter(isChecked, {
+            }, { content ->
+                /*if (content.name.isNotEmpty()) {
+                    insertContentToWork.invoke(
+                        content, index, position
+                    )
+                }*/
+            }, { content ->
+                handlerCheckItem.invoke(content, position, isChecked)
+            }, { content ->
+                updateNameContent.invoke(content, position, isChecked)
+            }, { item, type ->
+                moreActionClick.invoke(item, type, position, isChecked)
+            })
+            adapter = contentsDoneAdapter
+            setRecycledViewPool(viewPool)
+            contentsDoneAdapter.submitList(item.listContentDone.toMutableList())
         }
     }
 
@@ -102,5 +131,6 @@ class ListWorkAdapter(
         const val PAYLOAD_CONTENT = "PAYLOAD_CONTENT"
         const val PAYLOAD_NAME = "PAYLOAD_NAME"
         const val PAYLOAD_GROUP_ID = "PAYLOAD_GROUP_ID"
+        const val PAYLOAD_CONTENT_DONE = "PAYLOAD_CONTENT_DONE"
     }
 }

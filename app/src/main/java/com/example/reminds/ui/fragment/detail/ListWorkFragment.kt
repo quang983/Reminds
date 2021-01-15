@@ -50,7 +50,8 @@ class ListWorkFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel.insertWorksObject(getListWorkAdapter())
+        viewModel.reSaveListWorkToDb(getListWorkAdapter()) {
+        }
     }
 
     private fun setupListener() {
@@ -87,9 +88,9 @@ class ListWorkFragment : Fragment() {
         adapter = ListWorkAdapter(onClickTitle = { workPosition ->
             viewModel.updateListWork(getListWorkAdapter(), workPosition)
         }, insertContentToWork = { content, contentPosition, position ->
-            viewModel.updateAndAddContent(content, contentPosition, position)
+            viewModel.updateAndAddContent(content, position)
         }, handlerCheckItem = { content, position ->
-            viewModel.handlerCheckItem(content, position)
+            viewModel.handlerCheckedContent(content, position)
         }, updateNameContent = { content, position ->
             viewModel.updateNameContent(content, position)
         }, moreActionClick = { item, type, wPosition ->
@@ -98,7 +99,7 @@ class ListWorkFragment : Fragment() {
                     setupTimePickerForContent(item, wPosition)
                 }
                 ListContentCheckAdapter.TYPE_TAG_CLICK -> {
-//                    viewModel.hashTagContent(item, wPosition)
+//                    viewModel.updateContentData(item, wPosition)
 
                     val GROUP_KEY_WORK_EMAIL = "com.android.example.WORK_EMAIL"
 
@@ -132,13 +133,13 @@ class ListWorkFragment : Fragment() {
 
     private fun showDialogInputWorkTopic() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Thêm mới")
+        builder.setTitle(requireContext().getText(R.string.new_data_title))
         val input = EditText(requireContext())
         input.inputType = InputType.TYPE_CLASS_TEXT
         builder.setView(input)
         builder.setPositiveButton("OK") { _, _ ->
             val text = input.text.toString()
-            viewModel.insertWorkInCurrent(text)
+            viewModel.insertNewWork(text)
         }
         builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
 
@@ -159,7 +160,7 @@ class ListWorkFragment : Fragment() {
             val newMinute: Int = picker.minute
             val longTimer = newHour * 60 + newMinute
             item.timer = longTimer.toLong()
-            viewModel.setTimerContent(item, workPosition)
+            viewModel.updateContentData(item, workPosition)
         }
         picker.addOnNegativeButtonClickListener {
         }

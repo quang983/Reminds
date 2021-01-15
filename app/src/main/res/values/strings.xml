@@ -22,4 +22,5 @@
     <string name="format_yesterday">Hôm qua,</string>
     <string name="setting_show_task_done_title">Hiển thị lời nhắc đã hoàn tất</string>
     <string name="setting_hire_task_done_title">Ẩn lời nhắc đã hoàn tất</string>
+    <string name="new_data_title">Thêm mới</string>
 </resources>

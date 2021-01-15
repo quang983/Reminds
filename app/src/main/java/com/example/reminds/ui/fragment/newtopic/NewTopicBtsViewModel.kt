@@ -10,8 +10,9 @@ import com.example.reminds.common.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class NewTopicBtsViewModel @ViewModelInject constructor(private val insertTopicUseCase: InsertTopicUseCase, private val insertWorkUseCase: InsertWorkUseCase) :
-    BaseViewModel() {
+class NewTopicBtsViewModel @ViewModelInject constructor(
+    private val insertTopicUseCase: InsertTopicUseCase,
+    private val insertWorkUseCase: InsertWorkUseCase) : BaseViewModel() {
     var timeStampsStartDate = 0L
     fun insertTopic(name: String) {
         viewModelScope.launch(handler + Dispatchers.IO) {

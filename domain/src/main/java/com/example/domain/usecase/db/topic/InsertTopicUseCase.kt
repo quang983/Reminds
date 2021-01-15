@@ -6,10 +6,10 @@ import com.example.domain.repository.TopicRepository
 import javax.inject.Inject
 
 class InsertTopicUseCase @Inject constructor(private val topicRepository: TopicRepository) :
-    BaseUseCase<InsertTopicUseCase.Param, Unit> {
+    BaseUseCase<InsertTopicUseCase.Param, Long> {
     class Param(val topic: TopicGroupEntity)
 
-    override suspend fun invoke(params: Param) {
-        topicRepository.insertData(params.topic)
+    override suspend fun invoke(params: Param) : Long {
+        return topicRepository.insertData(params.topic)
     }
 }

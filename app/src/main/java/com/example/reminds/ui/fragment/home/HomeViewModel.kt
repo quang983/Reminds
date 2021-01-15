@@ -4,10 +4,12 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.common.base.model.TopicGroupEntity
+import com.example.common.base.model.WorkDataEntity
 import com.example.domain.base.BaseUseCase
 import com.example.domain.usecase.db.topic.DeleteTopicUseCase
 import com.example.domain.usecase.db.topic.FetchTopicUseCase
 import com.example.domain.usecase.db.topic.InsertTopicUseCase
+import com.example.domain.usecase.db.workintopic.InsertWorkUseCase
 import com.example.reminds.common.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect

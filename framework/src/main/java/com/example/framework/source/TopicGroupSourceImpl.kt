@@ -6,7 +6,6 @@ import com.example.data.local.source.TopicGroupSource
 import com.example.framework.local.database.dao.LocalTopicGroupDao
 import com.example.framework.local.database.dao.LocalWorkFromTopicDao
 import com.example.framework.local.database.model.TopicGroup
-import com.example.framework.local.database.model.WorkFoTopic
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -23,17 +22,7 @@ class TopicGroupSourceImpl @Inject constructor(
 
     @Transaction
     override suspend fun insert(data: TopicGroupEntity): Long {
-        val topicGroupDbId = dao.insert(TopicGroup().toData(data))
-        daoWork.insert(
-            WorkFoTopic(
-                id = System.currentTimeMillis(),
-                name = "Cơ bản",
-                idOwnerGroup = topicGroupDbId,
-                listContent = mutableListOf(),
-                listContentDone = mutableListOf()
-            )
-        )
-        return topicGroupDbId
+        return dao.insert(TopicGroup().toData(data))
     }
 
     override suspend fun inserts(datas: List<TopicGroupEntity>) {

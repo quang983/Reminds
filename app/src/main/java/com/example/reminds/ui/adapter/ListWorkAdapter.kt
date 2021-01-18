@@ -3,7 +3,6 @@ package com.example.reminds.ui.adapter
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.WorkDataEntity
 import com.example.reminds.R
@@ -31,7 +30,7 @@ class ListWorkAdapter(
             oldItem: WorkDataEntity,
             newItem: WorkDataEntity
         ): Boolean {
-            return oldItem.listContent == newItem.listContent && oldItem.name == newItem.name && oldItem.groupId == newItem.groupId
+            return oldItem.listContent === newItem.listContent && oldItem.name == newItem.name && oldItem.groupId == newItem.groupId
         }
 
         override fun getChangePayload(oldItem: WorkDataEntity, newItem: WorkDataEntity): Any? {
@@ -55,7 +54,6 @@ class ListWorkAdapter(
         }
 
     }) {
-    private val viewPool = RecyclerView.RecycledViewPool()
     private lateinit var contentsAdapter: ListContentCheckAdapter
 
     override fun createView(parent: ViewGroup, viewType: Int?): View {
@@ -93,7 +91,6 @@ class ListWorkAdapter(
                 moreActionClick.invoke(item, type, position)
             })
             adapter = contentsAdapter
-            setRecycledViewPool(viewPool)
             contentsAdapter.submitList(item.listContent.toMutableList())
         }
     }

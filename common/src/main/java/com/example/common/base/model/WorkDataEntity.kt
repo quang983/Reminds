@@ -11,7 +11,7 @@ data class WorkDataEntity(
     var listContentDone: MutableList<ContentDataEntity>
 ) {
     fun copy() = WorkDataEntity(
-        id, name, groupId, listContent.map { it.copy() } as MutableList<ContentDataEntity>, listContentDone.map { it.copy() } as MutableList<ContentDataEntity>
+        id, name, groupId, listContent.map { it.copy() }.toMutableList(), listContentDone.map { it.copy() }.toMutableList()
     )
 
     fun copyAndClearFocus() = WorkDataEntity(

@@ -92,7 +92,7 @@ class ListWorkFragment : Fragment() {
         }, handlerCheckItem = { content, position ->
             viewModel.handlerCheckedContent(content, position)
         }, updateNameContent = { content, position ->
-            viewModel.updateNameContent(content, position)
+            viewModel.updateContentData(content, position)
         }, moreActionClick = { item, type, wPosition ->
             when (type) {
                 ListContentCheckAdapter.TYPE_TIMER_CLICK -> {

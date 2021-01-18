@@ -157,25 +157,25 @@ class ListContentCheckAdapter(
             }
             view.rbChecked.setOnCheckedChangeListener(null)
             view.rbChecked.setOnCheckedChangeListener { _, isChecked ->
-                item.isFocus = view.tvContentCheck.isFocusable
-                if (isChecked && view.tvContentCheck.text.toString().isNotEmpty()) {
-                    timer = Timer()
-                    view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.bg_gray))
-                    timer.schedule(
-                        object : TimerTask() {
-                            override fun run() {
-                                handlerCheckItem.invoke(item)
-                            }
-                        },
-                        DELAY
-                    )
-                } else {
-                    view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
-                    timer.cancel()
-                    timer.purge()
+                if(!item.isFocus){
+                    if (isChecked && view.tvContentCheck.text.toString().isNotEmpty()) {
+                        timer = Timer()
+                        view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.bg_gray))
+                        timer.schedule(
+                            object : TimerTask() {
+                                override fun run() {
+                                    handlerCheckItem.invoke(item)
+                                }
+                            },
+                            DELAY
+                        )
+                    } else {
+                        view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
+                        timer.cancel()
+                        timer.purge()
+                    }
                 }
             }
-            view.rbChecked.setChecked(false)
         }
     }
 

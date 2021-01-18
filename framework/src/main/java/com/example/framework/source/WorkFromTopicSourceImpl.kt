@@ -29,7 +29,8 @@ class WorkFromTopicSourceImpl @Inject constructor(
                             it.name,
                             it.idOwnerWork,
                             hashTag = it.hashTag,
-                            timer = it.timer
+                            timer = it.timer,
+                            isFocus = false
 
                         )
                     } as ArrayList<ContentDataEntity>,
@@ -39,7 +40,8 @@ class WorkFromTopicSourceImpl @Inject constructor(
                             it.name,
                             it.idOwnerWork,
                             hashTag = it.hashTag,
-                            timer = it.timer
+                            timer = it.timer,
+                            isFocus = false
                         )
                     } as ArrayList<ContentDataEntity>
                 )

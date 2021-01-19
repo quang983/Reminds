@@ -8,6 +8,7 @@ import android.widget.EditText
 
 class KeyboardUtils {
     companion object {
+
         fun showKeyboard(editText: EditText, context: Context?) {
             if (context == null) return
 

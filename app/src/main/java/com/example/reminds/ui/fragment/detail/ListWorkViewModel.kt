@@ -123,6 +123,7 @@ class ListWorkViewModel @ViewModelInject constructor(
                     contentDataEntity.name = content.name
                     contentDataEntity.hashTag = content.hashTag
                     contentDataEntity.timer = content.timer
+                    contentDataEntity.isCheckDone = content.isCheckDone
                     return@forEachIndexed
                 }
             }

@@ -1,6 +1,7 @@
 package com.example.reminds.ui.fragment.detail
 
 import android.os.Bundle
+import android.os.Handler
 import android.text.InputType
 import android.view.*
 import android.widget.EditText
@@ -11,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.common.base.model.ContentDataEntity
-import com.example.common.base.model.WorkDataEntity
 import com.example.reminds.R
 import com.example.reminds.ui.adapter.ListContentCheckAdapter
 import com.example.reminds.ui.adapter.ListWorkAdapter
@@ -150,11 +150,14 @@ class ListWorkFragment : Fragment() {
         picker.show(childFragmentManager, "tag")
 
         picker.addOnPositiveButtonClickListener {
+            picker.dismiss()
             val newHour: Int = picker.hour
             val newMinute: Int = picker.minute
             val longTimer = newHour * 60 + newMinute
             item.timer = longTimer.toLong()
-            viewModel.updateContentData(item, workPosition)
+            Handler().postDelayed({
+                viewModel.updateContentData(item, workPosition)
+            },500)
         }
         picker.addOnNegativeButtonClickListener {
         }
@@ -162,10 +165,6 @@ class ListWorkFragment : Fragment() {
         }
         picker.addOnDismissListener {
         }
-    }
-
-    private fun getListWorkAdapter(): List<WorkDataEntity> {
-        return adapter.currentList
     }
 
     override fun onResume() {

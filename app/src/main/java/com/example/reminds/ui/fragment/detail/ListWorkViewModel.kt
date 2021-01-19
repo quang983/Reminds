@@ -61,12 +61,12 @@ class ListWorkViewModel @ViewModelInject constructor(
         isReSaveWorks = false
     }
 
-    private fun reSaveListWorkToDb(works: List<WorkDataEntity>, block: (works: List<WorkDataEntity>) -> Unit) {
+    fun reSaveListWorkToDb(wPosition: Int) {
         GlobalScope.launch(handler + Dispatchers.IO) {
-            val list = works.map {
+            val list = listWorkViewModel.map {
                 it.copyAndClearFocus()
             }
-            block.invoke(list)
+            workPosition = wPosition
             updateListWorkUseCase.invoke(UpdateListWorkUseCase.Param(list))
         }
     }
@@ -81,14 +81,6 @@ class ListWorkViewModel @ViewModelInject constructor(
                     listWorkViewModel[wPosition].id, isFocus = true
                 )
             )
-    }
-
-
-    fun updateListWork(works: List<WorkDataEntity>, wPosition: Int) {
-        reSaveListWorkToDb(works) {
-            reSaveListWorkViewModel(it)
-            workPosition = wPosition
-        }
     }
 
     fun handlerCheckedContent(content: ContentDataEntity, workPosition: Int) =

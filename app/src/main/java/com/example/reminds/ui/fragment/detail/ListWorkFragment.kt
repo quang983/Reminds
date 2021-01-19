@@ -80,7 +80,7 @@ class ListWorkFragment : Fragment() {
 
     private fun setupUI() {
         adapter = ListWorkAdapter(onClickTitle = { workPosition ->
-            viewModel.updateListWork(getListWorkAdapter(), workPosition)
+            viewModel.reSaveListWorkToDb(workPosition)
         }, insertContentToWork = { content, position ->
             viewModel.updateAndAddContent(content, position)
         }, handlerCheckItem = { content, position ->

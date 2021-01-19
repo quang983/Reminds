@@ -47,36 +47,6 @@ class WorkFromTopicSourceImpl @Inject constructor(
         }.conflate()
     }
 
-    override suspend fun fetchAllIncludeChecked(idGroup: Long): Flow<List<WorkDataEntity>> {
-        return dao.fetchWorkFromTopicData(idGroup).distinctUntilChanged().map { it ->
-            it.listWork.map { it ->
-                WorkDataEntity(
-                    it.id,
-                    it.name,
-                    it.idOwnerGroup,
-                    it.listContent.map {
-                        ContentDataEntity(
-                            it.idContent,
-                            it.name,
-                            it.idOwnerWork,
-                            hashTag = it.hashTag,
-                            timer = it.timer
-                        )
-                    } as ArrayList<ContentDataEntity>,
-                    it.listContentDone.map {
-                        ContentDataEntity(
-                            it.idContent,
-                            it.name,
-                            it.idOwnerWork,
-                            hashTag = it.hashTag,
-                            timer = it.timer
-                        )
-                    } as ArrayList<ContentDataEntity>
-                )
-            }
-        }.conflate()
-    }
-
     override suspend fun insert(data: WorkDataEntity): Long {
         return dao.insert(
             WorkFoTopic(

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.example.common.base.model.TopicGroupEntity
 import com.example.reminds.R
 import com.example.reminds.common.BaseAdapter
+import com.example.reminds.common.BaseViewHolder
 import com.example.reminds.utils.TimestampUtils
 import com.example.reminds.utils.inflate
 import com.example.reminds.utils.setVisible
@@ -38,7 +39,7 @@ class TopicAdapter(private val onClickDetail: (id: Long) -> Unit) :
         return parent.inflate(R.layout.item_topic)
     }
 
-    override fun bind(view: View, viewType: Int, position: Int, item: TopicGroupEntity) {
+    override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: TopicGroupEntity) {
         view.tvContent.text = item.name
         view.tvDate.setVisible(item.startDate != 0L)
         view.tvDate.text = TimestampUtils.getDate(item.startDate)

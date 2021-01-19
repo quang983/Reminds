@@ -1,8 +1,5 @@
 package com.example.common.base.model
 
-import androidx.room.Entity
-
-@Entity
 data class WorkDataEntity(
     var id: Long,
     val name: String,

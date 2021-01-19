@@ -17,12 +17,13 @@ import net.citigo.kiotviet.common.utils.extension.getLastOrNull
 class ListWorkViewModel @ViewModelInject constructor(
     private val fetchWorksUseCase: FetchWorksUseCase,
     private val insertWorkUseCase: InsertWorkUseCase,
-    private val insertListWorkUseCase: InsertListWorkUseCase,
     private val updateWorkUseCase: UpdateWorkUseCase,
     private val updateListWorkUseCase: UpdateListWorkUseCase
 ) : BaseViewModel() {
     private var isReSaveWorks = false
     private var workPosition = -1
+
+    val isShowDone = true
 
     private val idGroup: MediatorLiveData<Long> = MediatorLiveData<Long>()
 
@@ -60,7 +61,7 @@ class ListWorkViewModel @ViewModelInject constructor(
         isReSaveWorks = false
     }
 
-    fun reSaveListWorkToDb(works: List<WorkDataEntity>, block: (works: List<WorkDataEntity>) -> Unit) {
+    private fun reSaveListWorkToDb(works: List<WorkDataEntity>, block: (works: List<WorkDataEntity>) -> Unit) {
         GlobalScope.launch(handler + Dispatchers.IO) {
             val list = works.map {
                 it.copyAndClearFocus()
@@ -98,15 +99,6 @@ class ListWorkViewModel @ViewModelInject constructor(
             updateWorkUseCase.invoke(UpdateWorkUseCase.Param(work))
 
         }
-
-    fun updateNameContent(content: ContentDataEntity, workPosition: Int) {
-        listWorkViewModel[workPosition].listContent.forEachIndexed { _, contentDataEntity ->
-            if (content.id == contentDataEntity.id) {
-                contentDataEntity.name = content.name
-                return@forEachIndexed
-            }
-        }
-    }
 
     fun deleteContent(content: ContentDataEntity, wPosition: Int) =
         viewModelScope.launch(handler + Dispatchers.IO) {

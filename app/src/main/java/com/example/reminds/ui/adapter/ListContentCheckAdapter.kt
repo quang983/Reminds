@@ -10,6 +10,7 @@ import com.chauthai.swipereveallayout.ViewBinderHelper
 import com.example.common.base.model.ContentDataEntity
 import com.example.reminds.R
 import com.example.reminds.common.BaseAdapter
+import com.example.reminds.common.BaseViewHolder
 import com.example.reminds.utils.KeyboardUtils
 import com.example.reminds.utils.TimestampUtils
 import com.example.reminds.utils.inflate
@@ -20,7 +21,7 @@ import java.util.*
 
 class ListContentCheckAdapter(
     private val onClickDetail: (id: Long) -> Unit,
-    private val insertItemClick: (item: ContentDataEntity, position: Int) -> Unit,
+    private val insertItemClick: (item: ContentDataEntity) -> Unit,
     private val handlerCheckItem: (item: ContentDataEntity) -> Unit,
     private val updateNameContent: (item: ContentDataEntity) -> Unit,
     private val moreActionClick: (item: ContentDataEntity, type: Int) -> Unit
@@ -71,11 +72,40 @@ class ListContentCheckAdapter(
     }
 
     override fun createView(parent: ViewGroup, viewType: Int?): View {
-        return when (viewType) {
+        val view = when (viewType) {
             TYPE_ADD_ITEM -> parent.inflate(R.layout.item_view_add)
             TYPE_CHECK_ITEM -> parent.inflate(R.layout.item_content_check)
             else -> parent.inflate(R.layout.item_content_check)
         }
+        view.rootView.setOnClickListener {
+            (view.tag as? ContentDataEntity)?.let {
+                onClickDetail.invoke(it.id)
+            }
+        }
+
+        view.imgTimer.setOnClickListener {
+            (view.tag as? ContentDataEntity)?.let {
+                moreActionClick.invoke(it, TYPE_TIMER_CLICK)
+                Handler().postDelayed({
+                    view.swipeLayout.close(true)
+                }, 1000)
+            }
+        }
+
+        view.imgGim.setOnClickListener {
+            (view.tag as? ContentDataEntity)?.let {
+                moreActionClick.invoke(it, TYPE_TAG_CLICK)
+                view.swipeLayout.close(true)
+            }
+        }
+
+        view.imgDelete.setOnClickListener {
+            (view.tag as? ContentDataEntity)?.let {
+                moreActionClick.invoke(it, TYPE_DELETE_CLICK)
+                view.swipeLayout.close(true)
+            }
+        }
+        return view
     }
 
     override fun bind(view: View, viewType: Int, position: Int, item: ContentDataEntity, payloads: MutableList<Any>) {
@@ -86,43 +116,18 @@ class ListContentCheckAdapter(
             }
         }
         if (payloads.contains(PAYLOAD_NAME)) {
-            view.tvContentCheck.setText(item.name)
+            refreshEdtContent(view, item)
         }
         if (payloads.contains(PAYLOAD_TIMER)) {
-            view.tvTimer.setVisible(item.timer >= 0)
-            view.tvTimer.text = TimestampUtils.convertMinuteToTimeStr(item.timer).toString()
+            refreshTvTimer(view, item)
         }
+        view.rbChecked.setChecked(false)
     }
 
-    override fun bind(view: View, viewType: Int, position: Int, item: ContentDataEntity) {
+    override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: ContentDataEntity) {
         viewBinderHelper.setOpenOnlyOne(true)
         viewBinderHelper.bind(view.swipeLayout, item.id.toString())
         if (viewType == TYPE_CHECK_ITEM) {
-            view.tvContentCheck.setText(item.name)
-            view.tvTimer.setVisible(item.timer >= 0)
-            view.tvTimer.text = TimestampUtils.convertMinuteToTimeStr(item.timer).toString()
-
-            view.rootView.setOnClickListener {
-                onClickDetail.invoke(item.id)
-            }
-
-            view.imgTimer.setOnClickListener {
-                moreActionClick.invoke(item, TYPE_TIMER_CLICK)
-                Handler().postDelayed({
-                    view.swipeLayout.close(true)
-                }, 1000)
-            }
-
-            view.imgGim.setOnClickListener {
-                moreActionClick.invoke(item, TYPE_TAG_CLICK)
-                view.swipeLayout.close(true)
-            }
-
-            view.imgDelete.setOnClickListener {
-                moreActionClick.invoke(item, TYPE_DELETE_CLICK)
-                view.swipeLayout.close(true)
-            }
-
             if (position == currentList.size - 1 && item.isFocus && currentList.size - 1 >= 0) {
                 view.tvContentCheck.requestFocus()
             }
@@ -130,34 +135,37 @@ class ListContentCheckAdapter(
                 KeyboardUtils.showKeyboard(view.tvContentCheck, view.context)
                 isChangeItem = false
             }
+            refreshTvTimer(view, item)
+            refreshEdtContent(view, item)
             view.tvContentCheck.addTextChangedListener {
                 item.name = it.toString()
                 updateNameContent(item)
             }
 
-            view.tvContentCheck.setOnFocusChangeListener { v, hasFocus ->
+            view.tvContentCheck.setOnFocusChangeListener { _, hasFocus ->
                 item.isFocus = hasFocus
             }
 
-            view.tvContentCheck.setOnEditorActionListener { v, actionId, _ ->
+            view.tvContentCheck.setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_DONE && view.tvContentCheck.text.toString().isNotEmpty()) {
                     insertItemClick(item.apply {
                         this.name = view.tvContentCheck.text.toString()
                         this.isFocus = false
-                    }, position)
+                    })
                     true
                 } else {
                     view.tvContentCheck.clearFocus()
                     insertItemClick(item.apply {
                         this.name = view.tvContentCheck.text.toString()
                         this.isFocus = false
-                    }, position)
+                    })
                     false
                 }
             }
             view.rbChecked.setOnCheckedChangeListener(null)
+            view.rbChecked.setChecked(false)
             view.rbChecked.setOnCheckedChangeListener { _, isChecked ->
-                item.isFocus = view.tvContentCheck.isFocusable
+                item.isFocus = false
                 if (isChecked && view.tvContentCheck.text.toString().isNotEmpty()) {
                     timer = Timer()
                     view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.bg_gray))
@@ -175,8 +183,17 @@ class ListContentCheckAdapter(
                     timer.purge()
                 }
             }
-            view.rbChecked.setChecked(false)
         }
+    }
+
+    private fun refreshEdtContent(view: View, item: ContentDataEntity) {
+        view.tvContentCheck.setText(item.name)
+        view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
+    }
+
+    private fun refreshTvTimer(view: View, item: ContentDataEntity) {
+        view.tvTimer.setVisible(item.timer >= 0)
+        view.tvTimer.text = TimestampUtils.convertMinuteToTimeStr(item.timer).toString()
     }
 
     companion object {

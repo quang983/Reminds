@@ -48,12 +48,6 @@ class ListWorkFragment : Fragment() {
         setupListener()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        viewModel.reSaveListWorkToDb(getListWorkAdapter()) {
-        }
-    }
-
     private fun setupListener() {
         extendedFab.setOnClickListener {
             showDialogInputWorkTopic()
@@ -87,12 +81,12 @@ class ListWorkFragment : Fragment() {
     private fun setupUI() {
         adapter = ListWorkAdapter(onClickTitle = { workPosition ->
             viewModel.updateListWork(getListWorkAdapter(), workPosition)
-        }, insertContentToWork = { content, contentPosition, position ->
+        }, insertContentToWork = { content, position ->
             viewModel.updateAndAddContent(content, position)
         }, handlerCheckItem = { content, position ->
             viewModel.handlerCheckedContent(content, position)
         }, updateNameContent = { content, position ->
-            viewModel.updateNameContent(content, position)
+            viewModel.updateContentData(content, position)
         }, moreActionClick = { item, type, wPosition ->
             when (type) {
                 ListContentCheckAdapter.TYPE_TIMER_CLICK -> {

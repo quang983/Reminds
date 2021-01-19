@@ -24,8 +24,7 @@ class NewTopicBtsViewModel @ViewModelInject constructor(
                             id = System.currentTimeMillis(),
                             name = "Cơ bản",
                             groupId = it,
-                            listContent = mutableListOf(),
-                            listContentDone = mutableListOf()
+                            listContent = mutableListOf()
                         )
                     )
                 )

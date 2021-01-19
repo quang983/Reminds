@@ -12,10 +12,6 @@ class WorkFromTopicRepositoryImpl @Inject constructor(private val workFromTopicS
         return workFromTopicSource.fetchAll(idGroup)
     }
 
-    override suspend fun fetchAllWorksFromTopic(idGroup: Long): Flow<List<WorkDataEntity>> {
-        return workFromTopicSource.fetchAllIncludeChecked(idGroup)
-    }
-
     override suspend fun insertData(data: WorkDataEntity): Long {
         return workFromTopicSource.insert(data)
     }

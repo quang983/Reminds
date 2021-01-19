@@ -1,6 +1,7 @@
 package com.example.reminds.ui.fragment.detail
 
 import android.os.Bundle
+import android.os.Handler
 import android.text.InputType
 import android.view.*
 import android.widget.EditText
@@ -11,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.common.base.model.ContentDataEntity
-import com.example.common.base.model.WorkDataEntity
 import com.example.reminds.R
 import com.example.reminds.ui.adapter.ListContentCheckAdapter
 import com.example.reminds.ui.adapter.ListWorkAdapter
@@ -48,12 +48,6 @@ class ListWorkFragment : Fragment() {
         setupListener()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        viewModel.reSaveListWorkToDb(getListWorkAdapter()) {
-        }
-    }
-
     private fun setupListener() {
         extendedFab.setOnClickListener {
             showDialogInputWorkTopic()
@@ -86,17 +80,17 @@ class ListWorkFragment : Fragment() {
 
     private fun setupUI() {
         adapter = ListWorkAdapter(onClickTitle = { workPosition ->
-            viewModel.updateListWork(getListWorkAdapter(), workPosition)
-        }, insertContentToWork = { content, position, checked ->
-            viewModel.updateAndAddContent(content, position, checked)
-        }, handlerCheckItem = { content, position, listChecked ->
-            viewModel.handlerCheckedContent(content, position, listChecked)
-        }, updateNameContent = { content, position, checked ->
-            viewModel.updateNameContent(content, position, checked)
-        }, moreActionClick = { item, type, wPosition, checked ->
+            viewModel.reSaveListWorkToDb(workPosition)
+        }, insertContentToWork = { content, position ->
+            viewModel.updateAndAddContent(content, position)
+        }, handlerCheckItem = { content, position ->
+            viewModel.handlerCheckedContent(content, position)
+        }, updateNameContent = { content, position ->
+            viewModel.updateContentData(content, position)
+        }, moreActionClick = { item, type, wPosition ->
             when (type) {
                 ListContentCheckAdapter.TYPE_TIMER_CLICK -> {
-                    setupTimePickerForContent(item, wPosition, checked)
+                    setupTimePickerForContent(item, wPosition)
                 }
                 ListContentCheckAdapter.TYPE_TAG_CLICK -> {
 //                    viewModel.updateContentData(item, wPosition)
@@ -115,7 +109,7 @@ class ListWorkFragment : Fragment() {
 
                 }
                 ListContentCheckAdapter.TYPE_DELETE_CLICK -> {
-                    viewModel.deleteContent(item, wPosition, checked)
+                    viewModel.deleteContent(item, wPosition)
                 }
             }
         }).apply {
@@ -146,7 +140,7 @@ class ListWorkFragment : Fragment() {
         builder.show()
     }
 
-    private fun setupTimePickerForContent(item: ContentDataEntity, workPosition: Int, listChecked: Boolean) {
+    private fun setupTimePickerForContent(item: ContentDataEntity, workPosition: Int) {
         val picker = MaterialTimePicker.Builder()
             .setTimeFormat(TimeFormat.CLOCK_24H)
             .setHour(12)
@@ -156,11 +150,14 @@ class ListWorkFragment : Fragment() {
         picker.show(childFragmentManager, "tag")
 
         picker.addOnPositiveButtonClickListener {
+            picker.dismiss()
             val newHour: Int = picker.hour
             val newMinute: Int = picker.minute
             val longTimer = newHour * 60 + newMinute
             item.timer = longTimer.toLong()
-            viewModel.updateContentData(item, workPosition, listChecked)
+            Handler().postDelayed({
+                viewModel.updateContentData(item, workPosition)
+            },500)
         }
         picker.addOnNegativeButtonClickListener {
         }
@@ -168,10 +165,6 @@ class ListWorkFragment : Fragment() {
         }
         picker.addOnDismissListener {
         }
-    }
-
-    private fun getListWorkAdapter(): List<WorkDataEntity> {
-        return adapter.currentList
     }
 
     override fun onResume() {

@@ -42,7 +42,7 @@ abstract class BaseAdapter<T>(callBack: DiffUtil.ItemCallback<T>) : ListAdapter<
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-        bind(holder.itemView, holder.viewType, position, getItem(position))
+        bind(holder,holder.itemView, holder.viewType, position, getItem(position))
     }
 
     protected abstract fun createView(parent: ViewGroup, viewType: Int? = 0): View
@@ -56,7 +56,7 @@ abstract class BaseAdapter<T>(callBack: DiffUtil.ItemCallback<T>) : ListAdapter<
     ) {
     }
 
-    protected abstract fun bind(view: View, viewType: Int, position: Int, item: T)
+    protected abstract fun bind(holder : BaseViewHolder,view: View, viewType: Int, position: Int, item: T)
 }
 
 class BaseViewHolder(val view: View, val viewType: Int) : RecyclerView.ViewHolder(view)

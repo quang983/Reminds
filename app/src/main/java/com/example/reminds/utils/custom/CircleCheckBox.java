@@ -49,7 +49,7 @@ public class CircleCheckBox extends View {
 
     float centerX = 0;
     float centerY = 0;
-    private boolean isChecked = false;
+    boolean isChecked = false;
 
     private boolean draw_tick = false;
 

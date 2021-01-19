@@ -11,8 +11,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class TopicGroupSourceImpl @Inject constructor(
-    private val dao: LocalTopicGroupDao,
-    private val daoWork: LocalWorkFromTopicDao,
+    private val dao: LocalTopicGroupDao
 ) : TopicGroupSource {
     override suspend fun fetchAll(): Flow<List<TopicGroupEntity>> {
         return dao.fetchTopicGroupData().map { it ->

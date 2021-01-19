@@ -12,12 +12,3 @@ data class TopicGroupWithWorks(
     )
     val listWork: List<WorkFoTopic>
 )
-
-data class WorkWithContent(
-    @Embedded val workGroup: WorkFoTopic,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "idOwnerWork",
-    )
-    val listContent: List<ContentFoWork>
-)

@@ -31,7 +31,8 @@ class ListWorkAdapter(
             oldItem: WorkDataEntity,
             newItem: WorkDataEntity
         ): Boolean {
-            return oldItem.listContent == newItem.listContent && oldItem.name == newItem.name && oldItem.groupId == newItem.groupId
+            return oldItem.listContent == newItem.listContent && oldItem.name == newItem.name
+                    && oldItem.groupId == newItem.groupId
         }
 
         override fun getChangePayload(oldItem: WorkDataEntity, newItem: WorkDataEntity): Any? {

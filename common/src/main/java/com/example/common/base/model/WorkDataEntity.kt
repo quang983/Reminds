@@ -4,17 +4,22 @@ data class WorkDataEntity(
     var id: Long,
     val name: String,
     val groupId: Long,
-    var listContent: MutableList<ContentDataEntity>,
-    var listContentDone: MutableList<ContentDataEntity>
+    var listContent: MutableList<ContentDataEntity>
 ) {
     fun copy() = WorkDataEntity(
-        id, name, groupId, listContent.map { it.copy() } as MutableList<ContentDataEntity>, listContentDone.map { it.copy() } as MutableList<ContentDataEntity>
+        id, name, groupId, listContent.map { it.copy() }.sortedWith(
+            compareBy({ it.isCheckDone }, { it.id })
+        ).toMutableList()
+    )
+
+    fun copyAndRemoveDone() = WorkDataEntity(
+        id, name, groupId, listContent.map { it.copy() }
+            .filter { !it.isCheckDone }.sortedBy { it.id }.toMutableList()
     )
 
     fun copyAndClearFocus() = WorkDataEntity(
         id, name, groupId,
-        listContent.filter { it.name.isNotEmpty() }.map { it.copy() } as MutableList<ContentDataEntity>,
-        listContentDone.map { it.copy() } as MutableList<ContentDataEntity>
+        listContent.filter { it.name.isNotEmpty() }.map { it.copy() }.toMutableList()
     )
 
     override fun equals(other: Any?): Boolean {

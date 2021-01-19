@@ -7,9 +7,10 @@ data class ContentDataEntity(
     var idOwnerWork: Long,
     var isFocus: Boolean = false,
     var hashTag: Boolean = false,
-    var timer: Long = -1
+    var timer: Long = -1,
+    var isCheckDone: Boolean = false
 ) {
-    fun copy() = ContentDataEntity(id, name, idOwnerWork, isFocus, hashTag, timer)
+    fun copy() = ContentDataEntity(id, name, idOwnerWork, isFocus, hashTag, timer, isCheckDone)
 
 
     override fun equals(other: Any?): Boolean {

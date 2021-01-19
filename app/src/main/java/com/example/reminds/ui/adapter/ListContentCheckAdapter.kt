@@ -36,6 +36,7 @@ class ListContentCheckAdapter(
         override fun areContentsTheSame(oldItem: ContentDataEntity, newItem: ContentDataEntity): Boolean {
             return oldItem.isFocus == newItem.isFocus && oldItem.name == newItem.name
                     && oldItem.idOwnerWork == newItem.idOwnerWork && oldItem.timer == newItem.timer
+                    && oldItem.isCheckDone == newItem.isCheckDone
 
         }
 
@@ -53,6 +54,9 @@ class ListContentCheckAdapter(
             if (oldItem.timer != newItem.timer) {
                 payloads.add(PAYLOAD_TIMER)
             }
+            if (oldItem.isCheckDone != newItem.isCheckDone) {
+                payloads.add(PAYLOAD_CHECKED)
+            }
 
             return if (payloads.size > 0) {
                 payloads
@@ -62,21 +66,12 @@ class ListContentCheckAdapter(
         }
 
     }) {
-    private var isChangeItem: Boolean = false
     private val DELAY: Long = 2000
     var timer = Timer()
     private val viewBinderHelper = ViewBinderHelper()
 
-    override fun getItemViewType(position: Int): Int {
-        return TYPE_CHECK_ITEM
-    }
-
     override fun createView(parent: ViewGroup, viewType: Int?): View {
-        val view = when (viewType) {
-            TYPE_ADD_ITEM -> parent.inflate(R.layout.item_view_add)
-            TYPE_CHECK_ITEM -> parent.inflate(R.layout.item_content_check)
-            else -> parent.inflate(R.layout.item_content_check)
-        }
+        val view = parent.inflate(R.layout.item_content_check)
         view.rootView.setOnClickListener {
             (view.tag as? ContentDataEntity)?.let {
                 onClickDetail.invoke(it.id)
@@ -121,72 +116,49 @@ class ListContentCheckAdapter(
         if (payloads.contains(PAYLOAD_TIMER)) {
             refreshTvTimer(view, item)
         }
-        view.rbChecked.setChecked(false)
+        if (payloads.contains(PAYLOAD_CHECKED)) {
+            refreshCheckBox(view, item)
+        }
     }
 
     override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: ContentDataEntity) {
         viewBinderHelper.setOpenOnlyOne(true)
         viewBinderHelper.bind(view.swipeLayout, item.id.toString())
-        if (viewType == TYPE_CHECK_ITEM) {
-            if (position == currentList.size - 1 && item.isFocus && currentList.size - 1 >= 0) {
-                view.tvContentCheck.requestFocus()
-            }
-            if (isChangeItem) {
-                KeyboardUtils.showKeyboard(view.tvContentCheck, view.context)
-                isChangeItem = false
-            }
-            refreshTvTimer(view, item)
-            refreshEdtContent(view, item)
-            view.tvContentCheck.addTextChangedListener {
-                item.name = it.toString()
-                updateNameContent(item)
-            }
+        refreshTvTimer(view, item)
+        refreshEdtContent(view, item)
+        view.tvContentCheck.addTextChangedListener {
+            item.name = it.toString()
+            updateNameContent(item)
+        }
 
-            view.tvContentCheck.setOnFocusChangeListener { _, hasFocus ->
-                item.isFocus = hasFocus
-            }
+        view.tvContentCheck.setOnFocusChangeListener { _, hasFocus ->
+            item.isFocus = hasFocus
+        }
 
-            view.tvContentCheck.setOnEditorActionListener { _, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_DONE && view.tvContentCheck.text.toString().isNotEmpty()) {
-                    insertItemClick(item.apply {
-                        this.name = view.tvContentCheck.text.toString()
-                        this.isFocus = false
-                    })
-                    true
-                } else {
-                    view.tvContentCheck.clearFocus()
-                    insertItemClick(item.apply {
-                        this.name = view.tvContentCheck.text.toString()
-                        this.isFocus = false
-                    })
-                    false
-                }
-            }
-            view.rbChecked.setOnCheckedChangeListener(null)
-            view.rbChecked.setChecked(false)
-            view.rbChecked.setOnCheckedChangeListener { _, isChecked ->
-                item.isFocus = false
-                if (isChecked && view.tvContentCheck.text.toString().isNotEmpty()) {
-                    timer = Timer()
-                    view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.bg_gray))
-                    timer.schedule(
-                        object : TimerTask() {
-                            override fun run() {
-                                handlerCheckItem.invoke(item)
-                            }
-                        },
-                        DELAY
-                    )
-                } else {
-                    view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
-                    timer.cancel()
-                    timer.purge()
-                }
+        view.tvContentCheck.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE && view.tvContentCheck.text.toString().isNotEmpty()) {
+                insertItemClick(item.apply {
+                    this.name = view.tvContentCheck.text.toString()
+                    this.isFocus = false
+                })
+                true
+            } else {
+                view.tvContentCheck.clearFocus()
+                insertItemClick(item.apply {
+                    this.name = view.tvContentCheck.text.toString()
+                    this.isFocus = false
+                })
+                false
             }
         }
+        refreshCheckBox(view, item)
     }
 
     private fun refreshEdtContent(view: View, item: ContentDataEntity) {
+        if (item.isFocus) {
+            view.tvContentCheck.requestFocus()
+            KeyboardUtils.showKeyboard(view.tvContentCheck, view.context)
+        }
         view.tvContentCheck.setText(item.name)
         view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
     }
@@ -196,10 +168,40 @@ class ListContentCheckAdapter(
         view.tvTimer.text = TimestampUtils.convertMinuteToTimeStr(item.timer).toString()
     }
 
-    companion object {
-        const val TYPE_ADD_ITEM = 1
-        const val TYPE_CHECK_ITEM = 2
+    private fun refreshCheckBox(view: View, item: ContentDataEntity) {
+        view.rbChecked.setChecked(item.isCheckDone)
+        view.tvContentCheck.setTextColor(
+            if (item.isCheckDone) view.context.resources.getColor(R.color.bg_gray) else
+                view.context.resources.getColor(R.color.black)
+        )
+        view.rbChecked.setOnCheckedChangeListener { button, isChecked ->
+            if (button.isPressed) {
+                item.isFocus = false
+                if (isChecked && view.tvContentCheck.text.toString().isNotEmpty()) {
+                    timer = Timer()
+                    view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.bg_gray))
+                    timer.schedule(
+                        object : TimerTask() {
+                            override fun run() {
+                                item.isCheckDone = true
+                                handlerCheckItem.invoke(item)
+                            }
+                        },
+                        DELAY
+                    )
+                } else {
+                    view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
+                    item.isCheckDone = false
+                    handlerCheckItem.invoke(item)
+                    timer.cancel()
+                    timer.purge()
+                }
+            }
+        }
+    }
 
+
+    companion object {
         const val PAYLOAD_FOCUS = "PAYLOAD_FOCUS"
         const val PAYLOAD_NAME = "PAYLOAD_NAME"
         const val PAYLOAD_CHECKED = "PAYLOAD_CHECKED"

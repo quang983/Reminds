@@ -184,7 +184,7 @@ fun View.setOnClickListenerBlock(block: () -> Unit) {
         isEnabled = false
         postDelayed({
             isEnabled = true
-        }, 1000)
+        }, 200)
         block()
     }
 }

@@ -13,6 +13,7 @@ import com.example.reminds.common.BaseAdapter
 import com.example.reminds.common.BaseViewHolder
 import com.example.reminds.utils.TimestampUtils
 import com.example.reminds.utils.inflate
+import com.example.reminds.utils.setOnClickListenerBlock
 import com.example.reminds.utils.setVisible
 import kotlinx.android.synthetic.main.item_content_check.view.*
 import java.util.*
@@ -94,7 +95,7 @@ class ListContentCheckAdapter(
     }
 
     override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: ContentDataEntity) {
-        setupViewBinderHelper(view,item)
+        setupViewBinderHelper(view, item)
         refreshTvTimer(view, item)
         refreshEdtContent(view, item)
         refreshCheckBox(view, item)
@@ -102,7 +103,7 @@ class ListContentCheckAdapter(
         setOnEditorListener(view, item)
     }
 
-    private fun setupViewBinderHelper(view: View,item :ContentDataEntity) {
+    private fun setupViewBinderHelper(view: View, item: ContentDataEntity) {
         viewBinderHelper.setOpenOnlyOne(true)
         viewBinderHelper.bind(view.swipeLayout, item.id.toString())
     }
@@ -153,13 +154,13 @@ class ListContentCheckAdapter(
     }
 
     private fun setOnClickItemListener(view: View, item: ContentDataEntity) {
-        view.rootView.setOnClickListener {
+        view.rootView.setOnClickListenerBlock {
             item.let {
                 onClickDetail.invoke(it.id)
             }
         }
 
-        view.imgTimer.setOnClickListener {
+        view.imgTimer.setOnClickListenerBlock {
             item.let {
                 moreActionClick.invoke(it, TYPE_TIMER_CLICK)
                 Handler().postDelayed({
@@ -168,14 +169,14 @@ class ListContentCheckAdapter(
             }
         }
 
-        view.imgGim.setOnClickListener {
+        view.imgGim.setOnClickListenerBlock {
             item.let {
                 moreActionClick.invoke(it, TYPE_TAG_CLICK)
                 view.swipeLayout.close(true)
             }
         }
 
-        view.imgDelete.setOnClickListener {
+        view.imgDelete.setOnClickListenerBlock {
             item.let {
                 moreActionClick.invoke(it, TYPE_DELETE_CLICK)
                 view.swipeLayout.close(true)

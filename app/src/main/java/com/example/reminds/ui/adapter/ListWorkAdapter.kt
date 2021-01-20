@@ -9,6 +9,7 @@ import com.example.reminds.R
 import com.example.reminds.common.BaseAdapter
 import com.example.reminds.common.BaseViewHolder
 import com.example.reminds.utils.inflate
+import com.example.reminds.utils.setOnClickListenerBlock
 import kotlinx.android.synthetic.main.item_work_group.view.*
 
 class ListWorkAdapter(
@@ -31,14 +32,14 @@ class ListWorkAdapter(
             oldItem: WorkDataEntity,
             newItem: WorkDataEntity
         ): Boolean {
-            return oldItem.listContent == newItem.listContent && oldItem.name == newItem.name
-                    && oldItem.groupId == newItem.groupId
+            return oldItem.name == newItem.name
+                    && oldItem.groupId == newItem.groupId && oldItem.listContent.zip(newItem.listContent).all { (x, y) -> x.timer == y.timer }
         }
 
         override fun getChangePayload(oldItem: WorkDataEntity, newItem: WorkDataEntity): Any? {
             val payloads = ArrayList<Any>()
 
-            if (oldItem.listContent != newItem.listContent) {
+            if (!oldItem.listContent.zip(newItem.listContent).all { (x, y) -> x.timer == y.timer }) {
                 payloads.add(PAYLOAD_CONTENT)
             }
             if (oldItem.name != newItem.name) {
@@ -74,7 +75,7 @@ class ListWorkAdapter(
 
     override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: WorkDataEntity) {
         view.tvTitle.text = item.name
-        view.rootView.setOnClickListener {
+        view.rootView.setOnClickListenerBlock {
             onClickTitle.invoke(position)
         }
         view.recyclerWorks.apply {

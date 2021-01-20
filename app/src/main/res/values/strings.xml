@@ -23,4 +23,8 @@
     <string name="setting_show_task_done_title">Hiển thị lời nhắc đã hoàn tất</string>
     <string name="setting_hire_task_done_title">Ẩn lời nhắc đã hoàn tất</string>
     <string name="new_data_title">Thêm mới</string>
+    <string name="notify_title">Thông báo</string>
+    <string name="content_delete_topic_title">Bạn có chắc chắn muốn xoá mục này khỏi danh sách?</string>
+    <string name="cancel_action">Huỷ</string>
+    <string name="accept_action">Đồng ý</string>
 </resources>

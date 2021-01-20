@@ -27,4 +27,6 @@
     <string name="content_delete_topic_title">Bạn có chắc chắn muốn xoá mục này khỏi danh sách?</string>
     <string name="cancel_action">Huỷ</string>
     <string name="accept_action">Đồng ý</string>
+    <string name="notify_channel">CHANNEL_123</string>
+    <string name="notify_name_channel">CHANNEL name</string>
 </resources>

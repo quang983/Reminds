@@ -1,5 +1,7 @@
 package com.example.reminds.ui.fragment.detail
 
+import android.app.NotificationManager
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.text.InputType
@@ -7,12 +9,13 @@ import android.view.*
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import androidx.work.PeriodicWorkRequestBuilder
 import com.example.common.base.model.ContentDataEntity
 import com.example.reminds.R
+import com.example.reminds.service.NotificationWorker
 import com.example.reminds.ui.adapter.ListContentCheckAdapter
 import com.example.reminds.ui.adapter.ListWorkAdapter
 import com.example.reminds.utils.navigateUp
@@ -20,6 +23,7 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_list_work.*
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -94,19 +98,12 @@ class ListWorkFragment : Fragment() {
                 }
                 ListContentCheckAdapter.TYPE_TAG_CLICK -> {
 //                    viewModel.updateContentData(item, wPosition)
+                    val saveRequest =
+                        PeriodicWorkRequestBuilder<NotificationWorker>(1, TimeUnit.MINUTES)
+                            // Additional configuration
+                            .build()
 
-                    val GROUP_KEY_WORK_EMAIL = "com.android.example.WORK_EMAIL"
-
-                    val newMessageNotification = NotificationCompat.Builder(requireContext(), "CHANNEL_ID")
-                        .setSmallIcon(R.drawable.ic_calendar)
-                        .setContentTitle("emailObject.getSenderName()")
-                        .setContentText("emailObject.getSubject()")
-                        .setGroup(GROUP_KEY_WORK_EMAIL)
-                        .build()
-                    NotificationManagerCompat.from(requireContext()).apply {
-                        notify(123, newMessageNotification)
-                    }
-
+                    notifyThis("Thong bao", "haha")
                 }
                 ListContentCheckAdapter.TYPE_DELETE_CLICK -> {
                     viewModel.deleteContent(item, wPosition)
@@ -116,6 +113,7 @@ class ListWorkFragment : Fragment() {
             recyclerWorks.adapter = this
         }
     }
+
 
     private fun observeData() {
         with(viewModel) {
@@ -157,7 +155,7 @@ class ListWorkFragment : Fragment() {
             item.timer = longTimer.toLong()
             Handler().postDelayed({
                 viewModel.updateContentData(item, workPosition)
-            },500)
+            }, 500)
         }
         picker.addOnNegativeButtonClickListener {
         }
@@ -165,6 +163,20 @@ class ListWorkFragment : Fragment() {
         }
         picker.addOnDismissListener {
         }
+    }
+
+    private fun notifyThis(title: String?, message: String?) {
+        val b = NotificationCompat.Builder(requireActivity(), "CHANNEL_ID")
+        b.setAutoCancel(true)
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
+            .setWhen(System.currentTimeMillis())
+            .setSmallIcon(R.drawable.ic_calendar)
+            .setTicker("{your tiny message}")
+            .setContentTitle(title)
+            .setContentText(message)
+            .setContentInfo("INFO")
+        val nm = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        nm.notify(1, b.build())
     }
 
     override fun onResume() {

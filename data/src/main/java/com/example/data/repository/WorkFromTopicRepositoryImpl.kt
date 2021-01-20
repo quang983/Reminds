@@ -8,7 +8,11 @@ import javax.inject.Inject
 
 class WorkFromTopicRepositoryImpl @Inject constructor(private val workFromTopicSource: WorkFromTopicSource) :
     WorkFromTopicRepository {
-    override suspend fun fetchAllWorkFromTopic(idGroup: Long): Flow<List<WorkDataEntity>> {
+    override suspend fun fetchAllWorkFromTopicFlow(idGroup: Long): Flow<List<WorkDataEntity>> {
+        return workFromTopicSource.fetchAllFlow(idGroup)
+    }
+
+    override suspend fun fetchAllWorkFromTopic(idGroup: Long): List<WorkDataEntity> {
         return workFromTopicSource.fetchAll(idGroup)
     }
 

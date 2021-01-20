@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.conflate
 import javax.inject.Inject
 
 class TopicRepositoryImpl @Inject constructor(
-    private val topicDataGroupMapper: TopicDataGroupMapper,
     private val source: TopicGroupSource
 ) : TopicRepository {
     override suspend fun fetchAllTopicGroups(): Flow<List<TopicGroupEntity>> = source

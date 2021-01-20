@@ -16,8 +16,8 @@ import javax.inject.Inject
 class WorkFromTopicSourceImpl @Inject constructor(
     private val dao: LocalWorkFromTopicDao
 ) : WorkFromTopicSource {
-    override suspend fun fetchAll(idGroup: Long): Flow<List<WorkDataEntity>> {
-        return dao.fetchWorkFromTopicData(idGroup).distinctUntilChanged().map { it ->
+    override suspend fun fetchAllFlow(idGroup: Long): Flow<List<WorkDataEntity>> {
+        return dao.fetchWorkFromTopicDataFlow(idGroup).distinctUntilChanged().map { it ->
             it.listWork.map { it ->
                 WorkDataEntity(
                     it.id,
@@ -35,6 +35,27 @@ class WorkFromTopicSourceImpl @Inject constructor(
                 )
             }
         }.conflate()
+    }
+
+    override suspend fun fetchAll(idGroup: Long): List<WorkDataEntity> {
+        return dao.fetchWorkFromTopicData(idGroup).let { it ->
+            it.listWork.map { it ->
+                WorkDataEntity(
+                    it.id,
+                    it.name,
+                    it.idOwnerGroup,
+                    it.listContent.map {
+                        ContentDataEntity(
+                            it.idContent,
+                            it.name,
+                            it.idOwnerWork,
+                            hashTag = it.hashTag,
+                            timer = it.timer, isCheckDone = it.isCheckDone
+                        )
+                    } as ArrayList<ContentDataEntity>
+                )
+            }
+        }
     }
 
     override suspend fun insert(data: WorkDataEntity): Long {

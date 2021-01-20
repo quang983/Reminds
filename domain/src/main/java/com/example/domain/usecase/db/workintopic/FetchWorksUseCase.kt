@@ -9,7 +9,7 @@ import javax.inject.Inject
 class FetchWorksUseCase @Inject constructor(private val topicRepository: WorkFromTopicRepository) :
     BaseUseCase<FetchWorksUseCase.Param, Flow<List<WorkDataEntity>>> {
     override suspend fun invoke(params: Param): Flow<List<WorkDataEntity>> {
-        return topicRepository.fetchAllWorkFromTopic(params.idGroup)
+        return topicRepository.fetchAllWorkFromTopicFlow(params.idGroup)
     }
 
     class Param(val idGroup: Long)

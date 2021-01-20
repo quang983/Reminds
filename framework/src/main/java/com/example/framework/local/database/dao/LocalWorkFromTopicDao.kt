@@ -12,7 +12,11 @@ import kotlinx.coroutines.flow.Flow
 interface LocalWorkFromTopicDao : BaseDao<WorkFoTopic> {
     @Transaction
     @Query("SELECT * FROM TopicGroup where idTopic=:id")
-    fun fetchWorkFromTopicData(id: Long): Flow<TopicGroupWithWorks>
+    fun fetchWorkFromTopicDataFlow(id: Long): Flow<TopicGroupWithWorks>
+
+    @Transaction
+    @Query("SELECT * FROM TopicGroup where idTopic=:id")
+    fun fetchWorkFromTopicData(id: Long): TopicGroupWithWorks
 
     @Query("SELECT * FROM WorkFoTopic")
     fun fetchWork(): List<WorkFoTopic>

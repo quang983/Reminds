@@ -46,6 +46,7 @@
         tools:text="Day la de muc" />
 
     <TextView
+        android:id="@+id/tvCountTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableEnd="@drawable/ic_chevron_right_24px"

@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.common.base.model.TopicGroupEntity
 import com.example.reminds.R
 import com.example.reminds.common.SwipeToDeleteCallback
 import com.example.reminds.ui.adapter.TopicAdapter
@@ -35,6 +34,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.reUpdateTopics(true)
         setupUI()
         setupListener()
         observeData()
@@ -43,6 +43,7 @@ class HomeFragment : Fragment() {
     private fun setupUI() {
         adapter = TopicAdapter {
             navigate(HomeFragmentDirections.actionFirstFragmentToSecondFragment(it))
+
         }.apply {
             recyclerTopic.adapter = this
         }
@@ -60,14 +61,14 @@ class HomeFragment : Fragment() {
             object : SwipeToDeleteCallback(requireContext()) {
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, i: Int) {
                     val position = viewHolder.adapterPosition
-                    val item: TopicGroupEntity = adapter.currentList[position]
+                    val item: HomeViewModel.TopicGroupViewItem = adapter.currentList[position]
                     adapter.removeItem(position)
-                    viewModel.deleteTopicData(item)
+                    viewModel.deleteTopicData(item.topicGroupEntity)
                     val snackbar = Snackbar
                         .make(layoutRoot, "Item was removed from the list.", Snackbar.LENGTH_LONG)
                     snackbar.setAction("UNDO") {
                         adapter.restoreItem(item, position)
-                        viewModel.undoTopicData(item)
+                        viewModel.undoTopicData(item.topicGroupEntity)
                         recyclerTopic.scrollToPosition(position)
                     }
                     snackbar.setActionTextColor(Color.YELLOW)
@@ -81,7 +82,7 @@ class HomeFragment : Fragment() {
 
     private fun observeData() {
         with(viewModel) {
-            topicData.observe(viewLifecycleOwner, {
+            topicsGroupDataShow.observe(viewLifecycleOwner, {
                 adapter.submitList(it)
             })
         }

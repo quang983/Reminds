@@ -32,14 +32,15 @@ class ListWorkAdapter(
             oldItem: WorkDataEntity,
             newItem: WorkDataEntity
         ): Boolean {
-            return oldItem.name == newItem.name
-                    && oldItem.groupId == newItem.groupId && oldItem.listContent.zip(newItem.listContent).all { (x, y) -> x.timer == y.timer }
+            return oldItem.name == newItem.name && oldItem.groupId == newItem.groupId
+                    && oldItem.listContent.zip(newItem.listContent).all { (x, y) -> x.timer == y.timer }
+                    && oldItem.listContent == newItem.listContent
         }
 
         override fun getChangePayload(oldItem: WorkDataEntity, newItem: WorkDataEntity): Any? {
             val payloads = ArrayList<Any>()
 
-            if (!oldItem.listContent.zip(newItem.listContent).all { (x, y) -> x.timer == y.timer }) {
+            if (!oldItem.listContent.zip(newItem.listContent).all { (x, y) -> x.timer == y.timer } || oldItem.listContent != newItem.listContent) {
                 payloads.add(PAYLOAD_CONTENT)
             }
             if (oldItem.name != newItem.name) {

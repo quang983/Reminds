@@ -2,25 +2,30 @@ package com.example.reminds.ui.activity
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.reminds.R
+import com.example.reminds.service.NotificationService
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
+    private var mBound: Boolean = false
+    private lateinit var mService: NotificationService
     val viewModel: MainActivityViewModel by viewModels()
     private lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,6 +71,30 @@ class MainActivity : AppCompatActivity() {
 
         val actionMode = startSupportActionMode(callback)
         actionMode?.title = "1 selected"*/
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Intent(this, NotificationService::class.java).also { intent ->
+            startService(intent)
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+
+    }
+
+    /** Defines callbacks for service binding, passed to bindService()  */
+    private val connection = object : ServiceConnection {
+
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            val binder = service as NotificationService.LocalBinder
+            mService = binder.getService()
+            mBound = true
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            mBound = false
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

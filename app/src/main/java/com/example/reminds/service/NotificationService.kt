@@ -1,13 +1,13 @@
 package com.example.reminds.service
 
-import android.app.NotificationManager
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.*
 import android.widget.Toast
-import androidx.core.app.NotificationCompat
-import com.example.reminds.R
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -29,10 +29,6 @@ class NotificationService : Service() {
         return START_STICKY
     }
 
-    private fun loopShowBadge() {
-        notifyThis("Thong bao", "Ha ha")
-    }
-
     // Handler that receives messages from the thread
     private inner class ServiceHandler(looper: Looper) : Handler(looper) {
 
@@ -40,8 +36,8 @@ class NotificationService : Service() {
             // Normally we would do some work here, like download a file.
             // For our sample, we just sleep for 5 seconds.
             try {
-                loopShowBadge()
-                Thread.sleep(5000)
+                NotificationUtil(applicationContext).showNotification("Notifications", "this is notify and warning")
+                scheduleAlarm("2020-01-21 23:54:00", "Notifications", "this is notification at time")
             } catch (e: InterruptedException) {
                 // Restore interrupt status.
                 Thread.currentThread().interrupt()
@@ -90,17 +86,33 @@ class NotificationService : Service() {
         return binder
     }
 
-    private fun notifyThis(title: String?, message: String?) {
-        val b = NotificationCompat.Builder(applicationContext, "CHANNEL_ID")
-        b.setAutoCancel(true)
-            .setDefaults(NotificationCompat.DEFAULT_ALL)
-            .setWhen(System.currentTimeMillis())
-            .setSmallIcon(R.drawable.ic_calendar)
-            .setTicker("{your tiny message}")
-            .setContentTitle(title)
-            .setContentText(message)
-            .setContentInfo("INFO")
-        val nm = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        nm.notify(1, b.build())
+    private fun scheduleAlarm(
+        scheduledTimeString: String?,
+        title: String?,
+        message: String?
+    ) {
+        val alarmMgr = applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmIntent =
+            Intent(applicationContext, NotificationBroadcastReceiver::class.java).let { intent ->
+                intent.putExtra(ScheduledWorker.NOTIFICATION_TITLE, title)
+                intent.putExtra(ScheduledWorker.NOTIFICATION_MESSAGE, message)
+                PendingIntent.getBroadcast(applicationContext, 0, intent, 0)
+            }
+
+        // Parse Schedule time
+        val scheduledTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+            .parse(scheduledTimeString!!)
+
+        scheduledTime?.let {
+            // With set(), it'll set non repeating one time alarm.
+            alarmMgr.setRepeating(
+                AlarmManager.RTC_WAKEUP, scheduledTime.time,
+                1000 * 60 * 60 * 24, alarmIntent
+            )
+        }
+    }
+
+    private fun showNotification(title: String, message: String) {
+        NotificationUtil(applicationContext).showNotification(title, message)
     }
 }

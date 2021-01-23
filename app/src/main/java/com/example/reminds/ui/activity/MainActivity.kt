@@ -36,41 +36,9 @@ class MainActivity : AppCompatActivity() {
         /*show back press button*/
         navController = findNavController(R.id.nav_host_fragment)
         NavigationUI.setupActionBarWithNavController(this, navController)
-        /*  val callback = object : ActionMode.Callback {
 
-              override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-                  menuInflater.inflate(R.menu.top_app_bar, menu)
-                  return true
-              }
+        createAdsMode()
 
-              override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-                  return false
-              }
-
-              override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
-                  return when (item?.itemId) {
-                     *//* R.id.share -> {
-                        // Handle share icon press
-                        true
-                    }
-                    R.id.delete -> {
-                        // Handle delete icon press
-                        true
-                    }
-                    R.id.more -> {
-                        // Handle more item (inside overflow menu) press
-                        true
-                    }*//*
-                    else -> false
-                }
-            }
-
-            override fun onDestroyActionMode(mode: ActionMode?) {
-            }
-        }
-
-        val actionMode = startSupportActionMode(callback)
-        actionMode?.title = "1 selected"*/
     }
 
     override fun onStart() {
@@ -131,5 +99,12 @@ class MainActivity : AppCompatActivity() {
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
+    }
+
+    private fun createAdsMode() {
+        /*MobileAds.initialize(this) {
+            val adRequest = AdRequest.Builder().build()
+            adView.loadAd(adRequest)
+        }*/
     }
 }

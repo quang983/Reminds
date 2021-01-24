@@ -8,13 +8,15 @@ data class WorkDataEntity(
 ) {
     fun copy() = WorkDataEntity(
         id, name, groupId, listContent.map { it.copy() }.sortedWith(
-            compareBy({ it.isCheckDone }, { it.id })
+            compareBy({ it.isCheckDone }, { !it.hashTag }, { it.id })
         ).toMutableList()
     )
 
     fun copyAndRemoveDone() = WorkDataEntity(
         id, name, groupId, listContent.map { it.copy() }
-            .filter { !it.isCheckDone }.sortedBy { it.id }.toMutableList()
+            .filter { !it.isCheckDone }.sortedWith(
+                compareBy({ !it.hashTag }, { it.id })
+            ).toMutableList()
     )
 
     fun copyAndClearFocus() = WorkDataEntity(

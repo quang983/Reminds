@@ -36,8 +36,11 @@ class NotificationService : Service() {
             // Normally we would do some work here, like download a file.
             // For our sample, we just sleep for 5 seconds.
             try {
-                NotificationUtil(applicationContext).showNotification("Notifications", "this is notify and warning")
-                scheduleAlarm("2020-01-21 23:54:00", "Notifications", "this is notification at time")
+                scheduleAlarm("2020-01-24 20:51:00", "Notifications", "this is notification at time")
+                scheduleAlarm("2020-01-24 20:52:00", "Notifications", "this is notification at time")
+                scheduleAlarm("2020-01-24 20:53:00", "Notifications", "this is notification at time")
+                scheduleAlarm("2020-01-24 20:54:00", "Notifications", "this is notification at time")
+                scheduleAlarm("2020-01-24 20:55:00", "Notifications", "this is notification at time")
             } catch (e: InterruptedException) {
                 // Restore interrupt status.
                 Thread.currentThread().interrupt()
@@ -105,14 +108,9 @@ class NotificationService : Service() {
 
         scheduledTime?.let {
             // With set(), it'll set non repeating one time alarm.
-            alarmMgr.setRepeating(
-                AlarmManager.RTC_WAKEUP, scheduledTime.time,
-                1000 * 60 * 60 * 24, alarmIntent
+            alarmMgr.set(
+                AlarmManager.RTC_WAKEUP, scheduledTime.time, alarmIntent
             )
         }
-    }
-
-    private fun showNotification(title: String, message: String) {
-        NotificationUtil(applicationContext).showNotification(title, message)
     }
 }

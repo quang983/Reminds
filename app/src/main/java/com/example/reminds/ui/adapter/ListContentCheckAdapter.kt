@@ -1,5 +1,6 @@
 package com.example.reminds.ui.adapter
 
+import android.graphics.Color
 import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
@@ -36,7 +37,7 @@ class ListContentCheckAdapter(
         override fun areContentsTheSame(oldItem: ContentDataEntity, newItem: ContentDataEntity): Boolean {
             return oldItem.isFocus == newItem.isFocus && oldItem.name == newItem.name
                     && oldItem.idOwnerWork == newItem.idOwnerWork && oldItem.timer == newItem.timer
-                    && oldItem.isCheckDone == newItem.isCheckDone
+                    && oldItem.isCheckDone == newItem.isCheckDone && oldItem.hashTag == newItem.hashTag
 
         }
 
@@ -57,6 +58,9 @@ class ListContentCheckAdapter(
             if (oldItem.isCheckDone != newItem.isCheckDone) {
                 payloads.add(PAYLOAD_CHECKED)
             }
+            if (oldItem.hashTag != newItem.hashTag) {
+                payloads.add(PAYLOAD_HASH_TAG)
+            }
 
             return if (payloads.size > 0) {
                 payloads
@@ -72,8 +76,7 @@ class ListContentCheckAdapter(
     private val viewBinderHelper = ViewBinderHelper()
 
     override fun createView(parent: ViewGroup, viewType: Int?): View {
-        val view = parent.inflate(R.layout.item_content_check)
-        return view
+        return parent.inflate(R.layout.item_content_check)
     }
 
     override fun bind(view: View, viewType: Int, position: Int, item: ContentDataEntity, payloads: MutableList<Any>) {
@@ -92,10 +95,14 @@ class ListContentCheckAdapter(
         if (payloads.contains(PAYLOAD_CHECKED)) {
             refreshCheckBox(view, item)
         }
+        if (payloads.contains(PAYLOAD_HASH_TAG)) {
+            refreshEdtContentBg(view, item)
+        }
     }
 
     override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: ContentDataEntity) {
         setupViewBinderHelper(view, item)
+        refreshEdtContentBg(view, item)
         refreshTvTimer(view, item)
         refreshEdtContent(view, item)
         refreshCheckBox(view, item)
@@ -114,6 +121,14 @@ class ListContentCheckAdapter(
         }
         view.tvContentCheck.setText(item.name)
         view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
+    }
+
+    private fun refreshEdtContentBg(view: View, item: ContentDataEntity) {
+        if (item.hashTag) {
+            view.rootView.setBackgroundColor(Color.parseColor("#fdd835"))
+        } else {
+            view.rootView.setBackgroundColor(Color.parseColor("#ffffff"))
+        }
     }
 
     private fun refreshTvTimer(view: View, item: ContentDataEntity) {
@@ -171,6 +186,7 @@ class ListContentCheckAdapter(
 
         view.imgGim.setOnClickListenerBlock {
             item.let {
+                it.hashTag = !it.hashTag
                 moreActionClick.invoke(it, TYPE_TAG_CLICK)
                 view.swipeLayout.close(true)
             }
@@ -220,6 +236,7 @@ class ListContentCheckAdapter(
         const val PAYLOAD_CHECKED = "PAYLOAD_CHECKED"
         const val PAYLOAD_ID_WORK = "PAYLOAD_ID_WORK"
         const val PAYLOAD_TIMER = "PAYLOAD_TIMER"
+        const val PAYLOAD_HASH_TAG = "PAYLOAD_HASH_TAG"
 
         const val TYPE_TIMER_CLICK = 100
         const val TYPE_TAG_CLICK = 101

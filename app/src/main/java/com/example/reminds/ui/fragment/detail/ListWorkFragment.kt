@@ -12,10 +12,8 @@ import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import androidx.work.PeriodicWorkRequestBuilder
 import com.example.common.base.model.ContentDataEntity
 import com.example.reminds.R
-import com.example.reminds.service.NotificationWorker
 import com.example.reminds.ui.adapter.ListContentCheckAdapter
 import com.example.reminds.ui.adapter.ListWorkAdapter
 import com.example.reminds.utils.navigateUp
@@ -23,7 +21,6 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_list_work.*
-import java.util.concurrent.TimeUnit
 
 
 /**
@@ -97,13 +94,7 @@ class ListWorkFragment : Fragment() {
                     setupTimePickerForContent(item, wPosition)
                 }
                 ListContentCheckAdapter.TYPE_TAG_CLICK -> {
-//                    viewModel.updateContentData(item, wPosition)
-                    val saveRequest =
-                        PeriodicWorkRequestBuilder<NotificationWorker>(1, TimeUnit.MINUTES)
-                            // Additional configuration
-                            .build()
-
-                    notifyThis("Thong bao", "haha")
+                    viewModel.updateContentData(item, wPosition)
                 }
                 ListContentCheckAdapter.TYPE_DELETE_CLICK -> {
                     viewModel.deleteContent(item, wPosition)

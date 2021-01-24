@@ -1,14 +1,9 @@
 package com.example.reminds.service
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import java.text.SimpleDateFormat
-import java.util.*
 
 class ScheduledWorker(appContext: Context, workerParams: WorkerParameters) :
     Worker(appContext, workerParams) {

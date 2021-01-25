@@ -6,17 +6,17 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.os.Build
-import android.os.Bundle
-import android.os.IBinder
+import android.os.*
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.reminds.R
+import com.example.reminds.service.MSG_SAY_HELLO
 import com.example.reminds.service.NotificationService
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,8 +24,12 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private var mBound: Boolean = false
-    private lateinit var mService: NotificationService
+    /** Flag indicating whether we have called bind on the service.  */
+    private var bound: Boolean = false
+    private var mService: Messenger? = null
+
+    /** Messenger for communicating with the service.  */
+    private var mMessenger: Messenger? = null
     val viewModel: MainActivityViewModel by viewModels()
     private lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,24 +49,55 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         Intent(this, NotificationService::class.java).also { intent ->
             startService(intent)
-            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+            bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
         }
 
     }
 
-    /** Defines callbacks for service binding, passed to bindService()  */
-    private val connection = object : ServiceConnection {
+/*
+    override fun onStop() {
+        super.onStop()
+        // Unbind from the service
+        if (bound) {
+            unbindService(mConnection)
+            bound = false
+        }
+    }
+*/
+
+    /**
+     * Class for interacting with the main interface of the service.
+     */
+    private val mConnection = object : ServiceConnection {
 
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
-            val binder = service as NotificationService.LocalBinder
-            mService = binder.getService()
-            mBound = true
+            // This is called when the connection with the service has been
+            // established, giving us the object we can use to
+            // interact with the service.  We are communicating with the
+            // service using a Messenger, so here we get a client-side
+            // representation of that from the raw IBinder object.
+            mService = Messenger(service)
+            bound = true
         }
 
-        override fun onServiceDisconnected(arg0: ComponentName) {
-            mBound = false
+        override fun onServiceDisconnected(className: ComponentName) {
+            // This is called when the connection with the service has been
+            // unexpectedly disconnected -- that is, its process crashed.
+            mService = null
+            bound = false
         }
+    }
+
+    fun sayHello(v: View) {
+        if (!bound) return
+        // Create and send a message to the service, using a supported 'what' value
+        val msg: Message = Message.obtain(null, MSG_SAY_HELLO, 0)
+        try {
+            mService?.send(msg)
+        } catch (e: RemoteException) {
+            e.printStackTrace()
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

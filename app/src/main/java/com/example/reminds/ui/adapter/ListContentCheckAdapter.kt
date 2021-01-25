@@ -35,17 +35,16 @@ class ListContentCheckAdapter(
         }
 
         override fun areContentsTheSame(oldItem: ContentDataEntity, newItem: ContentDataEntity): Boolean {
-            return oldItem.isFocus == newItem.isFocus && oldItem.name == newItem.name
-                    && oldItem.idOwnerWork == newItem.idOwnerWork && oldItem.timer == newItem.timer
-                    && oldItem.isCheckDone == newItem.isCheckDone && oldItem.hashTag == newItem.hashTag
+            return oldItem.isFocus == newItem.isFocus && oldItem.idOwnerWork == newItem.idOwnerWork
+                    && oldItem.timer == newItem.timer && oldItem.isCheckDone == newItem.isCheckDone && oldItem.hashTag == newItem.hashTag
 
         }
 
         override fun getChangePayload(oldItem: ContentDataEntity, newItem: ContentDataEntity): Any? {
             val payloads = ArrayList<Any>()
-            if (oldItem.name != newItem.name) {
+           /* if (oldItem.name != newItem.name) {
                 payloads.add(PAYLOAD_NAME)
-            }
+            }*/
             if (oldItem.idOwnerWork != newItem.idOwnerWork) {
                 payloads.add(PAYLOAD_ID_WORK)
             }

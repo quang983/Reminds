@@ -12,6 +12,7 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_home">Danh sách của tôi</string>
+    <string name="title_home_today">Hôm nay</string>
     <string name="search">search</string>
     <string name="favorite">favorite</string>
     <string name="title_create">Tạo mới</string>

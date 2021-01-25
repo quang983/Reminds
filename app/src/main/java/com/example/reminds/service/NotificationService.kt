@@ -13,11 +13,13 @@ import android.widget.Toast
 import com.example.common.base.model.ContentDataEntity
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 const val MSG_SAY_HELLO = 1
 
 class NotificationService : Service() {
     private lateinit var mMessenger: Messenger
+    private val timeList: HashMap<String, HashMap<String, ContentDataEntity>> = HashMap()
 
     /**
      * Handler of incoming messages from clients.
@@ -30,8 +32,6 @@ class NotificationService : Service() {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
                 MSG_SAY_HELLO -> {
-                    val content = msg.obj as ContentDataEntity
-//                    scheduleAlarm(content.)
                 }
                 else -> super.handleMessage(msg)
             }
@@ -100,7 +100,7 @@ class NotificationService : Service() {
 
     override fun onBind(intent: Intent): IBinder {
         Toast.makeText(applicationContext, "binding", Toast.LENGTH_SHORT).show()
-        mMessenger = Messenger(NotificationService.IncomingHandler(this))
+        mMessenger = Messenger(IncomingHandler(this))
         return mMessenger.binder
     }
 }

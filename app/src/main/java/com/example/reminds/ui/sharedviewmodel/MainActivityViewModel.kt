@@ -1,18 +1,34 @@
 package com.example.reminds.ui.sharedviewmodel
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import com.example.domain.model.MainResponse
-import com.example.domain.base.BaseUseCase
-import com.example.domain.usecase.remote.GetTryApiUseCase
+import com.example.common.base.model.TopicGroupEntity
+import com.example.common.base.model.WorkDataEntity
+import com.example.domain.usecase.db.topic.InsertTopicUseCase
+import com.example.domain.usecase.db.workintopic.InsertWorkUseCase
 import com.example.reminds.common.BaseViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class MainActivityViewModel @ViewModelInject constructor(getTryApiUseCase: GetTryApiUseCase) :
-    BaseViewModel() {
-    private val _getDataApi: LiveData<MainResponse?> = liveDataEmit {
-        getTryApiUseCase.invoke(BaseUseCase.Param())
+class MainActivityViewModel @ViewModelInject constructor(
+    private val insertTopicUseCase: InsertTopicUseCase,
+    private val insertWorkUseCase: InsertWorkUseCase
+) : BaseViewModel() {
+    fun addFirstTopic() {
+        GlobalScope.launch(handler + Dispatchers.IO) {
+            val data = TopicGroupEntity(1, "Hôm nay")
+            insertTopicUseCase.invoke(InsertTopicUseCase.Param(data)).let {
+                insertWorkUseCase.invoke(
+                    InsertWorkUseCase.Param(
+                        WorkDataEntity(
+                            id = System.currentTimeMillis(),
+                            name = "Cơ bản",
+                            groupId = it,
+                            listContent = mutableListOf()
+                        )
+                    )
+                )
+            }
+        }
     }
-
-
-    val getDataApi: LiveData<MainResponse?> = _getDataApi
 }

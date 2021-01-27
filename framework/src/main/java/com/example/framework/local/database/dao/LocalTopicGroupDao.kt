@@ -14,6 +14,6 @@ interface LocalTopicGroupDao : BaseDao<TopicGroup> {
     @Query("SELECT * FROM TopicGroup")
     fun fetchTopicGroupData(): List<TopicGroup>
 
-    @Query("SELECT * FROM TopicGroup  LIMIT 1")
-    fun fetchTopicTodayData(): TopicGroup?
+    @Query("SELECT * FROM TopicGroup  where idTopic=1")
+    fun fetchTopicTodayData(): TopicGroup
 }

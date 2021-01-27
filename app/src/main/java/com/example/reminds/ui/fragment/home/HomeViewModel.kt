@@ -1,13 +1,16 @@
 package com.example.reminds.ui.fragment.home
 
+import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.TopicGroupEntity
 import com.example.domain.base.BaseUseCase
+import com.example.domain.usecase.db.content.GetAllContentOfTopicUseCase
 import com.example.domain.usecase.db.topic.DeleteTopicUseCase
 import com.example.domain.usecase.db.topic.FetchTopicFlowUseCase
-import com.example.domain.usecase.db.topic.InsertTopicUseCase
+import com.example.domain.usecase.db.topic.GetFastTopicUseCase
 import com.example.domain.usecase.db.workintopic.GetTotalTaskOfWorkUseCase
 import com.example.reminds.common.BaseViewModel
 import kotlinx.coroutines.Dispatchers
@@ -17,9 +20,16 @@ import kotlinx.coroutines.launch
 class HomeViewModel @ViewModelInject constructor(
     private val fetchTopicFlowUseCase: FetchTopicFlowUseCase,
     private val deleteTopicUseCase: DeleteTopicUseCase,
-    private val insertTopicUseCase: InsertTopicUseCase,
-    private val getTotalTaskOfWorkUseCase: GetTotalTaskOfWorkUseCase
+    private val getTotalTaskOfWorkUseCase: GetTotalTaskOfWorkUseCase,
+    private val getFastTopicUseCase: GetFastTopicUseCase,
+    private val getAllContentOfTopicUseCase: GetAllContentOfTopicUseCase
 ) : BaseViewModel() {
+
+    val fastTopicData: LiveData<FastTopicViewItem> = liveDataEmit {
+        val topic = getFastTopicUseCase.invoke(BaseUseCase.Param())
+        val contents = getAllContentOfTopicUseCase.invoke(GetAllContentOfTopicUseCase.Param(topic.id))
+        FastTopicViewItem(topic, contents)
+    }
 
     private val _topicData: LiveData<List<TopicGroupEntity>> = liveData {
         fetchTopicFlowUseCase.invoke(BaseUseCase.Param()).collect {
@@ -40,4 +50,5 @@ class HomeViewModel @ViewModelInject constructor(
     }
 
     data class TopicGroupViewItem(val topicGroupEntity: TopicGroupEntity, val totalTask: Int)
+    data class FastTopicViewItem(val topicGroupEntity: TopicGroupEntity, val contents: List<ContentDataEntity>)
 }

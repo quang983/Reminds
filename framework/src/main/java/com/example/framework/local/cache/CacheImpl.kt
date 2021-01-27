@@ -1,12 +1,21 @@
 package com.example.framework.local.cache
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
+import androidx.annotation.RequiresApi
 import java.security.MessageDigest
 import javax.inject.Inject
 
+@RequiresApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("CommitPrefEdits")
 class CacheImpl @Inject constructor(context: Context) : Cache {
-    private val SHARED_NAME = "PREF"
+    companion object {
+        const val SHARED_NAME = "PREF"
+        const val KEY_FIRST_LOGIN = "KEY_FIRST_LOGIN"
+    }
+
     private var sharedPreferences: SharedPreferences = context.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE)
 
 /*

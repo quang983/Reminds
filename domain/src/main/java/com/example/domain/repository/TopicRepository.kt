@@ -9,5 +9,5 @@ interface TopicRepository : BaseRepository<TopicGroupEntity> {
 
     suspend fun fetchAllTopicGroups(): List<TopicGroupEntity>
 
-    suspend fun getTodayTopicUseCase(startTime: Long, endTime: Long): TopicGroupEntity?
+    suspend fun getFastTopicUseCase(): TopicGroupEntity
 }

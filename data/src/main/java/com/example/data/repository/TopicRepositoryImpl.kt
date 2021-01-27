@@ -15,8 +15,8 @@ class TopicRepositoryImpl @Inject constructor(
 
     override suspend fun fetchAllTopicGroups(): List<TopicGroupEntity> = source.fetchAll()
 
-    override suspend fun getTodayTopicUseCase(startTime: Long, endTime: Long): TopicGroupEntity? {
-        return source.getTodayTopic(startTime, endTime)
+    override suspend fun getFastTopicUseCase(): TopicGroupEntity {
+        return source.getFastTopic()
     }
 
     override suspend fun insertData(data: TopicGroupEntity): Long {

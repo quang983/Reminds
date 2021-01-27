@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
+import com.example.framework.local.cache.CacheImpl.Companion.KEY_FIRST_LOGIN
+import com.example.framework.local.cache.CacheImpl.Companion.SHARED_NAME
 import com.example.reminds.R
 import com.example.reminds.service.MSG_SAY_HELLO
 import com.example.reminds.service.NotificationService
@@ -42,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, navController)
 
         createAdsMode()
-
+        checkAddFirstTopic()
     }
 
     override fun onStart() {
@@ -52,6 +54,14 @@ class MainActivity : AppCompatActivity() {
             bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
         }
 
+    }
+
+    private fun checkAddFirstTopic() {
+        val shared = this.applicationContext.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE)
+        if (shared.getBoolean(KEY_FIRST_LOGIN, true)) {
+            viewModel.addFirstTopic()
+            shared.edit().putBoolean(KEY_FIRST_LOGIN, false).apply()
+        }
     }
 
 /*
@@ -71,18 +81,11 @@ class MainActivity : AppCompatActivity() {
     private val mConnection = object : ServiceConnection {
 
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            // This is called when the connection with the service has been
-            // established, giving us the object we can use to
-            // interact with the service.  We are communicating with the
-            // service using a Messenger, so here we get a client-side
-            // representation of that from the raw IBinder object.
             mService = Messenger(service)
             bound = true
         }
 
         override fun onServiceDisconnected(className: ComponentName) {
-            // This is called when the connection with the service has been
-            // unexpectedly disconnected -- that is, its process crashed.
             mService = null
             bound = false
         }

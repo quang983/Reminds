@@ -12,9 +12,11 @@ import com.example.reminds.ui.adapter.TopicAdapter
 import com.example.reminds.ui.fragment.newtopic.NewTopicBtsFragment
 import com.example.reminds.utils.navigate
 import com.example.reminds.utils.setOnClickListenerBlock
+import com.example.reminds.utils.setVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.layout_today_home.view.*
 
 
 @AndroidEntryPoint
@@ -31,7 +33,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        viewModel.reUpdateTopics(true)
         setupUI()
         setupListener()
         observeData()
@@ -44,6 +45,15 @@ class HomeFragment : Fragment() {
             showAlertDeleteDialog(it)
         }).apply {
             recyclerTopic.adapter = this
+        }
+
+        layoutToday.setOnClickListener {
+            navigate(
+                HomeFragmentDirections
+                    .actionFirstFragmentToSecondFragment(
+                        viewModel.fastTopicData.value?.topicGroupEntity?.id ?: 1
+                    )
+            )
         }
     }
 
@@ -69,6 +79,33 @@ class HomeFragment : Fragment() {
         with(viewModel) {
             topicsGroupDataShow.observe(viewLifecycleOwner, {
                 adapter.submitList(it)
+            })
+            fastTopicData.observe(viewLifecycleOwner, { topic ->
+                layoutToday.tvCount.text = topic.contents.size.toString()
+                topic.contents.forEachIndexed { index, it ->
+                    when (index) {
+                        0 -> {
+                            layoutToday.tvContent.setVisible(true)
+                            layoutToday.viewDividerContent.setVisible(true)
+                            layoutToday.tvContent.text = it.name
+                        }
+                        1 -> {
+                            layoutToday.tvContentSecond.setVisible(true)
+                            layoutToday.viewDividerContentSecond.setVisible(true)
+                            layoutToday.tvContentSecond.text = it.name
+                        }
+                        2 -> {
+                            layoutToday.tvContentThird.setVisible(true)
+                            layoutToday.viewDividerContentMore.setVisible(true)
+                            layoutToday.tvContentThird.text = it.name
+                        }
+                        else -> {
+                            layoutToday.tvContentMore.setVisible((topic.contents.size - 3) > 0)
+                            layoutToday.tvContentMore.text = "${(topic.contents.size - 3).takeIf { it > 0 }} tác vụ"
+                            return@forEachIndexed
+                        }
+                    }
+                }
             })
         }
     }

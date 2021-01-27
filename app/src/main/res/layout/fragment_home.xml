@@ -14,7 +14,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_16sdp"
-        android:text="@string/title_home_today"
+        android:text="@string/title_faster_note"
         android:textColor="@color/black"
         android:textSize="@dimen/_18sdp"
         android:textStyle="bold"

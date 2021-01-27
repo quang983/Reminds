@@ -4,4 +4,13 @@ import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class AppComponent : Application()
+class AppComponent : Application(){
+    companion object{
+        lateinit var shared : AppComponent
+    }
+
+    override fun onCreate() {
+        shared = this
+        super.onCreate()
+    }
+}

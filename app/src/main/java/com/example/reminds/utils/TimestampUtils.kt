@@ -10,6 +10,9 @@ import java.util.*
 object TimestampUtils {
     const val ISO8601_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss"
     const val DATE_FORMAT_ = "yyyy-MM-dd"
+    const val SAME_DATE = 0
+    const val DIFF_DATE_SMALLER = -1
+    const val DIFF_DATE_GREATER = 1
 
     fun getFullFormatTime(iso: String): String {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US)
@@ -187,6 +190,22 @@ object TimestampUtils {
         cal2.timeInMillis = date2
         return cal1[Calendar.YEAR] == cal2[Calendar.YEAR] &&
                 cal1[Calendar.DAY_OF_YEAR] == cal2[Calendar.DAY_OF_YEAR]
+    }
+
+    fun compareDateFull(date1: Long, date2: Long): Int {
+        val cal1 = Calendar.getInstance()
+        val cal2 = Calendar.getInstance()
+        cal1.timeInMillis = date1
+        cal2.timeInMillis = date2
+        return when {
+            cal1[Calendar.YEAR] == cal2[Calendar.YEAR]
+                    && cal1[Calendar.DAY_OF_YEAR] == cal2[Calendar.DAY_OF_YEAR] -> SAME_DATE
+            (cal1[Calendar.YEAR] > cal2[Calendar.YEAR] || (cal1[Calendar.YEAR] == cal2[Calendar.YEAR]
+                    && cal1[Calendar.DAY_OF_YEAR] > cal2[Calendar.DAY_OF_YEAR])) -> DIFF_DATE_GREATER
+            (cal1[Calendar.YEAR] < cal2[Calendar.YEAR] || (cal1[Calendar.YEAR] == cal2[Calendar.YEAR]
+                    && cal1[Calendar.DAY_OF_YEAR] < cal2[Calendar.DAY_OF_YEAR])) -> DIFF_DATE_SMALLER
+            else -> DIFF_DATE_SMALLER
+        }
     }
 
     fun getFullFormatDateHistory(timestamp: Long): String? {

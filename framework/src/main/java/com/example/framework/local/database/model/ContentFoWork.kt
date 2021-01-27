@@ -11,5 +11,6 @@ data class ContentFoWork(
     var idOwnerWork: Long = 0,
     var hashTag: Boolean = false,
     var timer: Long = -1,
+    var timerStr: String = "",
     var isCheckDone: Boolean = false
 )

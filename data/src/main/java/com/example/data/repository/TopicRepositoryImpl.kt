@@ -1,7 +1,6 @@
 package com.example.data.repository
 
 import com.example.common.base.model.TopicGroupEntity
-import com.example.data.local.model.TopicDataGroupMapper
 import com.example.data.local.source.TopicGroupSource
 import com.example.domain.repository.TopicRepository
 import kotlinx.coroutines.flow.Flow
@@ -11,11 +10,17 @@ import javax.inject.Inject
 class TopicRepositoryImpl @Inject constructor(
     private val source: TopicGroupSource
 ) : TopicRepository {
-    override suspend fun fetchAllTopicGroups(): Flow<List<TopicGroupEntity>> = source
-        .fetchAll().conflate()
+    override suspend fun fetchAllTopicFlowGroups(): Flow<List<TopicGroupEntity>> = source
+        .fetchAllFlow().conflate()
+
+    override suspend fun fetchAllTopicGroups(): List<TopicGroupEntity> = source.fetchAll()
+
+    override suspend fun getTodayTopicUseCase(startTime: Long, endTime: Long): TopicGroupEntity? {
+        return source.getTodayTopic(startTime, endTime)
+    }
 
     override suspend fun insertData(data: TopicGroupEntity): Long {
-        return source.insert(TopicGroupEntity(data.id, data.name,data.startDate))
+        return source.insert(TopicGroupEntity(data.id, data.name))
     }
 
     override suspend fun insertDatas(datas: List<TopicGroupEntity>) {

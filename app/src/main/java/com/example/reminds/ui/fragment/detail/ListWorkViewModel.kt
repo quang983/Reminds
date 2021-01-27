@@ -12,8 +12,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import net.citigo.kiotviet.common.utils.extension.getLastOrNull
-import net.citigo.kiotviet.common.utils.extension.getOrNull
+import com.example.reminds.utils.getLastOrNull
+import com.example.reminds.utils.getOrNull
 
 class ListWorkViewModel @ViewModelInject constructor(
     private val fetchWorksUseCase: FetchWorksUseCase,
@@ -24,7 +24,7 @@ class ListWorkViewModel @ViewModelInject constructor(
     private var isReSaveWorks = false
     private var workPosition = -1
 
-    val isShowDone = true
+    private val isShowDone = true
 
     private val idGroup: MediatorLiveData<Long> = MediatorLiveData<Long>()
 

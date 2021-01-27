@@ -32,7 +32,6 @@ class TopicAdapter(private val onClickDetail: (id: Long) -> Unit, private val de
         ): Boolean {
             return oldItem.topicGroupEntity.name == newItem.topicGroupEntity.name
                     && oldItem.topicGroupEntity.isShowDone == newItem.topicGroupEntity.isShowDone
-                    && oldItem.topicGroupEntity.startDate == newItem.topicGroupEntity.startDate
                     && oldItem.totalTask == newItem.totalTask
         }
 
@@ -44,9 +43,6 @@ class TopicAdapter(private val onClickDetail: (id: Long) -> Unit, private val de
             }
             if (oldItem.topicGroupEntity.isShowDone != newItem.topicGroupEntity.isShowDone) {
                 payloads.add(PAYLOAD_SHOW_DONE)
-            }
-            if (oldItem.topicGroupEntity.startDate != newItem.topicGroupEntity.startDate) {
-                payloads.add(PAYLOAD_START_DATE)
             }
             if (oldItem.totalTask != newItem.totalTask) {
                 payloads.add(PAYLOAD_COUNT_TASK)
@@ -74,16 +70,12 @@ class TopicAdapter(private val onClickDetail: (id: Long) -> Unit, private val de
         if (payloads.contains(PAYLOAD_COUNT_TASK)) {
             refreshCountTask(view, item.totalTask)
         }
-        if (payloads.contains(PAYLOAD_START_DATE)) {
-            refreshDate(view, item.topicGroupEntity)
-        }
     }
 
     override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: HomeViewModel.TopicGroupViewItem) {
         val topic = item.topicGroupEntity
         refreshName(view, topic)
         refreshCountTask(view, item.totalTask)
-        refreshDate(view, topic)
         view.viewDivider.setVisible(position != currentList.size - 1)
         setupViewBinderHelper(view, topic)
         setOnClickListener(view, topic)
@@ -112,31 +104,9 @@ class TopicAdapter(private val onClickDetail: (id: Long) -> Unit, private val de
         view.tvCountTask.text = total.toString()
     }
 
-    private fun refreshDate(view: View, item: TopicGroupEntity) {
-        view.tvDate.setVisible(item.startDate != 0L)
-        view.tvDate.text = TimestampUtils.getDate(item.startDate)
-    }
-
-    fun removeItem(position: Int) {
-        val newList = ArrayList<HomeViewModel.TopicGroupViewItem>().apply {
-            addAll(currentList)
-        }
-        newList.removeAt(position)
-        submitList(newList)
-    }
-
-    fun restoreItem(item: HomeViewModel.TopicGroupViewItem, position: Int) {
-        val newList = ArrayList<HomeViewModel.TopicGroupViewItem>().apply {
-            addAll(currentList)
-        }
-        newList.add(position, item)
-        submitList(newList)
-    }
-
     companion object {
         const val PAYLOAD_NAME = "PAYLOAD_NAME"
         const val PAYLOAD_SHOW_DONE = "PAYLOAD_SHOW_DONE"
-        const val PAYLOAD_START_DATE = "PAYLOAD_START_DATE"
         const val PAYLOAD_COUNT_TASK = "PAYLOAD_COUNT_TASK"
     }
 }

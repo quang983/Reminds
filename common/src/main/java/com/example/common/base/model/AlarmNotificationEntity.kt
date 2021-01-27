@@ -1,5 +1,6 @@
 package com.example.common.base.model
 
-class AlarmNotificationEntity {
-
-}
+data class AlarmNotificationEntity(
+    val timeAlarm : String,
+    val idTopic : Long,
+)

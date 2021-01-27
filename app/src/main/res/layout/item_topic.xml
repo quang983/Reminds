@@ -13,14 +13,6 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imgTimer"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="match_parent"
-            android:background="@color/teal_700"
-            android:padding="@dimen/_10sdp"
-            android:src="@drawable/ic_baseline_timer" />
-
-        <ImageView
             android:id="@+id/imgGim"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="match_parent"

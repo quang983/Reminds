@@ -4,7 +4,6 @@ import androidx.room.Transaction
 import com.example.common.base.model.TopicGroupEntity
 import com.example.data.local.source.TopicGroupSource
 import com.example.framework.local.database.dao.LocalTopicGroupDao
-import com.example.framework.local.database.dao.LocalWorkFromTopicDao
 import com.example.framework.local.database.model.TopicGroup
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -14,9 +13,21 @@ import javax.inject.Inject
 class TopicGroupSourceImpl @Inject constructor(
     private val dao: LocalTopicGroupDao
 ) : TopicGroupSource {
-    override suspend fun fetchAll(): Flow<List<TopicGroupEntity>> {
-        return dao.fetchTopicGroupData().distinctUntilChanged().map { it ->
+    override suspend fun fetchAllFlow(): Flow<List<TopicGroupEntity>> {
+        return dao.fetchTopicGroupDataFlow().distinctUntilChanged().map { it ->
             it.map { it.toDomain(it) }
+        }
+    }
+
+    override suspend fun fetchAll(): List<TopicGroupEntity> {
+        return dao.fetchTopicGroupData().map {
+            it.toDomain(it)
+        }
+    }
+
+    override suspend fun getTodayTopic(startTime: Long, endTime: Long): TopicGroupEntity? {
+        return dao.fetchTopicTodayData().let {
+            it?.toDomain(it)
         }
     }
 

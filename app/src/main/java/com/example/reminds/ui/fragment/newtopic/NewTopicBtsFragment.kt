@@ -62,7 +62,6 @@ class NewTopicBtsFragment : BottomSheetDialogFragment() {
 
         }
         picker.addOnPositiveButtonClickListener {
-            viewModel.timeStampsStartDate = it
         }
     }
 }

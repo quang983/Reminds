@@ -12,6 +12,5 @@ class WorkFoTopic(
     val name: String,
     val idOwnerGroup: Long,
     @TypeConverters(DataConverter::class)
-    val listContent: MutableList<ContentFoWork>,
-    val longMinute: Long = -1
+    val listContent: MutableList<ContentFoWork>
 )

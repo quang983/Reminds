@@ -1,4 +1,4 @@
-package net.citigo.kiotviet.common.utils.extension
+package com.example.reminds.utils
 
 import java.lang.reflect.ParameterizedType
 import java.text.DecimalFormat

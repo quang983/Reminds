@@ -4,8 +4,8 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.*
-import net.citigo.kiotviet.common.utils.extension.castList
-import net.citigo.kiotviet.common.utils.extension.getPositionOrNull
+import com.example.reminds.utils.castList
+import com.example.reminds.utils.getPositionOrNull
 import java.util.concurrent.Executors
 
 abstract class BaseAdapter<T>(callBack: DiffUtil.ItemCallback<T>) : ListAdapter<T, BaseViewHolder>(

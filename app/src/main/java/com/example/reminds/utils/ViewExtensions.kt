@@ -13,7 +13,9 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.TimePicker
 import androidx.annotation.LayoutRes
+import kotlinx.android.synthetic.main.layout_time.view.*
 
 fun View.visible() {
     visibility = View.VISIBLE
@@ -186,6 +188,23 @@ fun View.setOnClickListenerBlock(block: () -> Unit) {
             isEnabled = true
         }, 200)
         block()
+    }
+}
+fun TimePicker.getTime(): Pair<Int, Int> {
+    return if (Build.VERSION.SDK_INT >= 23) {
+        Pair(this.hour, this.minute)
+    } else {
+        Pair(this.currentHour, this.currentMinute)
+    }
+}
+
+fun TimePicker.setTime(time: Pair<Int, Int>) {
+    if (Build.VERSION.SDK_INT >= 23) {
+        this.time.hour = time.first
+        this.time.minute = time.second
+    } else {
+        this.time.currentHour = time.first
+        this.time.currentMinute = time.second
     }
 }
 

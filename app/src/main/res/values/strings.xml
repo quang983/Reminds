@@ -31,4 +31,10 @@
     <string name="accept_action">Đồng ý</string>
     <string name="notify_channel">CHANNEL_123</string>
     <string name="notify_name_channel">CHANNEL name</string>
+    <!-- change purchase date -->
+    <string name="title_pick_date">Chọn ngày</string>
+    <string name="title_pick_time">Chọn giờ</string>
+
+    <string name="ok">Đồng ý</string>
+    <string name="cancel">Huỷ</string>
 </resources>

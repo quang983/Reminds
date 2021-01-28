@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/locUXCoordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/locUXView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/colorAccent"
+            app:tabMaxWidth="0dp"
+            app:tabSelectedTextColor="@android:color/black"
+            app:tabTextColor="@android:color/darker_gray">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/title_pick_date" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/title_pick_time" />
+        </com.google.android.material.tabs.TabLayout>
+
+        <ViewSwitcher
+            android:id="@+id/viewSwitchcer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tab">
+
+            <include
+                android:id="@+id/datePicker"
+                layout="@layout/layout_calendar" />
+
+            <include
+                android:id="@+id/timePicker"
+                layout="@layout/layout_time" />
+
+        </ViewSwitcher>
+
+        <LinearLayout
+            android:id="@+id/ln_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/viewSwitchcer"
+            android:layout_marginBottom="@dimen/content_padding_normal"
+            android:gravity="end">
+
+            <TextView
+                android:id="@+id/tvCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/content_padding_normal"
+                android:paddingLeft="@dimen/content_padding_normal"
+                android:paddingTop="@dimen/element_spacing_normal"
+                android:paddingEnd="@dimen/content_padding_normal"
+                android:paddingRight="@dimen/content_padding_normal"
+                android:paddingBottom="@dimen/element_spacing_normal"
+                android:text="@string/cancel"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_medium_2" />
+
+            <TextView
+                android:id="@+id/tvOk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/content_padding_normal"
+                android:paddingLeft="@dimen/content_padding_normal"
+                android:paddingTop="@dimen/element_spacing_normal"
+                android:paddingEnd="@dimen/content_padding_normal"
+                android:paddingRight="@dimen/content_padding_normal"
+                android:paddingBottom="@dimen/element_spacing_normal"
+                android:text="@string/ok"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_medium_2" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

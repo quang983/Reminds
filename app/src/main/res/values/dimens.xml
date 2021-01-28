@@ -1,3 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <!--    <dimen name="none">0dp</dimen>-->
+    <!--    <dimen name="height_bar">56dp</dimen>-->
+    <dimen name="shadow">8dp</dimen>
+    <!--    <dimen name="divider">1dp</dimen>-->
+    <!--    <dimen name="icon_size">48dp</dimen>-->
+    <!--    <dimen name="icon_size_small">24dp</dimen>-->
+    <!--    <dimen name="icon_margin">4dp</dimen>-->
+    <!--    <dimen name="icon_padding">12dp</dimen>-->
+
+    <!--    <dimen name="text_size_bar">20sp</dimen>-->
+    <dimen name="width_form_login">320dp</dimen>
+    <dimen name="table_padding">@dimen/element_padding_normal</dimen>
+    <!-- add dimens in old app -->
+
+    <dimen name="element_padding_normal">4dp</dimen>
+    <dimen name="element_spacing_normal">8dp</dimen>
+    <dimen name="element_padding_medium">12dp</dimen>
+    <dimen name="content_padding_normal">16dp</dimen>
+    <dimen name="content_padding_cycle">32dp</dimen>
+    <dimen name="content_padding_tri">46dp</dimen>
+    <dimen name="element_padding_small">2dp</dimen>
+    <dimen name="element_spacing_medium">10dp</dimen>
+    <dimen name="content_padding_item">15dp</dimen>
+    <dimen name="content_padding_count">24dp</dimen>
+    <dimen name="element_spacing_small">6dp</dimen>
+    <dimen name="content_space_normal">19dp</dimen>
+
+    <dimen name="text_small">10sp</dimen>
+    <dimen name="text_small_1">12sp</dimen>
+    <dimen name="text_medium">13sp</dimen>
+    <dimen name="text_medium_1">14sp</dimen>
+    <dimen name="text_medium_2">16sp</dimen>
+    <dimen name="text_large">17sp</dimen>
+    <dimen name="text_large_0">20sp</dimen>
+    <dimen name="text_large_1">24sp</dimen>
+    <dimen name="text_large_1_5">26sp</dimen>
+    <dimen name="text_large_2">36sp</dimen>
+    <dimen name="text_large_3">48sp</dimen>
+    <dimen name="icon_compound_size">28dp</dimen>
+
+    <dimen name="edit_text_min_height">40dp</dimen>
+    <dimen name="icon_size_login">36dp</dimen>
+    <dimen name="icon_check_size">20dp</dimen>
+    <dimen name="icon_chevron_size">24dp</dimen>
+    <dimen name="order_item_height">80dp</dimen>
+    <dimen name="icon_product_size">48dp</dimen>
+    <dimen name="wrap_icon_product_size">56dp</dimen>
+    <dimen name="wrap_icon_product_size_height">62dp</dimen>
+    <dimen name="height_quick_select_product">40dp</dimen>
+
+    <dimen name="high_ripple_default_alpha">0.00</dimen>
+    <dimen name="high_ripple_focused_alpha">0.24</dimen>
+    <dimen name="high_ripple_hovered_alpha">0.08</dimen>
+    <dimen name="high_ripple_pressed_alpha">0.24</dimen>
+    <dimen name="bottom_action_bar_order">48dp</dimen>
+    <dimen name="icon_product_size_detail">72dp</dimen>
+    <dimen name="icon_notifi_size">16dp</dimen>
+    <dimen name="discount_switch_width">96dp</dimen>
+    <dimen name="discount_switch_item_width">48dp</dimen>
+    <dimen name="discount_switch_height">32dp</dimen>
+    <dimen name="discount_switch_corner">4dp</dimen>
+
+
+    <dimen name="none">0dp</dimen>
+
+    <dimen name="divider">1dp</dimen>
+
+    <dimen name="margin">8dp</dimen>
+    <dimen name="padding">16dp</dimen>
+
+    <dimen name="height_bar">56dp</dimen>
+    <dimen name="button_pay_height">52dp</dimen>
+
+    <dimen name="icon_size">40dp</dimen>
+    <dimen name="icon_size_small">20dp</dimen>
+
+    <dimen name="icon_margin">8dp</dimen>
+    <dimen name="icon_padding">8dp</dimen>
+
+    <dimen name="text_size_bar">20sp</dimen>
+    <dimen name="text_size_normal">12sp</dimen>
+    <dimen name="text_size_primary">16sp</dimen>
+    <dimen name="bill_print_width">350dp</dimen>
 </resources>

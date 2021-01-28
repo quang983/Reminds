@@ -27,6 +27,9 @@
         <argument
             android:name="idGroup"
             app:argType="long" />
+        <action
+            android:id="@+id/action_SecondFragment_to_dateTimePickerDialog"
+            app:destination="@id/dateTimePickerDialog" />
 
     </fragment>
 
@@ -35,4 +38,28 @@
         android:name="com.example.reminds.ui.fragment.newtopic.NewTopicBtsFragment"
         android:label="@string/new_topic_fragment_label"
         tools:layout="@layout/fragment_new_topic_bts" />
+
+    <dialog
+        android:id="@+id/dateTimePickerDialog"
+        android:name="DateTimePickerFragment"
+        android:label="dateTimePickerDialog"
+        tools:layout="@layout/fragment_date_time_picker">
+        <argument
+            android:name="time"
+            app:argType="long"
+            app:nullable="false" />
+
+        <argument
+            android:name="minimum"
+            android:defaultValue="-1L"
+            app:argType="long"
+            app:nullable="false" />
+
+        <argument
+            android:name="maximum"
+            android:defaultValue="-1L"
+            app:argType="long"
+            app:nullable="false" />
+    </dialog>
+
 </navigation>

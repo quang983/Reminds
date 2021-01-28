@@ -3,7 +3,6 @@ package com.example.reminds.ui.fragment.detail
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
 import android.text.InputType
 import android.view.*
 import android.widget.EditText
@@ -16,9 +15,8 @@ import com.example.common.base.model.ContentDataEntity
 import com.example.reminds.R
 import com.example.reminds.ui.adapter.ListContentCheckAdapter
 import com.example.reminds.ui.adapter.ListWorkAdapter
+import com.example.reminds.utils.navigate
 import com.example.reminds.utils.navigateUp
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_list_work.*
 
@@ -130,30 +128,31 @@ class ListWorkFragment : Fragment() {
     }
 
     private fun setupTimePickerForContent(item: ContentDataEntity, workPosition: Int) {
-        val picker = MaterialTimePicker.Builder()
-            .setTimeFormat(TimeFormat.CLOCK_24H)
-            .setHour(12)
-            .setMinute(0)
-            .setTitleText(requireContext().getText(R.string.select_timer_title))
-            .build()
-        picker.show(childFragmentManager, "tag")
+        navigate(ListWorkFragmentDirections.actionSecondFragmentToDateTimePickerDialog(System.currentTimeMillis()))
+        /*   val picker = MaterialTimePicker.Builder()
+               .setTimeFormat(TimeFormat.CLOCK_24H)
+               .setHour(12)
+               .setMinute(0)
+               .setTitleText(requireContext().getText(R.string.select_timer_title))
+               .build()
+           picker.show(childFragmentManager, "tag")
 
-        picker.addOnPositiveButtonClickListener {
-            picker.dismiss()
-            val newHour: Int = picker.hour
-            val newMinute: Int = picker.minute
-            val longTimer = newHour * 60 + newMinute
-            item.timer = longTimer.toLong()
-            Handler().postDelayed({
-                viewModel.updateContentData(item, workPosition)
-            }, 500)
-        }
-        picker.addOnNegativeButtonClickListener {
-        }
-        picker.addOnCancelListener {
-        }
-        picker.addOnDismissListener {
-        }
+           picker.addOnPositiveButtonClickListener {
+               picker.dismiss()
+               val newHour: Int = picker.hour
+               val newMinute: Int = picker.minute
+               val longTimer = newHour * 60 + newMinute
+               item.timer = longTimer.toLong()
+               Handler().postDelayed({
+                   viewModel.updateContentData(item, workPosition)
+               }, 500)
+           }
+           picker.addOnNegativeButtonClickListener {
+           }
+           picker.addOnCancelListener {
+           }
+           picker.addOnDismissListener {
+           }*/
     }
 
     private fun notifyThis(title: String?, message: String?) {

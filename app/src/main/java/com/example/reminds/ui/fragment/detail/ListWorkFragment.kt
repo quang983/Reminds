@@ -1,14 +1,13 @@
 package com.example.reminds.ui.fragment.detail
 
-import android.app.NotificationManager
-import android.content.Context
+import DateTimePickerFragment.Companion.TIME_PICKER_BUNDLE
 import android.os.Bundle
 import android.text.InputType
 import android.view.*
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.common.base.model.ContentDataEntity
@@ -30,6 +29,10 @@ class ListWorkFragment : Fragment() {
 
     private val viewModel: ListWorkViewModel by viewModels()
     private lateinit var adapter: ListWorkAdapter
+
+    companion object {
+        const val FRAGMENT_RESULT_TIMER = "FRAGMENT_RESULT_TIMER"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,7 +64,11 @@ class ListWorkFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.top_app_bar, menu)
+        if (args.idGroup != 1L) {
+            inflater.inflate(R.menu.top_app_bar, menu)
+        } else {
+            inflater.inflate(R.menu.menu_main, menu)
+        }
     }
 
 
@@ -129,6 +136,10 @@ class ListWorkFragment : Fragment() {
 
     private fun setupTimePickerForContent(item: ContentDataEntity, workPosition: Int) {
         navigate(ListWorkFragmentDirections.actionSecondFragmentToDateTimePickerDialog(System.currentTimeMillis()))
+        setFragmentResultListener(FRAGMENT_RESULT_TIMER) { _, bundle ->
+            item.timer = bundle.getLong(TIME_PICKER_BUNDLE)
+            viewModel.updateContentData(item, workPosition)
+        }
         /*   val picker = MaterialTimePicker.Builder()
                .setTimeFormat(TimeFormat.CLOCK_24H)
                .setHour(12)
@@ -153,20 +164,6 @@ class ListWorkFragment : Fragment() {
            }
            picker.addOnDismissListener {
            }*/
-    }
-
-    private fun notifyThis(title: String?, message: String?) {
-        val b = NotificationCompat.Builder(requireActivity(), "CHANNEL_ID")
-        b.setAutoCancel(true)
-            .setDefaults(NotificationCompat.DEFAULT_ALL)
-            .setWhen(System.currentTimeMillis())
-            .setSmallIcon(R.drawable.ic_calendar)
-            .setTicker("{your tiny message}")
-            .setContentTitle(title)
-            .setContentText(message)
-            .setContentInfo("INFO")
-        val nm = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        nm.notify(1, b.build())
     }
 
     override fun onResume() {

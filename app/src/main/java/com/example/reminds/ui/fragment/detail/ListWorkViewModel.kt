@@ -8,12 +8,12 @@ import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.WorkDataEntity
 import com.example.domain.usecase.db.workintopic.*
 import com.example.reminds.common.BaseViewModel
+import com.example.reminds.utils.getLastOrNull
+import com.example.reminds.utils.getOrNull
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import com.example.reminds.utils.getLastOrNull
-import com.example.reminds.utils.getOrNull
 
 class ListWorkViewModel @ViewModelInject constructor(
     private val fetchWorksUseCase: FetchWorksUseCase,
@@ -91,6 +91,10 @@ class ListWorkViewModel @ViewModelInject constructor(
 
     fun handlerCheckedContent(content: ContentDataEntity, workPosition: Int) =
         viewModelScope.launch(handler + Dispatchers.IO) {
+            if (listWorkViewModel[workPosition].groupId == 1L && content.isCheckDone) {
+                deleteContent(content, workPosition)
+                return@launch
+            }
             listWorkViewModel[workPosition].listContent.getOrNull {
                 this.id == content.id
             }?.apply {

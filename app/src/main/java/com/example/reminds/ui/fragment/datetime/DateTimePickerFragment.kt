@@ -3,7 +3,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TimePicker
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.example.reminds.R
 import com.example.reminds.ui.fragment.datetime.DateTimePickerViewModel
 import com.example.reminds.utils.getTime
@@ -22,9 +25,11 @@ import java.util.*
 class DateTimePickerFragment : BottomSheetDialogFragment(), TimePicker.OnTimeChangedListener {
     private val viewModel: DateTimePickerViewModel by viewModels()
 
-//    private val args by navArgs<DateTimePickerFragmentArgs>()
+    private val args by navArgs<DateTimePickerFragmentArgs>()
 
-//    private val chooseDateSharedViewModel by sharedViewModel<ChooseItemSharedViewModel<Calendar>>(qualifier = named("selectTime"))
+    companion object {
+        const val TIME_PICKER_BUNDLE = "TIME_PICKER_BUNDLE"
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         getDataFromArgs()
@@ -39,7 +44,7 @@ class DateTimePickerFragment : BottomSheetDialogFragment(), TimePicker.OnTimeCha
     }
 
     private fun getDataFromArgs() {
-//        viewModel.setUpTime(args.time, args.minimum, args.maximum)
+        viewModel.setUpTime(args.time, args.minimum, args.maximum)
     }
 
     private fun setUpView(view: View) {
@@ -69,14 +74,14 @@ class DateTimePickerFragment : BottomSheetDialogFragment(), TimePicker.OnTimeCha
 
         view.date.setOnDateChangedListener { _: MaterialCalendarView?, date: CalendarDay, _: Boolean ->
             viewModel.onDateChanged(date.year, date.month - 1, date.day)
-//            view.time.setTime(Pair(0, 0))
+            view.time.setTime(Pair(0, 0))
         }
 
         view.tvOk.setOnClickListener {
             val time = view.time.getTime()
             viewModel.onTimeChanged(time.first, time.second)
             viewModel.calendar.value?.let {
-//                chooseDateSharedViewModel.chooseItem(it)
+                setFragmentResult(TIME_PICKER_BUNDLE, bundleOf(TIME_PICKER_BUNDLE to it.timeInMillis / 1000))
             }
             navigateUp()
         }

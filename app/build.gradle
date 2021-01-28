@@ -135,4 +135,8 @@ dependencies {
     // Material CalendarView
     def materialCalendarViewVerison = '2.0.1'
     implementation "com.github.prolificinteractive:material-calendarview:$materialCalendarViewVerison"
+
+    def fragment_version = '1.3.0-beta01'
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
+    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
 }

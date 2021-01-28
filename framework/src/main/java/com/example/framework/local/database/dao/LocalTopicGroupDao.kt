@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface LocalTopicGroupDao : BaseDao<TopicGroup> {
-    @Query("SELECT * FROM TopicGroup")
+    @Query("SELECT * FROM TopicGroup where idTopic!=1")
     fun fetchTopicGroupDataFlow(): Flow<List<TopicGroup>>
 
     @Query("SELECT * FROM TopicGroup")

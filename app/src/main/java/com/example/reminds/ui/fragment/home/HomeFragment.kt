@@ -33,6 +33,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getFastTopic()
         setupUI()
         setupListener()
         observeData()
@@ -78,33 +79,40 @@ class HomeFragment : Fragment() {
     private fun observeData() {
         with(viewModel) {
             topicsGroupDataShow.observe(viewLifecycleOwner, {
+                groupList.setVisible(it.isNotEmpty())
                 adapter.submitList(it)
             })
             fastTopicData.observe(viewLifecycleOwner, { topic ->
                 layoutToday.tvCount.text = topic.contents.size.toString()
-                topic.contents.forEachIndexed { index, it ->
-                    when (index) {
-                        0 -> {
-                            layoutToday.tvContent.setVisible(true)
-                            layoutToday.viewDividerContent.setVisible(true)
-                            layoutToday.tvContent.text = it.name
-                        }
-                        1 -> {
-                            layoutToday.tvContentSecond.setVisible(true)
-                            layoutToday.viewDividerContentSecond.setVisible(true)
-                            layoutToday.tvContentSecond.text = it.name
-                        }
-                        2 -> {
-                            layoutToday.tvContentThird.setVisible(true)
-                            layoutToday.viewDividerContentMore.setVisible(true)
-                            layoutToday.tvContentThird.text = it.name
-                        }
-                        else -> {
-                            layoutToday.tvContentMore.setVisible((topic.contents.size - 3) > 0)
-                            layoutToday.tvContentMore.text = "${(topic.contents.size - 3).takeIf { it > 0 }} tác vụ"
-                            return@forEachIndexed
+                if (topic.contents.isNotEmpty()) {
+                    topic.contents.forEachIndexed { index, it ->
+                        when (index) {
+                            0 -> {
+                                layoutToday.tvContent.setVisible(true)
+                                layoutToday.viewDividerContent.setVisible(true)
+                                layoutToday.tvContent.text = it.name
+                            }
+                            1 -> {
+                                layoutToday.tvContentSecond.setVisible(true)
+                                layoutToday.viewDividerContentSecond.setVisible(true)
+                                layoutToday.tvContentSecond.text = it.name
+                            }
+                            2 -> {
+                                layoutToday.tvContentThird.setVisible(true)
+                                layoutToday.viewDividerContentMore.setVisible(true)
+                                layoutToday.tvContentThird.text = it.name
+                            }
+                            else -> {
+                                layoutToday.tvContentMore.setVisible((topic.contents.size - 3) > 0)
+                                layoutToday.tvContentMore.text = "+${(topic.contents.size - 3).takeIf { it > 0 }} tác vụ"
+                                return@forEachIndexed
+                            }
                         }
                     }
+                } else {
+                    layoutToday.tvContent.setVisible(true)
+                    layoutToday.viewDividerContent.setVisible(true)
+                    layoutToday.tvContent.text = "Bạn chưa tạo nhắc nhở"
                 }
             })
         }

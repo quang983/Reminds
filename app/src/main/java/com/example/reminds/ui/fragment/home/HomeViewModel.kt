@@ -2,6 +2,7 @@ package com.example.reminds.ui.fragment.home
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.TopicGroupEntity
@@ -24,11 +25,7 @@ class HomeViewModel @ViewModelInject constructor(
     private val getAllContentOfTopicUseCase: GetAllContentOfTopicUseCase
 ) : BaseViewModel() {
 
-    val fastTopicData: LiveData<FastTopicViewItem> = liveDataEmit {
-        val topic = getFastTopicUseCase.invoke(BaseUseCase.Param())
-        val contents = getAllContentOfTopicUseCase.invoke(GetAllContentOfTopicUseCase.Param(topic.id))
-        FastTopicViewItem(topic, contents)
-    }
+    val fastTopicData: LiveData<FastTopicViewItem> = MutableLiveData()
 
     private val _topicData: LiveData<List<TopicGroupEntity>> = liveData {
         fetchTopicFlowUseCase.invoke(BaseUseCase.Param()).collect {
@@ -48,6 +45,16 @@ class HomeViewModel @ViewModelInject constructor(
         }
     }
 
+    fun getFastTopic() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val topic = getFastTopicUseCase.invoke(BaseUseCase.Param())
+            val contents = getAllContentOfTopicUseCase.invoke(GetAllContentOfTopicUseCase.Param(topic.id))
+           fastTopicData.postValue(FastTopicViewItem(topic, contents))
+        }
+    }
+
+
     data class TopicGroupViewItem(val topicGroupEntity: TopicGroupEntity, val totalTask: Int)
+
     data class FastTopicViewItem(val topicGroupEntity: TopicGroupEntity, val contents: List<ContentDataEntity>)
 }

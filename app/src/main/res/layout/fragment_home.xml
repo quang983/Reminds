@@ -25,9 +25,9 @@
     <include
         android:id="@+id/layoutToday"
         layout="@layout/layout_today_home"
-        android:layout_marginTop="@dimen/_6sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_6sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitleToday" />
 
@@ -45,6 +45,7 @@
         app:layout_constraintTop_toBottomOf="@id/layoutToday" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_6sdp"
@@ -63,6 +64,12 @@
             tools:itemCount="10"
             tools:listitem="@layout/item_topic" />
     </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="cardRecyclerView,tvTitle" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnNewTopic"

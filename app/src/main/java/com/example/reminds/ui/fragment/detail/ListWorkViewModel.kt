@@ -28,7 +28,7 @@ class ListWorkViewModel @ViewModelInject constructor(
 
     private val idGroup: MediatorLiveData<Long> = MediatorLiveData<Long>()
 
-    private var listWorkViewModel: ArrayList<WorkDataEntity> = ArrayList()
+    var listWorkViewModel: ArrayList<WorkDataEntity> = ArrayList()
 
     private val listWorkDataLocal: LiveData<List<WorkDataEntity>> = idGroup.switchMapLiveData {
         fetchWorksUseCase.invoke(FetchWorksUseCase.Param(idGroup.value ?: return@switchMapLiveData))

@@ -132,7 +132,7 @@ class ListContentCheckAdapter(
 
     private fun refreshTvTimer(view: View, item: ContentDataEntity) {
         view.tvTimer.setVisible(item.timer >= 0)
-        view.tvTimer.text = TimestampUtils.convertMinuteToTimeStr(item.timer).toString()
+        view.tvTimer.text = TimestampUtils.getFullFormatTime(item.timer)
     }
 
     private fun refreshCheckBox(view: View, item: ContentDataEntity) {

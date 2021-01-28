@@ -54,6 +54,9 @@ class ListWorkFragment : Fragment() {
         extendedFab.setOnClickListener {
             showDialogInputWorkTopic()
         }
+        rootWork.setOnClickListener {
+            viewModel.reSaveListWorkToDb(viewModel.listWorkViewModel.size - 1)
+        }
     }
 
     private fun setupToolbar() {

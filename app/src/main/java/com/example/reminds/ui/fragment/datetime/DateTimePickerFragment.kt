@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.reminds.R
 import com.example.reminds.ui.fragment.datetime.DateTimePickerViewModel
+import com.example.reminds.ui.fragment.detail.ListWorkFragment
 import com.example.reminds.utils.getTime
 import com.example.reminds.utils.navigateUp
 import com.example.reminds.utils.setTime
@@ -81,7 +82,7 @@ class DateTimePickerFragment : BottomSheetDialogFragment(), TimePicker.OnTimeCha
             val time = view.time.getTime()
             viewModel.onTimeChanged(time.first, time.second)
             viewModel.calendar.value?.let {
-                setFragmentResult(TIME_PICKER_BUNDLE, bundleOf(TIME_PICKER_BUNDLE to it.timeInMillis / 1000))
+                setFragmentResult(ListWorkFragment.FRAGMENT_RESULT_TIMER, bundleOf(TIME_PICKER_BUNDLE to it.timeInMillis))
             }
             navigateUp()
         }

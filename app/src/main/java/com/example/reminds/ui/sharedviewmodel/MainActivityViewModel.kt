@@ -3,6 +3,7 @@ package com.example.reminds.ui.sharedviewmodel
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.common.base.model.AlarmNotificationEntity
 import com.example.common.base.model.TopicGroupEntity
 import com.example.common.base.model.WorkDataEntity
 import com.example.domain.usecase.db.topic.InsertTopicUseCase
@@ -18,6 +19,8 @@ class MainActivityViewModel @ViewModelInject constructor(
 ) : BaseViewModel() {
     val isKeyboardShow: LiveData<Boolean> = MutableLiveData(false)
 
+    val notifyDataInsert: LiveData<AlarmNotificationEntity> = MutableLiveData()
+
     fun addFirstTopic() {
         GlobalScope.launch(handler + Dispatchers.IO) {
             val data = TopicGroupEntity(1, "Hôm nay")
@@ -26,7 +29,7 @@ class MainActivityViewModel @ViewModelInject constructor(
                     InsertWorkUseCase.Param(
                         WorkDataEntity(
                             id = System.currentTimeMillis(),
-                            name = "Cơ bản",
+                            name = "Chung",
                             groupId = it,
                             listContent = mutableListOf()
                         )
@@ -35,4 +38,6 @@ class MainActivityViewModel @ViewModelInject constructor(
             }
         }
     }
+
+
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BaseProjects</string>
+    <string name="app_name">Todo Simple</string>
     <string name="action_settings">Settings</string>
     <string name="home_screen_title">Nhắc nhở</string>
     <!-- Strings used for fragments for navigation -->
@@ -31,10 +31,12 @@
     <string name="accept_action">Đồng ý</string>
     <string name="notify_channel">CHANNEL_123</string>
     <string name="notify_name_channel">CHANNEL name</string>
+    <string name="create_notify_new">Bạn chưa tạo nhắc nhở</string>
     <!-- change purchase date -->
     <string name="title_pick_date">Chọn ngày</string>
     <string name="title_pick_time">Chọn giờ</string>
 
     <string name="ok">Đồng ý</string>
     <string name="cancel">Huỷ</string>
+    <string name="add_new_work">Thêm một tiêu đề mới</string>
 </resources>

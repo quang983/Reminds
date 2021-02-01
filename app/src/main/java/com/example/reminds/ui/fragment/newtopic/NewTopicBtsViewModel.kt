@@ -22,7 +22,7 @@ class NewTopicBtsViewModel @ViewModelInject constructor(
                     InsertWorkUseCase.Param(
                         WorkDataEntity(
                             id = System.currentTimeMillis(),
-                            name = "Cơ bản",
+                            name = "Chung",
                             groupId = it,
                             listContent = mutableListOf()
                         )

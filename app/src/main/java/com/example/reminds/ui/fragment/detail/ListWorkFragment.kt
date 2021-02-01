@@ -5,20 +5,21 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.*
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.example.common.base.model.AlarmNotificationEntity
 import com.example.common.base.model.ContentDataEntity
 import com.example.reminds.R
 import com.example.reminds.ui.adapter.ListContentCheckAdapter
 import com.example.reminds.ui.adapter.ListWorkAdapter
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
-import com.example.reminds.utils.hideSoftKeyboard
-import com.example.reminds.utils.navigate
-import com.example.reminds.utils.navigateUp
+import com.example.reminds.utils.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_list_work.*
 
@@ -33,7 +34,8 @@ class ListWorkFragment : Fragment() {
     private val viewModel: ListWorkViewModel by viewModels()
     private val homeSharedViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var adapter: ListWorkAdapter
-
+    private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
+    private lateinit var customAlertDialogView : View
     companion object {
         const val FRAGMENT_RESULT_TIMER = "FRAGMENT_RESULT_TIMER"
     }
@@ -56,6 +58,8 @@ class ListWorkFragment : Fragment() {
 
     private fun setupListener() {
         extendedFab.setOnClickListener {
+            customAlertDialogView = LayoutInflater.from(requireContext())
+                .inflate(R.layout.layout_custom_alert_text_input, null, false)
             showDialogInputWorkTopic()
         }
         rootWork.setOnClickListener {
@@ -98,6 +102,7 @@ class ListWorkFragment : Fragment() {
     }
 
     private fun setupUI() {
+        materialAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
         adapter = ListWorkAdapter(onClickTitle = { workPosition ->
             if (homeSharedViewModel.isKeyboardShow.value == true) {
                 hideSoftKeyboard()
@@ -126,8 +131,8 @@ class ListWorkFragment : Fragment() {
         }).apply {
             recyclerWorks.adapter = this
         }
-        homeSharedViewModel.isKeyboardShow.observe(viewLifecycleOwner,{
-            if(!it){
+        homeSharedViewModel.isKeyboardShow.observe(viewLifecycleOwner, {
+            if (!it) {
                 viewModel.reSaveListWorkAndCreateStateFocus()
             }
         })
@@ -143,7 +148,7 @@ class ListWorkFragment : Fragment() {
     }
 
     private fun showDialogInputWorkTopic() {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+      /*  val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
         builder.setTitle(requireContext().getText(R.string.new_data_title))
         val input = EditText(requireContext())
         input.inputType = InputType.TYPE_CLASS_TEXT
@@ -154,7 +159,18 @@ class ListWorkFragment : Fragment() {
         }
         builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
 
-        builder.show()
+        builder.show()*/
+
+        materialAlertDialogBuilder.setView(customAlertDialogView)
+            .setTitle("Thêm mới")
+            .setMessage("thêm mới title")
+            .setPositiveButton("Add") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun setupTimePickerForContent(item: ContentDataEntity, workPosition: Int) {
@@ -162,6 +178,11 @@ class ListWorkFragment : Fragment() {
         setFragmentResultListener(FRAGMENT_RESULT_TIMER) { _, bundle ->
             item.timer = bundle.getLong(TIME_PICKER_BUNDLE)
             viewModel.updateContentData(item, workPosition)
+            homeSharedViewModel.notifyDataInsert.postValue(
+                AlarmNotificationEntity(
+                    TimestampUtils.getFullFormatTime(item.timer), item.idOwnerWork, item.id, item.name, "Thông báo"
+                )
+            )
         }
         /*   val picker = MaterialTimePicker.Builder()
                .setTimeFormat(TimeFormat.CLOCK_24H)

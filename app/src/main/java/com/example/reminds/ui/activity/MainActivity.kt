@@ -9,16 +9,16 @@ import android.content.ServiceConnection
 import android.os.*
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
+import com.example.common.base.model.AlarmNotificationEntity
 import com.example.framework.local.cache.CacheImpl.Companion.KEY_FIRST_LOGIN
 import com.example.framework.local.cache.CacheImpl.Companion.SHARED_NAME
 import com.example.reminds.R
-import com.example.reminds.service.MSG_SAY_HELLO
+import com.example.reminds.service.INSERT_OBJECT_TIMER_DATA
 import com.example.reminds.service.NotificationService
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import com.example.reminds.utils.postValue
@@ -49,6 +49,15 @@ class MainActivity : AppCompatActivity() {
         createAdsMode()
         checkAddFirstTopic()
         catchEventKeyboard()
+        setObserver()
+    }
+
+    private fun setObserver() {
+        viewModel.apply {
+            notifyDataInsert.observe(this@MainActivity, {
+                sendActionInsertAlert(it)
+            })
+        }
     }
 
     override fun onStart() {
@@ -95,16 +104,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun sayHello(v: View) {
+    private fun sendActionInsertAlert(data: AlarmNotificationEntity) {
         if (!bound) return
-        // Create and send a message to the service, using a supported 'what' value
-        val msg: Message = Message.obtain(null, MSG_SAY_HELLO, 0)
+        val msg: Message = Message.obtain(null, INSERT_OBJECT_TIMER_DATA, data)
         try {
             mService?.send(msg)
         } catch (e: RemoteException) {
             e.printStackTrace()
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

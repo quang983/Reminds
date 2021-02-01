@@ -112,7 +112,7 @@ class HomeFragment : Fragment() {
                 } else {
                     layoutToday.tvContent.setVisible(true)
                     layoutToday.viewDividerContent.setVisible(false)
-                    layoutToday.tvContent.text = "Bạn chưa tạo nhắc nhở"
+                    layoutToday.tvContent.text = getString(R.string.create_notify_new)
                 }
             })
         }

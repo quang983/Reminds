@@ -89,17 +89,17 @@ class HomeFragment : Fragment() {
                         when (index) {
                             0 -> {
                                 layoutToday.tvContent.setVisible(true)
-                                layoutToday.viewDividerContent.setVisible(true)
+                                layoutToday.viewDividerContent.setVisible(topic.contents.size - 1 > 0)
                                 layoutToday.tvContent.text = it.name
                             }
                             1 -> {
                                 layoutToday.tvContentSecond.setVisible(true)
-                                layoutToday.viewDividerContentSecond.setVisible(true)
+                                layoutToday.viewDividerContentSecond.setVisible(topic.contents.size - 1 > 1)
                                 layoutToday.tvContentSecond.text = it.name
                             }
                             2 -> {
                                 layoutToday.tvContentThird.setVisible(true)
-                                layoutToday.viewDividerContentMore.setVisible(true)
+                                layoutToday.viewDividerContentMore.setVisible(topic.contents.size - 1 > 2)
                                 layoutToday.tvContentThird.text = it.name
                             }
                             else -> {
@@ -111,7 +111,7 @@ class HomeFragment : Fragment() {
                     }
                 } else {
                     layoutToday.tvContent.setVisible(true)
-                    layoutToday.viewDividerContent.setVisible(true)
+                    layoutToday.viewDividerContent.setVisible(false)
                     layoutToday.tvContent.text = "Bạn chưa tạo nhắc nhở"
                 }
             })

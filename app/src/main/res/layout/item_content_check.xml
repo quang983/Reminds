@@ -65,17 +65,27 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:imeOptions="actionDone"
-            android:inputType="text"
+            android:inputType="textMultiLine"
             android:paddingStart="@dimen/_6sdp"
             android:paddingTop="@dimen/_6sdp"
             android:paddingEnd="@dimen/_6sdp"
             android:paddingBottom="@dimen/_3sdp"
             android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="@id/rbChecked"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/imgFlag"
             app:layout_constraintStart_toEndOf="@id/rbChecked"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Nội dung" />
+
+        <ImageView
+            android:id="@+id/imgFlag"
+            android:layout_width="@dimen/_24sdp"
+            android:visibility="gone"
+            android:layout_height="@dimen/_24sdp"
+            android:layout_margin="@dimen/_3sdp"
+            android:src="@drawable/ic_baseline_flag_24"
+            app:layout_constraintBottom_toBottomOf="@id/tvContentCheck"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvContentCheck" />
 
         <TextView
             android:id="@+id/tvTimer"

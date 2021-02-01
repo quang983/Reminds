@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.Editable
 import android.text.Html
+import android.text.InputType
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -206,6 +207,11 @@ fun TimePicker.setTime(time: Pair<Int, Int>) {
         this.time.currentHour = time.first
         this.time.currentMinute = time.second
     }
+}
+
+fun EditText.setMultiLineCapSentencesAndDoneAction() {
+    imeOptions = EditorInfo.IME_ACTION_DONE
+    setRawInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES or InputType.TYPE_TEXT_FLAG_MULTI_LINE)
 }
 
 /*

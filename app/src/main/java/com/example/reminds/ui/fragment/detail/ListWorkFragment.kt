@@ -99,7 +99,12 @@ class ListWorkFragment : Fragment() {
 
     private fun setupUI() {
         adapter = ListWorkAdapter(onClickTitle = { workPosition ->
-//            viewModel.reSaveListWorkToDb(workPosition)
+            if (homeSharedViewModel.isKeyboardShow.value == true) {
+                hideSoftKeyboard()
+            } else {
+                viewModel.reSaveListWorkToDb(workPosition)
+            }
+            viewModel.workPositionSelected = workPosition
         }, insertContentToWork = { content, position ->
             viewModel.updateAndAddContent(content, position)
         }, handlerCheckItem = { content, position ->
@@ -121,6 +126,11 @@ class ListWorkFragment : Fragment() {
         }).apply {
             recyclerWorks.adapter = this
         }
+        homeSharedViewModel.isKeyboardShow.observe(viewLifecycleOwner,{
+            if(!it){
+                viewModel.reSaveListWorkAndCreateStateFocus()
+            }
+        })
     }
 
 

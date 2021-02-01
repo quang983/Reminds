@@ -23,6 +23,7 @@ class ListWorkViewModel @ViewModelInject constructor(
 ) : BaseViewModel() {
     private var isReSaveWorks = false
     private var workPosition = -1
+    var workPositionSelected = 0
 
     private val isShowDone = true
 

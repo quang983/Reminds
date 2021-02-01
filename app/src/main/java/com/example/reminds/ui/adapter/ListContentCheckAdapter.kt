@@ -1,6 +1,5 @@
 package com.example.reminds.ui.adapter
 
-import android.graphics.Color
 import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
@@ -81,11 +80,13 @@ class ListContentCheckAdapter(
             if (position == currentList.size - 1 && item.isFocus && currentList.size - 1 >= 0) {
                 view.tvContentCheck.requestFocus()
                 KeyboardUtils.showKeyboard(view.context)
+            }else{
+                view.tvContentCheck.clearFocus()
             }
         }
-        if (payloads.contains(PAYLOAD_NAME)) {
+        /*if (payloads.contains(PAYLOAD_NAME)) {
             refreshEdtContent(view, item)
-        }
+        }*/
         if (payloads.contains(PAYLOAD_TIMER)) {
             refreshTvTimer(view, item)
         }
@@ -115,7 +116,7 @@ class ListContentCheckAdapter(
     private fun refreshEdtContent(view: View, item: ContentDataEntity) {
         if (item.isFocus) {
             view.tvContentCheck.requestFocus()
-            if(!isShowKeyboard){
+            if (!isShowKeyboard) {
                 KeyboardUtils.showKeyboard(view.context)
             }
             isShowKeyboard = false
@@ -123,14 +124,11 @@ class ListContentCheckAdapter(
 
         view.tvContentCheck.setText(item.name)
         view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
+        view.tvContentCheck.setMultiLineCapSentencesAndDoneAction()
     }
 
     private fun refreshEdtContentBg(view: View, item: ContentDataEntity) {
-        if (item.hashTag) {
-            view.rootView.setBackgroundColor(Color.parseColor("#fdd835"))
-        } else {
-            view.rootView.setBackgroundColor(Color.parseColor("#ffffff"))
-        }
+        view.imgFlag.setVisible(item.hashTag)
     }
 
     private fun refreshTvTimer(view: View, item: ContentDataEntity) {

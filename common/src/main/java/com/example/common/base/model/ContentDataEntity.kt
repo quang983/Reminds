@@ -14,6 +14,8 @@ data class ContentDataEntity(
 ) : Serializable {
     fun copy() = ContentDataEntity(id, name, idOwnerWork, isFocus, hashTag, timer, isCheckDone)
 
+    fun copyAndResetFocus() = ContentDataEntity(id, name, idOwnerWork, false, hashTag, timer, isCheckDone)
+
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

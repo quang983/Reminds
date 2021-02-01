@@ -19,10 +19,16 @@ data class WorkDataEntity(
             ).toMutableList()
     )
 
-    fun copyAndClearFocus() = WorkDataEntity(
+    fun copyState() = WorkDataEntity(
         id, name, groupId,
         listContent.filter { it.name.isNotEmpty() }.map { it.copy() }.toMutableList()
     )
+
+    fun copyAndResetFocus() = WorkDataEntity(
+        id, name, groupId,
+        listContent.filter { it.name.isNotEmpty() }.map { it.copyAndResetFocus() }.toMutableList()
+    )
+
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

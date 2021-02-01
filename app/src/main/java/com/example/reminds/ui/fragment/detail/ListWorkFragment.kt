@@ -7,6 +7,7 @@ import android.view.*
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -14,6 +15,8 @@ import com.example.common.base.model.ContentDataEntity
 import com.example.reminds.R
 import com.example.reminds.ui.adapter.ListContentCheckAdapter
 import com.example.reminds.ui.adapter.ListWorkAdapter
+import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
+import com.example.reminds.utils.hideSoftKeyboard
 import com.example.reminds.utils.navigate
 import com.example.reminds.utils.navigateUp
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +31,7 @@ class ListWorkFragment : Fragment() {
     private val args by navArgs<ListWorkFragmentArgs>()
 
     private val viewModel: ListWorkViewModel by viewModels()
+    private val homeSharedViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var adapter: ListWorkAdapter
 
     companion object {
@@ -55,7 +59,13 @@ class ListWorkFragment : Fragment() {
             showDialogInputWorkTopic()
         }
         rootWork.setOnClickListener {
-            viewModel.reSaveListWorkToDb(viewModel.listWorkViewModel.size - 1)
+            if (homeSharedViewModel.isKeyboardShow.value == true) {
+                viewModel.reSaveListWorkAndCreateStateFocus()
+                hideSoftKeyboard()
+            } else {
+                viewModel.reSaveListWorkToDb(viewModel.listWorkViewModel.size - 1)
+
+            }
         }
     }
 
@@ -89,7 +99,7 @@ class ListWorkFragment : Fragment() {
 
     private fun setupUI() {
         adapter = ListWorkAdapter(onClickTitle = { workPosition ->
-            viewModel.reSaveListWorkToDb(workPosition)
+//            viewModel.reSaveListWorkToDb(workPosition)
         }, insertContentToWork = { content, position ->
             viewModel.updateAndAddContent(content, position)
         }, handlerCheckItem = { content, position ->
@@ -167,25 +177,5 @@ class ListWorkFragment : Fragment() {
            }
            picker.addOnDismissListener {
            }*/
-    }
-
-    override fun onResume() {
-        super.onResume()
-        catchEventKeyboard()
-    }
-
-    private fun catchEventKeyboard() {
-        /*KeyboardVisibilityEvent.setEventListener(
-            requireActivity(),
-            viewLifecycleOwner,
-            object : KeyboardVisibilityEventListener {
-                override fun onVisibilityChanged(isOpen: Boolean) {
-                    when (isOpen) {
-                        false -> {
-
-                        }
-                    }
-                }
-            })*/
     }
 }

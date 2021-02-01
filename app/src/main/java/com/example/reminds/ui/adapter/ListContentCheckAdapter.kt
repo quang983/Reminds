@@ -12,10 +12,7 @@ import com.example.common.base.model.ContentDataEntity
 import com.example.reminds.R
 import com.example.reminds.common.BaseAdapter
 import com.example.reminds.common.BaseViewHolder
-import com.example.reminds.utils.TimestampUtils
-import com.example.reminds.utils.inflate
-import com.example.reminds.utils.setOnClickListenerBlock
-import com.example.reminds.utils.setVisible
+import com.example.reminds.utils.*
 import kotlinx.android.synthetic.main.item_content_check.view.*
 import java.util.*
 
@@ -42,9 +39,9 @@ class ListContentCheckAdapter(
 
         override fun getChangePayload(oldItem: ContentDataEntity, newItem: ContentDataEntity): Any? {
             val payloads = ArrayList<Any>()
-           /* if (oldItem.name != newItem.name) {
-                payloads.add(PAYLOAD_NAME)
-            }*/
+            /* if (oldItem.name != newItem.name) {
+                 payloads.add(PAYLOAD_NAME)
+             }*/
             if (oldItem.idOwnerWork != newItem.idOwnerWork) {
                 payloads.add(PAYLOAD_ID_WORK)
             }
@@ -81,8 +78,12 @@ class ListContentCheckAdapter(
     override fun bind(view: View, viewType: Int, position: Int, item: ContentDataEntity, payloads: MutableList<Any>) {
         super.bind(view, viewType, position, item, payloads)
         if (payloads.contains(PAYLOAD_FOCUS)) {
-            if (position == currentList.size - 1 && item.isFocus && currentList.size - 1 >= 0) {
-                view.tvContentCheck.requestFocus()
+            if (position == currentList.size - 1 && item.isFocus && currentList.size - 1 >= 0 && !isShowKeyboard) {
+//                view.tvContentCheck.requestFocus()
+                KeyboardUtils.showKeyboard(view.tvContentCheck, view.context)
+                isShowKeyboard = true
+            } else {
+                isShowKeyboard = false
             }
         }
         if (payloads.contains(PAYLOAD_NAME)) {
@@ -116,7 +117,14 @@ class ListContentCheckAdapter(
 
     private fun refreshEdtContent(view: View, item: ContentDataEntity) {
         if (item.isFocus) {
-            view.tvContentCheck.requestFocus()
+            if (!isShowKeyboard) {
+                KeyboardUtils.showKeyboard(view.tvContentCheck, view.context)
+                isShowKeyboard = true
+            } else {
+                view.tvContentCheck.requestFocus()
+            }
+        } else {
+            isShowKeyboard = false
         }
         view.tvContentCheck.setText(item.name)
         view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))

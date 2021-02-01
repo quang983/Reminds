@@ -69,12 +69,23 @@ class ListWorkViewModel @ViewModelInject constructor(
     fun reSaveListWorkToDb(wPosition: Int) {
         GlobalScope.launch(handler + Dispatchers.IO) {
             val list = listWorkViewModel.map {
-                it.copyAndClearFocus()
+                it.copyState()
             }
             workPosition = wPosition
             updateListWorkUseCase.invoke(UpdateListWorkUseCase.Param(list))
         }
     }
+
+    fun reSaveListWorkAndCreateStateFocus() {
+        GlobalScope.launch(handler + Dispatchers.IO) {
+            val list = listWorkViewModel.map {
+                it.copyAndResetFocus()
+            }
+            isReSaveWorks = true
+            updateListWorkUseCase.invoke(UpdateListWorkUseCase.Param(list))
+        }
+    }
+
 
     private fun addNewContentToListWork(wPosition: Int) {
         if (listWorkViewModel[wPosition].listContent.getLastOrNull() == null ||
@@ -100,7 +111,7 @@ class ListWorkViewModel @ViewModelInject constructor(
             }?.apply {
                 isCheckDone = content.isCheckDone
             }.let {
-                val work = listWorkViewModel[workPosition].copyAndClearFocus()
+                val work = listWorkViewModel[workPosition].copyState()
                 updateWorkUseCase.invoke(UpdateWorkUseCase.Param(work))
             }
 
@@ -109,7 +120,7 @@ class ListWorkViewModel @ViewModelInject constructor(
     fun deleteContent(content: ContentDataEntity, wPosition: Int) =
         viewModelScope.launch(handler + Dispatchers.IO) {
             listWorkViewModel[wPosition].listContent.removeAll { it.id == content.id }
-            val work = listWorkViewModel[wPosition].copyAndClearFocus()
+            val work = listWorkViewModel[wPosition].copyState()
             updateWorkUseCase.invoke(UpdateWorkUseCase.Param(work))
         }
 
@@ -131,7 +142,7 @@ class ListWorkViewModel @ViewModelInject constructor(
                     return@forEachIndexed
                 }
             }
-            val work = listWorkViewModel[wPosition].copyAndClearFocus()
+            val work = listWorkViewModel[wPosition].copyState()
             updateWorkUseCase.invoke(UpdateWorkUseCase.Param(work))
         }
 

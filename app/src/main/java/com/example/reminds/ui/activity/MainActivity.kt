@@ -21,7 +21,10 @@ import com.example.reminds.R
 import com.example.reminds.service.MSG_SAY_HELLO
 import com.example.reminds.service.NotificationService
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
+import com.example.reminds.utils.postValue
 import dagger.hilt.android.AndroidEntryPoint
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 
 
 @AndroidEntryPoint
@@ -45,6 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         createAdsMode()
         checkAddFirstTopic()
+        catchEventKeyboard()
     }
 
     override fun onStart() {
@@ -144,5 +148,15 @@ class MainActivity : AppCompatActivity() {
             val adRequest = AdRequest.Builder().build()
             adView.loadAd(adRequest)
         }*/
+    }
+
+    fun catchEventKeyboard() {
+        KeyboardVisibilityEvent.setEventListener(
+            this,
+            object : KeyboardVisibilityEventListener {
+                override fun onVisibilityChanged(isOpen: Boolean) {
+                    viewModel.isKeyboardShow.postValue(isOpen)
+                }
+            })
     }
 }

@@ -16,6 +16,8 @@ fun Fragment.hideSoftKeyboard() {
     view?.findFocus()?.let { KeyboardUtils.hideSoftKeyboard(it, requireContext()) }
 }
 
+
+
 fun Fragment.navigate(
     direction: NavDirections,
     navOptions: NavOptions? = null,

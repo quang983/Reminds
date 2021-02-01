@@ -4,17 +4,16 @@ import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 
 class KeyboardUtils {
     companion object {
 
-        fun showKeyboard(editText: EditText, context: Context?) {
+        fun showKeyboard(context: Context?) {
             if (context == null) return
-
-            editText.requestFocus()
             val inputMethodManager = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+            inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
         }
 
         fun hideSoftKeyboard(focus: View, context: Context?) {

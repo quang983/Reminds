@@ -78,12 +78,9 @@ class ListContentCheckAdapter(
     override fun bind(view: View, viewType: Int, position: Int, item: ContentDataEntity, payloads: MutableList<Any>) {
         super.bind(view, viewType, position, item, payloads)
         if (payloads.contains(PAYLOAD_FOCUS)) {
-            if (position == currentList.size - 1 && item.isFocus && currentList.size - 1 >= 0 && !isShowKeyboard) {
-//                view.tvContentCheck.requestFocus()
-                KeyboardUtils.showKeyboard(view.tvContentCheck, view.context)
-                isShowKeyboard = true
-            } else {
-                isShowKeyboard = false
+            if (position == currentList.size - 1 && item.isFocus && currentList.size - 1 >= 0) {
+                view.tvContentCheck.requestFocus()
+                KeyboardUtils.showKeyboard(view.context)
             }
         }
         if (payloads.contains(PAYLOAD_NAME)) {
@@ -117,15 +114,13 @@ class ListContentCheckAdapter(
 
     private fun refreshEdtContent(view: View, item: ContentDataEntity) {
         if (item.isFocus) {
-            if (!isShowKeyboard) {
-                KeyboardUtils.showKeyboard(view.tvContentCheck, view.context)
-                isShowKeyboard = true
-            } else {
-                view.tvContentCheck.requestFocus()
+            view.tvContentCheck.requestFocus()
+            if(!isShowKeyboard){
+                KeyboardUtils.showKeyboard(view.context)
             }
-        } else {
             isShowKeyboard = false
         }
+
         view.tvContentCheck.setText(item.name)
         view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
     }

@@ -12,13 +12,50 @@
         android:fitsSystemWindows="true"
         android:orientation="vertical">
 
+        <RelativeLayout
+            android:id="@+id/ln_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/content_padding_normal"
+                android:paddingLeft="@dimen/content_padding_normal"
+                android:paddingTop="@dimen/element_spacing_normal"
+                android:paddingEnd="@dimen/content_padding_normal"
+                android:paddingRight="@dimen/content_padding_normal"
+                android:paddingBottom="@dimen/element_spacing_normal"
+                android:text="@string/cancel"
+                android:layout_alignParentStart="true"
+                android:textColor="@color/teal_700"
+                android:textSize="@dimen/text_medium_2" />
+
+            <TextView
+                android:id="@+id/tvOk"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/content_padding_normal"
+                android:paddingLeft="@dimen/content_padding_normal"
+                android:paddingTop="@dimen/element_spacing_normal"
+                android:paddingEnd="@dimen/content_padding_normal"
+                android:paddingRight="@dimen/content_padding_normal"
+                android:paddingBottom="@dimen/element_spacing_normal"
+                android:text="@string/ok"
+                android:textColor="@color/teal_200"
+                android:textSize="@dimen/text_medium_2" />
+        </RelativeLayout>
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabGravity="fill"
-            app:tabIndicatorColor="@color/colorAccent"
+            app:tabIndicatorColor="@color/teal_200"
             app:tabMaxWidth="0dp"
+            android:layout_below="@id/ln_bottom"
             app:tabSelectedTextColor="@android:color/black"
             app:tabTextColor="@android:color/darker_gray">
 
@@ -48,43 +85,6 @@
                 layout="@layout/layout_time" />
 
         </ViewSwitcher>
-
-        <LinearLayout
-            android:id="@+id/ln_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/viewSwitchcer"
-            android:layout_marginBottom="@dimen/content_padding_normal"
-            android:gravity="end">
-
-            <TextView
-                android:id="@+id/tvCancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/content_padding_normal"
-                android:paddingLeft="@dimen/content_padding_normal"
-                android:paddingTop="@dimen/element_spacing_normal"
-                android:paddingEnd="@dimen/content_padding_normal"
-                android:paddingRight="@dimen/content_padding_normal"
-                android:paddingBottom="@dimen/element_spacing_normal"
-                android:text="@string/cancel"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/text_medium_2" />
-
-            <TextView
-                android:id="@+id/tvOk"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/content_padding_normal"
-                android:paddingLeft="@dimen/content_padding_normal"
-                android:paddingTop="@dimen/element_spacing_normal"
-                android:paddingEnd="@dimen/content_padding_normal"
-                android:paddingRight="@dimen/content_padding_normal"
-                android:paddingBottom="@dimen/element_spacing_normal"
-                android:text="@string/ok"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/text_medium_2" />
-        </LinearLayout>
     </RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,5 +1,6 @@
 package com.example.reminds.utils
 
+import android.content.res.Resources
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -213,6 +214,12 @@ fun EditText.setMultiLineCapSentencesAndDoneAction() {
     imeOptions = EditorInfo.IME_ACTION_DONE
     setRawInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES or InputType.TYPE_TEXT_FLAG_MULTI_LINE)
 }
+
+val Int.toPx: Int
+    get() = (this * Resources.getSystem().displayMetrics.density).toInt()
+
+val Int.toDp: Int
+    get() = (this / Resources.getSystem().displayMetrics.density).toInt()
 
 /*
 fun ImageView.showImage(source: Any, vararg transformations: Transformation<Bitmap>) {

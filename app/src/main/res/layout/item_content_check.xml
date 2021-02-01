@@ -101,17 +101,6 @@
             tools:text="Day la timer"
             tools:visibility="visible" />
 
-        <ImageView
-            android:id="@+id/imgCheckDone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_6sdp"
-            android:src="@drawable/ic_check_24px"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <View
             android:layout_width="0dp"
             android:layout_height="0.5dp"

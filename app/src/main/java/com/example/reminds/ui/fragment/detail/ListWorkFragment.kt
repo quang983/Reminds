@@ -2,11 +2,7 @@ package com.example.reminds.ui.fragment.detail
 
 import DateTimePickerFragment.Companion.TIME_PICKER_BUNDLE
 import android.os.Bundle
-import android.text.InputType
 import android.view.*
-import android.widget.EditText
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
@@ -60,6 +56,7 @@ class ListWorkFragment : Fragment() {
         extendedFab.setOnClickListener {
             customAlertDialogView = LayoutInflater.from(requireContext())
                 .inflate(R.layout.layout_custom_alert_text_input, null, false)
+            customAlertDialogView.setPadding(36.toDp,0,36.toDp,0)
             showDialogInputWorkTopic()
         }
         rootWork.setOnClickListener {
@@ -163,11 +160,10 @@ class ListWorkFragment : Fragment() {
 
         materialAlertDialogBuilder.setView(customAlertDialogView)
             .setTitle("Thêm mới")
-            .setMessage("thêm mới title")
-            .setPositiveButton("Add") { dialog, _ ->
+            .setPositiveButton("Thêm") { dialog, _ ->
                 dialog.dismiss()
             }
-            .setNegativeButton("Cancel") { dialog, _ ->
+            .setNegativeButton("Huỷ") { dialog, _ ->
                 dialog.dismiss()
             }
             .show()

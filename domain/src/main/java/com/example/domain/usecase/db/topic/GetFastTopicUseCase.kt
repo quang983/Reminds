@@ -6,8 +6,8 @@ import com.example.domain.repository.TopicRepository
 import javax.inject.Inject
 
 class GetFastTopicUseCase @Inject constructor(private val topicRepository: TopicRepository) :
-    BaseUseCase<BaseUseCase.Param, TopicGroupEntity> {
-    override suspend fun invoke(params: BaseUseCase.Param): TopicGroupEntity {
+    BaseUseCase<BaseUseCase.Param, TopicGroupEntity?> {
+    override suspend fun invoke(params: BaseUseCase.Param): TopicGroupEntity? {
         return topicRepository.getFastTopicUseCase()
     }
 }

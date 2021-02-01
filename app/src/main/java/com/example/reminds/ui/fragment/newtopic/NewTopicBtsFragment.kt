@@ -41,9 +41,9 @@ class NewTopicBtsFragment : BottomSheetDialogFragment() {
             dismiss()
         }
 
-        btnDatePicker.setOnClickListener {
+       /* btnDatePicker.setOnClickListener {
             showDatePicker()
-        }
+        }*/
 
         edtTopic.setTextChangedListener {
             if (it.text.isNotBlank()) {

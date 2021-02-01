@@ -25,8 +25,8 @@ class TopicGroupSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun getFastTopic(): TopicGroupEntity {
-        return dao.fetchTopicTodayData().let {
+    override suspend fun getFastTopic(): TopicGroupEntity? {
+        return dao.fetchTopicTodayData()?.let {
             it.toDomain(it)
         }
     }

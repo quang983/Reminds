@@ -15,7 +15,7 @@ class TopicRepositoryImpl @Inject constructor(
 
     override suspend fun fetchAllTopicGroups(): List<TopicGroupEntity> = source.fetchAll()
 
-    override suspend fun getFastTopicUseCase(): TopicGroupEntity {
+    override suspend fun getFastTopicUseCase(): TopicGroupEntity? {
         return source.getFastTopic()
     }
 

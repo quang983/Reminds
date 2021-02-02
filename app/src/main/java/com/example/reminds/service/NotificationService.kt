@@ -78,7 +78,7 @@ class NotificationService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show()
         return START_STICKY
     }
 
@@ -88,7 +88,7 @@ class NotificationService : Service() {
      */
 
     override fun onBind(intent: Intent): IBinder {
-        Toast.makeText(applicationContext, "binding", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(applicationContext, "binding", Toast.LENGTH_SHORT).show()
         mMessenger = Messenger(IncomingHandler(this))
         return mMessenger.binder
     }

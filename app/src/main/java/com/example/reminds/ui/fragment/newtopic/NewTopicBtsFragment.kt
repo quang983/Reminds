@@ -1,11 +1,14 @@
 package com.example.reminds.ui.fragment.newtopic
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.example.reminds.R
+import com.example.reminds.utils.KeyboardUtils
 import com.example.reminds.utils.setTextChangedListener
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -26,24 +29,41 @@ class NewTopicBtsFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupUI()
         setListener()
+    }
+
+    private fun setupUI() {
+        edtTopic.requestFocus()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        Handler().postDelayed({
+            KeyboardUtils.showKeyboard(requireContext())
+        }, 500)
     }
 
     private fun setListener() {
         btnDone.setOnClickListener {
-            viewModel.insertTopic(
-                edtTopic.text.toString()
-            )
-            dismiss()
+            if (edtTopic.text.toString().isNotBlank()) {
+                viewModel.insertTopic(
+                    edtTopic.text.toString()
+                )
+                dismiss()
+            } else {
+                Toast.makeText(requireContext(), "Tiêu đề phải có tối thiểu 1 ký tự!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         btnBack.setOnClickListener {
             dismiss()
         }
 
-       /* btnDatePicker.setOnClickListener {
-            showDatePicker()
-        }*/
+        /* btnDatePicker.setOnClickListener {
+             showDatePicker()
+         }*/
 
         edtTopic.setTextChangedListener {
             if (it.text.isNotBlank()) {

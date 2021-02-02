@@ -1,9 +1,7 @@
 package com.example.reminds.ui.fragment.detail
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.WorkDataEntity
 import com.example.domain.usecase.db.workintopic.*
@@ -55,6 +53,7 @@ class ListWorkViewModel @ViewModelInject constructor(
         }
         list
     }
+
 
     fun getListWork(idGroup: Long) {
         this.idGroup.postValue(idGroup)

@@ -32,7 +32,8 @@ class ListContentCheckAdapter(
 
         override fun areContentsTheSame(oldItem: ContentDataEntity, newItem: ContentDataEntity): Boolean {
             return oldItem.isFocus == newItem.isFocus && oldItem.idOwnerWork == newItem.idOwnerWork
-                    && oldItem.timer == newItem.timer && oldItem.isCheckDone == newItem.isCheckDone && oldItem.hashTag == newItem.hashTag
+                    && oldItem.timer == newItem.timer && oldItem.isCheckDone == newItem.isCheckDone
+                    && oldItem.hashTag == newItem.hashTag
 
         }
 

@@ -19,6 +19,10 @@ class TopicRepositoryImpl @Inject constructor(
         return source.getFastTopic()
     }
 
+    override suspend fun getTopicByIdUseCase(id: Long): TopicGroupEntity? {
+        return source.getTopic(id)
+    }
+
     override suspend fun insertData(data: TopicGroupEntity): Long {
         return source.insert(TopicGroupEntity(data.id, data.name))
     }

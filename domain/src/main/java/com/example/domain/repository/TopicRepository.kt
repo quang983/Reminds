@@ -10,4 +10,6 @@ interface TopicRepository : BaseRepository<TopicGroupEntity> {
     suspend fun fetchAllTopicGroups(): List<TopicGroupEntity>
 
     suspend fun getFastTopicUseCase(): TopicGroupEntity?
+
+    suspend fun getTopicByIdUseCase(id: Long): TopicGroupEntity?
 }

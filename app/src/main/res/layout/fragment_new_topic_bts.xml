@@ -44,21 +44,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_26sdp"
+        android:imeOptions="actionDone"
+        android:lines="1"
+        android:maxLines="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnBack" />
 
-  <!--  <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnDatePicker"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_26sdp"
-        android:layout_marginTop="@dimen/_16sdp"
-        android:layout_marginEnd="@dimen/_26sdp"
-        android:drawableStart="@drawable/ic_calendar"
-        android:text="@string/select_date_range"
-        android:textAllCaps="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edtTopic" />-->
+    <!--  <com.google.android.material.button.MaterialButton
+          android:id="@+id/btnDatePicker"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/_26sdp"
+          android:layout_marginTop="@dimen/_16sdp"
+          android:layout_marginEnd="@dimen/_26sdp"
+          android:drawableStart="@drawable/ic_calendar"
+          android:text="@string/select_date_range"
+          android:textAllCaps="false"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/edtTopic" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

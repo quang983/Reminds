@@ -93,6 +93,8 @@ class ListWorkFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_settings_task_view -> {
+
+                viewModel.getListWork(args.idGroup)
               /*  viewModel.isShowDone.postValue(viewModel.isShowDone.value ?: false)
                 if (viewModel.isShowDone.value == false) {
                     item.setTitle("Hiển thị lời nhắc đã hoàn tất")

@@ -12,6 +12,7 @@ import com.example.reminds.R
 import com.example.reminds.common.BaseAdapter
 import com.example.reminds.common.BaseViewHolder
 import com.example.reminds.utils.*
+import com.example.reminds.utils.TimestampUtils.INCREASE_DATE_FORMAT
 import kotlinx.android.synthetic.main.item_content_check.view.*
 import java.util.*
 
@@ -81,7 +82,7 @@ class ListContentCheckAdapter(
             if (position == currentList.size - 1 && item.isFocus && currentList.size - 1 >= 0) {
                 view.tvContentCheck.requestFocus()
                 KeyboardUtils.showKeyboard(view.context)
-            }else{
+            } else {
                 view.tvContentCheck.clearFocus()
             }
         }
@@ -134,7 +135,7 @@ class ListContentCheckAdapter(
 
     private fun refreshTvTimer(view: View, item: ContentDataEntity) {
         view.tvTimer.setVisible(item.timer >= 0)
-        view.tvTimer.text = TimestampUtils.getFullFormatTime(item.timer)
+        view.tvTimer.text = TimestampUtils.getFullFormatTime(item.timer, INCREASE_DATE_FORMAT)
     }
 
     private fun refreshCheckBox(view: View, item: ContentDataEntity) {
@@ -233,7 +234,6 @@ class ListContentCheckAdapter(
 
     companion object {
         const val PAYLOAD_FOCUS = "PAYLOAD_FOCUS"
-        const val PAYLOAD_NAME = "PAYLOAD_NAME"
         const val PAYLOAD_CHECKED = "PAYLOAD_CHECKED"
         const val PAYLOAD_ID_WORK = "PAYLOAD_ID_WORK"
         const val PAYLOAD_TIMER = "PAYLOAD_TIMER"

@@ -13,7 +13,6 @@ import com.example.reminds.R;
 
 import java.util.Timer;
 
-
 import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 
 public class CircleCheckBox extends View {
@@ -33,7 +32,7 @@ public class CircleCheckBox extends View {
     private final Paint mPaintText = new Paint(ANTI_ALIAS_FLAG);
     private boolean firstRun = true;
     private boolean timer_running = false;
-    private float tick_third_ = innerCircleRadius / 3;
+    private float tick_third_ = innerCircleRadius / 2;
     private boolean draw_tick_part_one = false;
     private String text = "";
 

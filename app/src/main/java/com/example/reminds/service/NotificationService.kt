@@ -9,8 +9,8 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Message
 import android.os.Messenger
-import android.widget.Toast
 import com.example.common.base.model.AlarmNotificationEntity
+import com.example.reminds.utils.TimestampUtils
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -37,7 +37,7 @@ class NotificationService : Service() {
                 }
                 INSERT_OBJECT_TIMER_DATA -> {
                     val notify = msg.obj as AlarmNotificationEntity
-                    scheduleAlarm(notify.timeAlarm, notify.nameWork, notify.nameContent, notify.idContent.toInt())
+                    scheduleAlarm(TimestampUtils.getFullFormatTime(notify.timeAlarm, "dd/MM/yyyy HH:mm"), notify.nameWork, notify.nameContent, notify.idContent.toInt())
                 }
                 else -> super.handleMessage(msg)
             }

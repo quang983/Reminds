@@ -130,7 +130,7 @@ dependencies {
 
     // optional - Test helpers
     androidTestImplementation "androidx.work:work-testing:$work_version"
-//    implementation 'com.google.android.gms:play-services-ads:19.7.0'
+    implementation 'com.google.android.gms:play-services-ads:19.7.0'
 
     // Material CalendarView
     def materialCalendarViewVerison = '2.0.1'

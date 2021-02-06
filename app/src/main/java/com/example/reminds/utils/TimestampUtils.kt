@@ -9,6 +9,8 @@ import java.util.*
 
 object TimestampUtils {
     const val ISO8601_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss"
+    const val NORMAL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss"
+    const val INCREASE_DATE_FORMAT = "HH:mm dd/MM/yyyy"
     const val DATE_FORMAT_ = "yyyy-MM-dd"
     const val SAME_DATE = 0
     const val DIFF_DATE_SMALLER = -1
@@ -24,8 +26,8 @@ object TimestampUtils {
         }
     }
 
-    fun getFullFormatTime(timestamp: Long): String {
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US)
+    fun getFullFormatTime(timestamp: Long, pattern: String): String {
+        val dateFormat = SimpleDateFormat(pattern, Locale.US)
         dateFormat.timeZone = TimeZone.getDefault()
         return dateFormat.format(Date(timestamp))
     }

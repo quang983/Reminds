@@ -215,7 +215,7 @@ class ListWorkFragment : Fragment() {
             viewModel.updateContentData(item, workPosition)
             homeSharedViewModel.notifyDataInsert.postValue(
                 AlarmNotificationEntity(
-                    TimestampUtils.getFullFormatTime(item.timer), item.idOwnerWork, item.id, item.name, "Thông báo"
+                    item.timer, item.idOwnerWork, item.id, item.name, "Thông báo"
                 )
             )
         }

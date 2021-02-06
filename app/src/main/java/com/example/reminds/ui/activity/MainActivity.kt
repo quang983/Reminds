@@ -22,7 +22,10 @@ import com.example.reminds.service.INSERT_OBJECT_TIMER_DATA
 import com.example.reminds.service.NotificationService
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import com.example.reminds.utils.postValue
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.content_main.*
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 
@@ -151,13 +154,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createAdsMode() {
-        /*MobileAds.initialize(this) {
-            val adRequest = AdRequest.Builder().build()
-            adView.loadAd(adRequest)
-        }*/
+        MobileAds.initialize(this) {
+        }
+        val adRequest = AdRequest.Builder().build()
+//        adView.loadAd(adRequest)
     }
 
-    fun catchEventKeyboard() {
+    private fun catchEventKeyboard() {
         KeyboardVisibilityEvent.setEventListener(
             this,
             object : KeyboardVisibilityEventListener {

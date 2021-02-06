@@ -3,6 +3,7 @@ package com.example.reminds.ui.fragment.detail
 import DateTimePickerFragment.Companion.TIME_PICKER_BUNDLE
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.common.base.model.AlarmNotificationEntity
 import com.example.common.base.model.ContentDataEntity
 import com.example.reminds.R
+import com.example.reminds.common.Constants.ERROR_LOG
 import com.example.reminds.ui.adapter.ListContentCheckAdapter
 import com.example.reminds.ui.adapter.ListWorkAdapter
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
@@ -35,6 +37,7 @@ class ListWorkFragment : Fragment() {
     private lateinit var adapter: ListWorkAdapter
     private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
     private lateinit var customAlertDialogView: View
+    private lateinit var menuToolbar: Menu
 
     companion object {
         const val FRAGMENT_RESULT_TIMER = "FRAGMENT_RESULT_TIMER"
@@ -82,6 +85,7 @@ class ListWorkFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
+        menuToolbar = menu
         if (args.idGroup != 1L) {
             inflater.inflate(R.menu.top_app_bar, menu)
         } else {
@@ -89,18 +93,11 @@ class ListWorkFragment : Fragment() {
         }
     }
 
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_settings_task_view -> {
-
-                viewModel.getListWork(args.idGroup)
-              /*  viewModel.isShowDone.postValue(viewModel.isShowDone.value ?: false)
-                if (viewModel.isShowDone.value == false) {
-                    item.setTitle("Hiển thị lời nhắc đã hoàn tất")
-                } else {
-                    item.setTitle("Ẩn lời nhắc đã hoàn tất")
-                }*/
+                val isShowDone = viewModel.isShowDoneLiveData.value ?: true
+                viewModel.saveTopicGroup(!isShowDone)
             }
             android.R.id.home -> {
                 navigateUp()
@@ -151,6 +148,17 @@ class ListWorkFragment : Fragment() {
         with(viewModel) {
             listWorkData.observe(viewLifecycleOwner, {
                 adapter.submitList(it)
+            })
+            isShowDoneLiveData.observe(viewLifecycleOwner, {
+                try {
+                    if (!it) {
+                        menuToolbar.findItem(R.id.action_settings_task_view).title = getString(R.string.title_show_content)
+                    } else {
+                        menuToolbar.findItem(R.id.action_settings_task_view).title = getString(R.string.title_hide_content)
+                    }
+                } catch (e: Throwable) {
+                    Log.e(ERROR_LOG, e.message.toString())
+                }
             })
         }
     }

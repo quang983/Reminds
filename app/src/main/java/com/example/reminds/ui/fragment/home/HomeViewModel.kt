@@ -47,7 +47,7 @@ class HomeViewModel @ViewModelInject constructor(
 
     fun getFastTopic() {
         viewModelScope.launch(Dispatchers.IO) {
-            getFastTopicUseCase.invoke(BaseUseCase.Param())?.let {
+            getFastTopicUseCase.invoke(BaseUseCase.Param()).collect {
                 val contents = getAllContentOfTopicUseCase.invoke(GetAllContentOfTopicUseCase.Param(it.id))
                 fastTopicData.postValue(FastTopicViewItem(it, contents))
             }

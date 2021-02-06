@@ -3,7 +3,10 @@ package com.example.reminds.ui.fragment.detail
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.common.base.model.ContentDataEntity
+import com.example.common.base.model.TopicGroupEntity
 import com.example.common.base.model.WorkDataEntity
+import com.example.domain.usecase.db.topic.GetTopicByIdUseCase
+import com.example.domain.usecase.db.topic.UpdateTopicUseCase
 import com.example.domain.usecase.db.workintopic.*
 import com.example.reminds.common.BaseViewModel
 import com.example.reminds.utils.getLastOrNull
@@ -17,19 +20,34 @@ class ListWorkViewModel @ViewModelInject constructor(
     private val fetchWorksUseCase: FetchWorksUseCase,
     private val insertWorkUseCase: InsertWorkUseCase,
     private val updateWorkUseCase: UpdateWorkUseCase,
-    private val updateListWorkUseCase: UpdateListWorkUseCase
+    private val updateListWorkUseCase: UpdateListWorkUseCase,
+    private val getTopicByIdUseCase: GetTopicByIdUseCase,
+    private val updateTopicUseCase: UpdateTopicUseCase
 ) : BaseViewModel() {
+    private lateinit var topicGroup: TopicGroupEntity
+
     private var isReSaveWorks = false
     private var workPosition = -1
-    var workPositionSelected = 0
 
-    private val isShowDone = true
+
+    var workPositionSelected = 0
 
     private val idGroup: MediatorLiveData<Long> = MediatorLiveData<Long>()
 
     var listWorkViewModel: ArrayList<WorkDataEntity> = ArrayList()
 
-    private val listWorkDataLocal: LiveData<List<WorkDataEntity>> = idGroup.switchMapLiveData {
+    private val _isShowDoneLiveData: LiveData<Boolean> = idGroup.switchMapLiveData {
+        getTopicByIdUseCase.invoke(GetTopicByIdUseCase.Param(idGroup.value ?: return@switchMapLiveData)).collect {
+            topicGroup = it
+            emit(topicGroup.isShowDone)
+        }
+    }
+
+    val isShowDoneLiveData: LiveData<Boolean> = _isShowDoneLiveData.switchMapLiveDataEmit {
+        it
+    }
+
+    private val listWorkDataLocal: LiveData<List<WorkDataEntity>> = _isShowDoneLiveData.switchMapLiveData {
         fetchWorksUseCase.invoke(FetchWorksUseCase.Param(idGroup.value ?: return@switchMapLiveData))
             .collect {
                 emit(it)
@@ -45,13 +63,20 @@ class ListWorkViewModel @ViewModelInject constructor(
             workPosition = -1
         }
         val list = listWorkViewModel.map {
-            if (isShowDone) {
+            if (_isShowDoneLiveData.value == true) {
                 it.copy()
             } else {
                 it.copyAndRemoveDone()
             }
         }
         list
+    }
+
+    fun saveTopicGroup(isShowDone: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            topicGroup.isShowDone = isShowDone
+            updateTopicUseCase.invoke(UpdateTopicUseCase.Param(topicGroup))
+        }
     }
 
 

@@ -8,7 +8,7 @@ interface TopicGroupSource : BaseSource<TopicGroupEntity> {
 
     suspend fun fetchAll(): List<TopicGroupEntity>
 
-    suspend fun getFastTopic(): TopicGroupEntity?
+    suspend fun getFastTopic(): Flow<TopicGroupEntity>
 
-    suspend fun getTopic(id: Long): TopicGroupEntity?
+    suspend fun getTopic(id: Long): Flow<TopicGroupEntity>
 }

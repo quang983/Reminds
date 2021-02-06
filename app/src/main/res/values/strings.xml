@@ -39,4 +39,6 @@
     <string name="ok">Đồng ý</string>
     <string name="cancel">Huỷ</string>
     <string name="add_new_work">Thêm một tiêu đề mới</string>
+    <string name="title_show_content">Hiển thị lời nhắc đã hoàn tất</string>
+    <string name="title_hide_content">Ẩn lời nhắc đã hoàn tất</string>
 </resources>

@@ -25,14 +25,14 @@ class TopicGroupSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun getFastTopic(): TopicGroupEntity? {
-        return dao.fetchTopicByIdData(1)?.let {
+    override suspend fun getFastTopic(): Flow<TopicGroupEntity> {
+        return dao.fetchTopicByIdData(1).distinctUntilChanged().map {
             it.toDomain(it)
         }
     }
 
-    override suspend fun getTopic(id: Long): TopicGroupEntity? {
-        return dao.fetchTopicByIdData(id)?.let {
+    override suspend fun getTopic(id: Long): Flow<TopicGroupEntity> {
+        return dao.fetchTopicByIdData(id).distinctUntilChanged().map {
             it.toDomain(it)
         }
     }
@@ -45,7 +45,7 @@ class TopicGroupSourceImpl @Inject constructor(
     override suspend fun inserts(datas: List<TopicGroupEntity>) {
     }
 
-    override suspend fun update(datas: TopicGroupEntity) {
+    override suspend fun update(data: TopicGroupEntity) {
         TODO("Not yet implemented")
     }
 

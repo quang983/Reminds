@@ -18,8 +18,7 @@ class CacheImpl @Inject constructor(context: Context) : Cache {
 
     private var sharedPreferences: SharedPreferences = context.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE)
 
-/*
-    private inline fun <reified T> saveData(key: String, data: T?) {
+ /*   private inline fun <reified T> saveData(key: String, data: T?) {
         val dataStr = when (T::class) {
             Double::class -> data?.toString()
             String::class -> data?.toString()
@@ -42,8 +41,7 @@ class CacheImpl @Inject constructor(context: Context) : Cache {
             Int::class -> data?.toInt() as? T?
             else -> data?.toObject(T::class.java)
         }
-    }
-*/
+    }*/
 
 /*
     private fun encode(data: String?): String? {

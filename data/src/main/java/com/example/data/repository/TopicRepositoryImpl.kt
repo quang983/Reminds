@@ -15,12 +15,12 @@ class TopicRepositoryImpl @Inject constructor(
 
     override suspend fun fetchAllTopicGroups(): List<TopicGroupEntity> = source.fetchAll()
 
-    override suspend fun getFastTopicUseCase(): TopicGroupEntity? {
-        return source.getFastTopic()
+    override suspend fun getFastTopicUseCase(): Flow<TopicGroupEntity> {
+        return source.getFastTopic().conflate()
     }
 
-    override suspend fun getTopicByIdUseCase(id: Long): TopicGroupEntity? {
-        return source.getTopic(id)
+    override suspend fun getTopicByIdUseCase(id: Long): Flow<TopicGroupEntity> {
+        return source.getTopic(id).conflate()
     }
 
     override suspend fun insertData(data: TopicGroupEntity): Long {
@@ -35,7 +35,7 @@ class TopicRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateDatas(datas: List<TopicGroupEntity>) {
-        TODO("Not yet implemented")
+        source.updates(datas)
     }
 
     override suspend fun deleteDatas(datas: List<TopicGroupEntity>) {

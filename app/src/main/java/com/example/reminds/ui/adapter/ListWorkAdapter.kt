@@ -73,7 +73,7 @@ class ListWorkAdapter(
     override fun bind(view: View, viewType: Int, position: Int, item: WorkDataEntity, payloads: MutableList<Any>) {
         super.bind(view, viewType, position, item, payloads)
         if (payloads.contains(PAYLOAD_CONTENT)) {
-            (view.recyclerWorks.adapter as? ListContentCheckAdapter)?.submitList(item.listContent)
+            (view.recyclerWorks.adapter as? ListContentCheckAdapter)?.submitList(item.listContent.toMutableList())
         }
         if (payloads.contains(PAYLOAD_NAME)) {
             view.tvTitle.text = item.name

@@ -7,6 +7,7 @@ import com.example.framework.local.database.dao.LocalTopicGroupDao
 import com.example.framework.local.database.model.TopicGroup
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -14,7 +15,7 @@ class TopicGroupSourceImpl @Inject constructor(
     private val dao: LocalTopicGroupDao
 ) : TopicGroupSource {
     override suspend fun fetchAllFlow(): Flow<List<TopicGroupEntity>> {
-        return dao.fetchTopicGroupDataFlow().distinctUntilChanged().map { it ->
+        return dao.fetchTopicGroupDataFlow().distinctUntilChanged().filterNotNull().map { it ->
             it.map { it.toDomain(it) }
         }
     }
@@ -26,13 +27,13 @@ class TopicGroupSourceImpl @Inject constructor(
     }
 
     override suspend fun getFastTopic(): Flow<TopicGroupEntity> {
-        return dao.fetchTopicByIdData(1).distinctUntilChanged().map {
+        return dao.fetchTopicByIdData(1).distinctUntilChanged().filterNotNull().map {
             it.toDomain(it)
         }
     }
 
     override suspend fun getTopic(id: Long): Flow<TopicGroupEntity> {
-        return dao.fetchTopicByIdData(id).distinctUntilChanged().map {
+        return dao.fetchTopicByIdData(id).distinctUntilChanged().filterNotNull().map {
             it.toDomain(it)
         }
     }

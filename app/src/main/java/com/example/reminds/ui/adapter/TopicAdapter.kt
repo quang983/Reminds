@@ -2,6 +2,7 @@ package com.example.reminds.ui.adapter
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.DiffUtil
 import com.chauthai.swipereveallayout.ViewBinderHelper
 import com.example.common.base.model.TopicGroupEntity
@@ -9,14 +10,12 @@ import com.example.reminds.R
 import com.example.reminds.common.BaseAdapter
 import com.example.reminds.common.BaseViewHolder
 import com.example.reminds.ui.fragment.home.HomeViewModel
-import com.example.reminds.utils.TimestampUtils
 import com.example.reminds.utils.inflate
 import com.example.reminds.utils.setOnClickListenerBlock
 import com.example.reminds.utils.setVisible
 import kotlinx.android.synthetic.main.item_topic.view.*
 
-
-class TopicAdapter(private val onClickDetail: (id: Long) -> Unit, private val deleteItemListener: (item: TopicGroupEntity) -> Unit) :
+class TopicAdapter(private val onClickDetail: (id: Long,title :String, view: View) -> Unit, private val deleteItemListener: (item: TopicGroupEntity) -> Unit) :
     BaseAdapter<HomeViewModel.TopicGroupViewItem>(object : DiffUtil.ItemCallback<HomeViewModel.TopicGroupViewItem>() {
 
         override fun areItemsTheSame(
@@ -74,9 +73,10 @@ class TopicAdapter(private val onClickDetail: (id: Long) -> Unit, private val de
 
     override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: HomeViewModel.TopicGroupViewItem) {
         val topic = item.topicGroupEntity
+        ViewCompat.setTransitionName(view.layoutRootTopic, topic.id.toString())
         refreshName(view, topic)
         refreshCountTask(view, item.totalTask)
-        view.viewDivider.setVisible(position != currentList.size - 1)
+        view.viewDivider.setVisible(position != 0)
         setupViewBinderHelper(view, topic)
         setOnClickListener(view, topic)
     }
@@ -88,8 +88,8 @@ class TopicAdapter(private val onClickDetail: (id: Long) -> Unit, private val de
     }
 
     private fun setOnClickListener(view: View, topic: TopicGroupEntity) {
-        view.layoutRoot.setOnClickListener {
-            onClickDetail.invoke(topic.id)
+        view.layoutRootTopic.setOnClickListener {
+            onClickDetail.invoke(topic.id,topic.name, view.layoutRootTopic)
         }
         view.imgDelete.setOnClickListenerBlock {
             deleteItemListener.invoke(topic)

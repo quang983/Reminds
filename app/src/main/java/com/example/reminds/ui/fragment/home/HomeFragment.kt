@@ -1,28 +1,37 @@
 package com.example.reminds.ui.fragment.home
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.example.common.base.model.TopicGroupEntity
 import com.example.reminds.R
 import com.example.reminds.ui.adapter.TopicAdapter
-import com.example.reminds.ui.fragment.newtopic.NewTopicBtsFragment
-import com.example.reminds.utils.navigate
-import com.example.reminds.utils.setOnClickListenerBlock
-import com.example.reminds.utils.setVisible
+import com.example.reminds.utils.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.transition.MaterialElevationScale
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_new_topic_bts.*
+import kotlinx.android.synthetic.main.item_topic.*
+import kotlinx.android.synthetic.main.item_topic.view.*
+import kotlinx.android.synthetic.main.layout_custom_alert_text_input.view.*
 import kotlinx.android.synthetic.main.layout_today_home.view.*
+import kotlinx.android.synthetic.main.layout_today_home.view.tvContent
 
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var adapter: TopicAdapter
+    private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
+    private lateinit var customAlertDialogView: View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,15 +42,36 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getFastTopic()
+        setupTransition(view)
+        getData()
         setupUI()
         setupListener()
         observeData()
     }
 
+    private fun getData() {
+        viewModel.getFastTopic()
+    }
+
+    private fun setupTransition(view: View) {
+        // TODO: Set up postponed enter transition.
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
+    }
+
     private fun setupUI() {
-        adapter = TopicAdapter({
-            navigate(HomeFragmentDirections.actionFirstFragmentToSecondFragment(it))
+        materialAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
+        layoutToday.transitionName = "def"
+        adapter = TopicAdapter({ id, title, view ->
+            val emailCardDetailTransitionName = getString(R.string.transition_topic_to_detail)
+            val extras = FragmentNavigatorExtras(view to emailCardDetailTransitionName)
+            navigate(HomeFragmentDirections.actionFirstFragmentToSecondFragment(id, title), null, extras)
+            exitTransition = MaterialElevationScale(false).apply {
+                duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+            }
+            reenterTransition = MaterialElevationScale(true).apply {
+                duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+            }
         }, {
             showAlertDeleteDialog(it)
         }).apply {
@@ -49,11 +79,14 @@ class HomeFragment : Fragment() {
         }
 
         layoutToday.setOnClickListener {
+            val emailCardDetailTransitionName = getString(R.string.transition_topic_to_detail)
+            val extras = FragmentNavigatorExtras(layoutToday to emailCardDetailTransitionName)
+
             navigate(
                 HomeFragmentDirections
                     .actionFirstFragmentToSecondFragment(
                         viewModel.fastTopicData.value?.topicGroupEntity?.id ?: 1
-                    )
+                    ,"Ghi chú nhanh"), null, extras
             )
         }
     }
@@ -119,7 +152,25 @@ class HomeFragment : Fragment() {
     }
 
     private fun showBottomSheet() {
-        val bottomSheetFragment = NewTopicBtsFragment()
-        bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+/*        val bottomSheetFragment = NewTopicBtsFragment()
+        bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)*/
+        customAlertDialogView = LayoutInflater.from(requireContext())
+            .inflate(R.layout.layout_custom_alert_text_input, null, false)
+        customAlertDialogView.setPadding(36.toDp, 0, 36.toDp, 0)
+        materialAlertDialogBuilder.setView(customAlertDialogView)
+            .setTitle("Thêm mới")
+            .setPositiveButton("Thêm") { _, _ ->
+                customAlertDialogView.edtInput.text.toString().takeIf { it.isNotBlank() }?.let {
+                    viewModel.insertTopic(it)
+                } ?: Toast.makeText(requireContext(), "Tiêu đề phải có tối thiểu 1 ký tự!", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("Huỷ") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+        customAlertDialogView.requestFocus()
+        Handler().postDelayed({
+            KeyboardUtils.showKeyboard(requireContext())
+        }, 500)
     }
 }

@@ -96,17 +96,17 @@ class ListContentCheckAdapter(
             refreshCheckBox(view, item)
         }
         if (payloads.contains(PAYLOAD_HASH_TAG)) {
-            refreshEdtContentBg(view, item)
+            refreshFlag(view, item)
         }
     }
 
     override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: ContentDataEntity) {
         setupViewBinderHelper(view, item)
-        refreshEdtContentBg(view, item)
+        refreshFlag(view, item)
         refreshTvTimer(view, item)
         refreshEdtContent(view, item)
         refreshCheckBox(view, item)
-        setOnClickItemListener(view, item)
+        setOnClickItemListener(view, position)
         setOnEditorListener(view, item)
     }
 
@@ -129,12 +129,12 @@ class ListContentCheckAdapter(
         view.tvContentCheck.setMultiLineCapSentencesAndDoneAction()
     }
 
-    private fun refreshEdtContentBg(view: View, item: ContentDataEntity) {
-        view.imgFlag.setVisible(item.hashTag)
+    private fun refreshFlag(view: View, item: ContentDataEntity) {
+        view.imgFlag.visibleOrGone(item.hashTag)
     }
 
     private fun refreshTvTimer(view: View, item: ContentDataEntity) {
-        view.tvTimer.setVisible(item.timer >= 0)
+        view.tvTimer.visibleOrGone(item.timer >= 0)
         view.tvTimer.text = TimestampUtils.getFullFormatTime(item.timer, INCREASE_DATE_FORMAT)
     }
 
@@ -170,16 +170,22 @@ class ListContentCheckAdapter(
         }
     }
 
-    private fun setOnClickItemListener(view: View, item: ContentDataEntity) {
+    private fun setOnClickItemListener(view: View, position: Int) {
         view.rootView.setOnClickListenerBlock {
+            val item = getItem(position)
             item.let {
                 onClickDetail.invoke(it.id)
             }
         }
 
         view.imgTimer.setOnClickListenerBlock {
-            item.let {
+            ContentDataEntity(
+                getItem(position).id, getItem(position).name,
+                getItem(position).idOwnerWork, getItem(position).isFocus, getItem(position).hashTag,
+                getItem(position).timer, getItem(position).isCheckDone
+            ).let {
                 moreActionClick.invoke(it, TYPE_TIMER_CLICK)
+                refreshTvTimer(view, it)
                 Handler().postDelayed({
                     view.swipeLayout.close(true)
                 }, 1000)
@@ -187,14 +193,17 @@ class ListContentCheckAdapter(
         }
 
         view.imgGim.setOnClickListenerBlock {
+            val item = getItem(position)
             item.let {
                 it.hashTag = !it.hashTag
                 moreActionClick.invoke(it, TYPE_TAG_CLICK)
+                refreshFlag(view, it)
                 view.swipeLayout.close(true)
             }
         }
 
         view.imgDelete.setOnClickListenerBlock {
+            val item = getItem(position)
             item.let {
                 moreActionClick.invoke(it, TYPE_DELETE_CLICK)
                 view.swipeLayout.close(true)

@@ -22,11 +22,16 @@
     <fragment
         android:id="@+id/SecondFragment"
         android:name="com.example.reminds.ui.fragment.detail.ListWorkFragment"
-        android:label="@string/second_fragment_label"
+        android:label="{titleGroup}"
         tools:layout="@layout/fragment_list_work">
         <argument
             android:name="idGroup"
             app:argType="long" />
+
+        <argument
+            android:name="titleGroup"
+            app:argType="string"
+            app:nullable="false" />
 
         <action
             android:id="@+id/action_SecondFragment_to_dateTimePickerDialog"

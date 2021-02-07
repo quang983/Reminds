@@ -30,17 +30,25 @@
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutRootTopic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/layoutRoot"
-        android:background="?android:attr/selectableItemBackground"
-        android:paddingTop="@dimen/_3sdp"
-        android:paddingBottom="@dimen/_3sdp">
+        android:background="?android:attr/selectableItemBackground">
+
+        <View
+            android:id="@+id/viewDivider"
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:background="@color/bg_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tvContent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/imgTopic"
             android:layout_width="@dimen/_32sdp"
             android:layout_height="@dimen/_32sdp"
+            android:layout_marginTop="@dimen/_3sdp"
             android:padding="@dimen/_5sdp"
             android:src="@drawable/ic_reminders"
             app:layout_constraintStart_toStartOf="parent"
@@ -85,15 +93,5 @@
             android:textSize="@dimen/_14sdp"
             app:layout_constraintBaseline_toBaselineOf="@id/tvContent"
             app:layout_constraintEnd_toEndOf="parent" />
-
-        <View
-            android:id="@+id/viewDivider"
-            android:layout_width="0dp"
-            android:layout_height="0.5dp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:background="@color/bg_gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/tvContent"
-            app:layout_constraintTop_toBottomOf="@id/tvDate" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.chauthai.swipereveallayout.SwipeRevealLayout>

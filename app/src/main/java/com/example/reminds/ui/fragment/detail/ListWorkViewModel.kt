@@ -25,15 +25,10 @@ class ListWorkViewModel @ViewModelInject constructor(
     private val updateTopicUseCase: UpdateTopicUseCase
 ) : BaseViewModel() {
     private lateinit var topicGroup: TopicGroupEntity
-
     private var isReSaveWorks = false
     private var workPosition = -1
-
-
-    var workPositionSelected = 0
-
     private val idGroup: MediatorLiveData<Long> = MediatorLiveData<Long>()
-
+    var workPositionSelected = 0
     var listWorkViewModel: ArrayList<WorkDataEntity> = ArrayList()
 
     private val _isShowDoneLiveData: LiveData<Boolean> = idGroup.switchMapLiveData {

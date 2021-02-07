@@ -4,7 +4,7 @@
     <string name="home_screen_title">Nhắc nhở</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Danh sách</string>
+    <string name="second_fragment_label">%s</string>
     <string name="new_topic_fragment_label">New Topic Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
@@ -41,4 +41,8 @@
     <string name="add_new_work">Thêm một tiêu đề mới</string>
     <string name="title_show_content">Hiển thị lời nhắc đã hoàn tất</string>
     <string name="title_hide_content">Ẩn lời nhắc đã hoàn tất</string>
+
+    <!--name motion-->
+    <string name="transition_topic_detail">transition_topic_detail_%1$s</string>
+    <string name="transition_topic_to_detail">transition_topic_to_detail</string>
 </resources>

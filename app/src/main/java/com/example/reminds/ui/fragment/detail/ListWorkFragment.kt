@@ -1,6 +1,7 @@
 package com.example.reminds.ui.fragment.detail
 
 import DateTimePickerFragment.Companion.TIME_PICKER_BUNDLE
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -20,6 +21,7 @@ import com.example.reminds.ui.adapter.ListWorkAdapter
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import com.example.reminds.utils.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_list_work.*
 import kotlinx.android.synthetic.main.layout_custom_alert_text_input.view.*
@@ -43,6 +45,17 @@ class ListWorkFragment : Fragment() {
         const val FRAGMENT_RESULT_TIMER = "FRAGMENT_RESULT_TIMER"
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // TODO: Set up MaterialContainerTransform transition as sharedElementEnterTransition.
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            drawingViewId = R.id.nav_host_fragment
+            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+            scrimColor = Color.TRANSPARENT
+            setAllContainerColors(requireContext().themeColor(R.attr.colorSurface))
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -61,9 +74,6 @@ class ListWorkFragment : Fragment() {
 
     private fun setupListener() {
         extendedFab.setOnClickListener {
-            customAlertDialogView = LayoutInflater.from(requireContext())
-                .inflate(R.layout.layout_custom_alert_text_input, null, false)
-            customAlertDialogView.setPadding(36.toDp, 0, 36.toDp, 0)
             showDialogInputWorkTopic()
         }
         rootWork.setOnClickListener {
@@ -79,7 +89,7 @@ class ListWorkFragment : Fragment() {
 
     private fun setupToolbar() {
         setHasOptionsMenu(true)
-        activity?.actionBar?.setTitle(R.string.home_screen_title)
+        activity?.actionBar?.title = args.titleGroup
     }
 
 
@@ -177,19 +187,9 @@ class ListWorkFragment : Fragment() {
 
 
     private fun showDialogInputWorkTopic() {
-        /*  val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-          builder.setTitle(requireContext().getText(R.string.new_data_title))
-          val input = EditText(requireContext())
-          input.inputType = InputType.TYPE_CLASS_TEXT
-          builder.setView(input)
-          builder.setPositiveButton("OK") { _, _ ->
-              val text = input.text.toString()
-              viewModel.insertNewWork(text)
-          }
-          builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
-
-          builder.show()*/
-
+        customAlertDialogView = LayoutInflater.from(requireContext())
+            .inflate(R.layout.layout_custom_alert_text_input, null, false)
+        customAlertDialogView.setPadding(36.toDp, 0, 36.toDp, 0)
         materialAlertDialogBuilder.setView(customAlertDialogView)
             .setTitle("Thêm mới")
             .setPositiveButton("Thêm") { dialog, _ ->
@@ -202,7 +202,6 @@ class ListWorkFragment : Fragment() {
             }
             .show()
         customAlertDialogView.requestFocus()
-
         Handler().postDelayed({
             KeyboardUtils.showKeyboard(requireContext())
         }, 500)

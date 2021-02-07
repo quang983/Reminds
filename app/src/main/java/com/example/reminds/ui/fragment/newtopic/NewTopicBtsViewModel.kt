@@ -17,13 +17,14 @@ class NewTopicBtsViewModel @ViewModelInject constructor(
     fun insertTopic(name: String) {
         viewModelScope.launch(handler + Dispatchers.IO) {
             val data = TopicGroupEntity(System.currentTimeMillis(), name)
-            insertTopicUseCase.invoke(InsertTopicUseCase.Param(data)).let {
+            kotlin.runCatching {
+                val idTopic = insertTopicUseCase.invoke(InsertTopicUseCase.Param(data))
                 insertWorkUseCase.invoke(
                     InsertWorkUseCase.Param(
                         WorkDataEntity(
                             id = System.currentTimeMillis(),
                             name = "Chung",
-                            groupId = it,
+                            groupId = idTopic,
                             listContent = mutableListOf()
                         )
                     )

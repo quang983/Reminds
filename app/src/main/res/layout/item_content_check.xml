@@ -81,13 +81,12 @@
             android:layout_width="@dimen/_24sdp"
             android:layout_height="@dimen/_24sdp"
             android:layout_margin="@dimen/_3sdp"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/tvContentCheck"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tvContentCheck"
             app:lottie_autoPlay="true"
             app:lottie_rawRes="@raw/star_animation"
-            app:lottie_repeatCount="2"
+            app:lottie_repeatCount="1"
             app:lottie_loop="true" />
 
         <TextView
@@ -98,7 +97,6 @@
             android:paddingEnd="@dimen/_6sdp"
             android:textColor="@color/pink_500"
             android:textSize="12sp"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="@id/tvContentCheck"
             app:layout_constraintTop_toBottomOf="@id/tvContentCheck"
             tools:text="Day la timer"

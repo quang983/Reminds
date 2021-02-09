@@ -24,6 +24,7 @@ import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import com.example.reminds.utils.postValue
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.interstitial.InterstitialAd
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.content_main.*
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
@@ -36,6 +37,8 @@ class MainActivity : AppCompatActivity() {
     private var bound: Boolean = false
     private var mService: Messenger? = null
 
+    private lateinit var mInterstitialAd: InterstitialAd
+    private var TAG = "MainActivity"
     /** Messenger for communicating with the service.  */
     private var mMessenger: Messenger? = null
     val viewModel: MainActivityViewModel by viewModels()

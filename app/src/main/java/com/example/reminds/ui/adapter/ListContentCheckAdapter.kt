@@ -106,7 +106,7 @@ class ListContentCheckAdapter(
         refreshTvTimer(view, item)
         refreshEdtContent(view, item)
         refreshCheckBox(view, item)
-        setOnClickItemListener(view, position)
+        setOnClickItemListener(view, item)
         setOnEditorListener(view, item)
     }
 
@@ -170,31 +170,34 @@ class ListContentCheckAdapter(
         }
     }
 
-    private fun setOnClickItemListener(view: View, position: Int) {
+    private fun setOnClickItemListener(view: View, item: ContentDataEntity) {
         view.rootView.setOnClickListenerBlock {
-            val item = getItem(position)
-            item.let {
+            val itemById = currentList.filter { it.id == item.id }.getFirstOrNull()
+            itemById?.let {
                 onClickDetail.invoke(it.id)
             }
         }
 
         view.imgTimer.setOnClickListenerBlock {
-            ContentDataEntity(
-                getItem(position).id, getItem(position).name,
-                getItem(position).idOwnerWork, getItem(position).isFocus, getItem(position).hashTag,
-                getItem(position).timer, getItem(position).isCheckDone
-            ).let {
-                moreActionClick.invoke(it, TYPE_TIMER_CLICK)
-                refreshTvTimer(view, it)
-                Handler().postDelayed({
-                    view.swipeLayout.close(true)
-                }, 1000)
+            val itemById = currentList.filter { it.id == item.id }.getFirstOrNull()
+            itemById?.let {
+                ContentDataEntity(
+                    it.id, it.name,
+                    it.idOwnerWork, it.isFocus, it.hashTag,
+                    it.timer, it.isCheckDone
+                ).let {
+                    moreActionClick.invoke(it, TYPE_TIMER_CLICK)
+                    refreshTvTimer(view, it)
+                    Handler().postDelayed({
+                        view.swipeLayout.close(true)
+                    }, 1000)
+                }
             }
         }
 
         view.imgGim.setOnClickListenerBlock {
-            val item = getItem(position)
-            item.let {
+            val itemById = currentList.filter { it.id == item.id }.getFirstOrNull()
+            itemById?.let {
                 it.hashTag = !it.hashTag
                 moreActionClick.invoke(it, TYPE_TAG_CLICK)
                 refreshFlag(view, it)
@@ -203,8 +206,8 @@ class ListContentCheckAdapter(
         }
 
         view.imgDelete.setOnClickListenerBlock {
-            val item = getItem(position)
-            item.let {
+            val itemById = currentList.filter { it.id == item.id }.getFirstOrNull()
+            itemById?.let {
                 moreActionClick.invoke(it, TYPE_DELETE_CLICK)
                 view.swipeLayout.close(true)
             }

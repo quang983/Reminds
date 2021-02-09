@@ -8,6 +8,8 @@
         android:id="@+id/time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:timePickerMode="spinner"
+        android:numbersSelectorColor="@color/blue_700"
         android:headerBackground="@color/colorAccent" />
 
 </RelativeLayout>

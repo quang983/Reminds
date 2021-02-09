@@ -206,7 +206,6 @@ fun Animator.withEndAction(start: Runnable, end: Runnable) {
 
 fun <T> List<T>.findFirstValidate(predicate: T.() -> Boolean, validate: T.() -> T): List<T> {
     val list = ArrayList(this)
-
     list.forEachIndexed { index, item ->
 
         if (predicate(item)) {

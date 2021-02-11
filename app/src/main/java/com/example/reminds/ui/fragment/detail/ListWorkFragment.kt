@@ -85,6 +85,8 @@ class ListWorkFragment : Fragment() {
 
             }
         }
+
+
     }
 
     private fun setupToolbar() {
@@ -140,8 +142,18 @@ class ListWorkFragment : Fragment() {
                     viewModel.updateContentData(item, wPosition)
                 }
                 ListContentCheckAdapter.TYPE_DELETE_CLICK -> {
-                    showAlertDeleteDialog(item, wPosition)
+                    showAlertDeleteDialog(resources.getString(R.string.content_delete_topic_title)) {
+                        viewModel.deleteContent(item, wPosition)
+                    }
                 }
+            }
+        }, hideWorkClick = {
+            showAlertDeleteDialog(resources.getString(R.string.message_alert_hide_work_title)) {
+            }
+
+        }, deleteWorkClick = {
+            showAlertDeleteDialog(resources.getString(R.string.message_alert_delete_work_title)) {
+                viewModel.deleteWork(it)
             }
         }).apply {
             recyclerWorks.adapter = this
@@ -173,18 +185,17 @@ class ListWorkFragment : Fragment() {
         }
     }
 
-    private fun showAlertDeleteDialog(content: ContentDataEntity, wPosition: Int) {
+    private fun showAlertDeleteDialog(message: String, block: () -> Unit) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(resources.getString(R.string.notify_title))
-            .setMessage(resources.getString(R.string.content_delete_topic_title))
+            .setMessage(message)
             .setNegativeButton(resources.getString(R.string.cancel_action)) { _, _ ->
             }
             .setPositiveButton(resources.getString(R.string.accept_action)) { _, _ ->
-                viewModel.deleteContent(content, wPosition)
+                block.invoke()
             }
             .show()
     }
-
 
     private fun showDialogInputWorkTopic() {
         customAlertDialogView = LayoutInflater.from(requireContext())
@@ -218,29 +229,5 @@ class ListWorkFragment : Fragment() {
                 )
             )
         }
-        /*   val picker = MaterialTimePicker.Builder()
-               .setTimeFormat(TimeFormat.CLOCK_24H)
-               .setHour(12)
-               .setMinute(0)
-               .setTitleText(requireContext().getText(R.string.select_timer_title))
-               .build()
-           picker.show(childFragmentManager, "tag")
-
-           picker.addOnPositiveButtonClickListener {
-               picker.dismiss()
-               val newHour: Int = picker.hour
-               val newMinute: Int = picker.minute
-               val longTimer = newHour * 60 + newMinute
-               item.timer = longTimer.toLong()
-               Handler().postDelayed({
-                   viewModel.updateContentData(item, workPosition)
-               }, 500)
-           }
-           picker.addOnNegativeButtonClickListener {
-           }
-           picker.addOnCancelListener {
-           }
-           picker.addOnDismissListener {
-           }*/
     }
 }

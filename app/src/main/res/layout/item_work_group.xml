@@ -30,7 +30,6 @@
         tools:itemCount="2"
         tools:listitem="@layout/item_content_check" />
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerWorksDone"
         android:layout_width="match_parent"

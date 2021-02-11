@@ -1,7 +1,10 @@
 package com.example.reminds.ui.adapter
 
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import androidx.annotation.MenuRes
 import androidx.recyclerview.widget.DiffUtil
 import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.WorkDataEntity
@@ -17,8 +20,11 @@ class ListWorkAdapter(
     private val insertContentToWork: (content: ContentDataEntity, workPosition: Int) -> Unit,
     private val handlerCheckItem: (content: ContentDataEntity, workPosition: Int) -> Unit,
     private val updateNameContent: (content: ContentDataEntity, workPosition: Int) -> Unit,
-    private val moreActionClick: (item: ContentDataEntity, type: Int, workPosition: Int) -> Unit
-) :
+    private val moreActionClick: (item: ContentDataEntity, type: Int, workPosition: Int) -> Unit,
+    private val hideWorkClick: (workId: Long) -> Unit,
+    private val deleteWorkClick: (workId: Long) -> Unit,
+
+    ) :
     BaseAdapter<WorkDataEntity>(object : DiffUtil.ItemCallback<WorkDataEntity>() {
 
         override fun areItemsTheSame(
@@ -82,7 +88,7 @@ class ListWorkAdapter(
 
     override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: WorkDataEntity) {
         view.tvTitle.text = item.name
-        view.rootView.setOnClickListenerBlock {
+        view.tvTitle.setOnClickListenerBlock {
             onClickTitle.invoke(position)
         }
         view.recyclerWorks.apply {
@@ -103,6 +109,33 @@ class ListWorkAdapter(
             adapter = contentsAdapter
             contentsAdapter.submitList(item.listContent.toMutableList())
         }
+        view.tvTitle.setOnLongClickListener {
+            showMenu(it, R.menu.menu_work_title, item.id)
+            true
+        }
+    }
+
+
+    private fun showMenu(v: View, @MenuRes menuRes: Int, workId: Long) {
+        val popup = PopupMenu(v.context, v)
+        popup.menuInflater.inflate(menuRes, popup.menu)
+
+        popup.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when (menuItem.itemId) {
+             /*   R.id.action_hide_work -> {
+                    hideWorkClick.invoke(workId)
+                }*/
+                R.id.action_delete_work -> {
+                    deleteWorkClick.invoke(workId)
+                }
+            }
+            true
+        }
+        popup.setOnDismissListener {
+            // Respond to popup being dismissed.
+        }
+        // Show the popup menu.
+        popup.show()
     }
 
     companion object {

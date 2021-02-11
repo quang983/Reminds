@@ -45,4 +45,12 @@
     <!--name motion-->
     <string name="transition_topic_detail">transition_topic_detail_%1$s</string>
     <string name="transition_topic_to_detail">transition_topic_to_detail</string>
+
+    <!--menu work-->
+    <string name="menu_hide_work">Ẩn danh mục</string>
+    <string name="menu_delete_work">Xoá danh mục</string>
+
+    <string name="message_alert_hide_work_title">Ẩn danh mục sẽ khiến tất cả các tác vụ trong danh mục được hoàn thành</string>
+    <string name="message_alert_delete_work_title">Bạn có chắc chắn muốn xoá danh mục này khỏi danh sách?</string>
+    <string name="message_alert_hide_error_work_title">Bạn không thể ẩn danh mục này khi chưa hoàn thành hết các tác vụ</string>
 </resources>

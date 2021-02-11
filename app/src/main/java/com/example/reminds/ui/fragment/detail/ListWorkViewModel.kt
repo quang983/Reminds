@@ -9,6 +9,7 @@ import com.example.domain.usecase.db.topic.GetTopicByIdUseCase
 import com.example.domain.usecase.db.topic.UpdateTopicUseCase
 import com.example.domain.usecase.db.workintopic.*
 import com.example.reminds.common.BaseViewModel
+import com.example.reminds.utils.getFirstOrNull
 import com.example.reminds.utils.getLastOrNull
 import com.example.reminds.utils.getOrNull
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +23,8 @@ class ListWorkViewModel @ViewModelInject constructor(
     private val updateWorkUseCase: UpdateWorkUseCase,
     private val updateListWorkUseCase: UpdateListWorkUseCase,
     private val getTopicByIdUseCase: GetTopicByIdUseCase,
-    private val updateTopicUseCase: UpdateTopicUseCase
+    private val updateTopicUseCase: UpdateTopicUseCase,
+    private val deleteWorkUseCase: DeleteWorkUseCase
 ) : BaseViewModel() {
     private lateinit var topicGroup: TopicGroupEntity
     private var isReSaveWorks = false
@@ -171,7 +173,7 @@ class ListWorkViewModel @ViewModelInject constructor(
             val workInsert = WorkDataEntity(
                 id = System.currentTimeMillis(),
                 name = name,
-                groupId = listWorkData.value?.get(0)?.groupId ?: 0,
+                groupId = idGroup.value ?: 0,
                 listContent = arrayListOf()
             )
             listWorkViewModel.add(workInsert)
@@ -182,4 +184,16 @@ class ListWorkViewModel @ViewModelInject constructor(
             )
         }
     }
+
+    fun deleteWork(workId: Long) =
+        viewModelScope.launch(handler + Dispatchers.IO) {
+            isReSaveWorks = true
+            deleteWorkUseCase.invoke(DeleteWorkUseCase.Param(listWorkViewModel.filter { it.id == workId }.getFirstOrNull()))
+        }
+
+    /*  private fun doneAllContentFromWork(idWork : Long){
+          viewModelScope.launch(handler + Dispatchers.IO) {
+              listWorkViewModel.
+          }
+      }*/
 }

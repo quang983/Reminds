@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.TopicGroupEntity
-import com.example.common.base.model.WorkDataEntity
 import com.example.domain.base.BaseUseCase
 import com.example.domain.usecase.db.content.GetAllContentOfTopicUseCase
 import com.example.domain.usecase.db.topic.DeleteTopicUseCase
@@ -64,7 +63,7 @@ class HomeViewModel @ViewModelInject constructor(
             val data = TopicGroupEntity(System.currentTimeMillis(), name)
             kotlin.runCatching {
                 val idTopic = insertTopicUseCase.invoke(InsertTopicUseCase.Param(data))
-                insertWorkUseCase.invoke(
+                /*insertWorkUseCase.invoke(
                     InsertWorkUseCase.Param(
                         WorkDataEntity(
                             id = System.currentTimeMillis(),
@@ -73,7 +72,7 @@ class HomeViewModel @ViewModelInject constructor(
                             listContent = mutableListOf()
                         )
                     )
-                )
+                )*/
             }
         }
     }

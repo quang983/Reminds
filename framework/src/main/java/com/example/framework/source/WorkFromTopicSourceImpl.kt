@@ -120,6 +120,16 @@ class WorkFromTopicSourceImpl @Inject constructor(
     }
 
     override suspend fun deletes(datas: List<WorkDataEntity>) {
-        TODO("Not yet implemented")
+        dao.deleteDatas(*datas.map { it ->
+            WorkFoTopic(
+                it.id, it.name, it.groupId,
+                it.listContent.map {
+                    ContentFoWork(
+                        it.id, it.name, it.idOwnerWork, hashTag = it.hashTag,
+                        timer = it.timer, isCheckDone = it.isCheckDone
+                    )
+                }.toMutableList()
+            )
+        }.toTypedArray())
     }
 }

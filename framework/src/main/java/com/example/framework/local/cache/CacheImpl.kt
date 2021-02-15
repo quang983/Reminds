@@ -14,34 +14,35 @@ class CacheImpl @Inject constructor(context: Context) : Cache {
     companion object {
         const val SHARED_NAME = "PREF"
         const val KEY_FIRST_LOGIN = "KEY_FIRST_LOGIN"
+        const val KEY_SUM_DONE_TASK = "KEY_SUM_DONE_TASK"
     }
 
     private var sharedPreferences: SharedPreferences = context.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE)
 
- /*   private inline fun <reified T> saveData(key: String, data: T?) {
-        val dataStr = when (T::class) {
-            Double::class -> data?.toString()
-            String::class -> data?.toString()
-            Float::class -> data?.toString()
-            Long::class -> data?.toString()
-            Int::class -> data?.toString()
-            else -> data?.toJson()
-        }
-        sharedPreferences.putString(key, encode(dataStr))
-        cacheSource.notifyDataChange(key, data)
-    }
+    /*   private inline fun <reified T> saveData(key: String, data: T?) {
+           val dataStr = when (T::class) {
+               Double::class -> data?.toString()
+               String::class -> data?.toString()
+               Float::class -> data?.toString()
+               Long::class -> data?.toString()
+               Int::class -> data?.toString()
+               else -> data?.toJson()
+           }
+           sharedPreferences.putString(key, encode(dataStr))
+           cacheSource.notifyDataChange(key, data)
+       }
 
-    private inline fun <reified T> getData(key: String): T? {
-        val data = decode(cacheSource.getString(key, null))
-        return when (T::class) {
-            Double::class -> data?.toDouble() as? T?
-            String::class -> data?.toString() as? T?
-            Float::class -> data?.toFloat() as? T?
-            Long::class -> data?.toLong() as? T?
-            Int::class -> data?.toInt() as? T?
-            else -> data?.toObject(T::class.java)
-        }
-    }*/
+       private inline fun <reified T> getData(key: String): T? {
+           val data = decode(cacheSource.getString(key, null))
+           return when (T::class) {
+               Double::class -> data?.toDouble() as? T?
+               String::class -> data?.toString() as? T?
+               Float::class -> data?.toFloat() as? T?
+               Long::class -> data?.toLong() as? T?
+               Int::class -> data?.toInt() as? T?
+               else -> data?.toObject(T::class.java)
+           }
+       }*/
 
 /*
     private fun encode(data: String?): String? {

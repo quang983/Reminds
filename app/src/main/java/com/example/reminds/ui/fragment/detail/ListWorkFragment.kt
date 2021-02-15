@@ -1,6 +1,7 @@
 package com.example.reminds.ui.fragment.detail
 
 import DateTimePickerFragment.Companion.TIME_PICKER_BUNDLE
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -14,6 +15,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.common.base.model.AlarmNotificationEntity
 import com.example.common.base.model.ContentDataEntity
+import com.example.framework.local.cache.CacheImpl
+import com.example.framework.local.cache.CacheImpl.Companion.KEY_SUM_DONE_TASK
 import com.example.reminds.R
 import com.example.reminds.common.Constants.ERROR_LOG
 import com.example.reminds.ui.adapter.ListContentCheckAdapter
@@ -131,6 +134,7 @@ class ListWorkFragment : Fragment() {
             viewModel.updateAndAddContent(content, position)
         }, handlerCheckItem = { content, position ->
             viewModel.handlerCheckedContent(content, position)
+            showAds()
         }, updateNameContent = { content, position ->
             viewModel.updateContentData(content, position)
         }, moreActionClick = { item, type, wPosition ->
@@ -228,6 +232,18 @@ class ListWorkFragment : Fragment() {
                     item.timer, item.idOwnerWork, item.id, item.name, "Thông báo"
                 )
             )
+        }
+    }
+
+    private fun showAds() {
+        val shared = requireContext().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
+        var sum = shared.getInt(KEY_SUM_DONE_TASK, 0)
+        if (sum < 5) {
+            sum += 1
+            shared.edit().putInt(KEY_SUM_DONE_TASK, sum).apply()
+        } else {
+            shared.edit().putInt(KEY_SUM_DONE_TASK, 0).apply()
+            homeSharedViewModel.showAdsMobile.postValue(true)
         }
     }
 }

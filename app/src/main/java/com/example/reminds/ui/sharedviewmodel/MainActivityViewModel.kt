@@ -19,6 +19,8 @@ class MainActivityViewModel @ViewModelInject constructor(
 ) : BaseViewModel() {
     val isKeyboardShow: LiveData<Boolean> = MutableLiveData(false)
 
+    val showAdsMobile: LiveData<Boolean> = MutableLiveData(false)
+
     val notifyDataInsert: LiveData<AlarmNotificationEntity> = MutableLiveData()
 
     fun addFirstTopic() {

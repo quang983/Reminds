@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.*
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -22,9 +23,10 @@ import com.example.reminds.service.INSERT_OBJECT_TIMER_DATA
 import com.example.reminds.service.NotificationService
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import com.example.reminds.utils.postValue
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.*
+import com.google.android.gms.ads.rewarded.RewardItem
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.content_main.*
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
@@ -37,12 +39,14 @@ class MainActivity : AppCompatActivity() {
     private var bound: Boolean = false
     private var mService: Messenger? = null
 
-    private lateinit var mInterstitialAd: InterstitialAd
-    private var TAG = "MainActivity"
+    private var mRewardedAd: RewardedAd? = null
+    private var TAG = "logMain"
+
     /** Messenger for communicating with the service.  */
     private var mMessenger: Messenger? = null
     val viewModel: MainActivityViewModel by viewModels()
     private lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -51,17 +55,19 @@ class MainActivity : AppCompatActivity() {
         /*show back press button*/
         navController = findNavController(R.id.nav_host_fragment)
         NavigationUI.setupActionBarWithNavController(this, navController)
-
-        createAdsMode()
         checkAddFirstTopic()
         catchEventKeyboard()
         setObserver()
+        createAdsMode()
     }
 
     private fun setObserver() {
         viewModel.apply {
             notifyDataInsert.observe(this@MainActivity, {
                 sendActionInsertAlert(it)
+            })
+            showAdsMobile.observe(this@MainActivity, {
+                showAdsMobile()
             })
         }
     }
@@ -160,7 +166,47 @@ class MainActivity : AppCompatActivity() {
         MobileAds.initialize(this) {
         }
         val adRequest = AdRequest.Builder().build()
-//        adView.loadAd(adRequest)
+
+        RewardedAd.load(this, "ca-app-pub-3940256099942544/5224354917", adRequest, object : RewardedAdLoadCallback() {
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                Log.d(TAG, adError.message)
+                mRewardedAd = null
+            }
+
+            override fun onAdLoaded(rewardedAd: RewardedAd) {
+                Log.d(TAG, "Ad was loaded.")
+                mRewardedAd = rewardedAd
+            }
+        })
+
+        mRewardedAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+            override fun onAdDismissedFullScreenContent() {
+                Log.d(TAG, "Ad was dismissed.")
+            }
+
+            override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
+                Log.d(TAG, "Ad failed to show.")
+            }
+
+            override fun onAdShowedFullScreenContent() {
+                Log.d(TAG, "Ad showed fullscreen content.")
+                // Called when ad is dismissed.
+                // Don't forget to set the ad reference to null so you
+                // don't show the ad a second time.
+                mRewardedAd = null
+            }
+        }
+    }
+
+    private fun showAdsMobile() {
+        mRewardedAd?.show(this) {
+            fun onUserEarnedReward(rewardItem: RewardItem) {
+                var rewardAmount = rewardItem.amount
+                var rewardType = rewardItem.type
+                Log.d(TAG, "User earned the reward.");
+            }
+        }
+            ?: Log.d(TAG, "The rewarded ad wasn't ready yet.")
     }
 
     private fun catchEventKeyboard() {

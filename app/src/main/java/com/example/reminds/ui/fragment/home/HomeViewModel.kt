@@ -31,7 +31,9 @@ class HomeViewModel @ViewModelInject constructor(
 
     val fastTopicData: LiveData<FastTopicViewItem> = MutableLiveData()
 
-    private val _topicData: LiveData<List<TopicGroupEntity>> = liveData {
+
+
+    private val _topicData: LiveData<List<TopicGroupEntity>> = fastTopicData.switchMapLiveData {
         fetchTopicFlowUseCase.invoke(BaseUseCase.Param()).collect {
             emit(it.toMutableList())
         }
@@ -62,7 +64,7 @@ class HomeViewModel @ViewModelInject constructor(
         viewModelScope.launch(handler + Dispatchers.IO) {
             val data = TopicGroupEntity(System.currentTimeMillis(), name)
             kotlin.runCatching {
-                val idTopic = insertTopicUseCase.invoke(InsertTopicUseCase.Param(data))
+                insertTopicUseCase.invoke(InsertTopicUseCase.Param(data))
                 /*insertWorkUseCase.invoke(
                     InsertWorkUseCase.Param(
                         WorkDataEntity(

@@ -1,5 +1,8 @@
 package com.example.reminds.ui.activity
 
+/*import com.google.android.gms.ads.*
+import com.google.android.gms.ads.rewarded.RewardItem
+import com.google.android.gms.ads.rewarded.RewardedAd*/
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.ComponentName
@@ -7,7 +10,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.*
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -23,10 +25,6 @@ import com.example.reminds.service.INSERT_OBJECT_TIMER_DATA
 import com.example.reminds.service.NotificationService
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import com.example.reminds.utils.postValue
-import com.google.android.gms.ads.*
-import com.google.android.gms.ads.rewarded.RewardItem
-import com.google.android.gms.ads.rewarded.RewardedAd
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.content_main.*
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
@@ -39,7 +37,7 @@ class MainActivity : AppCompatActivity() {
     private var bound: Boolean = false
     private var mService: Messenger? = null
 
-    private var mRewardedAd: RewardedAd? = null
+//    private var mRewardedAd: RewardedAd? = null
     private var TAG = "logMain"
 
     /** Messenger for communicating with the service.  */
@@ -58,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         checkAddFirstTopic()
         catchEventKeyboard()
         setObserver()
-        createAdsMode()
+//        createAdsMode()
     }
 
     private fun setObserver() {
@@ -66,9 +64,9 @@ class MainActivity : AppCompatActivity() {
             notifyDataInsert.observe(this@MainActivity, {
                 sendActionInsertAlert(it)
             })
-            showAdsMobile.observe(this@MainActivity, {
+            /*showAdsMobile.observe(this@MainActivity, {
                 showAdsMobile()
-            })
+            })*/
         }
     }
 
@@ -163,7 +161,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createAdsMode() {
-        MobileAds.initialize(this) {
+       /* MobileAds.initialize(this) {
         }
         val adRequest = AdRequest.Builder().build()
 
@@ -195,18 +193,18 @@ class MainActivity : AppCompatActivity() {
                 // don't show the ad a second time.
                 mRewardedAd = null
             }
-        }
+        }*/
     }
 
     private fun showAdsMobile() {
-        mRewardedAd?.show(this) {
+    /*    mRewardedAd?.show(this) {
             fun onUserEarnedReward(rewardItem: RewardItem) {
                 var rewardAmount = rewardItem.amount
                 var rewardType = rewardItem.type
                 Log.d(TAG, "User earned the reward.");
             }
         }
-            ?: Log.d(TAG, "The rewarded ad wasn't ready yet.")
+            ?: Log.d(TAG, "The rewarded ad wasn't ready yet.")*/
     }
 
     private fun catchEventKeyboard() {

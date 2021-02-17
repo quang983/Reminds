@@ -8,7 +8,7 @@ class GetTotalTaskOfWorkUseCase @Inject constructor(private val topicRepository:
     BaseUseCase<GetTotalTaskOfWorkUseCase.Param, Int> {
     override suspend fun invoke(params: Param): Int {
         val works = topicRepository.fetchAllWorkFromTopic(params.idGroup)
-        return works.sumBy { it.listContent.size }
+        return works.sumBy { it.listContent.filter { !it.isCheckDone }.size }
     }
 
     class Param(val idGroup: Long)

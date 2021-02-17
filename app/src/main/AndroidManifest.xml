@@ -18,9 +18,9 @@
         android:theme="@style/Theme.BaseProjects"
         android:usesCleartextTraffic="true">
         <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
-             <meta-data
+  <!--           <meta-data
                  android:name="com.google.android.gms.ads.APPLICATION_ID"
-                 android:value="ca-app-pub-9829869928534139~5224354917"/>
+                 android:value="ca-app-pub-9829869928534139~5224354917"/>-->
 
         <activity
             android:name="com.example.reminds.ui.activity.MainActivity"

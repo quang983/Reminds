@@ -85,8 +85,8 @@ class HomeFragment : Fragment() {
             navigate(
                 HomeFragmentDirections
                     .actionFirstFragmentToSecondFragment(
-                        viewModel.fastTopicData.value?.topicGroupEntity?.id ?: 1
-                    ,"Ghi chú nhanh"), null, extras
+                        viewModel.fastTopicData.value?.topicGroupEntity?.id ?: 1, "Ghi chú nhanh"
+                    ), null, extras
             )
         }
     }
@@ -113,6 +113,7 @@ class HomeFragment : Fragment() {
         with(viewModel) {
             topicsGroupDataShow.observe(viewLifecycleOwner, {
                 groupList.setVisible(it.isNotEmpty())
+                layoutEmpty.setVisible(it.isEmpty())
                 adapter.submitList(it)
             })
             fastTopicData.observe(viewLifecycleOwner, { topic ->

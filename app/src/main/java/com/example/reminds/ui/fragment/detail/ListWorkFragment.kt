@@ -173,6 +173,7 @@ class ListWorkFragment : Fragment() {
     private fun observeData() {
         with(viewModel) {
             listWorkData.observe(viewLifecycleOwner, {
+                layoutEmpty.setVisible(it.isEmpty())
                 adapter.submitList(it)
             })
             isShowDoneLiveData.observe(viewLifecycleOwner, {

@@ -8,6 +8,16 @@
     android:background="@color/white"
     android:transitionName="@string/transition_topic_to_detail">
 
+    <include
+        android:id="@+id/layoutEmpty"
+        layout="@layout/layout_empty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerWorks"
         android:layout_width="match_parent"

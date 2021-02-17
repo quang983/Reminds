@@ -14,6 +14,7 @@
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/edtInput"
         android:layout_width="match_parent"
+        android:imeOptions="actionDone"
         android:background="@null"
         android:layout_height="wrap_content" />
 

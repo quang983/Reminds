@@ -53,4 +53,8 @@
     <string name="message_alert_hide_work_title">Ẩn danh mục sẽ khiến tất cả các tác vụ trong danh mục được hoàn thành</string>
     <string name="message_alert_delete_work_title">Bạn có chắc chắn muốn xoá danh mục này khỏi danh sách?</string>
     <string name="message_alert_hide_error_work_title">Bạn không thể ẩn danh mục này khi chưa hoàn thành hết các tác vụ</string>
+
+<!--    <string name="empty_list"><![CDATA[<b>Danh sách trống, chọn biểu tượng</b><br>dấu + để thêm 1 danh sách mới]]></string>-->
+    <string name="empty_list">Danh sách trống, chọn biểu tượng dấu + để thêm danh sách mới</string>
+
 </resources>

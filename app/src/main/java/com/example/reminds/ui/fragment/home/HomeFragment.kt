@@ -89,7 +89,7 @@ class HomeFragment : Fragment() {
             navigate(
                 HomeFragmentDirections
                     .actionFirstFragmentToSecondFragment(
-                        viewModel.fastTopicData.value?.topicGroupEntity?.id ?: 1, "Ghi chú nhanh"
+                        viewModel.fastTopicData.value?.topicGroupEntity?.id ?: 1, resources.getString(R.string.title_faster_note)
                     ), null, extras
             )
         }
@@ -163,13 +163,13 @@ class HomeFragment : Fragment() {
             .inflate(R.layout.layout_custom_alert_text_input, null, false)
         customAlertDialogView.setPadding(36.toDp, 0, 36.toDp, 0)
         materialAlertDialogBuilder.setView(customAlertDialogView)
-            .setTitle("Thêm mới")
-            .setPositiveButton("Thêm") { _, _ ->
+            .setTitle(resources.getString(R.string.notify_title))
+            .setPositiveButton(resources.getString(R.string.add)) { _, _ ->
                 customAlertDialogView.edtInput.text.toString().takeIf { it.isNotBlank() }?.let {
                     viewModel.insertTopic(it)
-                } ?: Toast.makeText(requireContext(), "Tiêu đề phải có tối thiểu 1 ký tự!", Toast.LENGTH_SHORT).show()
+                } ?: Toast.makeText(requireContext(), resources.getString(R.string.warning_title_min), Toast.LENGTH_SHORT).show()
             }
-            .setNegativeButton("Huỷ") { dialog, _ ->
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()
             }
             .show()
@@ -191,14 +191,14 @@ class HomeFragment : Fragment() {
 
         sequence.setConfig(config)
 
-        sequence.addSequenceItem(layoutToday, "Đây là danh sách ghi chú nhanh", "GOT IT")
+        sequence.addSequenceItem(layoutToday, resources.getString(R.string.support_list_reminders), "GOT IT")
 
         sequence.addSequenceItem(
             MaterialShowcaseView.Builder(requireActivity())
                 .setSkipText("SKIP")
                 .setTarget(btnNewTopic)
                 .setDismissText("GOT IT")
-                .setContentText("Click button để thêm danh sách mới của riêng bạn")
+                .setContentText(resources.getString(R.string.support_new_title))
                 .withRectangleShape(true)
                 .build()
         )

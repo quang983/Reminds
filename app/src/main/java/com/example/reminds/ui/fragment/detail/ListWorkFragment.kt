@@ -207,13 +207,13 @@ class ListWorkFragment : Fragment() {
             .inflate(R.layout.layout_custom_alert_text_input, null, false)
         customAlertDialogView.setPadding(36.toDp, 0, 36.toDp, 0)
         materialAlertDialogBuilder.setView(customAlertDialogView)
-            .setTitle("Thêm mới")
-            .setPositiveButton("Thêm") { _, _ ->
+            .setTitle(resources.getString(R.string.new_data_title))
+            .setPositiveButton(resources.getString(R.string.add)) { _, _ ->
                 customAlertDialogView.edtInput.text.toString().takeIf { it.isNotBlank() }?.let {
                     viewModel.insertNewWork(it)
-                } ?: Toast.makeText(requireContext(), "Tiêu đề phải có tối thiểu 1 ký tự!", Toast.LENGTH_SHORT).show()
+                } ?: Toast.makeText(requireContext(), resources.getString(R.string.warning_title_min), Toast.LENGTH_SHORT).show()
             }
-            .setNegativeButton("Huỷ") { dialog, _ ->
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()
             }
             .show()
@@ -230,7 +230,7 @@ class ListWorkFragment : Fragment() {
             viewModel.updateContentData(item, workPosition)
             homeSharedViewModel.notifyDataInsert.postValue(
                 AlarmNotificationEntity(
-                    item.timer, item.idOwnerWork, item.id, item.name, "Thông báo"
+                    item.timer, item.idOwnerWork, item.id, item.name, resources.getString(R.string.notify_title)
                 )
             )
         }

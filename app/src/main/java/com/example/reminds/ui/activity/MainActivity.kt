@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
     private var bound: Boolean = false
     private var mService: Messenger? = null
 
-//    private var mRewardedAd: RewardedAd? = null
+    //    private var mRewardedAd: RewardedAd? = null
     private var TAG = "logMain"
 
     /** Messenger for communicating with the service.  */
@@ -161,50 +161,50 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createAdsMode() {
-       /* MobileAds.initialize(this) {
-        }
-        val adRequest = AdRequest.Builder().build()
+        /* MobileAds.initialize(this) {
+         }
+         val adRequest = AdRequest.Builder().build()
 
-        RewardedAd.load(this, "ca-app-pub-9829869928534139/5224354917", adRequest, object : RewardedAdLoadCallback() {
-            override fun onAdFailedToLoad(adError: LoadAdError) {
-                Log.d(TAG, adError.message)
-                mRewardedAd = null
-            }
+         RewardedAd.load(this, "ca-app-pub-9829869928534139/5224354917", adRequest, object : RewardedAdLoadCallback() {
+             override fun onAdFailedToLoad(adError: LoadAdError) {
+                 Log.d(TAG, adError.message)
+                 mRewardedAd = null
+             }
 
-            override fun onAdLoaded(rewardedAd: RewardedAd) {
-                Log.d(TAG, "Ad was loaded.")
-                mRewardedAd = rewardedAd
-            }
-        })
+             override fun onAdLoaded(rewardedAd: RewardedAd) {
+                 Log.d(TAG, "Ad was loaded.")
+                 mRewardedAd = rewardedAd
+             }
+         })
 
-        mRewardedAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
-            override fun onAdDismissedFullScreenContent() {
-                Log.d(TAG, "Ad was dismissed.")
-            }
+         mRewardedAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+             override fun onAdDismissedFullScreenContent() {
+                 Log.d(TAG, "Ad was dismissed.")
+             }
 
-            override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
-                Log.d(TAG, "Ad failed to show.")
-            }
+             override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
+                 Log.d(TAG, "Ad failed to show.")
+             }
 
-            override fun onAdShowedFullScreenContent() {
-                Log.d(TAG, "Ad showed fullscreen content.")
-                // Called when ad is dismissed.
-                // Don't forget to set the ad reference to null so you
-                // don't show the ad a second time.
-                mRewardedAd = null
-            }
-        }*/
+             override fun onAdShowedFullScreenContent() {
+                 Log.d(TAG, "Ad showed fullscreen content.")
+                 // Called when ad is dismissed.
+                 // Don't forget to set the ad reference to null so you
+                 // don't show the ad a second time.
+                 mRewardedAd = null
+             }
+         }*/
     }
 
     private fun showAdsMobile() {
-    /*    mRewardedAd?.show(this) {
-            fun onUserEarnedReward(rewardItem: RewardItem) {
-                var rewardAmount = rewardItem.amount
-                var rewardType = rewardItem.type
-                Log.d(TAG, "User earned the reward.");
+        /*    mRewardedAd?.show(this) {
+                fun onUserEarnedReward(rewardItem: RewardItem) {
+                    var rewardAmount = rewardItem.amount
+                    var rewardType = rewardItem.type
+                    Log.d(TAG, "User earned the reward.");
+                }
             }
-        }
-            ?: Log.d(TAG, "The rewarded ad wasn't ready yet.")*/
+                ?: Log.d(TAG, "The rewarded ad wasn't ready yet.")*/
     }
 
     private fun catchEventKeyboard() {

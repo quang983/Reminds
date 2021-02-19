@@ -208,7 +208,7 @@ class ListWorkFragment : Fragment() {
         customAlertDialogView.setPadding(36.toDp, 0, 36.toDp, 0)
         materialAlertDialogBuilder.setView(customAlertDialogView)
             .setTitle("Thêm mới")
-            .setPositiveButton("Thêm") { dialog, _ ->
+            .setPositiveButton("Thêm") { _, _ ->
                 customAlertDialogView.edtInput.text.toString().takeIf { it.isNotBlank() }?.let {
                     viewModel.insertNewWork(it)
                 } ?: Toast.makeText(requireContext(), "Tiêu đề phải có tối thiểu 1 ký tự!", Toast.LENGTH_SHORT).show()

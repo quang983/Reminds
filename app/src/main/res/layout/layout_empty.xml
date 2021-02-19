@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/imgIcon"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_marginTop="@dimen/_50sdp"
+        android:src="@drawable/ic_shopping_bag" />
+
     <TextView
-        android:padding="@dimen/_20sdp"
         android:id="@+id/tvEmpty"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginTop="@dimen/_126sdp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/imgIcon"
+        android:padding="@dimen/_20sdp"
         android:text="@string/empty_list"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:fontFamily="@font/roboto_regular_font"/>
 </RelativeLayout>

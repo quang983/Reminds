@@ -24,6 +24,9 @@ import kotlinx.android.synthetic.main.item_topic.view.*
 import kotlinx.android.synthetic.main.layout_custom_alert_text_input.view.*
 import kotlinx.android.synthetic.main.layout_today_home.view.*
 import kotlinx.android.synthetic.main.layout_today_home.view.tvContent
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig
 
 
 @AndroidEntryPoint
@@ -42,6 +45,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        presentShowcaseView()
         setupTransition(view)
         getData()
         setupUI()
@@ -173,5 +177,32 @@ class HomeFragment : Fragment() {
         Handler().postDelayed({
             KeyboardUtils.showKeyboard(requireContext())
         }, 500)
+    }
+
+
+    private fun presentShowcaseView() {
+        val config = ShowcaseConfig()
+        config.delay = 500 // half second between each showcase view
+
+
+        val sequence = MaterialShowcaseSequence(requireActivity(), "SHOWCASE_ID")
+
+//        sequence.setOnItemShownListener { itemView, position -> Toast.makeText(itemView.context, "Item #$position", Toast.LENGTH_SHORT).show() }
+
+        sequence.setConfig(config)
+
+        sequence.addSequenceItem(layoutToday, "Đây là danh sách ghi chú nhanh", "GOT IT")
+
+        sequence.addSequenceItem(
+            MaterialShowcaseView.Builder(requireActivity())
+                .setSkipText("SKIP")
+                .setTarget(btnNewTopic)
+                .setDismissText("GOT IT")
+                .setContentText("Click button để thêm danh sách mới của riêng bạn")
+                .withRectangleShape(true)
+                .build()
+        )
+
+        sequence.start()
     }
 }

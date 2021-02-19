@@ -93,7 +93,7 @@
         app:constraint_referenced_ids="layoutCard,tvTitle"
         tools:visibility="visible" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+  <!--  <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnNewTopic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -105,4 +105,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent" />
+-->
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/btnNewTopic"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
+        android:layout_marginBottom="@dimen/_16sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/add_plus"
+        app:lottie_loop="true" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

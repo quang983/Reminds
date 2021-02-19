@@ -38,7 +38,7 @@
             android:layout_width="@dimen/_32sdp"
             android:layout_height="@dimen/_32sdp"
             android:padding="@dimen/_5sdp"
-            android:src="@drawable/ic_reminders"
+            android:src="@drawable/ic_tasks_new"
             app:layout_constraintBottom_toBottomOf="@+id/textView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tvCount" />

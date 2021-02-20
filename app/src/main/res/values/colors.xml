@@ -18,4 +18,5 @@
     <color name="red_200">#ff5252</color>
     <color name="yellow_600">#fdd835</color>
     <color name="bg_divider">#BDBDBD</color>
+    <color name="bg_divider2">#b0bec5</color>
 </resources>

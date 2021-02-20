@@ -5,7 +5,7 @@
     android:id="@+id/layoutRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gallery"
+    android:background="#f5f5f5"
     android:paddingStart="@dimen/_10sdp"
     android:paddingEnd="@dimen/_10sdp">
 

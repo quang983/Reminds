@@ -33,12 +33,14 @@
             app:layout_constraintStart_toStartOf="@id/tvCount"
             app:layout_constraintTop_toBottomOf="@id/tvCount" />
 
-        <ImageView
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/imgTopic"
             android:layout_width="@dimen/_32sdp"
             android:layout_height="@dimen/_32sdp"
             android:padding="@dimen/_5sdp"
-            android:src="@drawable/ic_tasks_new"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/flash_icon"
+            app:lottie_loop="true"
             app:layout_constraintBottom_toBottomOf="@+id/textView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tvCount" />
@@ -47,9 +49,9 @@
         <View
             android:id="@+id/viewDivider"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:layout_marginTop="@dimen/_6sdp"
-            android:background="@color/bg_divider"
+            android:background="@color/bg_gray"
             app:layout_constraintTop_toBottomOf="@id/textView" />
 
         <TextView

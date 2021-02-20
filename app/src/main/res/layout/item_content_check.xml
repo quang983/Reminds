@@ -106,7 +106,7 @@
             android:layout_width="0dp"
             android:layout_height="0.5dp"
             android:layout_marginTop="@dimen/_10sdp"
-            android:background="@color/bg_gray"
+            android:background="@color/bg_divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tvContentCheck"
             app:layout_constraintTop_toBottomOf="@id/tvTimer" />

@@ -7,7 +7,7 @@
         android:id="@+id/imgIcon"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_80sdp"
-        android:layout_marginTop="@dimen/_50sdp"
+        android:layout_marginTop="@dimen/_100sdp"
         android:src="@drawable/ic_shopping_bag" />
 
     <TextView

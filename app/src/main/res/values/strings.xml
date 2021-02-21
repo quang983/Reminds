@@ -59,5 +59,6 @@
     <string name="warning_title_min">Tiêu đề phải có tối thiểu 1 ký tự!</string>
     <string name="support_list_reminders">Đây là danh sách ghi chú nhanh</string>
     <string name="support_new_title">Click button để thêm danh sách mới của riêng bạn</string>
+    <string name="topic_title">Chủ đề</string>
 
 </resources>

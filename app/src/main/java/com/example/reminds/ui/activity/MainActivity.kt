@@ -18,7 +18,6 @@ import androidx.navigation.ui.NavigationUI
 import com.example.common.base.model.AlarmNotificationEntity
 import com.example.framework.local.cache.CacheImpl.Companion.KEY_FIRST_LOGIN
 import com.example.framework.local.cache.CacheImpl.Companion.SHARED_NAME
-import com.example.reminds.BuildConfig
 import com.example.reminds.R
 import com.example.reminds.service.INSERT_OBJECT_TIMER_DATA
 import com.example.reminds.service.NotificationService
@@ -61,6 +60,7 @@ class MainActivity : AppCompatActivity() {
         catchEventKeyboard()
         setObserver()
         createAdsMode()
+        showRatingApp()
     }
 
     private fun setObserver() {
@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
     private fun checkAddFirstTopic() {
         val shared = this.applicationContext.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE)
         if (shared.getBoolean(KEY_FIRST_LOGIN, true)) {
-            viewModel.addFirstTopic()
+            viewModel.addFirstTopic(resources.getString(R.string.topic_title))
             shared.edit().putBoolean(KEY_FIRST_LOGIN, false).apply()
         }
     }
@@ -166,48 +166,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun createAdsMode() {
         MobileAds.initialize(this)
-    /*    MobileAds.setRequestConfiguration(
-            RequestConfiguration.Builder()
-                .setTestDeviceIds(listOf("ABCDEF012345"))
-                .build()
-        )*/
+        /*    MobileAds.setRequestConfiguration(
+                RequestConfiguration.Builder()
+                    .setTestDeviceIds(listOf("ABCDEF012345"))
+                    .build()
+            )*/
         val adRequest = AdRequest.Builder().build()
-
-        if(BuildConfig.DEBUG){
-            InterstitialAd.load(this,"ca-app-pub-3940256099942544/1033173712", adRequest, object : InterstitialAdLoadCallback() {
-                override fun onAdFailedToLoad(adError: LoadAdError) {
-                    Log.d(TAG, adError.message)
-                    mInterstitialAd = null
-                }
-
-                override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                    Log.d(TAG, "Ad was loaded.debug")
-                    mInterstitialAd = interstitialAd
-                }
-            })
-
-        }else{
-            InterstitialAd.load(this,"ca-app-pub-9829869928534139/3052159234", adRequest, object : InterstitialAdLoadCallback() {
-                override fun onAdFailedToLoad(adError: LoadAdError) {
-                    Log.d(TAG, adError.message)
-                    mInterstitialAd = null
-                }
-
-                override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                    Log.d(TAG, "Ad was loaded. release")
-                    mInterstitialAd = interstitialAd
-                }
-            })
-        }
-
-        InterstitialAd.load(this,"ca-app-pub-3940256099942544/1033173712", adRequest, object : InterstitialAdLoadCallback() {
+        InterstitialAd.load(this, "ca-app-pub-9829869928534139/3052159234", adRequest, object : InterstitialAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {
                 Log.d(TAG, adError.message)
                 mInterstitialAd = null
             }
 
             override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                Log.d(TAG, "Ad was loaded.")
+                Log.d(TAG, "Ad was loaded. release")
                 mInterstitialAd = interstitialAd
             }
         })

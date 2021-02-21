@@ -239,7 +239,7 @@ class ListWorkFragment : Fragment() {
     private fun showAds() {
         val shared = requireContext().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
         var sum = shared.getInt(KEY_SUM_DONE_TASK, 0)
-        if (sum < 2) {
+        if (sum < 20) {
             sum += 1
             shared.edit().putInt(KEY_SUM_DONE_TASK, sum).apply()
         } else {

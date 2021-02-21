@@ -23,7 +23,7 @@ class MainActivityViewModel @ViewModelInject constructor(
 
     val notifyDataInsert: LiveData<AlarmNotificationEntity> = MutableLiveData()
 
-    fun addFirstTopic() {
+    fun addFirstTopic(topic: String) {
         GlobalScope.launch(handler + Dispatchers.IO) {
             val data = TopicGroupEntity(1, "Hôm nay")
             insertTopicUseCase.invoke(InsertTopicUseCase.Param(data)).let {
@@ -31,7 +31,7 @@ class MainActivityViewModel @ViewModelInject constructor(
                     InsertWorkUseCase.Param(
                         WorkDataEntity(
                             id = System.currentTimeMillis(),
-                            name = "Chung",
+                            name = topic,
                             groupId = it,
                             listContent = mutableListOf()
                         )

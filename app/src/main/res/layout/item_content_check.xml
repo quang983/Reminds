@@ -16,7 +16,7 @@
             android:id="@+id/imgTimer"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="match_parent"
-            android:background="@color/teal_700"
+            android:background="@drawable/bg_selector_timer"
             android:padding="@dimen/_10sdp"
             android:src="@drawable/ic_baseline_timer" />
 
@@ -24,7 +24,7 @@
             android:id="@+id/imgGim"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="match_parent"
-            android:background="@color/yellow_600"
+            android:background="@drawable/bg_selector_tags"
             android:padding="@dimen/_10sdp"
             android:src="@drawable/ic_baseline_wb_sunny" />
 
@@ -32,7 +32,7 @@
             android:id="@+id/imgDelete"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="match_parent"
-            android:background="@color/red_200"
+            android:background="@drawable/bg_selector_delete"
             android:padding="@dimen/_10sdp"
             android:src="@drawable/ic_baseline_delete_24" />
     </LinearLayout>

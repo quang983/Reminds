@@ -15,7 +15,9 @@
     <color name="blue_700">#1976D2</color>
     <color name="blue_900">#0D47A1</color>
     <color name="pink_500">#e91e63</color>
+    <color name="red_100">#ffcdd2</color>
     <color name="red_200">#ff5252</color>
+    <color name="yellow_200">#fff59d</color>
     <color name="yellow_600">#fdd835</color>
     <color name="bg_divider">#BDBDBD</color>
     <color name="bg_divider2">#b0bec5</color>

@@ -24,7 +24,7 @@
             android:id="@+id/imgDelete"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="match_parent"
-            android:background="@color/red_200"
+            android:background="@drawable/bg_selector_delete"
             android:padding="@dimen/_10sdp"
             android:src="@drawable/ic_baseline_delete_24" />
     </LinearLayout>

@@ -172,7 +172,7 @@ class MainActivity : AppCompatActivity() {
                     .build()
             )*/
         val adRequest = AdRequest.Builder().build()
-        InterstitialAd.load(this, "ca-app-pub-9829869928534139/3052159234", adRequest, object : InterstitialAdLoadCallback() {
+        InterstitialAd.load(this, "ca-app-pub-9829869928534139/4215290997", adRequest, object : InterstitialAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {
                 Log.d(TAG, adError.message)
                 mInterstitialAd = null

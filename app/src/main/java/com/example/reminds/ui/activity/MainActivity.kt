@@ -76,11 +76,19 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        Intent(this, NotificationService::class.java).also { intent ->
-            startService(intent)
-            bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
-        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Intent(this, NotificationService::class.java).also { intent ->
+                startForegroundService(intent)
+                bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
+            }
 
+        } else {
+            Intent(this, NotificationService::class.java).also { intent ->
+                startService(intent)
+                bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
+            }
+
+        }
     }
 
     private fun checkAddFirstTopic() {

@@ -1,15 +1,14 @@
 package com.example.reminds.service
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.app.Service
+import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.os.Handler
-import android.os.IBinder
-import android.os.Message
-import android.os.Messenger
+import android.graphics.Color
+import android.os.*
+import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
 import com.example.common.base.model.AlarmNotificationEntity
+import com.example.reminds.R
 import com.example.reminds.utils.TimestampUtils
 import java.text.SimpleDateFormat
 import java.util.*
@@ -20,11 +19,47 @@ const val REMOVE_OBJECT_TIMER_DATA = 0
 class NotificationService : Service() {
     private lateinit var mMessenger: Messenger
 
-    /**
-     * Handler of incoming messages from clients.
-     */
+    override fun onCreate() {
+        super.onCreate()
+        startForeground(this)
+    }
 
-    internal class IncomingHandler(
+    private fun startForeground(service: Service) {
+        val channelId =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                createNotificationChannel(service, service.applicationContext.getString(R.string.notify_channel), "My Background Service")
+            } else {
+                ""
+            }
+
+        val notificationBuilder = NotificationCompat.Builder(service, channelId)
+        val notification = notificationBuilder.setOngoing(true)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setPriority(NotificationCompat.PRIORITY_MIN)
+            .setCategory(Notification.CATEGORY_SERVICE)
+            .build()
+        service.startForeground(101, notification)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun createNotificationChannel(
+        context: Context,
+        channelId: String,
+        channelName: String
+    ): String {
+        val chan =
+            NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_NONE)
+        chan.lightColor = Color.BLUE
+        chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+
+        val service =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        service.createNotificationChannel(chan)
+
+        return channelId
+    }
+
+internal class IncomingHandler(
         context: Context,
         private val applicationContext: Context = context.applicationContext
     ) : Handler() {

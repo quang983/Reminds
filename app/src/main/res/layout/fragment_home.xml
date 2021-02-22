@@ -91,7 +91,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="layoutCard,tvTitle"
+        app:constraint_referenced_ids="layoutCard"
         tools:visibility="visible" />
 
   <!--  <com.google.android.material.floatingactionbutton.FloatingActionButton

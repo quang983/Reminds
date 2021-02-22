@@ -60,5 +60,6 @@
     <string name="support_list_reminders">Đây là danh sách ghi chú nhanh</string>
     <string name="support_new_title">Click button để thêm danh sách mới của riêng bạn</string>
     <string name="topic_title">Chủ đề</string>
+    <string name="tap_tap" translatable="false">Tap Tap</string>
 
 </resources>

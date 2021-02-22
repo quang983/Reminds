@@ -1,5 +1,6 @@
 package com.example.reminds.ui.fragment.home
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -172,7 +173,10 @@ class HomeFragment : Fragment() {
             .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()
             }
-            .show()
+            .show().apply {
+                this.getButton(DialogInterface.BUTTON_POSITIVE).isAllCaps = false
+                this.getButton(DialogInterface.BUTTON_NEGATIVE).isAllCaps = false
+            }
         customAlertDialogView.requestFocus()
         Handler().postDelayed({
             KeyboardUtils.showKeyboard(requireContext())

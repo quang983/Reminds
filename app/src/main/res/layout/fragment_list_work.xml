@@ -10,7 +10,7 @@
 
     <include
         android:id="@+id/layoutEmpty"
-        layout="@layout/layout_empty"
+        layout="@layout/layout_empty_animation"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:visibility="gone"

@@ -2,6 +2,7 @@ package com.example.reminds.ui.fragment.detail
 
 import DateTimePickerFragment.Companion.TIME_PICKER_BUNDLE
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -28,6 +29,7 @@ import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_list_work.*
 import kotlinx.android.synthetic.main.layout_custom_alert_text_input.view.*
+import kotlinx.android.synthetic.main.layout_empty_animation.view.*
 
 
 /**
@@ -172,8 +174,28 @@ class ListWorkFragment : Fragment() {
 
     private fun observeData() {
         with(viewModel) {
-            listWorkData.observe(viewLifecycleOwner, {
-                layoutEmpty.setVisible(it.isEmpty())
+            listWorkData.observe(viewLifecycleOwner, { it ->
+                when {
+                    it.isEmpty() -> {
+                        layoutEmpty.visible()
+                        layoutEmpty.imgIconAnimation.setAnimation(R.raw.empty_card)
+                        layoutEmpty.imgIconAnimation.repeatCount = 10
+                        layoutEmpty.imgIconAnimation.loop(true)
+                        layoutEmpty.imgIconAnimation.playAnimation()
+                        layoutEmpty.tvEmptyAnimation.text = resources.getString(R.string.empty_list)
+                    }
+                    it.sumByDouble { it.listContent.size.toDouble() }.toInt() == 0 -> {
+                        layoutEmpty.visible()
+                        layoutEmpty.imgIconAnimation.setAnimation(R.raw.tap_tap)
+                        layoutEmpty.imgIconAnimation.repeatCount = 10
+                        layoutEmpty.imgIconAnimation.loop(true)
+                        layoutEmpty.imgIconAnimation.playAnimation()
+                        layoutEmpty.tvEmptyAnimation.text = resources.getString(R.string.tap_tap)
+                    }
+                    else -> {
+                        layoutEmpty.gone()
+                    }
+                }
                 adapter.submitList(it)
             })
             isShowDoneLiveData.observe(viewLifecycleOwner, {
@@ -216,7 +238,10 @@ class ListWorkFragment : Fragment() {
             .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()
             }
-            .show()
+            .show().apply {
+                this.getButton(DialogInterface.BUTTON_POSITIVE).isAllCaps = false
+                this.getButton(DialogInterface.BUTTON_NEGATIVE).isAllCaps = false
+            }
         customAlertDialogView.requestFocus()
         Handler().postDelayed({
             KeyboardUtils.showKeyboard(requireContext())

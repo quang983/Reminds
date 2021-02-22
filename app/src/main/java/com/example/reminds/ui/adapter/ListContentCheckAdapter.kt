@@ -135,7 +135,11 @@ class ListContentCheckAdapter(
 
     private fun refreshTvTimer(view: View, item: ContentDataEntity) {
         view.tvTimer.visibleOrGone(item.timer >= 0)
-        view.tvTimer.text = TimestampUtils.getFullFormatTime(item.timer, INCREASE_DATE_FORMAT)
+        if (TimestampUtils.compareDate(item.timer, System.currentTimeMillis())) {
+            view.tvTimer.text = String.format("%s %s", TimestampUtils.getTime(item.timer), view.context.getString(R.string.title_home_today))
+        } else {
+            view.tvTimer.text = TimestampUtils.getFullFormatTime(item.timer, INCREASE_DATE_FORMAT)
+        }
     }
 
     private fun refreshCheckBox(view: View, item: ContentDataEntity) {
@@ -180,7 +184,7 @@ class ListContentCheckAdapter(
 
         view.imgTimer.setOnClickListenerBlock {
             val itemById = currentList.filter { it.id == item.id }.getFirstOrNull()
-            itemById?.let {
+            itemById?.let { it ->
                 ContentDataEntity(
                     it.id, it.name,
                     it.idOwnerWork, it.isFocus, it.hashTag,

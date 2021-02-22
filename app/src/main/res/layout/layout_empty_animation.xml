@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/imgIcon"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/imgIconAnimation"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_60sdp"
-        android:layout_marginTop="@dimen/_100sdp"
-        android:src="@drawable/ic_search" />
+        android:layout_height="@dimen/_100sdp"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/tap_tap"
+        app:lottie_loop="true"
+        android:layout_marginTop="@dimen/_100sdp" />
 
     <TextView
-        android:id="@+id/tvEmpty"
+        android:id="@+id/tvEmptyAnimation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/imgIcon"
+        android:layout_below="@id/imgIconAnimation"
         android:fontFamily="@font/roboto_regular_font"
         android:padding="@dimen/_20sdp"
         android:text="@string/empty_list"

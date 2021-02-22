@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         catchEventKeyboard()
         setObserver()
         createAdsMode()
-        showRatingApp()
+//        showRatingApp()
     }
 
     private fun setObserver() {

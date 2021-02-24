@@ -43,6 +43,8 @@ class MainActivity : AppCompatActivity() {
     private var TAG = "logMain"
     private var mInterstitialAd: InterstitialAd? = null
 
+    lateinit var intentService: Intent
+
     /** Messenger for communicating with the service.  */
     private var mMessenger: Messenger? = null
     val viewModel: MainActivityViewModel by viewModels()
@@ -52,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
+        onStartService()
         createNotificationChannel()
         /*show back press button*/
         navController = findNavController(R.id.nav_host_fragment)
@@ -74,9 +77,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStart() {
+    fun onStartService() {
         super.onStart()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        intentService = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Intent(this, NotificationService::class.java).also { intent ->
                 startForegroundService(intent)
                 bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
@@ -89,6 +92,11 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopService(intentService)
     }
 
     private fun checkAddFirstTopic() {

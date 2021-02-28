@@ -1,23 +1,28 @@
 package com.example.reminds.service
 
 import android.app.*
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.*
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.example.common.base.model.AlarmNotificationEntity
 import com.example.reminds.R
+import com.example.reminds.ui.activity.MainActivity
 import com.example.reminds.utils.TimestampUtils
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 const val INSERT_OBJECT_TIMER_DATA = 1 // insert or update
 const val REMOVE_OBJECT_TIMER_DATA = 0
 
 class NotificationService : Service() {
     private lateinit var mMessenger: Messenger
+    lateinit var manager: ClipboardManager
 
     override fun onCreate() {
         super.onCreate()
@@ -39,7 +44,15 @@ class NotificationService : Service() {
             .setCategory(Notification.CATEGORY_SERVICE)
             .build()
         service.startForeground(101, notification)
+        manager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        manager.addPrimaryClipChangedListener {
+            Log.d("AppLog", manager.text?.toString() ?: "")
+            val intent = Intent(applicationContext, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        }
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun createNotificationChannel(
@@ -59,7 +72,7 @@ class NotificationService : Service() {
         return channelId
     }
 
-internal class IncomingHandler(
+    internal class IncomingHandler(
         context: Context,
         private val applicationContext: Context = context.applicationContext
     ) : Handler() {
@@ -124,6 +137,7 @@ internal class IncomingHandler(
 
     override fun onBind(intent: Intent): IBinder {
 //        Toast.makeText(applicationContext, "binding", Toast.LENGTH_SHORT).show()
+
         mMessenger = Messenger(IncomingHandler(this))
         return mMessenger.binder
     }

@@ -13,6 +13,7 @@ import com.example.reminds.R
 import com.example.reminds.ui.activity.MainActivity
 import kotlin.random.Random
 
+
 class NotificationUtil(private val context: Context) {
 
     fun showNotification(title: String, message: String) {

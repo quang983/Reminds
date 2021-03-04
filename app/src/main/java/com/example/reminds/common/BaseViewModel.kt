@@ -239,5 +239,3 @@ fun <Y> liveData(
 ) = androidx.lifecycle.liveData<Y>(context) {
     block()
 }
-
-

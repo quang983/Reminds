@@ -12,5 +12,6 @@ class WorkFoTopic(
     val name: String,
     val idOwnerGroup: Long,
     @TypeConverters(DataConverter::class)
-    val listContent: MutableList<ContentFoWork>
+    val listContent: MutableList<ContentFoWork>,
+    val doneAll: Boolean = listContent.all { it.isCheckDone }
 )

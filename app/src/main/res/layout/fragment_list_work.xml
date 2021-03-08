@@ -5,8 +5,8 @@
     android:id="@+id/rootWork"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/_36sdp"
     android:background="@color/white"
+    android:paddingBottom="@dimen/_36sdp"
     android:transitionName="@string/transition_topic_to_detail">
 
     <include
@@ -25,13 +25,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        app:layout_constraintVertical_bias="0.0"
-        android:paddingStart="@dimen/_16sdp"
-        android:paddingTop="@dimen/_16sdp"
+        android:paddingStart="@dimen/_8sdp"
+        android:paddingTop="@dimen/_8sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="RtlSymmetry"
         tools:itemCount="2"
         tools:listitem="@layout/item_work_group" />
 
@@ -44,6 +45,6 @@
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
         app:lottie_autoPlay="true"
-        app:lottie_rawRes="@raw/add_plus"
-        app:lottie_loop="true" />
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/add_plus" />
 </androidx.constraintlayout.widget.ConstraintLayout>

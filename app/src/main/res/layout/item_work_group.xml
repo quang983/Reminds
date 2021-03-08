@@ -6,27 +6,55 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvTitle"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-medium"
-        android:textColor="@color/blue_900"
-        android:textSize="@dimen/_14sdp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Title" />
+        android:gravity="center_vertical"
+        android:paddingTop="@dimen/_2sdp">
+
+        <com.example.reminds.utils.custom.CircleCheckBox
+            android:id="@+id/rbChecked"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:padding="@dimen/_6sdp"
+            app:borderThickness="2dp"
+            app:circleBorderColor="@color/blue_900"
+            app:innerCircleColor="@color/blue_900"
+            app:innerCircleRadius="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvContentCheck"
+            app:outerCircleColor="@color/blue_700"
+            app:outerCircleRadius="2dp"
+            app:showOuterCircle="true"
+            app:tickColor="#ffffff"
+            app:tickThickness="1dp" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/blue_900"
+            android:textSize="@dimen/_14sdp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Title" />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerWorks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:padding="@dimen/_2sdp"
+        android:paddingStart="@dimen/_16sdp"
+        android:paddingTop="@dimen/_2sdp"
+        android:paddingBottom="@dimen/_2sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        tools:ignore="RtlSymmetry"
         tools:itemCount="2"
         tools:listitem="@layout/item_content_check" />
 
@@ -35,10 +63,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:padding="@dimen/_2sdp"
+        android:paddingStart="@dimen/_16sdp"
+        android:paddingTop="@dimen/_2sdp"
+        android:paddingBottom="@dimen/_2sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        tools:ignore="RtlSymmetry"
         tools:itemCount="2"
         tools:listitem="@layout/item_content_check" />
 </LinearLayout>

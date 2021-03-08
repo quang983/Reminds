@@ -13,7 +13,11 @@ import com.example.reminds.common.BaseAdapter
 import com.example.reminds.common.BaseViewHolder
 import com.example.reminds.utils.inflate
 import com.example.reminds.utils.setOnClickListenerBlock
+import kotlinx.android.synthetic.main.item_content_check.view.*
 import kotlinx.android.synthetic.main.item_work_group.view.*
+import kotlinx.android.synthetic.main.item_work_group.view.rbChecked
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ListWorkAdapter(
     private val onClickTitle: (position: Int) -> Unit,
@@ -71,6 +75,8 @@ class ListWorkAdapter(
 
     }) {
     private lateinit var contentsAdapter: ListContentCheckAdapter
+    private val DELAY: Long = 2000
+    private var timer = Timer()
 
     override fun createView(parent: ViewGroup, viewType: Int?): View {
         return parent.inflate(R.layout.item_work_group)
@@ -115,6 +121,39 @@ class ListWorkAdapter(
         }
     }
 
+    private fun refreshCheckBox(view: View, item: ContentDataEntity) {
+        view.rbChecked.setChecked(item.isCheckDone)
+        view.tvContentCheck.setTextColor(
+            if (item.isCheckDone) view.context.resources.getColor(R.color.bg_gray) else
+                view.context.resources.getColor(R.color.black)
+        )
+        view.rbChecked.setOnCheckedChangeListener { button, isChecked ->
+            if (button.isPressed) {
+                item.isFocus = false
+                if (isChecked && view.tvContentCheck.text.toString().isNotEmpty()) {
+                    timer = Timer()
+                    view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.bg_gray))
+                    timer.schedule(
+                        object : TimerTask() {
+                            override fun run() {
+                                item.isCheckDone = true
+//                                handlerCheckItem.invoke(item)
+                            }
+                        },
+                        DELAY
+                    )
+                } else {
+                    view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
+                    item.isCheckDone = false
+//                    handlerCheckItem.invoke(item)
+                    timer.cancel()
+                    timer.purge()
+                }
+            }
+        }
+    }
+
+
 
     private fun showMenu(v: View, @MenuRes menuRes: Int, workId: Long) {
         val popup = PopupMenu(v.context, v)
@@ -122,9 +161,6 @@ class ListWorkAdapter(
 
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
-             /*   R.id.action_hide_work -> {
-                    hideWorkClick.invoke(workId)
-                }*/
                 R.id.action_delete_work -> {
                     deleteWorkClick.invoke(workId)
                 }

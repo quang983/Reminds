@@ -59,14 +59,15 @@ class ListWorkViewModel @ViewModelInject constructor(
             addNewContentToListWork(workPosition)
             workPosition = -1
         }
-        val list = listWorkViewModel.map {
+        listWorkViewModel.map {
             if (_isShowDoneLiveData.value == true) {
                 it.copy()
             } else {
                 it.copyAndRemoveDone()
             }
-        }
-        list
+        }.sortedWith(
+            compareBy({ it.doneAll }, { it.id })
+        )
     }
 
     fun saveTopicGroup(isShowDone: Boolean) {
@@ -174,7 +175,7 @@ class ListWorkViewModel @ViewModelInject constructor(
                 id = System.currentTimeMillis(),
                 name = name,
                 groupId = idGroup.value ?: 0,
-                listContent = arrayListOf()
+                listContent = arrayListOf(), doneAll = false
             )
             listWorkViewModel.add(workInsert)
             insertWorkUseCase.invoke(
@@ -191,9 +192,18 @@ class ListWorkViewModel @ViewModelInject constructor(
             deleteWorkUseCase.invoke(DeleteWorkUseCase.Param(listWorkViewModel.filter { it.id == workId }.getFirstOrNull()))
         }
 
-    /*  private fun doneAllContentFromWork(idWork : Long){
-          viewModelScope.launch(handler + Dispatchers.IO) {
-              listWorkViewModel.
-          }
-      }*/
+
+    fun handleDoneAllContentFromWork(idWork: Long) {
+        viewModelScope.launch(handler + Dispatchers.IO) {
+            listWorkViewModel.getOrNull {
+                this.id == idWork
+            }?.let { it ->
+                it.listContent.forEach {
+                    it.isCheckDone = true
+                }
+            }
+            val work = listWorkViewModel[workPosition].copyState()
+            updateWorkUseCase.invoke(UpdateWorkUseCase.Param(work))
+        }
+    }
 }

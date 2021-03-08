@@ -31,8 +31,7 @@ class WorkFromTopicSourceImpl @Inject constructor(
                             hashTag = it.hashTag,
                             timer = it.timer, isCheckDone = it.isCheckDone
                         )
-                    } as ArrayList<ContentDataEntity>
-                )
+                    } as ArrayList<ContentDataEntity>, doneAll = it.doneAll)
             }
         }.conflate()
     }
@@ -52,8 +51,7 @@ class WorkFromTopicSourceImpl @Inject constructor(
                             hashTag = it.hashTag,
                             timer = it.timer, isCheckDone = it.isCheckDone
                         )
-                    } as ArrayList<ContentDataEntity>
-                )
+                    } as ArrayList<ContentDataEntity>, doneAll = it.doneAll)
             }
         }
     }
@@ -67,7 +65,7 @@ class WorkFromTopicSourceImpl @Inject constructor(
                         it.id, it.name, it.idOwnerWork, hashTag = it.hashTag,
                         timer = it.timer, isCheckDone = it.isCheckDone
                     )
-                }.toMutableList()
+                }.toMutableList(), false
             )
         )
     }
@@ -81,7 +79,7 @@ class WorkFromTopicSourceImpl @Inject constructor(
                         it.id, it.name, it.idOwnerWork, hashTag = it.hashTag,
                         timer = it.timer, isCheckDone = it.isCheckDone
                     )
-                }.toMutableList()
+                }.toMutableList(), false
             )
         }.toTypedArray())
     }
@@ -96,7 +94,7 @@ class WorkFromTopicSourceImpl @Inject constructor(
                         it.id, it.name, it.idOwnerWork, hashTag = it.hashTag,
                         timer = it.timer, isCheckDone = it.isCheckDone
                     )
-                }.toMutableList()
+                }.toMutableList(), data.doneAll
             )
         )
     }
@@ -110,7 +108,7 @@ class WorkFromTopicSourceImpl @Inject constructor(
                         it.id, it.name, it.idOwnerWork, hashTag = it.hashTag,
                         timer = it.timer, isCheckDone = it.isCheckDone
                     )
-                }.toMutableList()
+                }.toMutableList(), it.doneAll
             )
         }.toTypedArray())
     }
@@ -128,7 +126,7 @@ class WorkFromTopicSourceImpl @Inject constructor(
                         it.id, it.name, it.idOwnerWork, hashTag = it.hashTag,
                         timer = it.timer, isCheckDone = it.isCheckDone
                     )
-                }.toMutableList()
+                }.toMutableList(), it.doneAll
             )
         }.toTypedArray())
     }

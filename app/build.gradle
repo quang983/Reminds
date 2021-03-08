@@ -13,8 +13,8 @@ android {
         applicationId "com.quangtd.todosimple"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 12
-        versionName "2.12"
+        versionCode 14
+        versionName "2.14"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

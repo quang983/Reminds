@@ -4,29 +4,30 @@ data class WorkDataEntity(
     var id: Long,
     val name: String,
     val groupId: Long,
-    var listContent: MutableList<ContentDataEntity>
+    var listContent: MutableList<ContentDataEntity>,
+    val doneAll: Boolean
 ) {
     fun copy() = WorkDataEntity(
         id, name, groupId, listContent.map { it.copy() }.sortedWith(
             compareBy({ it.isCheckDone }, { !it.hashTag }, { it.id })
-        ).toMutableList()
+        ).toMutableList(), doneAll = listContent.all { it.isCheckDone }
     )
 
     fun copyAndRemoveDone() = WorkDataEntity(
         id, name, groupId, listContent.map { it.copy() }
             .filter { !it.isCheckDone }.sortedWith(
                 compareBy({ !it.hashTag }, { it.id })
-            ).toMutableList()
+            ).toMutableList(), doneAll = listContent.all { it.isCheckDone }
     )
 
     fun copyState() = WorkDataEntity(
         id, name, groupId,
-        listContent.filter { it.name.isNotEmpty() }.map { it.copy() }.toMutableList()
+        listContent.filter { it.name.isNotEmpty() }.map { it.copy() }.toMutableList(), doneAll = listContent.all { it.isCheckDone }
     )
 
     fun copyAndResetFocus() = WorkDataEntity(
         id, name, groupId,
-        listContent.filter { it.name.isNotEmpty() }.map { it.copyAndResetFocus() }.toMutableList()
+        listContent.filter { it.name.isNotEmpty() }.map { it.copyAndResetFocus() }.toMutableList(), doneAll = listContent.all { it.isCheckDone }
     )
 
 

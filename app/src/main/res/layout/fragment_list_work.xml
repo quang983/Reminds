@@ -23,8 +23,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerWorks"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:clipToPadding="false"
+        app:layout_constraintVertical_bias="0.0"
         android:paddingStart="@dimen/_16sdp"
         android:paddingTop="@dimen/_16sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

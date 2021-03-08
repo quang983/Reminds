@@ -26,6 +26,9 @@ import com.example.reminds.utils.postValue
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.google.android.gms.ads.rewarded.RewardItem
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.android.play.core.review.ReviewManagerFactory
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.content_main.*
@@ -42,6 +45,10 @@ class MainActivity : AppCompatActivity() {
     //    private var mRewardedAd: RewardedAd? = null
     private var TAG = "logMain"
     private var mInterstitialAd: InterstitialAd? = null
+
+    private var mRewardedAd: RewardedAd? = null
+
+    private lateinit var mBannerAd: AdView
 
     lateinit var intentService: Intent
 
@@ -181,12 +188,95 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createAdsMode() {
+//        Log.d(TAG, "createAdsMode: ${AdRequest.DEVICE_ID_EMULATOR}")
         MobileAds.initialize(this)
-        /*    MobileAds.setRequestConfiguration(
-                RequestConfiguration.Builder()
-                    .setTestDeviceIds(listOf("ABCDEF012345"))
-                    .build()
-            )*/
+        MobileAds.setRequestConfiguration(
+            RequestConfiguration.Builder()
+                .setTestDeviceIds(
+                    listOf(
+                        "B3EEABB8EE11C2BE770B684D95219ECB", "1de5b277b16e4e89", "a3ea2553d4d0b456"
+                    )
+                )
+                .build()
+        )
+        createBannerAds()
+        createRewardAds()
+        setFullScreenRewardAds()
+        eventBannerAds()
+    }
+
+    private fun createBannerAds() {
+        mBannerAd = findViewById(R.id.adBanner)
+        val adRequest = AdRequest.Builder().build()
+        mBannerAd.loadAd(adRequest)
+    }
+
+    private fun createRewardAds() {
+        val adRequest = AdRequest.Builder().build()
+
+        RewardedAd.load(this, "ca-app-pub-5558775664447893/4511965582", adRequest, object : RewardedAdLoadCallback() {
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                Log.d(TAG, adError.message)
+                mRewardedAd = null
+            }
+
+            override fun onAdLoaded(rewardedAd: RewardedAd) {
+                Log.d(TAG, "Ad was loaded.")
+                mRewardedAd = rewardedAd
+            }
+        })
+    }
+
+    private fun setFullScreenRewardAds() {
+        mRewardedAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+            override fun onAdDismissedFullScreenContent() {
+                Log.d(TAG, "Ad was dismissed.")
+            }
+
+            override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
+                Log.d(TAG, "Ad failed to show.")
+            }
+
+            override fun onAdShowedFullScreenContent() {
+                Log.d(TAG, "Ad showed fullscreen content.")
+                // Called when ad is dismissed.
+                // Don't set the ad reference to null to avoid showing the ad a second time.
+                mRewardedAd = null
+            }
+        }
+    }
+
+    private fun eventBannerAds() {
+        mBannerAd.adListener = object : AdListener() {
+            override fun onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                // Code to be executed when an ad request fails.
+            }
+
+            override fun onAdOpened() {
+                // Code to be executed when an ad opens an overlay that
+                // covers the screen.
+            }
+
+            override fun onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            override fun onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            override fun onAdClosed() {
+                // Code to be executed when the user is about to return
+                // to the app after tapping on an ad.
+            }
+        }
+    }
+
+    private fun createInterstitialAd() {
         val adRequest = AdRequest.Builder().build()
         InterstitialAd.load(this, "ca-app-pub-9829869928534139/4215290997", adRequest, object : InterstitialAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {
@@ -199,57 +289,32 @@ class MainActivity : AppCompatActivity() {
                 mInterstitialAd = interstitialAd
             }
         })
-
-        /* MobileAds.initialize(this) {
-         }
-         val adRequest = AdRequest.Builder().build()
-
-         RewardedAd.load(this, "ca-app-pub-9829869928534139/5224354917", adRequest, object : RewardedAdLoadCallback() {
-             override fun onAdFailedToLoad(adError: LoadAdError) {
-                 Log.d(TAG, adError.message)
-                 mRewardedAd = null
-             }
-
-             override fun onAdLoaded(rewardedAd: RewardedAd) {
-                 Log.d(TAG, "Ad was loaded.")
-                 mRewardedAd = rewardedAd
-             }
-         })
-
-         mRewardedAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
-             override fun onAdDismissedFullScreenContent() {
-                 Log.d(TAG, "Ad was dismissed.")
-             }
-
-             override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
-                 Log.d(TAG, "Ad failed to show.")
-             }
-
-             override fun onAdShowedFullScreenContent() {
-                 Log.d(TAG, "Ad showed fullscreen content.")
-                 // Called when ad is dismissed.
-                 // Don't forget to set the ad reference to null so you
-                 // don't show the ad a second time.
-                 mRewardedAd = null
-             }
-         }*/
     }
 
     private fun showAdsMobile() {
+        showRewardAds()
+    }
+
+    private fun showRewardAds() {
+        if (mRewardedAd != null) {
+            mRewardedAd?.show(this) {
+                fun onUserEarnedReward(rewardItem: RewardItem) {
+//                    var rewardAmount = rewardItem.amount()
+                    var rewardType = rewardItem.type
+                    Log.d("TAG", "User earned the reward.")
+                }
+            }
+        } else {
+            Log.d("TAG", "The rewarded ad wasn't ready yet.")
+        }
+    }
+
+    private fun showAdsInterstitial() {
         if (mInterstitialAd != null) {
             mInterstitialAd?.show(this)
         } else {
             Log.d("TAG", "The interstitial ad wasn't ready yet.")
         }
-
-        /*    mRewardedAd?.show(this) {
-                fun onUserEarnedReward(rewardItem: RewardItem) {
-                    var rewardAmount = rewardItem.amount
-                    var rewardType = rewardItem.type
-                    Log.d(TAG, "User earned the reward.");
-                }
-            }
-                ?: Log.d(TAG, "The rewarded ad wasn't ready yet.")*/
     }
 
     private fun catchEventKeyboard() {

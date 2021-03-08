@@ -70,7 +70,7 @@ class ListWorkViewModel @ViewModelInject constructor(
     }
 
     fun saveTopicGroup(isShowDone: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO + handler) {
             topicGroup.isShowDone = isShowDone
             updateTopicUseCase.invoke(UpdateTopicUseCase.Param(topicGroup))
         }

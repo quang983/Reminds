@@ -3,6 +3,7 @@ package com.example.reminds.utils
 import android.content.Context
 import android.text.TextUtils
 import com.example.reminds.R
+import com.fasterxml.jackson.databind.util.StdDateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -267,5 +268,14 @@ object TimestampUtils {
         } else {
             null
         }
+    }
+
+
+    fun String.fromISO8601(): Long = StdDateFormat().apply {
+        timeZone = TimeZone.getDefault()
+    }.runCatching {
+        parse(this@fromISO8601)?.time ?: 0L
+    }.getOrElse {
+        0L
     }
 }

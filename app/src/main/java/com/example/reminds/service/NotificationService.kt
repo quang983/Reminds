@@ -1,28 +1,27 @@
 package com.example.reminds.service
 
+import android.annotation.SuppressLint
 import android.app.*
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.*
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.common.base.model.AlarmNotificationEntity
 import com.example.reminds.R
-import com.example.reminds.ui.activity.MainActivity
 import com.example.reminds.utils.TimestampUtils
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 const val INSERT_OBJECT_TIMER_DATA = 1 // insert or update
 const val REMOVE_OBJECT_TIMER_DATA = 0
 
-class NotificationService : Service() {
+open class NotificationService : Service() {
     private lateinit var mMessenger: Messenger
-    lateinit var manager: ClipboardManager
 
     override fun onCreate() {
         super.onCreate()
@@ -39,20 +38,16 @@ class NotificationService : Service() {
 
         val notificationBuilder = NotificationCompat.Builder(service, channelId)
         val notification = notificationBuilder.setOngoing(true)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.ic_tasks_new)
+            .setWhen(2)
+            .setShowWhen(true)
+            .setTicker("Ticker Text")
+            .setUsesChronometer(true)
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .setCategory(Notification.CATEGORY_SERVICE)
             .build()
         service.startForeground(101, notification)
-        manager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        manager.addPrimaryClipChangedListener {
-            Log.d("AppLog", manager.text?.toString() ?: "")
-            val intent = Intent(applicationContext, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-        }
     }
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun createNotificationChannel(
@@ -136,9 +131,28 @@ class NotificationService : Service() {
      */
 
     override fun onBind(intent: Intent): IBinder {
-//        Toast.makeText(applicationContext, "binding", Toast.LENGTH_SHORT).show()
-
         mMessenger = Messenger(IncomingHandler(this))
         return mMessenger.binder
+    }
+
+    inner class CounterClass(millisInFuture: Long, countDownInterval: Long) : CountDownTimer(millisInFuture, countDownInterval) {
+        @SuppressLint("DefaultLocale")
+        override fun onTick(millisUntilFinished: Long) {
+            val hms = java.lang.String.format(
+                "%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))
+            )
+            println(hms)
+            val timerInfoIntent = Intent("TIME_INFO")
+            timerInfoIntent.putExtra("VALUE", hms)
+            LocalBroadcastManager.getInstance(this@NotificationService).sendBroadcast(timerInfoIntent)
+        }
+
+        override fun onFinish() {
+            val timerInfoIntent = Intent("TIME_INFO")
+            timerInfoIntent.putExtra("VALUE", "Completed")
+            LocalBroadcastManager.getInstance(this@NotificationService).sendBroadcast(timerInfoIntent)
+        }
     }
 }

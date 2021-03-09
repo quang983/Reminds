@@ -29,9 +29,12 @@ class WorkFromTopicSourceImpl @Inject constructor(
                             it.name,
                             it.idOwnerWork,
                             hashTag = it.hashTag,
-                            timer = it.timer, isCheckDone = it.isCheckDone
+                            timer = it.timer,
+                            isCheckDone = it.isCheckDone
                         )
-                    } as ArrayList<ContentDataEntity>, doneAll = it.doneAll)
+                    } as ArrayList<ContentDataEntity>,
+                    doneAll = it.doneAll
+                )
             }
         }.conflate()
     }
@@ -49,9 +52,12 @@ class WorkFromTopicSourceImpl @Inject constructor(
                             it.name,
                             it.idOwnerWork,
                             hashTag = it.hashTag,
-                            timer = it.timer, isCheckDone = it.isCheckDone
+                            timer = it.timer,
+                            isCheckDone = it.isCheckDone
                         )
-                    } as ArrayList<ContentDataEntity>, doneAll = it.doneAll)
+                    } as ArrayList<ContentDataEntity>,
+                    doneAll = it.doneAll
+                )
             }
         }
     }

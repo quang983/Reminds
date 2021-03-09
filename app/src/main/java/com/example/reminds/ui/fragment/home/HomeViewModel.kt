@@ -25,13 +25,10 @@ class HomeViewModel @ViewModelInject constructor(
     private val getTotalTaskOfWorkUseCase: GetTotalTaskOfWorkUseCase,
     private val getFastTopicUseCase: GetFastTopicUseCase,
     private val getAllContentOfTopicUseCase: GetAllContentOfTopicUseCase,
-    private val insertTopicUseCase: InsertTopicUseCase,
-    private val insertWorkUseCase: InsertWorkUseCase
+    private val insertTopicUseCase: InsertTopicUseCase
 ) : BaseViewModel() {
 
     val fastTopicData: LiveData<FastTopicViewItem> = MutableLiveData()
-
-
 
     private val _topicData: LiveData<List<TopicGroupEntity>> = fastTopicData.switchMapLiveData {
         fetchTopicFlowUseCase.invoke(BaseUseCase.Param()).collect {
@@ -65,20 +62,9 @@ class HomeViewModel @ViewModelInject constructor(
             val data = TopicGroupEntity(System.currentTimeMillis(), name)
             kotlin.runCatching {
                 insertTopicUseCase.invoke(InsertTopicUseCase.Param(data))
-                /*insertWorkUseCase.invoke(
-                    InsertWorkUseCase.Param(
-                        WorkDataEntity(
-                            id = System.currentTimeMillis(),
-                            name = "Chung",
-                            groupId = idTopic,
-                            listContent = mutableListOf()
-                        )
-                    )
-                )*/
             }
         }
     }
-
 
     data class TopicGroupViewItem(val topicGroupEntity: TopicGroupEntity, val totalTask: Int)
 

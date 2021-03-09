@@ -12,28 +12,22 @@
         android:gravity="center_vertical"
         android:paddingTop="@dimen/_2sdp">
 
-        <com.example.reminds.utils.custom.CircleCheckBox
-            android:id="@+id/rbChecked"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_30sdp"
-            android:padding="@dimen/_6sdp"
-            app:borderThickness="2dp"
-            app:circleBorderColor="@color/blue_900"
-            app:innerCircleColor="@color/blue_900"
-            app:innerCircleRadius="10dp"
+        <net.igenius.customcheckbox.CustomCheckBox
+            android:id="@+id/rbCheckedTitle"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="wrap_content"
+            app:color_checked="@android:color/transparent"
+            app:color_tick="@color/blue_900"
+            app:color_unchecked_stroke="@color/bg_gray"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tvContentCheck"
-            app:outerCircleColor="@color/blue_700"
-            app:outerCircleRadius="2dp"
-            app:showOuterCircle="true"
-            app:tickColor="#ffffff"
-            app:tickThickness="1dp" />
+            app:layout_constraintTop_toTopOf="@id/tvContentCheck" />
 
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
+            android:paddingStart="@dimen/_10sdp"
             android:textColor="@color/blue_900"
             android:textSize="@dimen/_14sdp"
             android:textStyle="bold"
@@ -48,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:paddingStart="@dimen/_16sdp"
+        android:paddingStart="@dimen/_24sdp"
         android:paddingTop="@dimen/_2sdp"
         android:paddingBottom="@dimen/_2sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -63,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:paddingStart="@dimen/_16sdp"
+        android:paddingStart="@dimen/_24sdp"
         android:paddingTop="@dimen/_2sdp"
         android:paddingBottom="@dimen/_2sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

@@ -16,15 +16,15 @@ import java.util.Timer;
 import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 
 public class CircleCheckBox extends View {
-    private float innerCircleRadius = 20.f;
+    private float innerCircleRadius = 30.f;
     private float outerCircleRadius = innerCircleRadius / 2f;
-    private float textSize = 20f;
+    private float textSize = 35f;
     private float borderThickness = 5f;
     private float tickThickness = 2f;
     private float textLeftPadding = 2f;
 
     private float increment = 20;
-    private float total_time = 100;
+    private float total_time = 200;
     private final Paint mPaintPageFill = new Paint(ANTI_ALIAS_FLAG);
     private final Paint mPaintPageStroke = new Paint(ANTI_ALIAS_FLAG);
     private final Paint mPaintTick = new Paint(ANTI_ALIAS_FLAG);
@@ -32,7 +32,7 @@ public class CircleCheckBox extends View {
     private final Paint mPaintText = new Paint(ANTI_ALIAS_FLAG);
     private boolean firstRun = true;
     private boolean timer_running = false;
-    private float tick_third_ = innerCircleRadius / 2;
+    private float tick_third_ = innerCircleRadius / 3;
     private boolean draw_tick_part_one = false;
     private String text = "";
 
@@ -48,7 +48,7 @@ public class CircleCheckBox extends View {
 
     float centerX = 0;
     float centerY = 0;
-    boolean isChecked = false;
+    private boolean isChecked = false;
 
     private boolean draw_tick = false;
 
@@ -77,7 +77,7 @@ public class CircleCheckBox extends View {
                     0, 0);
 
             try {
-//                setTickColorHex(a.getString(R.styleable.tick));
+//                setTickColorHex(a.getString(R.styleable.CircleCheckbox_tickColor));
                 setTextColorHex(a.getString(R.styleable.CircleCheckbox_textColor));
                 setShowOuterCircle(a.getBoolean(R.styleable.CircleCheckbox_showOuterCircle, true));
                 setInnerCircleColorHex(a.getString(R.styleable.CircleCheckbox_innerCircleColor));
@@ -273,7 +273,7 @@ public class CircleCheckBox extends View {
                     tick_y_two = tick_y;
                 }
 
-                float inc_tick = tick_third_ * 1.7f / (total_time / increment);
+                float  inc_tick = tick_third_ * 1.7f / (total_time / increment);
 
                 tick_x_two += inc_tick;
                 tick_y_two -= inc_tick;

@@ -12,7 +12,7 @@ import com.example.framework.local.database.model.WorkFoTopic
 
 @Database(
     entities = [TopicGroup::class, WorkFoTopic::class, ContentFoWork::class],
-    version = 1
+    version = 2
 )
 @TypeConverters(DataConverter::class)
 abstract class AppDataBase : RoomDatabase() {

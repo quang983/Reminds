@@ -33,7 +33,8 @@ class MainActivityViewModel @ViewModelInject constructor(
                             id = System.currentTimeMillis(),
                             name = topic,
                             groupId = it,
-                            listContent = mutableListOf()
+                            listContent = mutableListOf(),
+                            doneAll = false
                         )
                     )
                 )

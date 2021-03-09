@@ -59,7 +59,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupTransition(view: View) {
-        // TODO: Set up postponed enter transition.
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
     }
@@ -158,11 +157,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun showBottomSheet() {
-/*        val bottomSheetFragment = NewTopicBtsFragment()
-        bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)*/
         customAlertDialogView = LayoutInflater.from(requireContext())
             .inflate(R.layout.layout_custom_alert_text_input, null, false)
         customAlertDialogView.setPadding(36.toDp, 0, 36.toDp, 0)
+        customAlertDialogView.rootView.textInput.hint = getString(R.string.add_new_topic_hint)
         materialAlertDialogBuilder.setView(customAlertDialogView)
             .setTitle(resources.getString(R.string.notify_title))
             .setPositiveButton(resources.getString(R.string.add)) { _, _ ->
@@ -187,11 +185,7 @@ class HomeFragment : Fragment() {
     private fun presentShowcaseView() {
         val config = ShowcaseConfig()
         config.delay = 500 // half second between each showcase view
-
-
         val sequence = MaterialShowcaseSequence(requireActivity(), "SHOWCASE_ID")
-
-//        sequence.setOnItemShownListener { itemView, position -> Toast.makeText(itemView.context, "Item #$position", Toast.LENGTH_SHORT).show() }
 
         sequence.setConfig(config)
 

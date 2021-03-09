@@ -50,4 +50,8 @@
     <string name="support_list_reminders">Here is a list of quick notes</string>
     <string name="support_new_title">Click the button to add your own new playlist</string>
     <string name="topic_title">Topic</string>
+
+    <string name="add_new_topic_hint">Add a new playlist...</string>
+
+    <string name="add_new_work_hint">Add a new job...</string>
 </resources>

@@ -39,25 +39,43 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
-        <com.example.reminds.utils.custom.CircleCheckBox
+        <net.igenius.customcheckbox.CustomCheckBox
             android:id="@+id/rbChecked"
-            android:layout_width="35dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="@dimen/_6sdp"
-            android:padding="@dimen/_6sdp"
-            app:borderThickness="2dp"
-            app:circleBorderColor="@color/blue_900"
-            app:innerCircleColor="@color/blue_900"
-            app:innerCircleRadius="10dp"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="wrap_content"
+            app:color_checked="@android:color/transparent"
+            app:color_tick="@color/blue_900"
+            app:color_unchecked_stroke="@color/bg_gray"
+            app:layout_constraintBottom_toBottomOf="@id/tvContentCheck"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tvContentCheck"
-            app:outerCircleColor="@color/blue_700"
-            app:outerCircleRadius="2dp"
+            app:layout_constraintTop_toTopOf="@id/tvContentCheck" />
+
+        <!--<com.example.reminds.utils.custom.CircleCheckBox
+            android:id="@+id/rbChecked"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            app:borderThickness="2dp"
+            app:circleBorderColor="#00CFAD"
+            app:innerCircleColor="#00CFAD"
+            app:innerCircleRadius="14dp"
+            app:outerCircleColor="#6400CFAD"
+            app:outerCircleRadius="6dp"
             app:showOuterCircle="true"
-            app:tickColor="#ffffff"
-            app:tickThickness="1dp" />
+            app:textColor="#000000"
+            app:textLeftPadding="5dp"
+            app:textSize="16dp"
+            app:tickThickness="1dp"
+            android:padding="@dimen/_6sdp"
+            app:color_checked="@android:color/transparent"
+            app:color_tick="@color/purple_200"
+            app:color_unchecked_stroke="@color/colorAccent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvContentCheck" />-->
 
         <EditText
             android:id="@+id/tvContentCheck"
@@ -66,10 +84,10 @@
             android:background="@null"
             android:imeOptions="actionDone"
             android:inputType="textMultiLine"
-            android:paddingStart="@dimen/_6sdp"
+            android:paddingStart="@dimen/_10sdp"
             android:paddingTop="@dimen/_8sdp"
             android:paddingEnd="@dimen/_6sdp"
-            android:paddingBottom="@dimen/_3sdp"
+            android:paddingBottom="@dimen/_8sdp"
             android:textColor="@color/black"
             app:layout_constraintEnd_toStartOf="@id/imgFlag"
             app:layout_constraintStart_toEndOf="@id/rbChecked"
@@ -93,7 +111,7 @@
             android:id="@+id/tvTimer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/_6sdp"
+            android:paddingStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_6sdp"
             android:textColor="@color/pink_500"
             android:textSize="14sp"

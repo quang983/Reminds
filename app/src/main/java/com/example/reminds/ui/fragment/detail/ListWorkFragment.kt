@@ -52,7 +52,6 @@ class ListWorkFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // TODO: Set up MaterialContainerTransform transition as sharedElementEnterTransition.
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             drawingViewId = R.id.nav_host_fragment
             duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
@@ -86,12 +85,11 @@ class ListWorkFragment : Fragment() {
                 viewModel.reSaveListWorkAndCreateStateFocus()
                 hideSoftKeyboard()
             } else {
-                viewModel.reSaveListWorkToDb(viewModel.listWorkViewModel.size - 1)
-
+                viewModel.listWorkViewModel.lastOrNull()?.id?.let {
+                    viewModel.reSaveListWorkToDb(it)
+                }
             }
         }
-
-
     }
 
     private fun setupToolbar() {
@@ -125,31 +123,30 @@ class ListWorkFragment : Fragment() {
 
     private fun setupUI() {
         materialAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
-        adapter = ListWorkAdapter(onClickTitle = { workPosition ->
+        adapter = ListWorkAdapter(onClickTitle = { wId ->
             if (homeSharedViewModel.isKeyboardShow.value == true) {
                 hideSoftKeyboard()
             } else {
-                viewModel.reSaveListWorkToDb(workPosition)
+                viewModel.reSaveListWorkToDb(wId)
             }
-            viewModel.workPositionSelected = workPosition
-        }, insertContentToWork = { content, position ->
-            viewModel.updateAndAddContent(content, position)
+        }, insertContentToWork = { content, wId ->
+            viewModel.updateAndAddContent(content, wId)
         }, handlerCheckItem = { content, position ->
             viewModel.handlerCheckedContent(content, position)
             showAds()
-        }, updateNameContent = { content, position ->
-            viewModel.updateContentData(content, position)
-        }, moreActionClick = { item, type, wPosition ->
+        }, updateNameContent = { content, wId ->
+            viewModel.updateContentData(content, wId)
+        }, moreActionClick = { item, type, wId ->
             when (type) {
                 ListContentCheckAdapter.TYPE_TIMER_CLICK -> {
-                    setupTimePickerForContent(item, wPosition)
+                    setupTimePickerForContent(item, wId)
                 }
                 ListContentCheckAdapter.TYPE_TAG_CLICK -> {
-                    viewModel.updateContentData(item, wPosition)
+                    viewModel.updateContentData(item, wId)
                 }
                 ListContentCheckAdapter.TYPE_DELETE_CLICK -> {
                     showAlertDeleteDialog(resources.getString(R.string.content_delete_topic_title)) {
-                        viewModel.deleteContent(item, wPosition)
+                        viewModel.deleteContent(item, wId)
                     }
                 }
             }
@@ -161,6 +158,8 @@ class ListWorkFragment : Fragment() {
             showAlertDeleteDialog(resources.getString(R.string.message_alert_delete_work_title)) {
                 viewModel.deleteWork(it)
             }
+        }, handlerCheckedAll = { workId, doneAll ->
+            viewModel.handleDoneAllContentFromWork(workId, doneAll)
         }).apply {
             recyclerWorks.adapter = this
         }
@@ -174,6 +173,10 @@ class ListWorkFragment : Fragment() {
 
     private fun observeData() {
         with(viewModel) {
+            positionFocused.observe(viewLifecycleOwner, {
+                adapter.changePositionFocus(it)
+            })
+
             listWorkData.observe(viewLifecycleOwner, { it ->
                 when {
                     it.isEmpty() -> {
@@ -184,13 +187,15 @@ class ListWorkFragment : Fragment() {
                         layoutEmpty.imgIconAnimation.playAnimation()
                         layoutEmpty.tvEmptyAnimation.text = resources.getString(R.string.empty_list)
                     }
-                    it.sumByDouble { it.listContent.size.toDouble() }.toInt() == 0 -> {
+                    it.sumByDouble { it.listContent.size.toDouble() }.toInt() == 0 && !checkFirstTapTap() -> {
                         layoutEmpty.visible()
                         layoutEmpty.imgIconAnimation.setAnimation(R.raw.tap_tap)
                         layoutEmpty.imgIconAnimation.repeatCount = 10
                         layoutEmpty.imgIconAnimation.loop(true)
                         layoutEmpty.imgIconAnimation.playAnimation()
                         layoutEmpty.tvEmptyAnimation.text = resources.getString(R.string.tap_tap)
+                        val shared = requireActivity().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
+                        shared.edit().putBoolean(CacheImpl.KEY_FIRST_TAP_TAP, true).apply()
                     }
                     else -> {
                         layoutEmpty.gone()
@@ -228,6 +233,7 @@ class ListWorkFragment : Fragment() {
         customAlertDialogView = LayoutInflater.from(requireContext())
             .inflate(R.layout.layout_custom_alert_text_input, null, false)
         customAlertDialogView.setPadding(36.toDp, 0, 36.toDp, 0)
+        customAlertDialogView.rootView.textInput.hint = getString(R.string.add_new_work_hint)
         materialAlertDialogBuilder.setView(customAlertDialogView)
             .setTitle(resources.getString(R.string.new_data_title))
             .setPositiveButton(resources.getString(R.string.add)) { _, _ ->
@@ -248,11 +254,11 @@ class ListWorkFragment : Fragment() {
         }, 500)
     }
 
-    private fun setupTimePickerForContent(item: ContentDataEntity, workPosition: Int) {
+    private fun setupTimePickerForContent(item: ContentDataEntity, wId: Long) {
         navigate(ListWorkFragmentDirections.actionSecondFragmentToDateTimePickerDialog(System.currentTimeMillis()))
         setFragmentResultListener(FRAGMENT_RESULT_TIMER) { _, bundle ->
             item.timer = bundle.getLong(TIME_PICKER_BUNDLE)
-            viewModel.updateContentData(item, workPosition)
+            viewModel.updateContentData(item, wId)
             homeSharedViewModel.notifyDataInsert.postValue(
                 AlarmNotificationEntity(
                     item.timer, item.idOwnerWork, item.id, item.name, resources.getString(R.string.notify_title)
@@ -264,7 +270,7 @@ class ListWorkFragment : Fragment() {
     private fun showAds() {
         val shared = requireContext().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
         var sum = shared.getInt(KEY_SUM_DONE_TASK, 0)
-        if (sum < 2) {
+        if (sum < 10) {
             sum += 1
             shared.edit().putInt(KEY_SUM_DONE_TASK, sum).apply()
         } else {
@@ -272,4 +278,10 @@ class ListWorkFragment : Fragment() {
             homeSharedViewModel.showAdsMobile.postValue(true)
         }
     }
+
+    private fun checkFirstTapTap(): Boolean {
+        val shared = requireActivity().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
+        return shared.getBoolean(CacheImpl.KEY_FIRST_TAP_TAP, false)
+    }
+
 }

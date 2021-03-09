@@ -5,29 +5,35 @@ data class WorkDataEntity(
     val name: String,
     val groupId: Long,
     var listContent: MutableList<ContentDataEntity>,
-    val doneAll: Boolean
+    var doneAll: Boolean
 ) {
     fun copy() = WorkDataEntity(
         id, name, groupId, listContent.map { it.copy() }.sortedWith(
             compareBy({ it.isCheckDone }, { !it.hashTag }, { it.id })
-        ).toMutableList(), doneAll = listContent.all { it.isCheckDone }
+        ).toMutableList(), doneAll = doneAll && listContent.all { it.isCheckDone }
     )
 
     fun copyAndRemoveDone() = WorkDataEntity(
-        id, name, groupId, listContent.map { it.copy() }
-            .filter { !it.isCheckDone }.sortedWith(
+        id, name, groupId, listContent.map { it.copy() }.sortedWith(
                 compareBy({ !it.hashTag }, { it.id })
-            ).toMutableList(), doneAll = listContent.all { it.isCheckDone }
+            ).toMutableList(), doneAll = doneAll && listContent.all { it.isCheckDone }
     )
 
     fun copyState() = WorkDataEntity(
-        id, name, groupId,
-        listContent.filter { it.name.isNotEmpty() }.map { it.copy() }.toMutableList(), doneAll = listContent.all { it.isCheckDone }
+        id,
+        name,
+        groupId,
+        listContent.filter {
+            it.name.isNotEmpty()
+        }.map {
+            it.copy()
+        }.toMutableList(),
+        doneAll = doneAll && listContent.all { it.isCheckDone }
     )
 
     fun copyAndResetFocus() = WorkDataEntity(
         id, name, groupId,
-        listContent.filter { it.name.isNotEmpty() }.map { it.copyAndResetFocus() }.toMutableList(), doneAll = listContent.all { it.isCheckDone }
+        listContent.filter { it.name.isNotEmpty() }.map { it.copyAndResetFocus() }.toMutableList(), doneAll = doneAll && listContent.all { it.isCheckDone }
     )
 
 

@@ -9,7 +9,7 @@ import com.example.common.base.model.TopicGroupEntity
 data class TopicGroup(
     @PrimaryKey(autoGenerate = true) var idTopic: Long = 0,
     var name: String = "",
-    var isShowDone: Boolean = false
+    var isShowDone: Boolean = true
 ) : BaseDataMapper<TopicGroup, TopicGroupEntity> {
 
     override fun toData(entity: TopicGroupEntity): TopicGroup {

@@ -21,7 +21,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.BaseProjects.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.BaseProjects.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
+        <item name="android:fontFamily">@font/cereal_extra_bold</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
     <style name="Theme.BaseProjects.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 

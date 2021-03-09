@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.os.*
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.common.base.model.AlarmNotificationEntity
 import com.example.reminds.R
@@ -38,6 +39,7 @@ open class NotificationService : Service() {
 
         val notificationBuilder = NotificationCompat.Builder(service, channelId)
         val notification = notificationBuilder.setOngoing(true)
+            .setColor(ContextCompat.getColor(service.applicationContext, android.R.color.holo_blue_light))
             .setSmallIcon(R.drawable.ic_tasks_new)
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .setCategory(Notification.CATEGORY_SERVICE)
@@ -76,7 +78,7 @@ open class NotificationService : Service() {
                 }
                 INSERT_OBJECT_TIMER_DATA -> {
                     val notify = msg.obj as AlarmNotificationEntity
-                    scheduleAlarm(TimestampUtils.getFullFormatTime(notify.timeAlarm, "dd/MM/yyyy HH:mm"), notify.nameWork, notify.nameContent, notify.idContent.toInt())
+                    scheduleAlarm(TimestampUtils.getFullFormatTime(notify.timeAlarm - (1000 * 60), "dd/MM/yyyy HH:mm"), notify.nameWork, notify.nameContent, notify.idContent.toInt())
                 }
                 else -> super.handleMessage(msg)
             }

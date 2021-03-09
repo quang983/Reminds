@@ -157,6 +157,7 @@ class ListWorkViewModel @ViewModelInject constructor(
     }
 
     fun updateAndAddContent(content: ContentDataEntity, wId: Long) {
+        workId = wId
         updateContentData(content, wId)
     }
 

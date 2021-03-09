@@ -77,10 +77,10 @@ class ListWorkFragment : Fragment() {
     }
 
     private fun setupListener() {
-        extendedFab.setOnClickListener {
+        extendedFab.setOnClickListenerBlock {
             showDialogInputWorkTopic()
         }
-        rootWork.setOnClickListener {
+        rootWork.setOnClickListenerBlock {
             if (homeSharedViewModel.isKeyboardShow.value == true) {
                 viewModel.reSaveListWorkAndCreateStateFocus()
                 hideSoftKeyboard()

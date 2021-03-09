@@ -13,12 +13,6 @@ data class WorkDataEntity(
         ).toMutableList(), doneAll = doneAll && listContent.all { it.isCheckDone }
     )
 
-    fun copyAndRemoveDone() = WorkDataEntity(
-        id, name, groupId, listContent.map { it.copy() }.sortedWith(
-                compareBy({ !it.hashTag }, { it.id })
-            ).toMutableList(), doneAll = doneAll && listContent.all { it.isCheckDone }
-    )
-
     fun copyState() = WorkDataEntity(
         id,
         name,

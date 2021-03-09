@@ -48,14 +48,9 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         presentShowcaseView()
         setupTransition(view)
-        getData()
         setupUI()
         setupListener()
         observeData()
-    }
-
-    private fun getData() {
-        viewModel.getFastTopic()
     }
 
     private fun setupTransition(view: View) {
@@ -89,7 +84,7 @@ class HomeFragment : Fragment() {
             navigate(
                 HomeFragmentDirections
                     .actionFirstFragmentToSecondFragment(
-                        viewModel.fastTopicData.value?.topicGroupEntity?.id ?: 1, resources.getString(R.string.title_faster_note)
+                        1, resources.getString(R.string.title_faster_note)
                     ), null, extras
             )
         }
@@ -120,29 +115,29 @@ class HomeFragment : Fragment() {
                 layoutEmpty.setVisible(it.isEmpty())
                 adapter.submitList(it)
             })
-            fastTopicData.observe(viewLifecycleOwner, { topic ->
-                layoutToday.tvCount.text = topic.contents.size.toString()
-                if (topic.contents.isNotEmpty()) {
-                    topic.contents.forEachIndexed { index, it ->
+            fastTopicData.observe(viewLifecycleOwner, { works ->
+                layoutToday.tvCount.text = works.size.toString()
+                if (works.isNotEmpty()) {
+                    works.forEachIndexed { index, it ->
                         when (index) {
                             0 -> {
                                 layoutToday.tvContent.setVisible(true)
-                                layoutToday.viewDividerContent.setVisible(topic.contents.size - 1 > 0)
+                                layoutToday.viewDividerContent.setVisible(works.size - 1 > 0)
                                 layoutToday.tvContent.text = it.name
                             }
                             1 -> {
                                 layoutToday.tvContentSecond.setVisible(true)
-                                layoutToday.viewDividerContentSecond.setVisible(topic.contents.size - 1 > 1)
+                                layoutToday.viewDividerContentSecond.setVisible(works.size - 1 > 1)
                                 layoutToday.tvContentSecond.text = it.name
                             }
                             2 -> {
                                 layoutToday.tvContentThird.setVisible(true)
-                                layoutToday.viewDividerContentMore.setVisible(topic.contents.size - 1 > 2)
+                                layoutToday.viewDividerContentMore.setVisible(works.size - 1 > 2)
                                 layoutToday.tvContentThird.text = it.name
                             }
                             else -> {
-                                layoutToday.tvContentMore.setVisible((topic.contents.size - 3) > 0)
-                                layoutToday.tvContentMore.text = "+${(topic.contents.size - 3).takeIf { it > 0 }} tác vụ"
+                                layoutToday.tvContentMore.setVisible((works.size - 3) > 0)
+                                layoutToday.tvContentMore.text = "+${(works.size - 3).takeIf { it > 0 }} tác vụ"
                                 return@forEachIndexed
                             }
                         }

@@ -2,18 +2,18 @@ package com.example.reminds.ui.fragment.home
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.TopicGroupEntity
+import com.example.common.base.model.WorkDataEntity
 import com.example.domain.base.BaseUseCase
 import com.example.domain.usecase.db.content.GetAllContentOfTopicUseCase
 import com.example.domain.usecase.db.topic.DeleteTopicUseCase
 import com.example.domain.usecase.db.topic.FetchTopicFlowUseCase
 import com.example.domain.usecase.db.topic.GetFastTopicUseCase
 import com.example.domain.usecase.db.topic.InsertTopicUseCase
+import com.example.domain.usecase.db.workintopic.FetchWorksUseCase
 import com.example.domain.usecase.db.workintopic.GetTotalTaskOfWorkUseCase
-import com.example.domain.usecase.db.workintopic.InsertWorkUseCase
 import com.example.reminds.common.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -25,10 +25,16 @@ class HomeViewModel @ViewModelInject constructor(
     private val getTotalTaskOfWorkUseCase: GetTotalTaskOfWorkUseCase,
     private val getFastTopicUseCase: GetFastTopicUseCase,
     private val getAllContentOfTopicUseCase: GetAllContentOfTopicUseCase,
-    private val insertTopicUseCase: InsertTopicUseCase
+    private val insertTopicUseCase: InsertTopicUseCase,
+    private val fetchWorksUseCase: FetchWorksUseCase
 ) : BaseViewModel() {
 
-    val fastTopicData: LiveData<FastTopicViewItem> = MutableLiveData()
+    val fastTopicData: LiveData<List<WorkDataEntity>> = liveData {
+        fetchWorksUseCase.invoke(FetchWorksUseCase.Param(1))
+            .collect {
+                emit(it)
+            }
+    }
 
     private val _topicData: LiveData<List<TopicGroupEntity>> = fastTopicData.switchMapLiveData {
         fetchTopicFlowUseCase.invoke(BaseUseCase.Param()).collect {
@@ -48,7 +54,7 @@ class HomeViewModel @ViewModelInject constructor(
         }
     }
 
-    fun getFastTopic() {
+  /*  fun getFastTopic() {
         viewModelScope.launch(Dispatchers.IO) {
             getFastTopicUseCase.invoke(BaseUseCase.Param()).collect {
                 val contents = getAllContentOfTopicUseCase.invoke(GetAllContentOfTopicUseCase.Param(it.id))
@@ -56,7 +62,7 @@ class HomeViewModel @ViewModelInject constructor(
             }
         }
     }
-
+*/
     fun insertTopic(name: String) {
         viewModelScope.launch(handler + Dispatchers.IO) {
             val data = TopicGroupEntity(System.currentTimeMillis(), name)

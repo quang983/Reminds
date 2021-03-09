@@ -1,6 +1,5 @@
 package com.example.reminds.ui.adapter
 
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +23,6 @@ class ListWorkAdapter(
     private val handlerCheckItem: (content: ContentDataEntity, workId: Long) -> Unit,
     private val updateNameContent: (content: ContentDataEntity, workId: Long) -> Unit,
     private val moreActionClick: (item: ContentDataEntity, type: Int, workId: Long) -> Unit,
-    private val hideWorkClick: (workId: Long) -> Unit,
     private val deleteWorkClick: (workId: Long) -> Unit,
     private val handlerCheckedAll: (workId: Long, doneAll: Boolean) -> Unit
 ) :
@@ -42,7 +40,10 @@ class ListWorkAdapter(
             newItem: WorkDataEntity
         ): Boolean {
             return oldItem.name == newItem.name && oldItem.groupId == newItem.groupId
-                    && oldItem.listContent.zip(newItem.listContent).all { (x, y) -> x.timer == y.timer && x.hashTag && y.hashTag }
+                    && oldItem.listContent.zip(newItem.listContent).all { (x, y) ->
+                x.timer == y.timer
+                        && x.hashTag == y.hashTag && x.isCheckDone == y.isCheckDone
+            }
                     && oldItem.listContent == newItem.listContent && oldItem.doneAll == newItem.doneAll
         }
 
@@ -50,7 +51,10 @@ class ListWorkAdapter(
             val payloads = ArrayList<Any>()
 
             if (!oldItem.listContent.zip(newItem.listContent)
-                    .all { (x, y) -> x.timer == y.timer && x.hashTag && y.hashTag }
+                    .all { (x, y) ->
+                        x.timer == y.timer && x.hashTag == y.hashTag
+                                && x.isCheckDone == y.isCheckDone
+                    }
                 || oldItem.listContent != newItem.listContent
             ) {
                 payloads.add(PAYLOAD_CONTENT)
@@ -183,13 +187,6 @@ class ListWorkAdapter(
         popup.setOnDismissListener {
         }
         popup.show()
-    }
-
-    fun changePositionFocus(idContent: Long) {
-        Log.d("quangcheck", "changePositionFocus: $idContent")
-        contentsAdapter?.let {
-            it.changePositionFocus(idContent)
-        }
     }
 
 

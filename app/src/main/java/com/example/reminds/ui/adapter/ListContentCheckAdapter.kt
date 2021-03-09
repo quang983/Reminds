@@ -32,7 +32,7 @@ class ListContentCheckAdapter(
         }
 
         override fun areContentsTheSame(oldItem: ContentDataEntity, newItem: ContentDataEntity): Boolean {
-            return  oldItem.idOwnerWork == newItem.idOwnerWork
+            return oldItem.idOwnerWork == newItem.idOwnerWork
                     && oldItem.timer == newItem.timer && oldItem.isCheckDone == newItem.isCheckDone
                     && oldItem.hashTag == newItem.hashTag
 
@@ -40,15 +40,9 @@ class ListContentCheckAdapter(
 
         override fun getChangePayload(oldItem: ContentDataEntity, newItem: ContentDataEntity): Any? {
             val payloads = ArrayList<Any>()
-            /* if (oldItem.name != newItem.name) {
-                 payloads.add(PAYLOAD_NAME)
-             }*/
             if (oldItem.idOwnerWork != newItem.idOwnerWork) {
                 payloads.add(PAYLOAD_ID_WORK)
             }
-           /* if (oldItem.isFocus != newItem.isFocus) {
-                payloads.add(PAYLOAD_FOCUS)
-            }*/
             if (oldItem.timer != newItem.timer) {
                 payloads.add(PAYLOAD_TIMER)
             }
@@ -67,12 +61,11 @@ class ListContentCheckAdapter(
         }
 
     }) {
-    private val DELAY: Long = 2000
+    private val DELAY: Long = 800
     private var timer = Timer()
     private var isShowKeyboard: Boolean = false
     private val viewBinderHelper = ViewBinderHelper()
     private var isFirstBuild = false
-    private var positionFocused: Long = -1L
 
     override fun createView(parent: ViewGroup, viewType: Int?): View {
         val view = parent.inflate(R.layout.item_content_check)
@@ -87,15 +80,11 @@ class ListContentCheckAdapter(
         if (payloads.contains(PAYLOAD_FOCUS)) {
             if (position == currentList.size - 1 && item.name.isBlank() && currentList.size - 1 >= 0) {
                 view.tvContentCheck.requestFocus()
-                positionFocused = -1
                 KeyboardUtils.showKeyboard(view.context)
             } else {
                 view.tvContentCheck.clearFocus()
             }
         }
-        /*if (payloads.contains(PAYLOAD_NAME)) {
-            refreshEdtContent(view, item)
-        }*/
         if (payloads.contains(PAYLOAD_TIMER)) {
             refreshTvTimer(view, item)
         }
@@ -125,7 +114,6 @@ class ListContentCheckAdapter(
     private fun refreshEdtContent(view: View, item: ContentDataEntity) {
         if (item.name.isBlank()) {
             view.tvContentCheck.requestFocus()
-            positionFocused = -1
             if (!isShowKeyboard) {
                 KeyboardUtils.showKeyboard(view.context)
             }
@@ -134,6 +122,7 @@ class ListContentCheckAdapter(
 
         view.tvContentCheck.setText(item.name)
         view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
+        view.tvContentCheck.underLine()
         view.tvContentCheck.setMultiLineCapSentencesAndDoneAction()
     }
 
@@ -152,33 +141,12 @@ class ListContentCheckAdapter(
 
     private fun refreshCheckBox(view: View, item: ContentDataEntity) {
         view.rbChecked.isChecked = item.isCheckDone
-        view.tvContentCheck.setTextColor(
-            if (item.isCheckDone) view.context.resources.getColor(R.color.bg_gray) else
-                view.context.resources.getColor(R.color.black)
-        )
-        view.rbChecked.setOnCheckedChangeListener { button, isChecked ->
-            if (button.isPressed) {
-//                item.isFocus = false
-                if (isChecked && view.tvContentCheck.text.toString().isNotEmpty()) {
-                    timer = Timer()
-                    view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.bg_gray))
-                    timer.schedule(
-                        object : TimerTask() {
-                            override fun run() {
-                                item.isCheckDone = true
-                                handlerCheckItem.invoke(item)
-                            }
-                        },
-                        DELAY
-                    )
-                } else {
-                    view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
-                    item.isCheckDone = false
-                    handlerCheckItem.invoke(item)
-                    timer.cancel()
-                    timer.purge()
-                }
-            }
+        if (item.isCheckDone) {
+            view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.bg_gray))
+            view.tvContentCheck.underLine()
+        } else {
+            view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
+            view.tvContentCheck.removeUnderLine()
         }
     }
 
@@ -237,6 +205,34 @@ class ListContentCheckAdapter(
     private fun setOnEditorListener(view: View) {
         isFirstBuild = true
 
+        view.rbChecked.setOnCheckedChangeListener { button, isChecked ->
+            if (button.isPressed) {
+                (view.tag as? ContentDataEntity)?.let { item ->
+                    if (isChecked && view.tvContentCheck.text.toString().isNotEmpty()) {
+                        timer = Timer()
+                        view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.bg_gray))
+                        view.tvContentCheck.underLine()
+                        timer.schedule(
+                            object : TimerTask() {
+                                override fun run() {
+                                    item.isCheckDone = true
+                                    handlerCheckItem.invoke(item)
+                                }
+                            },
+                            DELAY
+                        )
+                    } else {
+                        view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
+                        view.tvContentCheck.removeUnderLine()
+                        item.isCheckDone = false
+                        handlerCheckItem.invoke(item)
+                        timer.cancel()
+                        timer.purge()
+                    }
+                }
+            }
+        }
+
         view.tvContentCheck.setTextChangedListener {
             (view.tag as? ContentDataEntity)?.let { item ->
                 if (it.isFocused && item.name != it.text.toString()) {
@@ -274,10 +270,6 @@ class ListContentCheckAdapter(
                 false
             }
         }
-    }
-
-    fun changePositionFocus(idContent: Long) {
-        positionFocused = idContent
     }
 
     companion object {

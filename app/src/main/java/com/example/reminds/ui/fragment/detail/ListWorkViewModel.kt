@@ -32,8 +32,6 @@ class ListWorkViewModel @ViewModelInject constructor(
     private val idGroup: MediatorLiveData<Long> = MediatorLiveData<Long>()
     var listWorkViewModel: ArrayList<WorkDataEntity> = ArrayList()
 
-    val positionFocused: LiveData<Long> = MutableLiveData()
-
     private val _isShowDoneLiveData: LiveData<Boolean> = idGroup.switchMapLiveData {
         getTopicByIdUseCase.invoke(GetTopicByIdUseCase.Param(idGroup.value ?: return@switchMapLiveData)).collect {
             topicGroup = it
@@ -59,7 +57,7 @@ class ListWorkViewModel @ViewModelInject constructor(
             workId = -1L
         }
         listWorkViewModel.let { it ->
-            if (_isShowDoneLiveData.value == true) {
+            if (_isShowDoneLiveData.value != true) {
                 it.filter { !it.doneAll }
             } else {
                 it
@@ -105,7 +103,6 @@ class ListWorkViewModel @ViewModelInject constructor(
             val list = listWorkViewModel.map {
                 it.copyAndResetFocus()
             }
-            positionFocused.postValue(-1)
             isReSaveWorks = true
             updateListWorkUseCase.invoke(UpdateListWorkUseCase.Param(list))
         }
@@ -122,7 +119,6 @@ class ListWorkViewModel @ViewModelInject constructor(
                     idOwnerWork = it.id,
                     isFocus = true, isCheckDone = false
                 )
-                positionFocused.postValue(newContent.id)
                 it.listContent.add(newContent)
             }
         }
@@ -134,16 +130,11 @@ class ListWorkViewModel @ViewModelInject constructor(
             listWorkViewModel.getOrNull {
                 this.id == workId
             }?.copyState()?.let { it ->
-                if (it.groupId == 1L && content.isCheckDone) {
-                    deleteContent(content, workId)
-                    return@launch
-                }
                 it.listContent.getOrNull {
                     this.id == content.id
                 }?.apply {
                     isCheckDone = content.isCheckDone
                 }
-                it.doneAll = it.listContent.all { it.isCheckDone }
                 updateWorkUseCase.invoke(UpdateWorkUseCase.Param(it))
             }
         }
@@ -212,7 +203,11 @@ class ListWorkViewModel @ViewModelInject constructor(
             }
         }?.let { it ->
             isReSaveWorks = true
-            updateWorkUseCase.invoke(UpdateWorkUseCase.Param(it))
+            if (it.groupId != 1L) {
+                updateWorkUseCase.invoke(UpdateWorkUseCase.Param(it))
+            } else {
+                deleteWork(it.id)
+            }
         }
     }
 }

@@ -33,7 +33,7 @@
             android:textColor="@color/blue_900"
             android:textSize="@dimen/_14sdp"
             android:textStyle="bold"
-            app:drawableEndCompat="@drawable/ic_arrow_down"
+            app:drawableEndCompat="@drawable/ic_info"
             app:drawableTint="@color/blue_900"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

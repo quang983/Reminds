@@ -150,10 +150,6 @@ class ListWorkFragment : Fragment() {
                     }
                 }
             }
-        }, hideWorkClick = {
-            showAlertDeleteDialog(resources.getString(R.string.message_alert_hide_work_title)) {
-            }
-
         }, deleteWorkClick = {
             showAlertDeleteDialog(resources.getString(R.string.message_alert_delete_work_title)) {
                 viewModel.deleteWork(it)
@@ -173,9 +169,6 @@ class ListWorkFragment : Fragment() {
 
     private fun observeData() {
         with(viewModel) {
-            positionFocused.observe(viewLifecycleOwner, {
-                adapter.changePositionFocus(it)
-            })
 
             listWorkData.observe(viewLifecycleOwner, { it ->
                 when {

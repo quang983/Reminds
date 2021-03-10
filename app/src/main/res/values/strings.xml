@@ -61,6 +61,8 @@
     <string name="support_new_title">Click button để thêm danh sách mới của riêng bạn</string>
     <string name="topic_title">Chủ đề</string>
     <string name="tap_tap" translatable="false">Tap Tap</string>
+    <string name="id_expanded" translatable="false">id_expanded</string>
+    <string name="id_position" translatable="false">id_position</string>
 
     <string name="add_new_topic_hint">Thêm một danh sách mới...</string>
 

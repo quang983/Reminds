@@ -18,7 +18,6 @@ import kotlin.collections.ArrayList
 
 
 class ListContentCheckAdapter(
-    private val onClickDetail: (id: Long) -> Unit,
     private val insertItemClick: (item: ContentDataEntity) -> Unit,
     private val handlerCheckItem: (item: ContentDataEntity) -> Unit,
     private val updateNameContent: (item: ContentDataEntity) -> Unit,
@@ -33,7 +32,8 @@ class ListContentCheckAdapter(
 
         override fun areContentsTheSame(oldItem: ContentDataEntity, newItem: ContentDataEntity): Boolean {
             return oldItem.idOwnerWork == newItem.idOwnerWork
-                    && oldItem.timer == newItem.timer && oldItem.isCheckDone == newItem.isCheckDone
+                    && oldItem.timer == newItem.timer
+                    && oldItem.isCheckDone == newItem.isCheckDone
                     && oldItem.hashTag == newItem.hashTag
 
         }
@@ -61,11 +61,12 @@ class ListContentCheckAdapter(
         }
 
     }) {
-    private val DELAY: Long = 800
-    private var timer = Timer()
-    private var isShowKeyboard: Boolean = false
-    private val viewBinderHelper = ViewBinderHelper()
-    private var isFirstBuild = false
+    private val _delay: Long = 800
+    private var _timer = Timer()
+
+    private var _isShowKeyboard: Boolean = false
+
+    private val _viewBinderHelper = ViewBinderHelper()
 
     override fun createView(parent: ViewGroup, viewType: Int?): View {
         val view = parent.inflate(R.layout.item_content_check)
@@ -74,8 +75,8 @@ class ListContentCheckAdapter(
         return view
     }
 
-    override fun bind(view: View, viewType: Int, position: Int, item: ContentDataEntity, payloads: MutableList<Any>) {
-        super.bind(view, viewType, position, item, payloads)
+    override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: ContentDataEntity, payloads: MutableList<Any>) {
+        super.bind(holder, view, viewType, position, item, payloads)
         view.tag = item
         if (payloads.contains(PAYLOAD_FOCUS)) {
             if (position == currentList.size - 1 && item.name.isBlank() && currentList.size - 1 >= 0) {
@@ -103,21 +104,20 @@ class ListContentCheckAdapter(
         refreshTvTimer(view, item)
         refreshEdtContent(view, item)
         refreshCheckBox(view, item)
-        isFirstBuild = false
     }
 
     private fun setupViewBinderHelper(view: View, item: ContentDataEntity) {
-        viewBinderHelper.setOpenOnlyOne(true)
-        viewBinderHelper.bind(view.swipeLayout, item.id.toString())
+        _viewBinderHelper.setOpenOnlyOne(true)
+        _viewBinderHelper.bind(view.swipeLayout, item.id.toString())
     }
 
     private fun refreshEdtContent(view: View, item: ContentDataEntity) {
         if (item.name.isBlank()) {
             view.tvContentCheck.requestFocus()
-            if (!isShowKeyboard) {
+            if (!_isShowKeyboard) {
                 KeyboardUtils.showKeyboard(view.context)
             }
-            isShowKeyboard = false
+            _isShowKeyboard = false
         }
 
         view.tvContentCheck.setText(item.name)
@@ -151,15 +151,6 @@ class ListContentCheckAdapter(
     }
 
     private fun setOnClickItemListener(view: View) {
-        view.rootView.setOnClickListenerBlock {
-            (view.tag as? ContentDataEntity)?.let { item ->
-                val itemById = currentList.filter { it.id == item.id }.getFirstOrNull()
-                itemById?.let {
-                    onClickDetail.invoke(it.id)
-                }
-            }
-        }
-
         view.imgTimer.setOnClickListenerBlock {
             (view.tag as? ContentDataEntity)?.let { item ->
                 val itemById = currentList.filter { it.id == item.id }.getFirstOrNull()
@@ -203,31 +194,29 @@ class ListContentCheckAdapter(
     }
 
     private fun setOnEditorListener(view: View) {
-        isFirstBuild = true
-
         view.rbChecked.setOnCheckedChangeListener { button, isChecked ->
             if (button.isPressed) {
                 (view.tag as? ContentDataEntity)?.let { item ->
                     if (isChecked && view.tvContentCheck.text.toString().isNotEmpty()) {
-                        timer = Timer()
+                        _timer = Timer()
                         view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.bg_gray))
                         view.tvContentCheck.underLine()
-                        timer.schedule(
+                        _timer.schedule(
                             object : TimerTask() {
                                 override fun run() {
                                     item.isCheckDone = true
                                     handlerCheckItem.invoke(item)
                                 }
                             },
-                            DELAY
+                            _delay
                         )
                     } else {
                         view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
                         view.tvContentCheck.removeUnderLine()
                         item.isCheckDone = false
                         handlerCheckItem.invoke(item)
-                        timer.cancel()
-                        timer.purge()
+                        _timer.cancel()
+                        _timer.purge()
                     }
                 }
             }
@@ -242,16 +231,10 @@ class ListContentCheckAdapter(
             }
         }
 
-        view.tvContentCheck.setOnFocusChangeListener { _, hasFocus ->
-            (view.tag as? ContentDataEntity)?.let { item ->
-//                item.isFocus = hasFocus
-            }
-        }
-
         view.tvContentCheck.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE && view.tvContentCheck.text.toString().isNotEmpty()) {
                 (view.tag as? ContentDataEntity)?.let { item ->
-                    isShowKeyboard = true
+                    _isShowKeyboard = true
                     insertItemClick(item.apply {
                         this.name = view.tvContentCheck.text.toString()
                         this.isFocus = false
@@ -260,7 +243,7 @@ class ListContentCheckAdapter(
                 true
             } else {
                 (view.tag as? ContentDataEntity)?.let { item ->
-                    isShowKeyboard = false
+                    _isShowKeyboard = false
                     view.tvContentCheck.clearFocus()
                     insertItemClick(item.apply {
                         this.name = view.tvContentCheck.text.toString()

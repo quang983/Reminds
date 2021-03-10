@@ -169,7 +169,6 @@ class ListWorkFragment : Fragment() {
 
     private fun observeData() {
         with(viewModel) {
-
             listWorkData.observe(viewLifecycleOwner, { it ->
                 when {
                     it.isEmpty() -> {
@@ -276,5 +275,4 @@ class ListWorkFragment : Fragment() {
         val shared = requireActivity().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
         return shared.getBoolean(CacheImpl.KEY_FIRST_TAP_TAP, false)
     }
-
 }

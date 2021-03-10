@@ -3,10 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/bg_expanable"
+    android:stateListAnimator="@animator/bg_selector"
+    android:id="@+id/test"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -15,49 +18,60 @@
         <net.igenius.customcheckbox.CustomCheckBox
             android:id="@+id/rbCheckedTitle"
             android:layout_width="@dimen/_20sdp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             app:color_checked="@android:color/transparent"
             app:color_tick="@color/blue_900"
             app:color_unchecked_stroke="@color/bg_gray"
+            app:layout_constraintBottom_toBottomOf="@id/tvTitle"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tvContentCheck" />
+            app:layout_constraintTop_toTopOf="@id/tvTitle" />
 
         <TextView
             android:id="@+id/tvTitle"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/_12sdp"
             android:fontFamily="@font/cereal_extra_bold"
             android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_6sdp"
             android:paddingEnd="@dimen/_6sdp"
+            android:paddingBottom="@dimen/_6sdp"
             android:textColor="@color/blue_900"
             android:textSize="@dimen/_14sdp"
             android:textStyle="bold"
-            app:drawableEndCompat="@drawable/ic_info"
-            app:drawableTint="@color/blue_900"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvCount"
+            app:layout_constraintStart_toEndOf="@id/rbCheckedTitle"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Title" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/tvCount"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:paddingStart="@dimen/_6sdp"
+            android:paddingEnd="@dimen/_6sdp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/imgArrow"
+            app:layout_constraintTop_toTopOf="@id/tvTitle"
+            tools:text="5/6" />
+
+        <ImageView
+            android:id="@+id/imgArrow"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="0dp"
+            android:padding="@dimen/_5sdp"
+            android:backgroundTint="@color/blue_900"
+            android:src="@drawable/ic_next_down"
+            app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvTitle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerWorks"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:paddingStart="@dimen/_24sdp"
-        android:paddingTop="@dimen/_2sdp"
-        android:paddingBottom="@dimen/_2sdp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle"
-        tools:ignore="RtlSymmetry"
-        tools:itemCount="2"
-        tools:listitem="@layout/item_content_check" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerWorksDone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"

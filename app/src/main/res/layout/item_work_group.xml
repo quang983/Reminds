@@ -2,12 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:background="@drawable/bg_expanable"
-    android:stateListAnimator="@animator/bg_selector"
     android:id="@+id/test"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:paddingTop="@dimen/_6sdp"
+    android:background="@drawable/bg_expanable"
+    android:orientation="vertical"
+    android:stateListAnimator="@animator/bg_selector">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -48,9 +49,9 @@
             android:id="@+id/tvCount"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:gravity="center"
             android:paddingStart="@dimen/_6sdp"
             android:paddingEnd="@dimen/_6sdp"
-            android:gravity="center"
             app:layout_constraintBottom_toBottomOf="@id/tvTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="@id/imgArrow"
@@ -68,6 +69,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tvTitle" />
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:background="@color/bg_divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/rbCheckedTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView

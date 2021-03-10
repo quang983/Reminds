@@ -41,6 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="true"
+        android:paddingTop="@dimen/_4sdp"
         android:focusableInTouchMode="true">
 
         <net.igenius.customcheckbox.CustomCheckBox
@@ -53,29 +54,6 @@
             app:layout_constraintBottom_toBottomOf="@id/tvContentCheck"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/tvContentCheck" />
-
-        <!--<com.example.reminds.utils.custom.CircleCheckBox
-            android:id="@+id/rbChecked"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_marginTop="@dimen/_6sdp"
-            app:borderThickness="2dp"
-            app:circleBorderColor="#00CFAD"
-            app:innerCircleColor="#00CFAD"
-            app:innerCircleRadius="14dp"
-            app:outerCircleColor="#6400CFAD"
-            app:outerCircleRadius="6dp"
-            app:showOuterCircle="true"
-            app:textColor="#000000"
-            app:textLeftPadding="5dp"
-            app:textSize="16dp"
-            app:tickThickness="1dp"
-            android:padding="@dimen/_6sdp"
-            app:color_checked="@android:color/transparent"
-            app:color_tick="@color/purple_200"
-            app:color_unchecked_stroke="@color/colorAccent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tvContentCheck" />-->
 
         <EditText
             android:id="@+id/tvContentCheck"
@@ -129,4 +107,5 @@
             app:layout_constraintStart_toStartOf="@id/tvContentCheck"
             app:layout_constraintTop_toBottomOf="@id/tvTimer" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </com.chauthai.swipereveallayout.SwipeRevealLayout>

@@ -35,7 +35,6 @@ class ListContentCheckAdapter(
                     && oldItem.timer == newItem.timer
                     && oldItem.isCheckDone == newItem.isCheckDone
                     && oldItem.hashTag == newItem.hashTag
-
         }
 
         override fun getChangePayload(oldItem: ContentDataEntity, newItem: ContentDataEntity): Any? {
@@ -173,7 +172,7 @@ class ListContentCheckAdapter(
         view.imgGim.setOnClickListenerBlock {
             (view.tag as? ContentDataEntity)?.let { item ->
                 val itemById = currentList.filter { it.id == item.id }.getFirstOrNull()
-                itemById?.let {
+                itemById?.copy()?.let {
                     it.hashTag = !it.hashTag
                     moreActionClick.invoke(it, TYPE_TAG_CLICK)
                     refreshFlag(view, it)
@@ -204,8 +203,10 @@ class ListContentCheckAdapter(
                         _timer.schedule(
                             object : TimerTask() {
                                 override fun run() {
-                                    item.isCheckDone = true
-                                    handlerCheckItem.invoke(item)
+                                    item.copy().apply {
+                                        this.isCheckDone = true
+                                        handlerCheckItem.invoke(this)
+                                    }
                                 }
                             },
                             _delay
@@ -213,10 +214,12 @@ class ListContentCheckAdapter(
                     } else {
                         view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
                         view.tvContentCheck.removeUnderLine()
-                        item.isCheckDone = false
-                        handlerCheckItem.invoke(item)
-                        _timer.cancel()
-                        _timer.purge()
+                        item.copy().apply {
+                            this.isCheckDone = false
+                            handlerCheckItem.invoke(this)
+                            _timer.cancel()
+                            _timer.purge()
+                        }
                     }
                 }
             }
@@ -225,8 +228,10 @@ class ListContentCheckAdapter(
         view.tvContentCheck.setTextChangedListener {
             (view.tag as? ContentDataEntity)?.let { item ->
                 if (it.isFocused && item.name != it.text.toString()) {
-                    item.name = it.text.toString()
-                    updateNameContent(item)
+                    item.copy().apply {
+                        this.name = it.text.toString()
+                        updateNameContent(this)
+                    }
                 }
             }
         }
@@ -235,9 +240,8 @@ class ListContentCheckAdapter(
             if (actionId == EditorInfo.IME_ACTION_DONE && view.tvContentCheck.text.toString().isNotEmpty()) {
                 (view.tag as? ContentDataEntity)?.let { item ->
                     _isShowKeyboard = true
-                    insertItemClick(item.apply {
+                    insertItemClick(item.copy().apply {
                         this.name = view.tvContentCheck.text.toString()
-                        this.isFocus = false
                     })
                 }
                 true
@@ -245,9 +249,8 @@ class ListContentCheckAdapter(
                 (view.tag as? ContentDataEntity)?.let { item ->
                     _isShowKeyboard = false
                     view.tvContentCheck.clearFocus()
-                    insertItemClick(item.apply {
+                    insertItemClick(item.copy().apply {
                         this.name = view.tvContentCheck.text.toString()
-                        this.isFocus = false
                     })
                 }
                 false

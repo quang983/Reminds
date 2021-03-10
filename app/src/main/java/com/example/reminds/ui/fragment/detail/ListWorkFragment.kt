@@ -123,40 +123,43 @@ class ListWorkFragment : Fragment() {
 
     private fun setupUI() {
         materialAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
-        adapter = ListWorkAdapter(onClickTitle = { wId ->
-            if (homeSharedViewModel.isKeyboardShow.value == true) {
-                hideSoftKeyboard()
-            } else {
-                viewModel.reSaveListWorkToDb(wId)
-            }
-        }, insertContentToWork = { content, wId ->
-            viewModel.updateAndAddContent(content, wId)
-        }, handlerCheckItem = { content, position ->
-            viewModel.handlerCheckedContent(content, position)
-            showAds()
-        }, updateNameContent = { content, wId ->
-            viewModel.updateContentData(content, wId)
-        }, moreActionClick = { item, type, wId ->
-            when (type) {
-                ListContentCheckAdapter.TYPE_TIMER_CLICK -> {
-                    setupTimePickerForContent(item, wId)
+        adapter = ListWorkAdapter(
+            onClickTitle = { wId ->
+                if (homeSharedViewModel.isKeyboardShow.value == true) {
+                    hideSoftKeyboard()
+                } else {
+                    viewModel.updateWorkChange(wId, true)
                 }
-                ListContentCheckAdapter.TYPE_TAG_CLICK -> {
-                    viewModel.updateContentData(item, wId)
-                }
-                ListContentCheckAdapter.TYPE_DELETE_CLICK -> {
-                    showAlertDeleteDialog(resources.getString(R.string.content_delete_topic_title)) {
-                        viewModel.deleteContent(item, wId)
+            }, insertContentToWork = { content, wId ->
+                viewModel.updateAndAddContent(content, wId)
+            }, handlerCheckItem = { content, position ->
+                viewModel.handlerCheckedContent(content, position)
+                showAds()
+            }, updateNameContent = { content, wId ->
+                viewModel.updateContentData(content, wId)
+            }, moreActionClick = { item, type, wId ->
+                when (type) {
+                    ListContentCheckAdapter.TYPE_TIMER_CLICK -> {
+                        setupTimePickerForContent(item, wId)
+                    }
+                    ListContentCheckAdapter.TYPE_TAG_CLICK -> {
+                        viewModel.updateContentData(item, wId)
+                    }
+                    ListContentCheckAdapter.TYPE_DELETE_CLICK -> {
+                        showAlertDeleteDialog(resources.getString(R.string.content_delete_topic_title)) {
+                            viewModel.deleteContent(item, wId)
+                        }
                     }
                 }
-            }
-        }, deleteWorkClick = {
-            showAlertDeleteDialog(resources.getString(R.string.message_alert_delete_work_title)) {
-                viewModel.deleteWork(it)
-            }
-        }, handlerCheckedAll = { workId, doneAll ->
-            viewModel.handleDoneAllContentFromWork(workId, doneAll)
-        }).apply {
+            }, deleteWorkClick = {
+                showAlertDeleteDialog(resources.getString(R.string.message_alert_delete_work_title)) {
+                    viewModel.deleteWork(it)
+                }
+            }, handlerCheckedAll = { workId, doneAll ->
+                viewModel.handleDoneAllContentFromWork(workId, doneAll)
+            }, updateDataChanged = {
+                viewModel.updateWorkChange(it, false)
+            }).apply {
             recyclerWorks.adapter = this
         }
         homeSharedViewModel.isKeyboardShow.observe(viewLifecycleOwner, {
@@ -225,6 +228,7 @@ class ListWorkFragment : Fragment() {
         customAlertDialogView = LayoutInflater.from(requireContext())
             .inflate(R.layout.layout_custom_alert_text_input, null, false)
         customAlertDialogView.setPadding(36.toDp, 0, 36.toDp, 0)
+        customAlertDialogView.rootView.textInput.counterMaxLength = 35
         customAlertDialogView.rootView.textInput.hint = getString(R.string.add_new_work_hint)
         materialAlertDialogBuilder.setView(customAlertDialogView)
             .setTitle(resources.getString(R.string.new_data_title))

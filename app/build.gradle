@@ -159,4 +159,6 @@ dependencies {
     implementation 'net.igenius:customcheckbox:1.3'
 
     implementation 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:1.0.0'
+
+    compile "com.daimajia.swipelayout:library:1.2.0@aar"
 }

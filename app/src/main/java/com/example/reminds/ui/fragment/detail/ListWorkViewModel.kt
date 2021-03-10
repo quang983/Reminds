@@ -64,7 +64,7 @@ class ListWorkViewModel @ViewModelInject constructor(
                 it
             }
         }.map {
-            it.copy()
+            it.copySort()
         }.sortedWith(
             compareBy({ it.doneAll }, { it.id })
         )
@@ -194,5 +194,10 @@ class ListWorkViewModel @ViewModelInject constructor(
                 deleteWork(it.id)
             }
         }
+    }
+
+    fun updateWorkChange(work: WorkDataEntity, addNewContent: Boolean) = viewModelScope.launch(Dispatchers.IO + handler) {
+        if (addNewContent) _workId = work.id
+        updateWorkUseCase.invoke(UpdateWorkUseCase.Param(work))
     }
 }

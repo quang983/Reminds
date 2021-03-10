@@ -15,13 +15,14 @@ import com.example.reminds.utils.*
 import kotlinx.android.synthetic.main.item_work_group.view.*
 
 class ListWorkAdapter(
-    private val onClickTitle: (wId: Long) -> Unit,
+    private val onClickTitle: (work: WorkDataEntity) -> Unit,
     private val insertContentToWork: (content: ContentDataEntity, workId: Long) -> Unit,
     private val handlerCheckItem: (content: ContentDataEntity, workId: Long) -> Unit,
     private val updateNameContent: (content: ContentDataEntity, workId: Long) -> Unit,
     private val moreActionClick: (item: ContentDataEntity, type: Int, workId: Long) -> Unit,
     private val deleteWorkClick: (workId: Long) -> Unit,
-    private val handlerCheckedAll: (workId: Long, doneAll: Boolean) -> Unit
+    private val handlerCheckedAll: (workId: Long, doneAll: Boolean) -> Unit,
+    private val updateDataChanged: (work: WorkDataEntity) -> Unit
 ) :
     BaseAdapter<WorkDataEntity>(object : DiffUtil.ItemCallback<WorkDataEntity>() {
 
@@ -38,11 +39,16 @@ class ListWorkAdapter(
         ): Boolean {
             return oldItem.name == newItem.name && oldItem.groupId == newItem.groupId
                     && oldItem.listContent.zip(newItem.listContent).all { (x, y) -> x.timer == y.timer && x.hashTag == y.hashTag && x.isCheckDone == y.isCheckDone }
-                    && oldItem.listContent == newItem.listContent && oldItem.doneAll == newItem.doneAll && oldItem.listContent.size == newItem.listContent.size
+                    && oldItem.listContent == newItem.listContent && oldItem.doneAll == newItem.doneAll
+                    && oldItem.listContent.size == newItem.listContent.size && oldItem.isShowContents == newItem.isShowContents
         }
 
         override fun getChangePayload(oldItem: WorkDataEntity, newItem: WorkDataEntity): Any? {
             val payloads = ArrayList<Any>()
+
+            if (oldItem.isShowContents != newItem.isShowContents) {
+                payloads.add(PAYLOAD_EXPANDED)
+            }
 
             if (!oldItem.listContent.zip(newItem.listContent).all { (x, y) -> x.timer == y.timer && x.hashTag == y.hashTag && x.isCheckDone == y.isCheckDone }
                 || oldItem.listContent != newItem.listContent
@@ -78,9 +84,25 @@ class ListWorkAdapter(
     override fun createView(parent: ViewGroup, viewType: Int?): View {
         val view = parent.inflate(R.layout.item_work_group)
 
+        view.imgArrow.setOnClickListener {
+            (view.tag as? WorkDataEntity)?.copy()?.let { item ->
+                item.isShowContents = !item.isShowContents
+                updateDataChanged.invoke(item)
+            }
+        }
+
+        view.tvTitle.setOnClickListenerBlock {
+            (view.tag as? WorkDataEntity)?.copy()?.let { item ->
+                onClickTitle.invoke(item.apply {
+                    this.isShowContents = true
+                })
+            }
+        }
+
+
         view.recyclerWorks.apply {
             contentsAdapter = ListContentCheckAdapter(insertItemClick = { content ->
-                (view.tag as? WorkDataEntity)?.let { item ->
+                (view.tag as? WorkDataEntity)?.copy()?.let { item ->
                     if (content.name.isNotEmpty()) {
                         insertContentToWork.invoke(
                             content, item.id
@@ -88,33 +110,33 @@ class ListWorkAdapter(
                     }
                 }
             }, { content ->
-                (view.tag as? WorkDataEntity)?.let { item ->
+                (view.tag as? WorkDataEntity)?.copy()?.let { item ->
                     handlerCheckItem.invoke(content, item.id)
                 }
             }, { content ->
-                (view.tag as? WorkDataEntity)?.let { item ->
+                (view.tag as? WorkDataEntity)?.copy()?.let { item ->
                     updateNameContent.invoke(content, item.id)
                 }
             }, { content, type ->
-                (view.tag as? WorkDataEntity)?.let { item ->
+                (view.tag as? WorkDataEntity)?.copy()?.let { item ->
                     moreActionClick.invoke(content, type, item.id)
                 }
             })
             adapter = contentsAdapter
-            (view.tag as? WorkDataEntity).let { item ->
-                contentsAdapter?.submitList(item?.listContent?.toMutableList() ?: emptyList())
+            (view.tag as? WorkDataEntity)?.copy()?.let { item ->
+                contentsAdapter?.submitList(item.listContent.toMutableList())
             }
         }
 
         view.tvTitle.setOnLongClickListener {
-            (view.tag as? WorkDataEntity)?.let { item ->
+            (view.tag as? WorkDataEntity)?.copy()?.let { item ->
                 showMenu(it, R.menu.menu_work_title, item.id)
             }
             true
         }
 
         view.rbCheckedTitle.setOnCheckedChangeListener { button, isChecked ->
-            (view.tag as? WorkDataEntity)?.let { item ->
+            (view.tag as? WorkDataEntity)?.copy()?.let { item ->
                 if (button.isPressed) {
                     if (isChecked) {
                         handlerCheckedAll.invoke(item.id, true)
@@ -131,19 +153,20 @@ class ListWorkAdapter(
     override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: WorkDataEntity, payloads: MutableList<Any>) {
         super.bind(holder, view, viewType, position, item, payloads)
         view.tag = item
-        view.setTag(R.string.id_position, position)
+
         if (payloads.contains(PAYLOAD_LIST)) {
-            refreshIconExpanded(view, item, holder.positionExpanded)
+            refreshIconExpanded(view, item)
             refreshRecyclerView(view)
         }
 
         if (payloads.contains(PAYLOAD_EXPANDED)) {
-            refreshIconExpanded(view, item, holder.positionExpanded)
-            refreshShowRecyclerView(view, holder.positionExpanded)
+            refreshIconExpanded(view, item)
+            refreshShowRecyclerView(view, item)
         }
 
         if (payloads.contains(PAYLOAD_CONTENT)) {
             refreshContentList(view, item)
+            refreshCountNumber(view, item)
         }
 
         if (payloads.contains(PAYLOAD_NAME)) {
@@ -158,37 +181,29 @@ class ListWorkAdapter(
 
     override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: WorkDataEntity) {
         view.tag = item
-        view.setTag(R.string.id_position, position)
+        view.recyclerWorks.visibility = if (item.isShowContents) View.VISIBLE else View.GONE
+        holder.itemView.isActivated = item.isShowContents
 
-        view.imgArrow.setOnClickListener {
-            holder.positionExpanded = if (holder.positionExpanded != -1) -1 else position
-            notifyItemChanged(position, listOf(PAYLOAD_EXPANDED))
-        }
-
-        view.tvTitle.setOnClickListenerBlock {
-            (view.tag as? WorkDataEntity)?.let { item ->
-                holder.positionExpanded = if (holder.positionExpanded != -1) -1 else position
-                onClickTitle.invoke(item.id)
-            }
-        }
-
-        val isExpanded = holder.positionExpanded != -1
-        view.recyclerWorks.visibility = if (isExpanded) View.VISIBLE else View.GONE
-        holder.itemView.isActivated = isExpanded
-
-        refreshIconExpanded(view, item, holder.positionExpanded)
+        refreshCountNumber(view, item)
+        refreshIconExpanded(view, item)
         refreshContentList(view, item)
         refreshTextTitle(view, item)
         refreshCheckBox(view, item)
     }
 
-    private fun refreshIconExpanded(view: View, item: WorkDataEntity, positionExpanded: Int) {
+    private fun refreshIconExpanded(view: View, item: WorkDataEntity) {
         view.imgArrow.setVisible(item.listContent.isNotEmpty())
-        if (positionExpanded != -1) {
+        if (item.isShowContents) {
             view.imgArrow.setImageResource(R.drawable.ic_chevron_right)
         } else {
             view.imgArrow.setImageResource(R.drawable.ic_arrow_down)
         }
+    }
+
+    private fun refreshCountNumber(view: View, item: WorkDataEntity) {
+        val count = item.listContent.count { it.isCheckDone }
+        view.tvCount.visibleOrGone(item.listContent.size > 0)
+        view.tvCount.text = "$count/${item.listContent.size}"
     }
 
     private fun refreshContentList(view: View, item: WorkDataEntity) {
@@ -214,8 +229,8 @@ class ListWorkAdapter(
         view.recyclerWorks.visibility = View.VISIBLE
     }
 
-    private fun refreshShowRecyclerView(view: View, positionShow: Int) {
-        view.recyclerWorks.visibility = if (positionShow != -1) View.VISIBLE else View.GONE
+    private fun refreshShowRecyclerView(view: View, item: WorkDataEntity) {
+        view.recyclerWorks.visibility = if (item.isShowContents) View.VISIBLE else View.GONE
     }
 
     private fun showMenu(v: View, @MenuRes menuRes: Int, workId: Long) {
@@ -246,28 +261,6 @@ class ListWorkAdapter(
     }
 
     override fun setExpanded(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: WorkDataEntity) {
-        /*    view.imgArrow.setOnClickListener {
-                holder.positionExpanded = if (holder.positionExpanded != -1) -1 else position
-                notifyItemChanged(position)
-            }
-
-            val isExpanded = holder.positionExpanded != -1
-            view.recyclerWorks.visibility = if (isExpanded) View.VISIBLE else View.GONE
-            holder.itemView.isActivated = isExpanded*/
     }
 
-    /*  private fun setOnlyExpanded(){
-          val isExpanded = position === mExpandedPosition
-          view.recyclerWorks.visibility = if (isExpanded) View.VISIBLE else View.GONE
-          holder.itemView.isActivated = isExpanded
-
-          if (isExpanded) previousExpandedPosition = position
-
-          view.imgArrow.setOnClickListener {
-              mExpandedPosition = if (isExpanded) -1 else position
-              view.imgArrow.setImageResource(if (mExpandedPosition != -1) R.drawable.ic_next_down else R.drawable.ic_next_right)
-              notifyItemChanged(previousExpandedPosition)
-              notifyItemChanged(position)
-          }
-      }*/
 }

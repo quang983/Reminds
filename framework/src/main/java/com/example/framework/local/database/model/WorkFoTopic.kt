@@ -13,5 +13,6 @@ class WorkFoTopic(
     val idOwnerGroup: Long,
     @TypeConverters(DataConverter::class)
     val listContent: MutableList<ContentFoWork>,
-    val doneAll: Boolean = false
+    val doneAll: Boolean = false,
+    val isShowContents : Boolean =false
 )

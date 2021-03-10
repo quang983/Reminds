@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun onStartService() {
+    private fun onStartService() {
         super.onStart()
         intentService = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Intent(this, NotificationService::class.java).also { intent ->

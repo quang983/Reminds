@@ -12,7 +12,7 @@ import com.example.reminds.service.ScheduledWorker.Companion.NOTIFICATION_TITLE
 
 class NotificationBroadcastReceiver : BroadcastReceiver() {
 
-    override fun onReceive(context: Context?, intent: Intent?) {
+    override fun onReceive(context: Context, intent: Intent?) {
         intent?.let {
             val title = it.getStringExtra(NOTIFICATION_TITLE)
             val message = it.getStringExtra(NOTIFICATION_MESSAGE)
@@ -29,7 +29,7 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
                 .build()
 
             // Start Worker
-            WorkManager.getInstance().beginWith(work).enqueue()
+            WorkManager.getInstance(context).beginWith(work).enqueue()
 
             Log.d(javaClass.name, "WorkManager is Enqueued.")
         }

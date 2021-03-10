@@ -33,7 +33,7 @@ open class NotificationService : Service() {
     private fun startForeground(service: Service) {
         val channelId =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                createNotificationChannel(service, service.applicationContext.getString(R.string.notify_channel), "My Background Service")
+                createNotificationChannel(service, "FOUGHT", "My Background Service")
             } else {
                 ""
             }

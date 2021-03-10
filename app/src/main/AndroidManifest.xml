@@ -36,6 +36,10 @@
         </activity>
         <service android:name=".service.NotificationService" />
 
-        <receiver android:name=".service.NotificationBroadcastReceiver" />
+        <receiver android:name=".service.NotificationBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

@@ -11,7 +11,7 @@
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <item name="fontFamily">@font/cereal_book</item>
+        <item name="fontFamily">@font/sfprodisplay_regular</item>
 
         <!-- Customize your theme here. -->
     </style>
@@ -22,7 +22,7 @@
     </style>
 
     <style name="Theme.BaseProjects.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
-        <item name="android:fontFamily">@font/cereal_extra_bold</item>
+        <item name="android:fontFamily">@font/roboto_regular_font</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -38,9 +38,5 @@
 
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/round_dialog</item>
-    </style>
-
-    <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
-        <item name="android:fontFamily">@font/cereal_medium</item>
     </style>
 </resources>

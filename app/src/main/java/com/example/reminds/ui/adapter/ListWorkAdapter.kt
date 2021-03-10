@@ -133,12 +133,13 @@ class ListWorkAdapter(
         view.tag = item
         view.setTag(R.string.id_position, position)
         if (payloads.contains(PAYLOAD_LIST)) {
-            refreshIconExpanded(view, item, position)
+            refreshIconExpanded(view, item, holder.positionExpanded)
             refreshRecyclerView(view)
         }
 
-        if(payloads.contains(PAYLOAD_EXPANDED)){
-            refreshShowRecyclerView(view,holder.positionExpanded)
+        if (payloads.contains(PAYLOAD_EXPANDED)) {
+            refreshIconExpanded(view, item, holder.positionExpanded)
+            refreshShowRecyclerView(view, holder.positionExpanded)
         }
 
         if (payloads.contains(PAYLOAD_CONTENT)) {
@@ -175,18 +176,18 @@ class ListWorkAdapter(
         view.recyclerWorks.visibility = if (isExpanded) View.VISIBLE else View.GONE
         holder.itemView.isActivated = isExpanded
 
-        refreshIconExpanded(view, item, position)
+        refreshIconExpanded(view, item, holder.positionExpanded)
         refreshContentList(view, item)
         refreshTextTitle(view, item)
         refreshCheckBox(view, item)
     }
 
-    private fun refreshIconExpanded(view: View, item: WorkDataEntity, position: Int) {
+    private fun refreshIconExpanded(view: View, item: WorkDataEntity, positionExpanded: Int) {
         view.imgArrow.setVisible(item.listContent.isNotEmpty())
-        if (position === view.getTag(R.string.id_expanded)) {
-            view.imgArrow.setImageResource(R.drawable.ic_next_right)
+        if (positionExpanded != -1) {
+            view.imgArrow.setImageResource(R.drawable.ic_chevron_right)
         } else {
-            view.imgArrow.setImageResource(R.drawable.ic_next_down)
+            view.imgArrow.setImageResource(R.drawable.ic_arrow_down)
         }
     }
 

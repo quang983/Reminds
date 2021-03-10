@@ -62,9 +62,11 @@
             android:id="@+id/imgArrow"
             android:layout_width="@dimen/_24sdp"
             android:layout_height="0dp"
+            android:padding="@dimen/_4sdp"
             android:layout_marginEnd="@dimen/_6sdp"
             android:backgroundTint="@color/blue_900"
             android:src="@drawable/ic_arrow_down"
+
             app:layout_constraintBottom_toBottomOf="@id/tvTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tvTitle" />

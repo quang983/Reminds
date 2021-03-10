@@ -83,70 +83,7 @@ class ListWorkAdapter(
 
     override fun createView(parent: ViewGroup, viewType: Int?): View {
         val view = parent.inflate(R.layout.item_work_group)
-
-        view.imgArrow.setOnClickListener {
-            (view.tag as? WorkDataEntity)?.copy()?.let { item ->
-                item.isShowContents = !item.isShowContents
-                updateDataChanged.invoke(item)
-            }
-        }
-
-        view.tvTitle.setOnClickListenerBlock {
-            (view.tag as? WorkDataEntity)?.copy()?.let { item ->
-                onClickTitle.invoke(item.apply {
-                    this.isShowContents = true
-                })
-            }
-        }
-
-
-        view.recyclerWorks.apply {
-            contentsAdapter = ListContentCheckAdapter(insertItemClick = { content ->
-                (view.tag as? WorkDataEntity)?.copy()?.let { item ->
-                    if (content.name.isNotEmpty()) {
-                        insertContentToWork.invoke(
-                            content, item.id
-                        )
-                    }
-                }
-            }, { content ->
-                (view.tag as? WorkDataEntity)?.copy()?.let { item ->
-                    handlerCheckItem.invoke(content, item.id)
-                }
-            }, { content ->
-                (view.tag as? WorkDataEntity)?.copy()?.let { item ->
-                    updateNameContent.invoke(content, item.id)
-                }
-            }, { content, type ->
-                (view.tag as? WorkDataEntity)?.copy()?.let { item ->
-                    moreActionClick.invoke(content, type, item.id)
-                }
-            })
-            adapter = contentsAdapter
-            (view.tag as? WorkDataEntity)?.copy()?.let { item ->
-                contentsAdapter?.submitList(item.listContent.toMutableList())
-            }
-        }
-
-        view.tvTitle.setOnLongClickListener {
-            (view.tag as? WorkDataEntity)?.copy()?.let { item ->
-                showMenu(it, R.menu.menu_work_title, item.id)
-            }
-            true
-        }
-
-        view.rbCheckedTitle.setOnCheckedChangeListener { button, isChecked ->
-            (view.tag as? WorkDataEntity)?.copy()?.let { item ->
-                if (button.isPressed) {
-                    if (isChecked) {
-                        handlerCheckedAll.invoke(item.id, true)
-                    } else {
-                        handlerCheckedAll.invoke(item.id, false)
-                    }
-                }
-            }
-        }
-
+        handleListener(view)
         return view
     }
 
@@ -250,6 +187,71 @@ class ListWorkAdapter(
         popup.show()
     }
 
+    private fun handleListener(view: View) {
+
+        view.imgArrow.setOnClickListener {
+            (view.tag as? WorkDataEntity)?.copy()?.let { item ->
+                item.isShowContents = !item.isShowContents
+                updateDataChanged.invoke(item)
+            }
+        }
+
+        view.tvTitle.setOnClickListenerBlock {
+            (view.tag as? WorkDataEntity)?.copy()?.let { item ->
+                onClickTitle.invoke(item.apply {
+                    this.isShowContents = true
+                })
+            }
+        }
+
+
+        view.recyclerWorks.apply {
+            contentsAdapter = ListContentCheckAdapter(insertItemClick = { content ->
+                (view.tag as? WorkDataEntity)?.copy()?.let { item ->
+                    if (content.name.isNotEmpty()) {
+                        insertContentToWork.invoke(
+                            content, item.id
+                        )
+                    }
+                }
+            }, { content ->
+                (view.tag as? WorkDataEntity)?.copy()?.let { item ->
+                    handlerCheckItem.invoke(content, item.id)
+                }
+            }, { content ->
+                (view.tag as? WorkDataEntity)?.copy()?.let { item ->
+                    updateNameContent.invoke(content, item.id)
+                }
+            }, { content, type ->
+                (view.tag as? WorkDataEntity)?.copy()?.let { item ->
+                    moreActionClick.invoke(content, type, item.id)
+                }
+            })
+            adapter = contentsAdapter
+            (view.tag as? WorkDataEntity)?.copy()?.let { item ->
+                contentsAdapter?.submitList(item.listContent.toMutableList())
+            }
+        }
+
+        view.tvTitle.setOnLongClickListener {
+            (view.tag as? WorkDataEntity)?.copy()?.let { item ->
+                showMenu(it, R.menu.menu_work_title, item.id)
+            }
+            true
+        }
+
+        view.rbCheckedTitle.setOnCheckedChangeListener { button, isChecked ->
+            (view.tag as? WorkDataEntity)?.copy()?.let { item ->
+                if (button.isPressed) {
+                    if (isChecked) {
+                        handlerCheckedAll.invoke(item.id, true)
+                    } else {
+                        handlerCheckedAll.invoke(item.id, false)
+                    }
+                }
+            }
+        }
+    }
 
     companion object {
         const val PAYLOAD_CONTENT = "PAYLOAD_CONTENT"

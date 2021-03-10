@@ -158,7 +158,11 @@ class ListWorkFragment : Fragment() {
             }, handlerCheckedAll = { workId, doneAll ->
                 viewModel.handleDoneAllContentFromWork(workId, doneAll)
             }, updateDataChanged = {
-                viewModel.updateWorkChange(it, false)
+                if (homeSharedViewModel.isKeyboardShow.value == true) {
+                    hideSoftKeyboard()
+                } else {
+                    viewModel.updateWorkChange(it, false)
+                }
             }).apply {
             recyclerWorks.adapter = this
         }

@@ -41,8 +41,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="true"
-        android:paddingTop="@dimen/_4sdp"
-        android:focusableInTouchMode="true">
+        android:focusableInTouchMode="true"
+        android:paddingTop="@dimen/_4sdp">
 
         <net.igenius.customcheckbox.CustomCheckBox
             android:id="@+id/rbChecked"

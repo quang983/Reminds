@@ -11,15 +11,30 @@
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:actionMenuTextColor">@color/blue_900</item>
+        <item name="actionMenuTextColor">@color/blue_900</item>
         <!-- Customize your theme here. -->
     </style>
 
     <style name="Theme.BaseProjects.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/purple_700</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:actionMenuTextColor">@color/blue_900</item>
+        <item name="actionMenuTextColor">@color/blue_900</item>
     </style>
 
     <style name="Theme.BaseProjects.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="Theme.BaseProjects.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.BaseProjects.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
+
+    </style>
 </resources>

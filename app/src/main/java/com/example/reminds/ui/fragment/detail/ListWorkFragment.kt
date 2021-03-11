@@ -243,7 +243,7 @@ class ListWorkFragment : Fragment() {
     }
 
     private fun setupTimePickerForContent(item: ContentDataEntity, wId: Long) {
-        navigate(ListWorkFragmentDirections.actionSecondFragmentToDateTimePickerDialog(System.currentTimeMillis()))
+        navigate(ListWorkFragmentDirections.actionSecondFragmentToDateTimePickerDialog(System.currentTimeMillis() + (60 * 1000)))
         setFragmentResultListener(FRAGMENT_RESULT_TIMER) { _, bundle ->
             item.timer = bundle.getLong(TIME_PICKER_BUNDLE)
             viewModel.updateContentData(item, wId)

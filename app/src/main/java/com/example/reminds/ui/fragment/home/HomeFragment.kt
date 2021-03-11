@@ -33,7 +33,8 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
-    private lateinit var adapter: TopicAdapter
+
+    //    private lateinit var adapter: TopicAdapter
     private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
     private lateinit var customAlertDialogView: View
 
@@ -46,11 +47,11 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presentShowcaseView()
-        setupTransition(view)
         setupUI()
         setupListener()
         observeData()
+        setupTransition(view)
+        presentShowcaseView()
     }
 
     private fun setupTransition(view: View) {
@@ -61,7 +62,8 @@ class HomeFragment : Fragment() {
     private fun setupUI() {
         materialAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
         layoutToday.transitionName = "def"
-        adapter = TopicAdapter({ id, title, view ->
+
+        TopicAdapter({ id, title, view ->
             val emailCardDetailTransitionName = getString(R.string.transition_topic_to_detail)
             val extras = FragmentNavigatorExtras(view to emailCardDetailTransitionName)
             navigate(HomeFragmentDirections.actionFirstFragmentToSecondFragment(id, title), null, extras)
@@ -113,7 +115,7 @@ class HomeFragment : Fragment() {
             topicsGroupDataShow.observe(viewLifecycleOwner, {
                 groupList.setVisible(it.isNotEmpty())
                 layoutEmpty.setVisible(it.isEmpty())
-                adapter.submitList(it)
+                (recyclerTopic.adapter as? TopicAdapter)?.submitList(it)
             })
             fastTopicData.observe(viewLifecycleOwner, { works ->
                 layoutToday.tvCount.text = works.size.toString()

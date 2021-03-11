@@ -129,7 +129,7 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
     }
 
     private fun setupTimePickerForContent() {
-        navigate(OptionForWorkBSFragmentDirections.actionOptionForWorkBSFragmentToDateTimePickerDialog(System.currentTimeMillis()))
+        navigate(OptionForWorkBSFragmentDirections.actionOptionForWorkBSFragmentToDateTimePickerDialog(System.currentTimeMillis() + (60 * 1000)))
     }
 
 }

@@ -194,8 +194,7 @@ class MainActivity : AppCompatActivity() {
             RequestConfiguration.Builder()
                 .setTestDeviceIds(
                     listOf(
-                        "B3EEABB8EE11C2BE770B684D95219ECB", "1de5b277b16e4e89",
-                        "a3ea2553d4d0b456", AdRequest.DEVICE_ID_EMULATOR
+                        "B3EEABB8EE11C2BE770B684D95219ECB", "6EEE3EBFBB63E518F69A46CA2B4676D5"
                     )
                 )
                 .build()

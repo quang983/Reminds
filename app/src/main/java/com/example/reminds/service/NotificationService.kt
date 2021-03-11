@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.*
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -33,7 +32,7 @@ open class NotificationService : Service() {
     private fun startForeground(service: Service) {
         val channelId =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                createNotificationChannel(service, "FOUGHT", "My Background Service")
+                createNotificationChannel(service, service.getString(R.string.notify_channel), "My Background Service")
             } else {
                 ""
             }
@@ -79,7 +78,8 @@ open class NotificationService : Service() {
                 }
                 INSERT_OBJECT_TIMER_DATA -> {
                     val notify = msg.obj as AlarmNotificationEntity
-                    scheduleAlarm(TimestampUtils.getFullFormatTime(notify.timeAlarm, "dd/MM/yyyy HH:mm"), notify.nameWork, notify.nameContent, notify.idContent.toInt())
+                    scheduleAlarm(TimestampUtils.getFullFormatTime(notify.timeAlarm, "dd/MM/yyyy HH:mm"),
+                        notify.nameWork, notify.nameContent, notify.idContent.toInt())
                 }
                 else -> super.handleMessage(msg)
             }

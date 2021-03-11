@@ -74,8 +74,7 @@ class ListWorkViewModel @ViewModelInject constructor(
             ) {
                 val newContent = ContentDataEntity(
                     id = System.currentTimeMillis(), name = "",
-                    idOwnerWork = it.id,
-                    isFocus = true, isCheckDone = false
+                    idOwnerWork = it.id, isCheckDone = false
                 )
                 it.listContent.add(newContent)
             }
@@ -102,7 +101,7 @@ class ListWorkViewModel @ViewModelInject constructor(
 
     fun reSaveListWorkToDb(wId: Long) = GlobalScope.launch(handler + Dispatchers.IO) {
         val list = listWorkViewModel.map {
-            it.copyState()
+            it.copyFilterNotEmpty()
         }
         _workId = wId
         updateListWorkUseCase.invoke(UpdateListWorkUseCase.Param(list))
@@ -111,7 +110,7 @@ class ListWorkViewModel @ViewModelInject constructor(
 
     fun reSaveListWorkAndCreateStateFocus() = GlobalScope.launch(handler + Dispatchers.IO) {
         val list = listWorkViewModel.map {
-            it.copyAndResetFocus()
+            it.copyFilterNotEmpty()
         }
         updateListWorkUseCase.invoke(UpdateListWorkUseCase.Param(list))
     }
@@ -119,7 +118,7 @@ class ListWorkViewModel @ViewModelInject constructor(
     fun handlerCheckedContent(content: ContentDataEntity, workId: Long) = viewModelScope.launch(handler + Dispatchers.IO) {
         listWorkViewModel.getOrNull {
             this.id == workId
-        }?.copyState()?.let { it ->
+        }?.copyFilterNotEmpty()?.let { it ->
             it.listContent.getOrNull {
                 this.id == content.id
             }?.apply {
@@ -130,7 +129,7 @@ class ListWorkViewModel @ViewModelInject constructor(
     }
 
     fun deleteContent(content: ContentDataEntity, workId: Long) = viewModelScope.launch(handler + Dispatchers.IO) {
-        listWorkViewModel.getOrNull { this.id == workId }?.copyState()?.let { it ->
+        listWorkViewModel.getOrNull { this.id == workId }?.copyFilterNotEmpty()?.let { it ->
             it.listContent.removeAll { it.id == content.id }.apply {
                 updateWorkUseCase.invoke(UpdateWorkUseCase.Param(it))
             }
@@ -147,7 +146,6 @@ class ListWorkViewModel @ViewModelInject constructor(
             it.listContent.forEachIndexed { _, contentDataEntity ->
                 if (content.id == contentDataEntity.id) {
                     contentDataEntity.idOwnerWork = content.idOwnerWork
-                    contentDataEntity.isFocus = content.isFocus
                     contentDataEntity.name = content.name
                     contentDataEntity.hashTag = content.hashTag
                     contentDataEntity.timer = content.timer
@@ -181,7 +179,7 @@ class ListWorkViewModel @ViewModelInject constructor(
     fun handleDoneAllContentFromWork(idWork: Long, doneAll: Boolean) = viewModelScope.launch(handler + Dispatchers.IO) {
         listWorkViewModel.getOrNull {
             this.id == idWork
-        }?.copyState()?.apply {
+        }?.copyFilterNotEmpty()?.apply {
             this.doneAll = doneAll
             this.listContent.forEach {
                 it.isCheckDone = doneAll

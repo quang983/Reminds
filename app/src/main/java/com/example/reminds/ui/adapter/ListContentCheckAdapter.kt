@@ -156,7 +156,7 @@ class ListContentCheckAdapter(
                 itemById?.let { it ->
                     ContentDataEntity(
                         it.id, it.name,
-                        it.idOwnerWork, it.isFocus, it.hashTag,
+                        it.idOwnerWork, it.hashTag,
                         it.timer, it.isCheckDone
                     ).let {
                         moreActionClick.invoke(it, TYPE_TIMER_CLICK)
@@ -264,6 +264,7 @@ class ListContentCheckAdapter(
         const val PAYLOAD_ID_WORK = "PAYLOAD_ID_WORK"
         const val PAYLOAD_TIMER = "PAYLOAD_TIMER"
         const val PAYLOAD_HASH_TAG = "PAYLOAD_HASH_TAG"
+        const val PAYLOAD_NAME = "PAYLOAD_NAME"
 
         const val TYPE_TIMER_CLICK = 100
         const val TYPE_TAG_CLICK = 101

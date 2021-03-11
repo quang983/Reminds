@@ -5,81 +5,122 @@
     android:id="@+id/test"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/_6sdp"
     android:background="@drawable/bg_expanable"
     android:orientation="vertical"
+    android:paddingTop="@dimen/_6sdp"
     android:stateListAnimator="@animator/bg_selector">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.chauthai.swipereveallayout.SwipeRevealLayout
+        android:id="@+id/swipeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingTop="@dimen/_2sdp">
+        app:dragEdge="right"
+        app:mode="same_level">
 
-        <net.igenius.customcheckbox.CustomCheckBox
-            android:id="@+id/rbCheckedTitle"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="0dp"
-            app:color_checked="@android:color/transparent"
-            app:color_tick="@color/blue_900"
-            app:color_unchecked_stroke="@color/bg_gray"
-            app:layout_constraintBottom_toBottomOf="@id/tvTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tvTitle" />
-
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/_12sdp"
-            android:fontFamily="@font/cereal_extra_bold"
-            android:paddingStart="@dimen/_10sdp"
-            android:paddingTop="@dimen/_6sdp"
-            android:paddingEnd="@dimen/_6sdp"
-            android:paddingBottom="@dimen/_6sdp"
-            android:textColor="@color/blue_900"
-            android:textSize="@dimen/_14sdp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/tvCount"
-            app:layout_constraintStart_toEndOf="@id/rbCheckedTitle"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Title" />
-
-        <TextView
-            android:id="@+id/tvCount"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:paddingStart="@dimen/_6sdp"
-            android:paddingEnd="@dimen/_6sdp"
-            app:layout_constraintBottom_toBottomOf="@id/tvTitle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/imgArrow"
-            app:layout_constraintTop_toTopOf="@id/tvTitle"
-            tools:text="5/6" />
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imgArrow"
-            android:layout_width="@dimen/_24sdp"
-            android:layout_height="0dp"
-            android:padding="@dimen/_4sdp"
-            android:layout_marginEnd="@dimen/_6sdp"
-            android:backgroundTint="@color/blue_900"
-            android:src="@drawable/ic_arrow_down"
+            <ImageView
+                android:id="@+id/imgSetting"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_selector_info"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_info" />
+        </LinearLayout>
 
-            app:layout_constraintBottom_toBottomOf="@id/tvTitle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tvTitle" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0.5dp"
-            android:layout_marginTop="@dimen/_6sdp"
-            android:background="@color/bg_divider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/rbCheckedTitle"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingTop="@dimen/_2sdp">
+
+            <net.igenius.customcheckbox.CustomCheckBox
+                android:id="@+id/rbCheckedTitle"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="0dp"
+                app:color_checked="@android:color/transparent"
+                app:color_tick="@color/blue_900"
+                app:color_unchecked_stroke="@color/bg_gray"
+                app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvTitle" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/_12sdp"
+                android:fontFamily="@font/cereal_extra_bold"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingTop="@dimen/_6sdp"
+                android:paddingEnd="@dimen/_6sdp"
+                android:paddingBottom="@dimen/_6sdp"
+                android:textColor="@color/blue_900"
+                android:textSize="@dimen/_14sdp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/tvCount"
+                app:layout_constraintStart_toEndOf="@id/rbCheckedTitle"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Title" />
+
+            <TextView
+                android:id="@+id/tvTimerWork"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_6sdp"
+                android:visibility="gone"
+                android:drawableTint="@color/red_200"
+                android:drawableStart="@drawable/ic_history_toggle_off"
+                android:textColor="@color/pink_500"
+                android:textSize="14sp"
+                android:drawablePadding="@dimen/_6sdp"
+                android:gravity="center_vertical"
+                app:layout_constraintStart_toStartOf="@id/tvTitle"
+                app:layout_constraintTop_toBottomOf="@id/tvTitle"
+                tools:text="Day la timer"
+                tools:visibility="visible" />
+
+
+            <TextView
+                android:id="@+id/tvCount"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:paddingStart="@dimen/_6sdp"
+                android:paddingEnd="@dimen/_6sdp"
+                app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/imgArrow"
+                app:layout_constraintTop_toTopOf="@id/tvTitle"
+                tools:text="5/6" />
+
+            <ImageView
+                android:id="@+id/imgArrow"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/_6sdp"
+                android:backgroundTint="@color/blue_900"
+                android:padding="@dimen/_4sdp"
+                android:src="@drawable/ic_arrow_down"
+
+                app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvTitle" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:background="@color/bg_divider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/rbCheckedTitle"
+                app:layout_constraintTop_toBottomOf="@id/tvTimerWork" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.chauthai.swipereveallayout.SwipeRevealLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerWorks"

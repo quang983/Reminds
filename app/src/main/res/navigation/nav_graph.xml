@@ -39,6 +39,9 @@
         <action
             android:id="@+id/action_SecondFragment_to_SettingFragment"
             app:destination="@id/SettingFragment" />
+        <action
+            android:id="@+id/action_SecondFragment_to_OptionForWorkBSFragment"
+            app:destination="@id/OptionForWorkBSFragment" />
 
     </fragment>
 
@@ -84,5 +87,19 @@
             app:nullable="false" />
     </fragment>
 
+    <dialog
+        android:id="@+id/OptionForWorkBSFragment"
+        android:name="com.example.reminds.ui.fragment.worktoption.OptionForWorkBSFragment"
+        android:label="@string/new_topic_fragment_label"
+        tools:layout="@layout/fragment_option_for_work_bs" >
+        <action
+            android:id="@+id/action_OptionForWorkBSFragment_to_dateTimePickerDialog"
+            app:destination="@id/dateTimePickerDialog" />
+
+        <argument
+            android:name="idWork"
+            app:argType="long"
+            app:nullable="false" />
+    </dialog>
 
 </navigation>

@@ -47,13 +47,14 @@
     <string name="home_screen_title">Reminders</string>
     <string name="add">Add</string>
     <string name="warning_title_min">The title must be at least 1 character!</string>
-    <string name="support_list_reminders">Here is a list of quick notes</string>
-    <string name="support_new_title">Click the button to add your own new playlist</string>
+    <string name="support_list_reminders">This is a quick note list, Note: The quick note will automatically delete after you click Done</string>
+    <string name="support_new_title">Click the button to add your own new playlist, the finished list will be displayed according to your selection</string>
     <string name="topic_title">Topic</string>
 
-    <string name="add_new_topic_hint">Add a new playlist...</string>
+    <string name="add_new_topic_hint">Add a new playlist…</string>
 
-    <string name="add_new_work_hint">Add a new job...</string>
+    <string name="add_new_work_hint">Add a new job…</string>
     <string name="title_setting">Setting</string>
     <string name="option_delete_work_done">Delete the reminders after done</string>
+    <string name="title_save">Save</string>
 </resources>

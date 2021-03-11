@@ -160,6 +160,8 @@ class ListWorkFragment : Fragment() {
                 } else {
                     viewModel.updateWorkChange(it, false)
                 }
+            }, intoSettingFragment = {
+                navigate(ListWorkFragmentDirections.actionSecondFragmentToOptionForWorkBSFragment(it.id))
             }).apply {
             recyclerWorks.adapter = this
         }
@@ -245,7 +247,7 @@ class ListWorkFragment : Fragment() {
         setFragmentResultListener(FRAGMENT_RESULT_TIMER) { _, bundle ->
             item.timer = bundle.getLong(TIME_PICKER_BUNDLE)
             viewModel.updateContentData(item, wId)
-            homeSharedViewModel.notifyDataInsert.postValue(
+            homeSharedViewModel.setNotifyDataInsert(
                 AlarmNotificationEntity(
                     item.timer, item.idOwnerWork, item.id, item.name, resources.getString(R.string.notify_title)
                 )

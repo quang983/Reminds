@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
 import androidx.recyclerview.widget.DiffUtil
+import com.chauthai.swipereveallayout.ViewBinderHelper
 import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.WorkDataEntity
 import com.example.reminds.R
@@ -22,7 +23,8 @@ class ListWorkAdapter(
     private val moreActionClick: (item: ContentDataEntity, type: Int, workId: Long) -> Unit,
     private val deleteWorkClick: (workId: Long) -> Unit,
     private val handlerCheckedAll: (workId: Long, doneAll: Boolean) -> Unit,
-    private val updateDataChanged: (work: WorkDataEntity) -> Unit
+    private val updateDataChanged: (work: WorkDataEntity) -> Unit,
+    private val intoSettingFragment: (work: WorkDataEntity) -> Unit
 ) :
     BaseAdapter<WorkDataEntity>(object : DiffUtil.ItemCallback<WorkDataEntity>() {
 
@@ -41,6 +43,7 @@ class ListWorkAdapter(
                     && oldItem.listContent.zip(newItem.listContent).all { (x, y) -> x.timer == y.timer && x.hashTag == y.hashTag && x.isCheckDone == y.isCheckDone }
                     && oldItem.listContent == newItem.listContent && oldItem.doneAll == newItem.doneAll
                     && oldItem.listContent.size == newItem.listContent.size && oldItem.isShowContents == newItem.isShowContents
+                    && oldItem.timerReminder == newItem.timerReminder
         }
 
         override fun getChangePayload(oldItem: WorkDataEntity, newItem: WorkDataEntity): Any? {
@@ -69,6 +72,9 @@ class ListWorkAdapter(
             if (oldItem.doneAll != newItem.doneAll) {
                 payloads.add(PAYLOAD_DONE_ALL)
             }
+            if (oldItem.timerReminder != newItem.timerReminder) {
+                payloads.add(PAYLOAD_TIMER)
+            }
 
             return if (payloads.size > 0) {
                 payloads
@@ -79,7 +85,7 @@ class ListWorkAdapter(
 
     }) {
     private var contentsAdapter: ListContentCheckAdapter? = null
-
+    private val _viewBinderHelper = ViewBinderHelper()
 
     override fun createView(parent: ViewGroup, viewType: Int?): View {
         val view = parent.inflate(R.layout.item_work_group)
@@ -114,18 +120,37 @@ class ListWorkAdapter(
             refreshCheckBox(view, item)
         }
 
+        if (payloads.contains(PAYLOAD_TIMER)) {
+            refreshTimer(view, item)
+        }
+
     }
 
     override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: WorkDataEntity) {
         view.tag = item
         view.recyclerWorks.visibility = if (item.isShowContents) View.VISIBLE else View.GONE
         holder.itemView.isActivated = item.isShowContents
-
+        setupViewBinderHelper(view, item)
+        refreshTimer(view, item)
         refreshCountNumber(view, item)
         refreshIconExpanded(view, item)
         refreshContentList(view, item)
         refreshTextTitle(view, item)
         refreshCheckBox(view, item)
+    }
+
+    private fun setupViewBinderHelper(view: View, item: WorkDataEntity) {
+        _viewBinderHelper.setOpenOnlyOne(true)
+        _viewBinderHelper.bind(view.swipeLayout, item.id.toString())
+    }
+
+    private fun refreshTimer(view: View, item: WorkDataEntity) {
+        view.tvTimerWork.visibleOrGone(item.timerReminder > 0)
+        if (TimestampUtils.compareDate(item.timerReminder, System.currentTimeMillis())) {
+            view.tvTimerWork.text = String.format("%s %s", TimestampUtils.getTime(item.timerReminder), view.context.getString(R.string.title_home_today))
+        } else {
+            view.tvTimerWork.text = TimestampUtils.getFullFormatTime(item.timerReminder, TimestampUtils.INCREASE_DATE_FORMAT)
+        }
     }
 
     private fun refreshIconExpanded(view: View, item: WorkDataEntity) {
@@ -204,6 +229,12 @@ class ListWorkAdapter(
             }
         }
 
+        view.imgSetting.setOnClickListenerBlock {
+            (view.tag as? WorkDataEntity)?.copy()?.let { item ->
+                view.swipeLayout.close(true)
+                intoSettingFragment.invoke(item)
+            }
+        }
 
         view.recyclerWorks.apply {
             contentsAdapter = ListContentCheckAdapter(insertItemClick = { content ->
@@ -260,6 +291,7 @@ class ListWorkAdapter(
         const val PAYLOAD_GROUP_ID = "PAYLOAD_GROUP_ID"
         const val PAYLOAD_DONE_ALL = "PAYLOAD_DONE_ALL"
         const val PAYLOAD_EXPANDED = "PAYLOAD_EXPANDED"
+        const val PAYLOAD_TIMER = "PAYLOAD_TIMER"
     }
 
     override fun setExpanded(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: WorkDataEntity) {

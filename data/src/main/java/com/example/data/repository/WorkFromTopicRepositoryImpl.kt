@@ -16,6 +16,10 @@ class WorkFromTopicRepositoryImpl @Inject constructor(private val workFromTopicS
         return workFromTopicSource.fetchAll(idGroup)
     }
 
+    override suspend fun getWorkFromTopicById(idWork: Long): WorkDataEntity? {
+        return workFromTopicSource.getWorkById(idWork)
+    }
+
     override suspend fun insertData(data: WorkDataEntity): Long {
         return workFromTopicSource.insert(data)
     }

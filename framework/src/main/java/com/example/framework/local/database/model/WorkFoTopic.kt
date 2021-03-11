@@ -14,5 +14,7 @@ class WorkFoTopic(
     @TypeConverters(DataConverter::class)
     val listContent: MutableList<ContentFoWork>,
     val doneAll: Boolean = false,
-    val isShowContents : Boolean =false
+    val isShowContents: Boolean = false,
+    var hashTag: Boolean = false,
+    var timerReminder: Long = -1,
 )

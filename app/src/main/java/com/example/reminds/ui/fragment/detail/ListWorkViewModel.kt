@@ -26,25 +26,22 @@ class ListWorkViewModel @ViewModelInject constructor(
     private val updateTopicUseCase: UpdateTopicUseCase,
     private val deleteWorkUseCase: DeleteWorkUseCase
 ) : BaseViewModel() {
-    private lateinit var _topicGroup: TopicGroupEntity
+    private var _topicGroup: TopicGroupEntity? = null
 
     private var _workId: Long = -1
+
     private val _idGroup: MediatorLiveData<Long> = MediatorLiveData<Long>()
 
     var listWorkViewModel: ArrayList<WorkDataEntity> = ArrayList()
 
-    private val _isShowDoneLiveData: LiveData<Boolean> = _idGroup.switchMapLiveData {
+    private val _optionSelectedLiveData: LiveData<Int> = _idGroup.switchMapLiveData {
         getTopicByIdUseCase.invoke(GetTopicByIdUseCase.Param(_idGroup.value ?: return@switchMapLiveData)).collect {
             _topicGroup = it
-            emit(_topicGroup.isShowDone)
+            emit(it.optionSelected)
         }
     }
 
-    val isShowDoneLiveData: LiveData<Boolean> = _isShowDoneLiveData.switchMapLiveDataEmit {
-        it
-    }
-
-    private val _listWorkDataLocal: LiveData<List<WorkDataEntity>> = _isShowDoneLiveData.switchMapLiveData {
+    private val _listWorkDataLocal: LiveData<List<WorkDataEntity>> = _optionSelectedLiveData.switchMapLiveData {
         fetchWorksUseCase.invoke(FetchWorksUseCase.Param(_idGroup.value ?: return@switchMapLiveData))
             .collect {
                 emit(it)
@@ -58,7 +55,7 @@ class ListWorkViewModel @ViewModelInject constructor(
             _workId = -1L
         }
         listWorkViewModel.let { it ->
-            if (_isShowDoneLiveData.value != true) {
+            if (_optionSelectedLiveData.value == TopicGroupEntity.HIDE_DONE_WORKS) {
                 it.filter { !it.doneAll }
             } else {
                 it
@@ -90,10 +87,12 @@ class ListWorkViewModel @ViewModelInject constructor(
         listWorkViewModel.addAll(list)
     }
 
-    fun saveTopicGroup(isShowDone: Boolean) {
-        viewModelScope.launch(Dispatchers.IO + handler) {
-            _topicGroup.isShowDone = isShowDone
-            updateTopicUseCase.invoke(UpdateTopicUseCase.Param(_topicGroup))
+    fun saveTopicGroup(optionSelected: Int) = viewModelScope.launch(Dispatchers.IO + handler) {
+        _topicGroup?.let {
+            it.optionSelected = optionSelected
+            if (listOf(TopicGroupEntity.SHOW_ALL_WORKS, TopicGroupEntity.HIDE_DONE_WORKS, TopicGroupEntity.REMOVE_DONE_WORKS).contains(optionSelected)) {
+                updateTopicUseCase.invoke(UpdateTopicUseCase.Param(it))
+            }
         }
     }
 
@@ -188,7 +187,7 @@ class ListWorkViewModel @ViewModelInject constructor(
                 it.isCheckDone = doneAll
             }
         }?.let { it ->
-            if (it.groupId != 1L) {
+            if (it.groupId != 1L && _optionSelectedLiveData.value != TopicGroupEntity.REMOVE_DONE_WORKS) {
                 updateWorkUseCase.invoke(UpdateWorkUseCase.Param(it))
             } else {
                 deleteWork(it.id)

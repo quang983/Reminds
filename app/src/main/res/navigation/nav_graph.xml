@@ -36,6 +36,9 @@
         <action
             android:id="@+id/action_SecondFragment_to_dateTimePickerDialog"
             app:destination="@id/dateTimePickerDialog" />
+        <action
+            android:id="@+id/action_SecondFragment_to_SettingFragment"
+            app:destination="@id/SettingFragment" />
 
     </fragment>
 
@@ -68,5 +71,18 @@
             app:argType="long"
             app:nullable="false" />
     </dialog>
+
+    <fragment
+        android:id="@+id/SettingFragment"
+        android:name="com.example.reminds.ui.fragment.setting.WorksSettingFragment"
+        android:label="{titleGroup}"
+        tools:layout="@layout/fragment_setting_works">
+
+        <argument
+            android:name="idGroup"
+            app:argType="long"
+            app:nullable="false" />
+    </fragment>
+
 
 </navigation>

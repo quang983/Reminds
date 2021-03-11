@@ -20,7 +20,7 @@
     <string name="format_today">Today,</string>
     <string name="format_yesterday">Yesterday,</string>
     <string name="setting_show_task_done_title">Show completed reminders</string>
-    <string name="setting_hire_task_done_title">" Hide completed reminders"</string>
+    <string name="setting_hire_task_done_title">Hide completed reminders</string>
     <string name="new_data_title">Add new</string>
     <string name="notify_title">Notification</string>
     <string name="content_delete_topic_title">Are you sure you want to remove this item from the list?</string>
@@ -54,4 +54,6 @@
     <string name="add_new_topic_hint">Add a new playlist...</string>
 
     <string name="add_new_work_hint">Add a new job...</string>
+    <string name="title_setting">Setting</string>
+    <string name="option_delete_work_done">Delete the reminders after done</string>
 </resources>

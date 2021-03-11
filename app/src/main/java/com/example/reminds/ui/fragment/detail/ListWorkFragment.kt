@@ -6,7 +6,6 @@ import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -19,9 +18,9 @@ import com.example.common.base.model.ContentDataEntity
 import com.example.framework.local.cache.CacheImpl
 import com.example.framework.local.cache.CacheImpl.Companion.KEY_SUM_DONE_TASK
 import com.example.reminds.R
-import com.example.reminds.common.Constants.ERROR_LOG
 import com.example.reminds.ui.adapter.ListContentCheckAdapter
 import com.example.reminds.ui.adapter.ListWorkAdapter
+import com.example.reminds.ui.fragment.setting.WorksSettingFragment.Companion.DATA_OPTION_SELECTED
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import com.example.reminds.utils.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -44,10 +43,10 @@ class ListWorkFragment : Fragment() {
     private lateinit var adapter: ListWorkAdapter
     private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
     private lateinit var customAlertDialogView: View
-    private lateinit var menuToolbar: Menu
 
     companion object {
         const val FRAGMENT_RESULT_TIMER = "FRAGMENT_RESULT_TIMER"
+        const val FRAGMENT_SETTING_OPTION = "FRAGMENT_SETTING_OPTION"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +64,7 @@ class ListWorkFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel.getListWork(args.idGroup)
+        setFragmentResultListener()
         return inflater.inflate(R.layout.fragment_list_work, container, false)
     }
 
@@ -74,6 +74,15 @@ class ListWorkFragment : Fragment() {
         setupUI()
         observeData()
         setupListener()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        if (args.idGroup != 1L) {
+            inflater.inflate(R.menu.top_app_bar, menu)
+        } else {
+            inflater.inflate(R.menu.menu_main, menu)
+        }
     }
 
     private fun setupListener() {
@@ -97,22 +106,10 @@ class ListWorkFragment : Fragment() {
         activity?.actionBar?.title = args.titleGroup
     }
 
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        menuToolbar = menu
-        if (args.idGroup != 1L) {
-            inflater.inflate(R.menu.top_app_bar, menu)
-        } else {
-            inflater.inflate(R.menu.menu_main, menu)
-        }
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_settings_task_view -> {
-                val isShowDone = viewModel.isShowDoneLiveData.value ?: true
-                viewModel.saveTopicGroup(!isShowDone)
+            R.id.action_settings -> {
+                navigate(ListWorkFragmentDirections.actionSecondFragmentToSettingFragment(args.idGroup))
             }
             android.R.id.home -> {
                 navigateUp()
@@ -202,17 +199,6 @@ class ListWorkFragment : Fragment() {
                 }
                 adapter.submitList(it)
             })
-            isShowDoneLiveData.observe(viewLifecycleOwner, {
-                try {
-                    if (!it) {
-                        menuToolbar.findItem(R.id.action_settings_task_view).title = getString(R.string.title_show_content)
-                    } else {
-                        menuToolbar.findItem(R.id.action_settings_task_view).title = getString(R.string.title_hide_content)
-                    }
-                } catch (e: Throwable) {
-                    Log.e(ERROR_LOG, e.message.toString())
-                }
-            })
         }
     }
 
@@ -264,6 +250,12 @@ class ListWorkFragment : Fragment() {
                     item.timer, item.idOwnerWork, item.id, item.name, resources.getString(R.string.notify_title)
                 )
             )
+        }
+    }
+
+    private fun setFragmentResultListener() {
+        setFragmentResultListener(FRAGMENT_SETTING_OPTION) { _, bundle ->
+            viewModel.saveTopicGroup(bundle.getInt(DATA_OPTION_SELECTED))
         }
     }
 

@@ -1,10 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_settings_task_view"
-        android:icon="@drawable/ic_baseline_visibility"
+        android:id="@+id/action_settings"
         android:iconTint="@color/pink_500"
         android:orderInCategory="100"
-        android:title="@string/setting_show_task_done_title"
+        android:title="@string/title_setting"
         app:showAsAction="never" />
 </menu>

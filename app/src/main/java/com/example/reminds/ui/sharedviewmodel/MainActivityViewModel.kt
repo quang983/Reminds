@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.common.base.model.AlarmNotificationEntity
 import com.example.common.base.model.TopicGroupEntity
+import com.example.common.base.model.TopicGroupEntity.Companion.REMOVE_DONE_WORKS
 import com.example.common.base.model.WorkDataEntity
 import com.example.domain.usecase.db.topic.InsertTopicUseCase
 import com.example.domain.usecase.db.workintopic.InsertWorkUseCase
@@ -25,7 +26,7 @@ class MainActivityViewModel @ViewModelInject constructor(
 
     fun addFirstTopic(topic: String) {
         GlobalScope.launch(handler + Dispatchers.IO) {
-            val data = TopicGroupEntity(1, "Hôm nay")
+            val data = TopicGroupEntity(1, "Today", false, REMOVE_DONE_WORKS)
             insertTopicUseCase.invoke(InsertTopicUseCase.Param(data)).let {
                 insertWorkUseCase.invoke(
                     InsertWorkUseCase.Param(
@@ -34,7 +35,8 @@ class MainActivityViewModel @ViewModelInject constructor(
                             name = topic,
                             groupId = it,
                             listContent = mutableListOf(),
-                            doneAll = false
+                            doneAll = false,
+                            isShowContents = false
                         )
                     )
                 )

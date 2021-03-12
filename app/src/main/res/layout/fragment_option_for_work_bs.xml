@@ -94,4 +94,19 @@
         android:src="@drawable/ic_reminder_set_time"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvClockInfo" />
+
+    <Button
+        android:id="@+id/btnDelete"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:text="@string/action_done"
+        android:textAllCaps="false"
+        android:textColor="@color/red_200"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgSettingClock" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,6 +17,7 @@ import com.example.reminds.ui.fragment.detail.ListWorkFragment
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import com.example.reminds.utils.*
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_option_for_work_bs.*
 
@@ -88,6 +89,13 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
 
 
     private fun setListener() {
+        btnDelete.setOnClickListenerBlock {
+            showAlertDeleteDialog(resources.getString(R.string.content_delete_topic_title)) {
+                viewModel.deleteWork()
+                dismiss()
+            }
+        }
+
         btnBack.setOnClickListenerBlock {
             dismiss()
         }
@@ -130,6 +138,18 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
 
     private fun setupTimePickerForContent() {
         navigate(OptionForWorkBSFragmentDirections.actionOptionForWorkBSFragmentToDateTimePickerDialog(System.currentTimeMillis() + (60 * 1000)))
+    }
+
+    private fun showAlertDeleteDialog(message: String, block: () -> Unit) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(resources.getString(R.string.notify_title))
+            .setMessage(message)
+            .setNegativeButton(resources.getString(R.string.cancel_action)) { _, _ ->
+            }
+            .setPositiveButton(resources.getString(R.string.accept_action)) { _, _ ->
+                block.invoke()
+            }
+            .show()
     }
 
 }

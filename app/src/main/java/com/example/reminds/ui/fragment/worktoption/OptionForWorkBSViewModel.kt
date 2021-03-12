@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.common.base.model.WorkDataEntity
+import com.example.domain.usecase.db.workintopic.DeleteWorkUseCase
 import com.example.domain.usecase.db.workintopic.GetWorkByIdUseCase
 import com.example.domain.usecase.db.workintopic.UpdateWorkUseCase
 import com.example.reminds.common.BaseViewModel
@@ -14,7 +15,8 @@ import kotlinx.coroutines.launch
 
 class OptionForWorkBSViewModel @ViewModelInject constructor(
     private val workByIdUseCase: GetWorkByIdUseCase,
-    private val updateWorkUseCase: UpdateWorkUseCase
+    private val updateWorkUseCase: UpdateWorkUseCase,
+    private val deleteWorkUseCase: DeleteWorkUseCase
 ) : BaseViewModel() {
     private val _idWorkLiveData: LiveData<Long> = MutableLiveData()
 
@@ -66,4 +68,9 @@ class OptionForWorkBSViewModel @ViewModelInject constructor(
             progressUpdateWork.postValue(false)
         }
     }
+
+    fun deleteWork() = viewModelScope.launch(handler + Dispatchers.IO) {
+        deleteWorkUseCase.invoke(DeleteWorkUseCase.Param(_workDataLiveData.value))
+    }
+
 }

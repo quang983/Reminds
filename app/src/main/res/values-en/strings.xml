@@ -23,7 +23,7 @@
     <string name="setting_hire_task_done_title">Hide completed reminders</string>
     <string name="new_data_title">Add new</string>
     <string name="notify_title">Notification</string>
-    <string name="content_delete_topic_title">Are you sure you want to remove this item from the list?</string>
+    <string name="content_delete_topic_title">Are you sure you want to remove this task from the list?</string>
     <string name="cancel_action">Cancel</string>
     <string name="accept_action">Agree</string>
     <string name="notify_channel">CHANNEL_123</string>

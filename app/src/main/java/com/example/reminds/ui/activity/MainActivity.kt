@@ -16,8 +16,6 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.common.base.model.AlarmNotificationEntity
-import com.example.framework.local.cache.CacheImpl.Companion.KEY_FIRST_LOGIN
-import com.example.framework.local.cache.CacheImpl.Companion.SHARED_NAME
 import com.example.reminds.R
 import com.example.reminds.service.INSERT_OBJECT_TIMER_DATA
 import com.example.reminds.service.NotificationService
@@ -30,6 +28,9 @@ import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.content_main.*
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
@@ -52,6 +53,8 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var intentService: Intent
 
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
     /** Messenger for communicating with the service.  */
     private var mMessenger: Messenger? = null
     val viewModel: MainActivityViewModel by viewModels()
@@ -60,6 +63,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        firebaseAnalytics = Firebase.analytics
+
         setSupportActionBar(findViewById(R.id.toolbar))
         onStartService()
         createNotificationChannel()

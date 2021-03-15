@@ -57,6 +57,13 @@ class HomeFragment : Fragment() {
         setupTransition(view)
         presentShowcaseView()
         observeData()
+        forceCrash()
+    }
+
+    private fun forceCrash(){
+        btnForce.setOnClickListener {
+            throw RuntimeException("Test Crash") // Force a crash
+        }
     }
 
 

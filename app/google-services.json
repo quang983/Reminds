@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "640472977941",
+    "project_id": "task-task-bad06",
+    "storage_bucket": "task-task-bad06.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:640472977941:android:c3a054fd4d2caf7f6af41c",
+        "android_client_info": {
+          "package_name": "com.quangtd.todosimple"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "640472977941-uaggluhvovc4uhi4v93igtdak1hbjsf8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzS31Njo4uCrERHm8QxlPNlAGCE6RaOMA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "640472977941-uaggluhvovc4uhi4v93igtdak1hbjsf8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

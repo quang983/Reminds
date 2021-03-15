@@ -120,7 +120,6 @@ open class NotificationService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-//        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show()
         return START_STICKY
     }
 

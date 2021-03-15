@@ -66,7 +66,6 @@ class MainActivity : AppCompatActivity() {
         /*show back press button*/
         navController = findNavController(R.id.nav_host_fragment)
         NavigationUI.setupActionBarWithNavController(this, navController)
-        checkAddFirstTopic()
         catchEventKeyboard()
         setObserver()
         createAdsMode()
@@ -105,25 +104,6 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         stopService(intentService)
     }
-
-    private fun checkAddFirstTopic() {
-        val shared = this.applicationContext.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE)
-        if (shared.getBoolean(KEY_FIRST_LOGIN, true)) {
-            viewModel.addFirstTopic(resources.getString(R.string.topic_title))
-            shared.edit().putBoolean(KEY_FIRST_LOGIN, false).apply()
-        }
-    }
-
-/*
-    override fun onStop() {
-        super.onStop()
-        // Unbind from the service
-        if (bound) {
-            unbindService(mConnection)
-            bound = false
-        }
-    }
-*/
 
     /**
      * Class for interacting with the main interface of the service.

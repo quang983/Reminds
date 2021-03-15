@@ -1,5 +1,6 @@
 package com.example.reminds.ui.fragment.home
 
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.example.common.base.model.TopicGroupEntity
+import com.example.framework.local.cache.CacheImpl
 import com.example.reminds.R
 import com.example.reminds.ui.adapter.TopicAdapter
 import com.example.reminds.utils.*
@@ -42,6 +44,9 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        checkAddFirstTopic()
+
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -49,9 +54,18 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
         setupListener()
-        observeData()
         setupTransition(view)
         presentShowcaseView()
+        observeData()
+    }
+
+
+    private fun checkAddFirstTopic() {
+        val shared = requireContext().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
+        if (shared.getBoolean(CacheImpl.KEY_FIRST_LOGIN, true)) {
+            viewModel.addFirstTopic(resources.getString(R.string.topic_title))
+            shared.edit().putBoolean(CacheImpl.KEY_FIRST_LOGIN, false).apply()
+        }
     }
 
     private fun setupTransition(view: View) {

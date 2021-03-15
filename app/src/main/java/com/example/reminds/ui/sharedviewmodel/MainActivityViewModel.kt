@@ -27,26 +27,4 @@ class MainActivityViewModel @ViewModelInject constructor(
     fun setNotifyDataInsert(alarm: AlarmNotificationEntity) = GlobalScope.launch(Dispatchers.IO + handler) {
         notifyDataInsert.postValue(alarm)
     }
-
-    fun addFirstTopic(topic: String) {
-        GlobalScope.launch(handler + Dispatchers.IO) {
-            val data = TopicGroupEntity(1, "Today", false, REMOVE_DONE_WORKS)
-            insertTopicUseCase.invoke(InsertTopicUseCase.Param(data)).let {
-                insertWorkUseCase.invoke(
-                    InsertWorkUseCase.Param(
-                        WorkDataEntity(
-                            id = System.currentTimeMillis(),
-                            name = topic,
-                            groupId = it,
-                            listContent = mutableListOf(),
-                            doneAll = false,
-                            isShowContents = false
-                        )
-                    )
-                )
-            }
-        }
-    }
-
-
 }

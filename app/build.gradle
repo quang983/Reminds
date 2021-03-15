@@ -31,12 +31,14 @@ android {
 
     buildTypes {
         debug {
-            minifyEnabled true
+            minifyEnabled false
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.keystoreDebug
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.keystoreDebug
         }

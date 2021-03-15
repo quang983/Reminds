@@ -35,6 +35,7 @@ class ListContentCheckAdapter(
                     && oldItem.timer == newItem.timer
                     && oldItem.isCheckDone == newItem.isCheckDone
                     && oldItem.hashTag == newItem.hashTag
+                    && oldItem.name == newItem.name
         }
 
         override fun getChangePayload(oldItem: ContentDataEntity, newItem: ContentDataEntity): Any? {
@@ -50,6 +51,10 @@ class ListContentCheckAdapter(
             }
             if (oldItem.hashTag != newItem.hashTag) {
                 payloads.add(PAYLOAD_HASH_TAG)
+            }
+
+            if (oldItem.name != newItem.name) {
+                payloads.add(PAYLOAD_NAME)
             }
 
             return if (payloads.size > 0) {
@@ -94,6 +99,10 @@ class ListContentCheckAdapter(
         if (payloads.contains(PAYLOAD_HASH_TAG)) {
             refreshFlag(view, item)
         }
+        if (payloads.contains(PAYLOAD_NAME)) {
+            refreshEdtName(view, item)
+        }
+
     }
 
     override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: ContentDataEntity) {
@@ -103,6 +112,7 @@ class ListContentCheckAdapter(
         refreshTvTimer(view, item)
         refreshEdtContent(view, item)
         refreshCheckBox(view, item)
+        refreshEdtName(view, item)
     }
 
     private fun setupViewBinderHelper(view: View, item: ContentDataEntity) {
@@ -119,10 +129,14 @@ class ListContentCheckAdapter(
             _isShowKeyboard = false
         }
 
-        view.tvContentCheck.setText(item.name)
+        view.tvContentCheck.checkDiffAndSetText(item.name)
         view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
         view.tvContentCheck.underLine()
         view.tvContentCheck.setMultiLineCapSentencesAndDoneAction()
+    }
+
+    private fun refreshEdtName(view: View, item: ContentDataEntity) {
+        view.tvContentCheck.checkDiffAndSetText(item.name)
     }
 
     private fun refreshFlag(view: View, item: ContentDataEntity) {
@@ -228,7 +242,7 @@ class ListContentCheckAdapter(
         view.tvContentCheck.setTextChangedListener {
             (view.tag as? ContentDataEntity)?.let { item ->
                 if (it.isFocused && item.name != it.text.toString()) {
-                    item.copy().apply {
+                    item.apply {
                         this.name = it.text.toString()
                         updateNameContent(this)
                     }

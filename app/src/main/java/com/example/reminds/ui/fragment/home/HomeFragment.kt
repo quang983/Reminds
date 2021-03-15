@@ -57,21 +57,15 @@ class HomeFragment : Fragment() {
         setupTransition(view)
         presentShowcaseView()
         observeData()
-        forceCrash()
     }
-
-    private fun forceCrash(){
-        btnForce.setOnClickListener {
-            throw RuntimeException("Test Crash") // Force a crash
-        }
-    }
-
 
     private fun checkAddFirstTopic() {
         val shared = requireContext().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
         if (shared.getBoolean(CacheImpl.KEY_FIRST_LOGIN, true)) {
             viewModel.addFirstTopic(resources.getString(R.string.topic_title))
             shared.edit().putBoolean(CacheImpl.KEY_FIRST_LOGIN, false).apply()
+        } else {
+            viewModel.postAddFirstTopic(true)
         }
     }
 

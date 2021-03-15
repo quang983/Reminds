@@ -102,6 +102,8 @@ class ListWorkViewModel @ViewModelInject constructor(
     fun reSaveListWorkToDb(wId: Long) = GlobalScope.launch(handler + Dispatchers.IO) {
         val list = listWorkViewModel.map {
             it.copyFilterNotEmpty()
+        }.apply {
+            this.getLastOrNull()?.isShowContents = true
         }
         _workId = wId
         updateListWorkUseCase.invoke(UpdateListWorkUseCase.Param(list))

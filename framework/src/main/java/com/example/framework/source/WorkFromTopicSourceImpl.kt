@@ -29,9 +29,14 @@ class WorkFromTopicSourceImpl @Inject constructor(
                             it.name,
                             it.idOwnerWork,
                             hashTag = it.hashTag,
-                            timer = it.timer, isCheckDone = it.isCheckDone
+                            timer = it.timer,
+                            isCheckDone = it.isCheckDone
                         )
-                    } as ArrayList<ContentDataEntity>
+                    } as ArrayList<ContentDataEntity>,
+                    it.doneAll,
+                    it.isShowContents,
+                    it.hashTag,
+                    it.timerReminder
                 )
             }
         }.conflate()
@@ -50,11 +55,40 @@ class WorkFromTopicSourceImpl @Inject constructor(
                             it.name,
                             it.idOwnerWork,
                             hashTag = it.hashTag,
-                            timer = it.timer, isCheckDone = it.isCheckDone
+                            timer = it.timer,
+                            isCheckDone = it.isCheckDone
                         )
-                    } as ArrayList<ContentDataEntity>
+                    } as ArrayList<ContentDataEntity>,
+                    doneAll = it.doneAll,
+                    it.isShowContents,
+                    it.hashTag,
+                    it.timerReminder
                 )
             }
+        }
+    }
+
+    override suspend fun getWorkById(idWork: Long): WorkDataEntity? {
+        return dao.findById(idWork)?.let { it ->
+            WorkDataEntity(
+                it.id,
+                it.name,
+                it.idOwnerGroup,
+                it.listContent.map {
+                    ContentDataEntity(
+                        it.idContent,
+                        it.name,
+                        it.idOwnerWork,
+                        hashTag = it.hashTag,
+                        timer = it.timer,
+                        isCheckDone = it.isCheckDone
+                    )
+                } as ArrayList<ContentDataEntity>,
+                doneAll = it.doneAll,
+                it.isShowContents,
+                it.hashTag,
+                it.timerReminder
+            )
         }
     }
 
@@ -67,7 +101,7 @@ class WorkFromTopicSourceImpl @Inject constructor(
                         it.id, it.name, it.idOwnerWork, hashTag = it.hashTag,
                         timer = it.timer, isCheckDone = it.isCheckDone
                     )
-                }.toMutableList()
+                }.toMutableList(), false, isShowContents = false, false, -1
             )
         )
     }
@@ -81,7 +115,7 @@ class WorkFromTopicSourceImpl @Inject constructor(
                         it.id, it.name, it.idOwnerWork, hashTag = it.hashTag,
                         timer = it.timer, isCheckDone = it.isCheckDone
                     )
-                }.toMutableList()
+                }.toMutableList(), false, isShowContents = false, false, -1
             )
         }.toTypedArray())
     }
@@ -96,7 +130,7 @@ class WorkFromTopicSourceImpl @Inject constructor(
                         it.id, it.name, it.idOwnerWork, hashTag = it.hashTag,
                         timer = it.timer, isCheckDone = it.isCheckDone
                     )
-                }.toMutableList()
+                }.toMutableList(), data.doneAll, data.isShowContents, data.hashTag, data.timerReminder
             )
         )
     }
@@ -110,7 +144,7 @@ class WorkFromTopicSourceImpl @Inject constructor(
                         it.id, it.name, it.idOwnerWork, hashTag = it.hashTag,
                         timer = it.timer, isCheckDone = it.isCheckDone
                     )
-                }.toMutableList()
+                }.toMutableList(), it.doneAll, it.isShowContents, it.hashTag, it.timerReminder
             )
         }.toTypedArray())
     }
@@ -128,7 +162,7 @@ class WorkFromTopicSourceImpl @Inject constructor(
                         it.id, it.name, it.idOwnerWork, hashTag = it.hashTag,
                         timer = it.timer, isCheckDone = it.isCheckDone
                     )
-                }.toMutableList()
+                }.toMutableList(), it.doneAll, it.isShowContents, it.hashTag, it.timerReminder
             )
         }.toTypedArray())
     }

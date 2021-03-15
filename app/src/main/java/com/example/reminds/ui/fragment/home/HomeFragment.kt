@@ -1,5 +1,6 @@
 package com.example.reminds.ui.fragment.home
 
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.example.common.base.model.TopicGroupEntity
+import com.example.framework.local.cache.CacheImpl
 import com.example.reminds.R
 import com.example.reminds.ui.adapter.TopicAdapter
 import com.example.reminds.utils.*
@@ -33,7 +35,8 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
-    private lateinit var adapter: TopicAdapter
+
+    //    private lateinit var adapter: TopicAdapter
     private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
     private lateinit var customAlertDialogView: View
 
@@ -41,25 +44,31 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        checkAddFirstTopic()
+
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presentShowcaseView()
-        setupTransition(view)
-        getData()
         setupUI()
         setupListener()
+        setupTransition(view)
+        presentShowcaseView()
         observeData()
     }
 
-    private fun getData() {
-        viewModel.getFastTopic()
+
+    private fun checkAddFirstTopic() {
+        val shared = requireContext().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
+        if (shared.getBoolean(CacheImpl.KEY_FIRST_LOGIN, true)) {
+            viewModel.addFirstTopic(resources.getString(R.string.topic_title))
+            shared.edit().putBoolean(CacheImpl.KEY_FIRST_LOGIN, false).apply()
+        }
     }
 
     private fun setupTransition(view: View) {
-        // TODO: Set up postponed enter transition.
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
     }
@@ -67,7 +76,8 @@ class HomeFragment : Fragment() {
     private fun setupUI() {
         materialAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
         layoutToday.transitionName = "def"
-        adapter = TopicAdapter({ id, title, view ->
+
+        TopicAdapter({ id, title, view ->
             val emailCardDetailTransitionName = getString(R.string.transition_topic_to_detail)
             val extras = FragmentNavigatorExtras(view to emailCardDetailTransitionName)
             navigate(HomeFragmentDirections.actionFirstFragmentToSecondFragment(id, title), null, extras)
@@ -90,7 +100,7 @@ class HomeFragment : Fragment() {
             navigate(
                 HomeFragmentDirections
                     .actionFirstFragmentToSecondFragment(
-                        viewModel.fastTopicData.value?.topicGroupEntity?.id ?: 1, resources.getString(R.string.title_faster_note)
+                        1, resources.getString(R.string.title_faster_note)
                     ), null, extras
             )
         }
@@ -119,31 +129,31 @@ class HomeFragment : Fragment() {
             topicsGroupDataShow.observe(viewLifecycleOwner, {
                 groupList.setVisible(it.isNotEmpty())
                 layoutEmpty.setVisible(it.isEmpty())
-                adapter.submitList(it)
+                (recyclerTopic.adapter as? TopicAdapter)?.submitList(it)
             })
-            fastTopicData.observe(viewLifecycleOwner, { topic ->
-                layoutToday.tvCount.text = topic.contents.size.toString()
-                if (topic.contents.isNotEmpty()) {
-                    topic.contents.forEachIndexed { index, it ->
+            fastTopicData.observe(viewLifecycleOwner, { works ->
+                layoutToday.tvCount.text = works.size.toString()
+                if (works.isNotEmpty()) {
+                    works.forEachIndexed { index, it ->
                         when (index) {
                             0 -> {
                                 layoutToday.tvContent.setVisible(true)
-                                layoutToday.viewDividerContent.setVisible(topic.contents.size - 1 > 0)
+                                layoutToday.viewDividerContent.setVisible(works.size - 1 > 0)
                                 layoutToday.tvContent.text = it.name
                             }
                             1 -> {
                                 layoutToday.tvContentSecond.setVisible(true)
-                                layoutToday.viewDividerContentSecond.setVisible(topic.contents.size - 1 > 1)
+                                layoutToday.viewDividerContentSecond.setVisible(works.size - 1 > 1)
                                 layoutToday.tvContentSecond.text = it.name
                             }
                             2 -> {
                                 layoutToday.tvContentThird.setVisible(true)
-                                layoutToday.viewDividerContentMore.setVisible(topic.contents.size - 1 > 2)
+                                layoutToday.viewDividerContentMore.setVisible(works.size - 1 > 2)
                                 layoutToday.tvContentThird.text = it.name
                             }
                             else -> {
-                                layoutToday.tvContentMore.setVisible((topic.contents.size - 3) > 0)
-                                layoutToday.tvContentMore.text = "+${(topic.contents.size - 3).takeIf { it > 0 }} tác vụ"
+                                layoutToday.tvContentMore.setVisible((works.size - 3) > 0)
+                                layoutToday.tvContentMore.text = "+${(works.size - 3).takeIf { it > 0 }} tác vụ"
                                 return@forEachIndexed
                             }
                         }
@@ -158,11 +168,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun showBottomSheet() {
-/*        val bottomSheetFragment = NewTopicBtsFragment()
-        bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)*/
         customAlertDialogView = LayoutInflater.from(requireContext())
             .inflate(R.layout.layout_custom_alert_text_input, null, false)
         customAlertDialogView.setPadding(36.toDp, 0, 36.toDp, 0)
+        customAlertDialogView.rootView.textInput.hint = getString(R.string.add_new_topic_hint)
         materialAlertDialogBuilder.setView(customAlertDialogView)
             .setTitle(resources.getString(R.string.notify_title))
             .setPositiveButton(resources.getString(R.string.add)) { _, _ ->
@@ -187,11 +196,7 @@ class HomeFragment : Fragment() {
     private fun presentShowcaseView() {
         val config = ShowcaseConfig()
         config.delay = 500 // half second between each showcase view
-
-
         val sequence = MaterialShowcaseSequence(requireActivity(), "SHOWCASE_ID")
-
-//        sequence.setOnItemShownListener { itemView, position -> Toast.makeText(itemView.context, "Item #$position", Toast.LENGTH_SHORT).show() }
 
         sequence.setConfig(config)
 

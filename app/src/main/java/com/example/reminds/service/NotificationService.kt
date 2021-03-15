@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.os.*
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.common.base.model.AlarmNotificationEntity
 import com.example.reminds.R
@@ -31,18 +32,15 @@ open class NotificationService : Service() {
     private fun startForeground(service: Service) {
         val channelId =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                createNotificationChannel(service, service.applicationContext.getString(R.string.notify_channel), "My Background Service")
+                createNotificationChannel(service, service.getString(R.string.notify_channel), "My Background Service")
             } else {
                 ""
             }
 
         val notificationBuilder = NotificationCompat.Builder(service, channelId)
         val notification = notificationBuilder.setOngoing(true)
+            .setColor(ContextCompat.getColor(service.applicationContext, android.R.color.holo_blue_light))
             .setSmallIcon(R.drawable.ic_tasks_new)
-            .setWhen(2)
-            .setShowWhen(true)
-            .setTicker("Ticker Text")
-            .setUsesChronometer(true)
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .setCategory(Notification.CATEGORY_SERVICE)
             .build()
@@ -80,7 +78,8 @@ open class NotificationService : Service() {
                 }
                 INSERT_OBJECT_TIMER_DATA -> {
                     val notify = msg.obj as AlarmNotificationEntity
-                    scheduleAlarm(TimestampUtils.getFullFormatTime(notify.timeAlarm, "dd/MM/yyyy HH:mm"), notify.nameWork, notify.nameContent, notify.idContent.toInt())
+                    scheduleAlarm(TimestampUtils.getFullFormatTime(notify.timeAlarm, "dd/MM/yyyy HH:mm"),
+                        notify.nameWork, notify.nameContent, notify.idContent.toInt())
                 }
                 else -> super.handleMessage(msg)
             }
@@ -121,7 +120,6 @@ open class NotificationService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-//        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show()
         return START_STICKY
     }
 

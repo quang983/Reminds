@@ -22,6 +22,6 @@ interface LocalWorkFromTopicDao : BaseDao<WorkFoTopic> {
     fun fetchWork(): List<WorkFoTopic>
 
     @Query("SELECT * FROM WorkFoTopic where id=:id")
-    fun findById(id: Long): List<WorkFoTopic>
+    fun findById(id: Long): WorkFoTopic?
 
 }

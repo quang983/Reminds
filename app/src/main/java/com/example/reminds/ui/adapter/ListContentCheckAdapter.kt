@@ -4,7 +4,6 @@ import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.DiffUtil
 import com.chauthai.swipereveallayout.ViewBinderHelper
 import com.example.common.base.model.ContentDataEntity
@@ -15,10 +14,10 @@ import com.example.reminds.utils.*
 import com.example.reminds.utils.TimestampUtils.INCREASE_DATE_FORMAT
 import kotlinx.android.synthetic.main.item_content_check.view.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ListContentCheckAdapter(
-    private val onClickDetail: (id: Long) -> Unit,
     private val insertItemClick: (item: ContentDataEntity) -> Unit,
     private val handlerCheckItem: (item: ContentDataEntity) -> Unit,
     private val updateNameContent: (item: ContentDataEntity) -> Unit,
@@ -32,22 +31,16 @@ class ListContentCheckAdapter(
         }
 
         override fun areContentsTheSame(oldItem: ContentDataEntity, newItem: ContentDataEntity): Boolean {
-            return oldItem.isFocus == newItem.isFocus && oldItem.idOwnerWork == newItem.idOwnerWork
-                    && oldItem.timer == newItem.timer && oldItem.isCheckDone == newItem.isCheckDone
+            return oldItem.idOwnerWork == newItem.idOwnerWork
+                    && oldItem.timer == newItem.timer
+                    && oldItem.isCheckDone == newItem.isCheckDone
                     && oldItem.hashTag == newItem.hashTag
-
         }
 
         override fun getChangePayload(oldItem: ContentDataEntity, newItem: ContentDataEntity): Any? {
             val payloads = ArrayList<Any>()
-            /* if (oldItem.name != newItem.name) {
-                 payloads.add(PAYLOAD_NAME)
-             }*/
             if (oldItem.idOwnerWork != newItem.idOwnerWork) {
                 payloads.add(PAYLOAD_ID_WORK)
-            }
-            if (oldItem.isFocus != newItem.isFocus) {
-                payloads.add(PAYLOAD_FOCUS)
             }
             if (oldItem.timer != newItem.timer) {
                 payloads.add(PAYLOAD_TIMER)
@@ -67,28 +60,31 @@ class ListContentCheckAdapter(
         }
 
     }) {
-    private val DELAY: Long = 2000
-    private var timer = Timer()
-    private var isShowKeyboard: Boolean = false
-    private val viewBinderHelper = ViewBinderHelper()
+    private val _delay: Long = 800
+    private var _timer = Timer()
+
+    private var _isShowKeyboard: Boolean = false
+
+    private val _viewBinderHelper = ViewBinderHelper()
 
     override fun createView(parent: ViewGroup, viewType: Int?): View {
-        return parent.inflate(R.layout.item_content_check)
+        val view = parent.inflate(R.layout.item_content_check)
+        setOnEditorListener(view)
+        setOnClickItemListener(view)
+        return view
     }
 
-    override fun bind(view: View, viewType: Int, position: Int, item: ContentDataEntity, payloads: MutableList<Any>) {
-        super.bind(view, viewType, position, item, payloads)
+    override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: ContentDataEntity, payloads: MutableList<Any>) {
+        super.bind(holder, view, viewType, position, item, payloads)
+        view.tag = item
         if (payloads.contains(PAYLOAD_FOCUS)) {
-            if (position == currentList.size - 1 && item.isFocus && currentList.size - 1 >= 0) {
+            if (position == currentList.size - 1 && item.name.isBlank() && currentList.size - 1 >= 0) {
                 view.tvContentCheck.requestFocus()
                 KeyboardUtils.showKeyboard(view.context)
             } else {
                 view.tvContentCheck.clearFocus()
             }
         }
-        /*if (payloads.contains(PAYLOAD_NAME)) {
-            refreshEdtContent(view, item)
-        }*/
         if (payloads.contains(PAYLOAD_TIMER)) {
             refreshTvTimer(view, item)
         }
@@ -101,31 +97,31 @@ class ListContentCheckAdapter(
     }
 
     override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: ContentDataEntity) {
+        view.tag = item
         setupViewBinderHelper(view, item)
         refreshFlag(view, item)
         refreshTvTimer(view, item)
         refreshEdtContent(view, item)
         refreshCheckBox(view, item)
-        setOnClickItemListener(view, item)
-        setOnEditorListener(view, item)
     }
 
     private fun setupViewBinderHelper(view: View, item: ContentDataEntity) {
-        viewBinderHelper.setOpenOnlyOne(true)
-        viewBinderHelper.bind(view.swipeLayout, item.id.toString())
+        _viewBinderHelper.setOpenOnlyOne(true)
+        _viewBinderHelper.bind(view.swipeLayout, item.id.toString())
     }
 
     private fun refreshEdtContent(view: View, item: ContentDataEntity) {
-        if (item.isFocus) {
+        if (item.name.isBlank()) {
             view.tvContentCheck.requestFocus()
-            if (!isShowKeyboard) {
+            if (!_isShowKeyboard) {
                 KeyboardUtils.showKeyboard(view.context)
             }
-            isShowKeyboard = false
+            _isShowKeyboard = false
         }
 
         view.tvContentCheck.setText(item.name)
         view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
+        view.tvContentCheck.underLine()
         view.tvContentCheck.setMultiLineCapSentencesAndDoneAction()
     }
 
@@ -143,106 +139,120 @@ class ListContentCheckAdapter(
     }
 
     private fun refreshCheckBox(view: View, item: ContentDataEntity) {
-        view.rbChecked.setChecked(item.isCheckDone)
-        view.tvContentCheck.setTextColor(
-            if (item.isCheckDone) view.context.resources.getColor(R.color.bg_gray) else
-                view.context.resources.getColor(R.color.black)
-        )
-        view.rbChecked.setOnCheckedChangeListener { button, isChecked ->
-            if (button.isPressed) {
-                item.isFocus = false
-                if (isChecked && view.tvContentCheck.text.toString().isNotEmpty()) {
-                    timer = Timer()
-                    view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.bg_gray))
-                    timer.schedule(
-                        object : TimerTask() {
-                            override fun run() {
-                                item.isCheckDone = true
-                                handlerCheckItem.invoke(item)
-                            }
-                        },
-                        DELAY
-                    )
-                } else {
-                    view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
-                    item.isCheckDone = false
-                    handlerCheckItem.invoke(item)
-                    timer.cancel()
-                    timer.purge()
-                }
-            }
+        view.rbChecked.isChecked = item.isCheckDone
+        if (item.isCheckDone) {
+            view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.bg_gray))
+            view.tvContentCheck.underLine()
+        } else {
+            view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
+            view.tvContentCheck.removeUnderLine()
         }
     }
 
-    private fun setOnClickItemListener(view: View, item: ContentDataEntity) {
-        view.rootView.setOnClickListenerBlock {
-            val itemById = currentList.filter { it.id == item.id }.getFirstOrNull()
-            itemById?.let {
-                onClickDetail.invoke(it.id)
-            }
-        }
-
+    private fun setOnClickItemListener(view: View) {
         view.imgTimer.setOnClickListenerBlock {
-            val itemById = currentList.filter { it.id == item.id }.getFirstOrNull()
-            itemById?.let { it ->
-                ContentDataEntity(
-                    it.id, it.name,
-                    it.idOwnerWork, it.isFocus, it.hashTag,
-                    it.timer, it.isCheckDone
-                ).let {
-                    moreActionClick.invoke(it, TYPE_TIMER_CLICK)
-                    refreshTvTimer(view, it)
-                    Handler().postDelayed({
-                        view.swipeLayout.close(true)
-                    }, 1000)
+            (view.tag as? ContentDataEntity)?.let { item ->
+                val itemById = currentList.filter { it.id == item.id }.getFirstOrNull()
+                itemById?.let { it ->
+                    ContentDataEntity(
+                        it.id, it.name,
+                        it.idOwnerWork, it.hashTag,
+                        it.timer, it.isCheckDone
+                    ).let {
+                        moreActionClick.invoke(it, TYPE_TIMER_CLICK)
+                        refreshTvTimer(view, it)
+                        Handler().postDelayed({
+                            view.swipeLayout.close(true)
+                        }, 1000)
+                    }
                 }
             }
         }
 
         view.imgGim.setOnClickListenerBlock {
-            val itemById = currentList.filter { it.id == item.id }.getFirstOrNull()
-            itemById?.let {
-                it.hashTag = !it.hashTag
-                moreActionClick.invoke(it, TYPE_TAG_CLICK)
-                refreshFlag(view, it)
-                view.swipeLayout.close(true)
+            (view.tag as? ContentDataEntity)?.let { item ->
+                val itemById = currentList.filter { it.id == item.id }.getFirstOrNull()
+                itemById?.copy()?.let {
+                    it.hashTag = !it.hashTag
+                    moreActionClick.invoke(it, TYPE_TAG_CLICK)
+                    refreshFlag(view, it)
+                    view.swipeLayout.close(true)
+                }
             }
         }
 
         view.imgDelete.setOnClickListenerBlock {
-            val itemById = currentList.filter { it.id == item.id }.getFirstOrNull()
-            itemById?.let {
-                moreActionClick.invoke(it, TYPE_DELETE_CLICK)
-                view.swipeLayout.close(true)
+            (view.tag as? ContentDataEntity)?.let { item ->
+                val itemById = currentList.filter { it.id == item.id }.getFirstOrNull()
+                itemById?.let {
+                    moreActionClick.invoke(it, TYPE_DELETE_CLICK)
+                    view.swipeLayout.close(true)
+                }
             }
         }
     }
 
-    private fun setOnEditorListener(view: View, item: ContentDataEntity) {
-        view.tvContentCheck.addTextChangedListener {
-            item.name = it.toString()
-            updateNameContent(item)
+    private fun setOnEditorListener(view: View) {
+        view.rbChecked.setOnCheckedChangeListener { button, isChecked ->
+            if (button.isPressed) {
+                (view.tag as? ContentDataEntity)?.let { item ->
+                    if (isChecked && view.tvContentCheck.text.toString().isNotEmpty()) {
+                        _timer = Timer()
+                        view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.bg_gray))
+                        view.tvContentCheck.underLine()
+                        _timer.schedule(
+                            object : TimerTask() {
+                                override fun run() {
+                                    item.copy().apply {
+                                        this.isCheckDone = true
+                                        handlerCheckItem.invoke(this)
+                                    }
+                                }
+                            },
+                            _delay
+                        )
+                    } else {
+                        view.tvContentCheck.setTextColor(view.context.resources.getColor(R.color.black))
+                        view.tvContentCheck.removeUnderLine()
+                        item.copy().apply {
+                            this.isCheckDone = false
+                            handlerCheckItem.invoke(this)
+                            _timer.cancel()
+                            _timer.purge()
+                        }
+                    }
+                }
+            }
         }
 
-        view.tvContentCheck.setOnFocusChangeListener { _, hasFocus ->
-            item.isFocus = hasFocus
+        view.tvContentCheck.setTextChangedListener {
+            (view.tag as? ContentDataEntity)?.let { item ->
+                if (it.isFocused && item.name != it.text.toString()) {
+                    item.copy().apply {
+                        this.name = it.text.toString()
+                        updateNameContent(this)
+                    }
+                }
+            }
         }
 
         view.tvContentCheck.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE && view.tvContentCheck.text.toString().isNotEmpty()) {
-                isShowKeyboard = true
-                insertItemClick(item.apply {
-                    this.name = view.tvContentCheck.text.toString()
-                    this.isFocus = false
-                })
+                (view.tag as? ContentDataEntity)?.let { item ->
+                    _isShowKeyboard = true
+                    insertItemClick(item.copy().apply {
+                        this.name = view.tvContentCheck.text.toString()
+                    })
+                }
                 true
             } else {
-                isShowKeyboard = false
-                view.tvContentCheck.clearFocus()
-                insertItemClick(item.apply {
-                    this.name = view.tvContentCheck.text.toString()
-                    this.isFocus = false
-                })
+                (view.tag as? ContentDataEntity)?.let { item ->
+                    _isShowKeyboard = false
+                    view.tvContentCheck.clearFocus()
+                    insertItemClick(item.copy().apply {
+                        this.name = view.tvContentCheck.text.toString()
+                    })
+                }
                 false
             }
         }
@@ -254,6 +264,7 @@ class ListContentCheckAdapter(
         const val PAYLOAD_ID_WORK = "PAYLOAD_ID_WORK"
         const val PAYLOAD_TIMER = "PAYLOAD_TIMER"
         const val PAYLOAD_HASH_TAG = "PAYLOAD_HASH_TAG"
+        const val PAYLOAD_NAME = "PAYLOAD_NAME"
 
         const val TYPE_TIMER_CLICK = 100
         const val TYPE_TAG_CLICK = 101

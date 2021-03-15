@@ -35,19 +35,22 @@ abstract class BaseAdapter<T>(callBack: DiffUtil.ItemCallback<T>) : ListAdapter<
         val payload = payloads.getPositionOrNull(0).castList(Any::class.java)
 
         if (!payload.isNullOrEmpty()) {
-            bind(holder.itemView, holder.viewType, position, getItem(position), payload)
+            bind(holder, holder.itemView, holder.viewType, position, getItem(position), payload)
         } else {
             super.onBindViewHolder(holder, position, payloads)
         }
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-        bind(holder,holder.itemView, holder.viewType, position, getItem(position))
+        setExpanded(holder, holder.itemView, holder.viewType, position, getItem(position))
+
+        bind(holder, holder.itemView, holder.viewType, position, getItem(position))
     }
 
     protected abstract fun createView(parent: ViewGroup, viewType: Int? = 0): View
 
     protected open fun bind(
+        holder: BaseViewHolder,
         view: View,
         viewType: Int,
         position: Int,
@@ -56,7 +59,11 @@ abstract class BaseAdapter<T>(callBack: DiffUtil.ItemCallback<T>) : ListAdapter<
     ) {
     }
 
-    protected abstract fun bind(holder : BaseViewHolder,view: View, viewType: Int, position: Int, item: T)
+    protected abstract fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: T)
+
+    protected open fun setExpanded(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: T) {
+
+    }
 }
 
-class BaseViewHolder(val view: View, val viewType: Int) : RecyclerView.ViewHolder(view)
+class BaseViewHolder(val view: View, val viewType: Int, open var positionExpanded: Int = -1) : RecyclerView.ViewHolder(view)

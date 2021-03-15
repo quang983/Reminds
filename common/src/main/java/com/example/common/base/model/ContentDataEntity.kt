@@ -7,15 +7,11 @@ data class ContentDataEntity(
     var id: Long,
     var name: String,
     var idOwnerWork: Long,
-    var isFocus: Boolean = false,
     var hashTag: Boolean = false,
     var timer: Long = -1,
     var isCheckDone: Boolean = false
 ) : Serializable {
-    fun copy() = ContentDataEntity(id, name, idOwnerWork, isFocus, hashTag, timer, isCheckDone)
-
-    fun copyAndResetFocus() = ContentDataEntity(id, name, idOwnerWork, false, hashTag, timer, isCheckDone)
-
+    fun copy() = ContentDataEntity(id, name, idOwnerWork, hashTag, timer, isCheckDone)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

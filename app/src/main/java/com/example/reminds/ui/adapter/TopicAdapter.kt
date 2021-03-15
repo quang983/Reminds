@@ -61,8 +61,8 @@ class TopicAdapter(private val onClickDetail: (id: Long,title :String, view: Vie
         return parent.inflate(R.layout.item_topic)
     }
 
-    override fun bind(view: View, viewType: Int, position: Int, item: HomeViewModel.TopicGroupViewItem, payloads: MutableList<Any>) {
-        super.bind(view, viewType, position, item, payloads)
+    override fun bind(holder: BaseViewHolder,view: View, viewType: Int, position: Int, item: HomeViewModel.TopicGroupViewItem, payloads: MutableList<Any>) {
+        super.bind(holder,view, viewType, position, item, payloads)
         if (payloads.contains(PAYLOAD_NAME)) {
             refreshName(view, item.topicGroupEntity)
         }

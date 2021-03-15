@@ -7,20 +7,18 @@ import android.util.Log
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
-import com.example.reminds.service.ScheduledWorker.Companion.NOTIFICATION_MESSAGE
-import com.example.reminds.service.ScheduledWorker.Companion.NOTIFICATION_TITLE
 
 class NotificationBroadcastReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
         intent?.let {
-            val title = it.getStringExtra(NOTIFICATION_TITLE)
-            val message = it.getStringExtra(NOTIFICATION_MESSAGE)
+            val title = it.getStringExtra(ScheduledWorker.NOTIFICATION_TITLE)
+            val message = it.getStringExtra(ScheduledWorker.NOTIFICATION_MESSAGE)
 
             // Create Notification Data
             val notificationData = Data.Builder()
-                .putString(NOTIFICATION_TITLE, title)
-                .putString(NOTIFICATION_MESSAGE, message)
+                .putString(ScheduledWorker.NOTIFICATION_TITLE, title)
+                .putString(ScheduledWorker.NOTIFICATION_MESSAGE, message)
                 .build()
 
             // Init Worker
@@ -29,7 +27,7 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
                 .build()
 
             // Start Worker
-            WorkManager.getInstance().beginWith(work).enqueue()
+            context?.let { it1 -> WorkManager.getInstance(it1).beginWith(work).enqueue() }
 
             Log.d(javaClass.name, "WorkManager is Enqueued.")
         }

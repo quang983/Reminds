@@ -1,6 +1,7 @@
 package com.example.reminds.utils
 
 import android.content.res.Resources
+import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -17,7 +18,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.TimePicker
 import androidx.annotation.LayoutRes
+import androidx.core.widget.doAfterTextChanged
 import kotlinx.android.synthetic.main.layout_time.view.*
+import kotlin.math.max
+import kotlin.math.min
 
 fun View.visible() {
     visibility = View.VISIBLE
@@ -221,7 +225,71 @@ val Int.toPx: Int
 val Int.toDp: Int
     get() = (this / Resources.getSystem().displayMetrics.density).toInt()
 
-/*
-fun ImageView.showImage(source: Any, vararg transformations: Transformation<Bitmap>) {
-    ImageUtils.showImage(this, source, *transformations)
-}*/
+fun TextView.underLine(){
+    paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+}
+
+fun TextView.removeUnderLine(){
+    paintFlags = 0
+}
+
+
+inline fun EditText.onChangeFormat(crossinline format: (text: String) -> String) {
+    var textWatcher: TextWatcher? = null
+    textWatcher = doAfterTextChanged {
+        this@onChangeFormat.removeTextChangedListener(textWatcher)
+        checkDiffAndSetText(format(text.toString()))
+        this@onChangeFormat.addTextChangedListener(textWatcher)
+    }
+}
+
+inline fun EditText.onUserEnter(crossinline action: (text: String) -> Unit) {
+    var oldText = ""
+    doAfterTextChanged {
+        error = error
+        val newText = text?.toString() ?: ""
+        if (oldText != newText && isFocused) {
+            action.invoke(newText)
+        }
+        oldText = newText
+    }
+}
+
+fun EditText.setFocus(focus: Boolean) {
+    if (focus) {
+        requestFocus()
+    } else {
+        clearFocus()
+    }
+}
+
+fun EditText.checkDiffAndSetText(newText: String?) {
+    newText?.let { _newText ->
+        val currentText = this.text.toString()
+        if (_newText != currentText) {
+            val currentSelected = selectionEnd
+            val newSelected = min(max(0, newText.length - currentText.length + currentSelected), newText.length)
+
+            this.setText(newText)
+            if (this.isFocused) {
+                this.setSelection(newSelected)
+            }
+        }
+    }
+}
+
+fun EditText.checkDiffAndSetText2(newText: String?) {
+    newText?.let { _newText ->
+        val currentText = this.text.toString()
+        if (_newText != currentText) {
+            val currentSelected = selectionEnd
+            val newSelected = min(max(0, newText.length - currentText.length + currentSelected), newText.length - 1)
+
+            this.setText(newText)
+            if (this.isFocused) {
+                this.setSelection(newSelected)
+            }
+        }
+    }
+}
+

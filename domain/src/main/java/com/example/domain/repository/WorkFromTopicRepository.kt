@@ -8,4 +8,6 @@ interface WorkFromTopicRepository : BaseRepository<WorkDataEntity> {
     suspend fun fetchAllWorkFromTopicFlow(idGroup: Long): Flow<List<WorkDataEntity>>
 
     suspend fun fetchAllWorkFromTopic(idGroup: Long): List<WorkDataEntity>
+
+    suspend fun getWorkFromTopicById(idWork : Long) : WorkDataEntity?
 }

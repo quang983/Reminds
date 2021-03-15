@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TodoTodo</string>
+    <string name="app_name">Task Task</string>
     <string name="home_screen_title">Nhắc nhở</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -25,7 +25,7 @@
     <string name="setting_hire_task_done_title">Ẩn lời nhắc đã hoàn tất</string>
     <string name="new_data_title">Thêm mới</string>
     <string name="notify_title">Thông báo</string>
-    <string name="content_delete_topic_title">Bạn có chắc chắn muốn xoá mục này khỏi danh sách?</string>
+    <string name="content_delete_topic_title">Bạn có chắc chắn muốn xoá công việc này khỏi danh sách?</string>
     <string name="cancel_action">Huỷ</string>
     <string name="accept_action">Đồng ý</string>
     <string name="notify_channel">CHANNEL_123</string>
@@ -54,12 +54,24 @@
     <string name="message_alert_delete_work_title">Bạn có chắc chắn muốn xoá danh mục này khỏi danh sách?</string>
     <string name="message_alert_hide_error_work_title">Bạn không thể ẩn danh mục này khi chưa hoàn thành hết các tác vụ</string>
 
-<!--    <string name="empty_list"><![CDATA[<b>Danh sách trống, chọn biểu tượng</b><br>dấu + để thêm 1 danh sách mới]]></string>-->
+    <!--    <string name="empty_list"><![CDATA[<b>Danh sách trống, chọn biểu tượng</b><br>dấu + để thêm 1 danh sách mới]]></string>-->
     <string name="empty_list">Danh sách trống, Click + để thêm danh sách mới</string>
     <string name="warning_title_min">Tiêu đề phải có tối thiểu 1 ký tự!</string>
-    <string name="support_list_reminders">Đây là danh sách ghi chú nhanh</string>
-    <string name="support_new_title">Click button để thêm danh sách mới của riêng bạn</string>
+    <string name="support_list_reminders">Đây là danh sách ghi chú nhanh, Lưu ý: Ghi chú nhanh sẽ tự động xoá sau khi bạn click Xong</string>
+    <string name="support_new_title">Click button để thêm danh sách mới của riêng bạn, danh sách đã xong sẽ được hiển thị theo lựa chọn của bạn</string>
     <string name="topic_title">Chủ đề</string>
     <string name="tap_tap" translatable="false">Tap Tap</string>
+    <string name="id_expanded" translatable="false">id_expanded</string>
+    <string name="id_position" translatable="false">id_position</string>
+
+    <string name="add_new_topic_hint">Thêm một danh sách mới…</string>
+
+    <string name="add_new_work_hint">Thêm một công việc mới…</string>
+
+    <string name="title_setting">Cài đặt</string>
+    <string name="option_delete_work_done">"Xoá lời nhắc sau khi đã hoàn tất \n (Chỉ tính từ thời điểm hiện tại)"</string>
+    <string name="title_save">Lưu lại</string>
+    <string name="action_done" translatable="false">Xoá</string>
+
 
 </resources>

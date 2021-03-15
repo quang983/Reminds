@@ -14,6 +14,7 @@ class CacheImpl @Inject constructor(context: Context) : Cache {
     companion object {
         const val SHARED_NAME = "PREF"
         const val KEY_FIRST_LOGIN = "KEY_FIRST_LOGIN"
+        const val KEY_FIRST_TAP_TAP = "KEY_FIRST_TAP_TAP"
         const val KEY_SUM_DONE_TASK = "KEY_SUM_DONE_TASK"
     }
 

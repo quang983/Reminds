@@ -6,7 +6,6 @@ import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -19,9 +18,9 @@ import com.example.common.base.model.ContentDataEntity
 import com.example.framework.local.cache.CacheImpl
 import com.example.framework.local.cache.CacheImpl.Companion.KEY_SUM_DONE_TASK
 import com.example.reminds.R
-import com.example.reminds.common.Constants.ERROR_LOG
 import com.example.reminds.ui.adapter.ListContentCheckAdapter
 import com.example.reminds.ui.adapter.ListWorkAdapter
+import com.example.reminds.ui.fragment.setting.WorksSettingFragment.Companion.DATA_OPTION_SELECTED
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import com.example.reminds.utils.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -44,15 +43,14 @@ class ListWorkFragment : Fragment() {
     private lateinit var adapter: ListWorkAdapter
     private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
     private lateinit var customAlertDialogView: View
-    private lateinit var menuToolbar: Menu
 
     companion object {
         const val FRAGMENT_RESULT_TIMER = "FRAGMENT_RESULT_TIMER"
+        const val FRAGMENT_SETTING_OPTION = "FRAGMENT_SETTING_OPTION"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // TODO: Set up MaterialContainerTransform transition as sharedElementEnterTransition.
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             drawingViewId = R.id.nav_host_fragment
             duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
@@ -66,6 +64,7 @@ class ListWorkFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel.getListWork(args.idGroup)
+        setFragmentResultListener()
         return inflater.inflate(R.layout.fragment_list_work, container, false)
     }
 
@@ -77,32 +76,8 @@ class ListWorkFragment : Fragment() {
         setupListener()
     }
 
-    private fun setupListener() {
-        extendedFab.setOnClickListener {
-            showDialogInputWorkTopic()
-        }
-        rootWork.setOnClickListener {
-            if (homeSharedViewModel.isKeyboardShow.value == true) {
-                viewModel.reSaveListWorkAndCreateStateFocus()
-                hideSoftKeyboard()
-            } else {
-                viewModel.reSaveListWorkToDb(viewModel.listWorkViewModel.size - 1)
-
-            }
-        }
-
-
-    }
-
-    private fun setupToolbar() {
-        setHasOptionsMenu(true)
-        activity?.actionBar?.title = args.titleGroup
-    }
-
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        menuToolbar = menu
         if (args.idGroup != 1L) {
             inflater.inflate(R.menu.top_app_bar, menu)
         } else {
@@ -110,11 +85,31 @@ class ListWorkFragment : Fragment() {
         }
     }
 
+    private fun setupListener() {
+        extendedFab.setOnClickListenerBlock {
+            showDialogInputWorkTopic()
+        }
+        rootWork.setOnClickListenerBlock {
+            if (homeSharedViewModel.isKeyboardShow.value == true) {
+                viewModel.reSaveListWorkAndCreateStateFocus()
+                hideSoftKeyboard()
+            } else {
+                viewModel.listWorkViewModel.lastOrNull()?.id?.let {
+                    viewModel.reSaveListWorkToDb(it)
+                }
+            }
+        }
+    }
+
+    private fun setupToolbar() {
+        setHasOptionsMenu(true)
+        activity?.actionBar?.title = args.titleGroup
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_settings_task_view -> {
-                val isShowDone = viewModel.isShowDoneLiveData.value ?: true
-                viewModel.saveTopicGroup(!isShowDone)
+            R.id.action_settings -> {
+                navigate(ListWorkFragmentDirections.actionSecondFragmentToSettingFragment(args.idGroup))
             }
             android.R.id.home -> {
                 navigateUp()
@@ -125,43 +120,49 @@ class ListWorkFragment : Fragment() {
 
     private fun setupUI() {
         materialAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
-        adapter = ListWorkAdapter(onClickTitle = { workPosition ->
-            if (homeSharedViewModel.isKeyboardShow.value == true) {
-                hideSoftKeyboard()
-            } else {
-                viewModel.reSaveListWorkToDb(workPosition)
-            }
-            viewModel.workPositionSelected = workPosition
-        }, insertContentToWork = { content, position ->
-            viewModel.updateAndAddContent(content, position)
-        }, handlerCheckItem = { content, position ->
-            viewModel.handlerCheckedContent(content, position)
-            showAds()
-        }, updateNameContent = { content, position ->
-            viewModel.updateContentData(content, position)
-        }, moreActionClick = { item, type, wPosition ->
-            when (type) {
-                ListContentCheckAdapter.TYPE_TIMER_CLICK -> {
-                    setupTimePickerForContent(item, wPosition)
+        adapter = ListWorkAdapter(
+            onClickTitle = { wId ->
+                if (homeSharedViewModel.isKeyboardShow.value == true) {
+                    hideSoftKeyboard()
+                } else {
+                    viewModel.updateWorkChange(wId, true)
                 }
-                ListContentCheckAdapter.TYPE_TAG_CLICK -> {
-                    viewModel.updateContentData(item, wPosition)
-                }
-                ListContentCheckAdapter.TYPE_DELETE_CLICK -> {
-                    showAlertDeleteDialog(resources.getString(R.string.content_delete_topic_title)) {
-                        viewModel.deleteContent(item, wPosition)
+            }, insertContentToWork = { content, wId ->
+                viewModel.updateAndAddContent(content, wId)
+            }, handlerCheckItem = { content, position ->
+                viewModel.handlerCheckedContent(content, position)
+                showAds()
+            }, updateNameContent = { content, wId ->
+                viewModel.updateContentData(content, wId)
+            }, moreActionClick = { item, type, wId ->
+                when (type) {
+                    ListContentCheckAdapter.TYPE_TIMER_CLICK -> {
+                        setupTimePickerForContent(item, wId)
+                    }
+                    ListContentCheckAdapter.TYPE_TAG_CLICK -> {
+                        viewModel.updateContentData(item, wId)
+                    }
+                    ListContentCheckAdapter.TYPE_DELETE_CLICK -> {
+                        showAlertDeleteDialog(resources.getString(R.string.content_delete_topic_title)) {
+                            viewModel.deleteContent(item, wId)
+                        }
                     }
                 }
-            }
-        }, hideWorkClick = {
-            showAlertDeleteDialog(resources.getString(R.string.message_alert_hide_work_title)) {
-            }
-
-        }, deleteWorkClick = {
-            showAlertDeleteDialog(resources.getString(R.string.message_alert_delete_work_title)) {
-                viewModel.deleteWork(it)
-            }
-        }).apply {
+            }, deleteWorkClick = {
+                showAlertDeleteDialog(resources.getString(R.string.message_alert_delete_work_title)) {
+                    viewModel.deleteWork(it)
+                }
+            }, handlerCheckedAll = { workId, doneAll ->
+                viewModel.handleDoneAllContentFromWork(workId, doneAll)
+            }, updateDataChanged = {
+                if (homeSharedViewModel.isKeyboardShow.value == true) {
+                    hideSoftKeyboard()
+                } else {
+                    viewModel.updateWorkChange(it, false)
+                }
+            }, intoSettingFragment = {
+                navigate(ListWorkFragmentDirections.actionSecondFragmentToOptionForWorkBSFragment(it.id))
+            }).apply {
             recyclerWorks.adapter = this
         }
         homeSharedViewModel.isKeyboardShow.observe(viewLifecycleOwner, {
@@ -184,30 +185,21 @@ class ListWorkFragment : Fragment() {
                         layoutEmpty.imgIconAnimation.playAnimation()
                         layoutEmpty.tvEmptyAnimation.text = resources.getString(R.string.empty_list)
                     }
-                    it.sumByDouble { it.listContent.size.toDouble() }.toInt() == 0 -> {
+                    it.sumByDouble { it.listContent.size.toDouble() }.toInt() == 0 && !checkFirstTapTap() -> {
                         layoutEmpty.visible()
                         layoutEmpty.imgIconAnimation.setAnimation(R.raw.tap_tap)
                         layoutEmpty.imgIconAnimation.repeatCount = 10
                         layoutEmpty.imgIconAnimation.loop(true)
                         layoutEmpty.imgIconAnimation.playAnimation()
                         layoutEmpty.tvEmptyAnimation.text = resources.getString(R.string.tap_tap)
+                        val shared = requireActivity().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
+                        shared.edit().putBoolean(CacheImpl.KEY_FIRST_TAP_TAP, true).apply()
                     }
                     else -> {
                         layoutEmpty.gone()
                     }
                 }
                 adapter.submitList(it)
-            })
-            isShowDoneLiveData.observe(viewLifecycleOwner, {
-                try {
-                    if (!it) {
-                        menuToolbar.findItem(R.id.action_settings_task_view).title = getString(R.string.title_show_content)
-                    } else {
-                        menuToolbar.findItem(R.id.action_settings_task_view).title = getString(R.string.title_hide_content)
-                    }
-                } catch (e: Throwable) {
-                    Log.e(ERROR_LOG, e.message.toString())
-                }
             })
         }
     }
@@ -228,6 +220,8 @@ class ListWorkFragment : Fragment() {
         customAlertDialogView = LayoutInflater.from(requireContext())
             .inflate(R.layout.layout_custom_alert_text_input, null, false)
         customAlertDialogView.setPadding(36.toDp, 0, 36.toDp, 0)
+        customAlertDialogView.rootView.textInput.counterMaxLength = 35
+        customAlertDialogView.rootView.textInput.hint = getString(R.string.add_new_work_hint)
         materialAlertDialogBuilder.setView(customAlertDialogView)
             .setTitle(resources.getString(R.string.new_data_title))
             .setPositiveButton(resources.getString(R.string.add)) { _, _ ->
@@ -248,12 +242,12 @@ class ListWorkFragment : Fragment() {
         }, 500)
     }
 
-    private fun setupTimePickerForContent(item: ContentDataEntity, workPosition: Int) {
-        navigate(ListWorkFragmentDirections.actionSecondFragmentToDateTimePickerDialog(System.currentTimeMillis()))
+    private fun setupTimePickerForContent(item: ContentDataEntity, wId: Long) {
+        navigate(ListWorkFragmentDirections.actionSecondFragmentToDateTimePickerDialog(System.currentTimeMillis() + (60 * 1000)))
         setFragmentResultListener(FRAGMENT_RESULT_TIMER) { _, bundle ->
             item.timer = bundle.getLong(TIME_PICKER_BUNDLE)
-            viewModel.updateContentData(item, workPosition)
-            homeSharedViewModel.notifyDataInsert.postValue(
+            viewModel.updateContentData(item, wId)
+            homeSharedViewModel.setNotifyDataInsert(
                 AlarmNotificationEntity(
                     item.timer, item.idOwnerWork, item.id, item.name, resources.getString(R.string.notify_title)
                 )
@@ -261,15 +255,26 @@ class ListWorkFragment : Fragment() {
         }
     }
 
+    private fun setFragmentResultListener() {
+        setFragmentResultListener(FRAGMENT_SETTING_OPTION) { _, bundle ->
+            viewModel.saveTopicGroup(bundle.getInt(DATA_OPTION_SELECTED))
+        }
+    }
+
     private fun showAds() {
         val shared = requireContext().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
         var sum = shared.getInt(KEY_SUM_DONE_TASK, 0)
-        if (sum < 6) {
+        if (sum < 10) {
             sum += 1
             shared.edit().putInt(KEY_SUM_DONE_TASK, sum).apply()
         } else {
             shared.edit().putInt(KEY_SUM_DONE_TASK, 0).apply()
             homeSharedViewModel.showAdsMobile.postValue(true)
         }
+    }
+
+    private fun checkFirstTapTap(): Boolean {
+        val shared = requireActivity().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
+        return shared.getBoolean(CacheImpl.KEY_FIRST_TAP_TAP, false)
     }
 }

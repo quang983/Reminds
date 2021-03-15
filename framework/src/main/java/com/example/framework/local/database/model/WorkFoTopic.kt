@@ -12,5 +12,9 @@ class WorkFoTopic(
     val name: String,
     val idOwnerGroup: Long,
     @TypeConverters(DataConverter::class)
-    val listContent: MutableList<ContentFoWork>
+    val listContent: MutableList<ContentFoWork>,
+    val doneAll: Boolean = false,
+    val isShowContents: Boolean = false,
+    var hashTag: Boolean = false,
+    var timerReminder: Long = -1,
 )

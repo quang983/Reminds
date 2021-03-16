@@ -10,6 +10,7 @@ import android.os.*
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -17,10 +18,14 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.common.base.model.AlarmNotificationEntity
 import com.example.reminds.R
+import com.example.reminds.databinding.ActivityMainBinding
 import com.example.reminds.service.INSERT_OBJECT_TIMER_DATA
 import com.example.reminds.service.NotificationService
+import com.example.reminds.service.ScheduledWorker.Companion.TOPIC_ID_OPEN
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
+import com.example.reminds.utils.gone
 import com.example.reminds.utils.postValue
+import com.example.reminds.utils.visible
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
@@ -32,7 +37,6 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.content_main.*
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 
@@ -43,13 +47,12 @@ class MainActivity : AppCompatActivity() {
     private var bound: Boolean = false
     private var mService: Messenger? = null
 
-    //    private var mRewardedAd: RewardedAd? = null
     private var TAG = "logMain"
     private var mInterstitialAd: InterstitialAd? = null
 
     private var mRewardedAd: RewardedAd? = null
 
-    private lateinit var mBannerAd: AdView
+//    private lateinit var mBannerAd: AdView
 
     lateinit var intentService: Intent
 
@@ -59,22 +62,42 @@ class MainActivity : AppCompatActivity() {
     private var mMessenger: Messenger? = null
     val viewModel: MainActivityViewModel by viewModels()
     private lateinit var navController: NavController
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
         firebaseAnalytics = Firebase.analytics
 
         setSupportActionBar(findViewById(R.id.toolbar))
-        onStartService()
-        createNotificationChannel()
-        /*show back press button*/
         navController = findNavController(R.id.nav_host_fragment)
         NavigationUI.setupActionBarWithNavController(this, navController)
+
+        onStartService()
+//        createNotificationChannel()
         catchEventKeyboard()
         setObserver()
         createAdsMode()
-//        showRatingApp()
+        setOnListener()
+//      showRatingApp()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        onNewIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.extras?.apply {
+            Log.d("tasktask", "getTopic:${getLong(TOPIC_ID_OPEN)}")
+            if (containsKey(TOPIC_ID_OPEN)) {
+                viewModel.getTopic(getLong(TOPIC_ID_OPEN))
+            }
+        }
     }
 
     private fun setObserver() {
@@ -84,6 +107,13 @@ class MainActivity : AppCompatActivity() {
             })
             showAdsMobile.observe(this@MainActivity, {
                 showAdsMobile()
+            })
+            navigateToFragmentFromIntent.observe(this@MainActivity, {
+                val bundle = Bundle().apply {
+                    putLong("idGroup", it.id)
+                    putString("titleGroup", it.name)
+                }
+                navController.navigate(R.id.SecondFragment, bundle)
             })
         }
     }
@@ -137,15 +167,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             else -> super.onOptionsItemSelected(item)
         }
@@ -155,25 +181,20 @@ class MainActivity : AppCompatActivity() {
         return onNavigateUp()
     }
 
-    private fun createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
+  /*  private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name: CharSequence = getString(R.string.notify_name_channel)
             val description = getString(R.string.content_delete_topic_title)
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel("CHANNEL_ID", name, importance)
             channel.description = description
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
-    }
+    }*/
 
     private fun createAdsMode() {
-//        Log.d(TAG, "createAdsMode: ${AdRequest.DEVICE_ID_EMULATOR}")
         MobileAds.initialize(this)
         MobileAds.setRequestConfiguration(
             RequestConfiguration.Builder()
@@ -191,9 +212,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createBannerAds() {
-        mBannerAd = findViewById(R.id.adBanner)
-        val adRequest = AdRequest.Builder().build()
-        mBannerAd.loadAd(adRequest)
+        /*       mBannerAd = findViewById(R.id.adBanner)
+               val adRequest = AdRequest.Builder().build()
+               mBannerAd.loadAd(adRequest)*/
     }
 
     private fun createRewardAds() {
@@ -232,33 +253,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun eventBannerAds() {
-        mBannerAd.adListener = object : AdListener() {
-            override fun onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-            }
+        /* mBannerAd.adListener = object : AdListener() {
+             override fun onAdLoaded() {
+                 // Code to be executed when an ad finishes loading.
+             }
 
-            override fun onAdFailedToLoad(adError: LoadAdError) {
-                // Code to be executed when an ad request fails.
-            }
+             override fun onAdFailedToLoad(adError: LoadAdError) {
+                 // Code to be executed when an ad request fails.
+             }
 
-            override fun onAdOpened() {
-                // Code to be executed when an ad opens an overlay that
-                // covers the screen.
-            }
+             override fun onAdOpened() {
+                 // Code to be executed when an ad opens an overlay that
+                 // covers the screen.
+             }
 
-            override fun onAdClicked() {
-                // Code to be executed when the user clicks on an ad.
-            }
+             override fun onAdClicked() {
+                 // Code to be executed when the user clicks on an ad.
+             }
 
-            override fun onAdLeftApplication() {
-                // Code to be executed when the user has left the app.
-            }
+             override fun onAdLeftApplication() {
+                 // Code to be executed when the user has left the app.
+             }
 
-            override fun onAdClosed() {
-                // Code to be executed when the user is about to return
-                // to the app after tapping on an ad.
-            }
-        }
+             override fun onAdClosed() {
+                 // Code to be executed when the user is about to return
+                 // to the app after tapping on an ad.
+             }
+         }*/
     }
 
     private fun createInterstitialAd() {
@@ -294,14 +315,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showAdsInterstitial() {
-        if (mInterstitialAd != null) {
-            mInterstitialAd?.show(this)
-        } else {
-            Log.d("TAG", "The interstitial ad wasn't ready yet.")
-        }
-    }
-
     private fun catchEventKeyboard() {
         KeyboardVisibilityEvent.setEventListener(
             this,
@@ -327,6 +340,54 @@ class MainActivity : AppCompatActivity() {
                 }
             } else {
                 // There was some problem, continue regardless of the result.
+            }
+        }
+    }
+
+    private fun setOnListener() {
+        binding.contentMain.bottomNavigation.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.pageOne -> {
+                    navController.navigate(R.id.FirstFragment)
+                    true
+                }
+                R.id.pageSecond -> {
+                    true
+                }
+                R.id.pageThird -> {
+                    true
+                }
+                R.id.pageFour -> {
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
+
+        binding.contentMain.bottomNavigation.setOnNavigationItemReselectedListener { item ->
+            when (item.itemId) {
+                R.id.pageOne -> {
+                }
+                R.id.pageSecond -> {
+                }
+                R.id.pageThird -> {
+                }
+                R.id.pageFour -> {
+                }
+            }
+        }
+    }
+
+    fun hideOrShowBottomAppBar(isShow: Boolean) {
+        if (isShow) {
+            if (binding.contentMain.bottomNavigation.visibility != View.VISIBLE) {
+                binding.contentMain.bottomNavigation.visible()
+            }
+        } else {
+            if (binding.contentMain.bottomNavigation.visibility == View.VISIBLE) {
+                binding.contentMain.bottomNavigation.gone()
             }
         }
     }

@@ -72,6 +72,10 @@
     <string name="option_delete_work_done">"Xoá lời nhắc sau khi đã hoàn tất \n (Chỉ tính từ thời điểm hiện tại)"</string>
     <string name="title_save">Lưu lại</string>
     <string name="action_done" translatable="false">Xoá</string>
-
+    <string name="page_home" translatable="false">Home</string>
+    <string name="page_calendar" translatable="false">Today</string>
+    <string name="page_focus" translatable="false">Focus</string>
+    <string name="page_setting" translatable="false">Setting</string>
+    <string name="show_running" translatable="false">Task Task is Running!</string>
 
 </resources>

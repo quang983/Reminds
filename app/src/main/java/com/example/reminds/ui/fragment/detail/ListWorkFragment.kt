@@ -249,7 +249,7 @@ class ListWorkFragment : Fragment() {
             viewModel.updateContentData(item, wId)
             homeSharedViewModel.setNotifyDataInsert(
                 AlarmNotificationEntity(
-                    item.timer, item.idOwnerWork, item.id, item.name, resources.getString(R.string.notify_title)
+                    item.timer, args.idGroup, item.id, item.name, resources.getString(R.string.notify_title)
                 )
             )
         }

@@ -13,12 +13,13 @@ object TimestampUtils {
     const val NORMAL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss"
     const val INCREASE_DATE_FORMAT = "HH:mm dd/MM/yyyy"
     const val DATE_FORMAT_ = "yyyy-MM-dd"
+    const val DATE_FORMAT_DEFAULT = "dd/MM/yyyy HH:mm"
     const val SAME_DATE = 0
     const val DIFF_DATE_SMALLER = -1
     const val DIFF_DATE_GREATER = 1
 
     fun getFullFormatTime(iso: String): String {
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US)
+        val dateFormat = SimpleDateFormat(DATE_FORMAT_DEFAULT, Locale.US)
         dateFormat.timeZone = TimeZone.getDefault()
         getCalendarFromISO(iso)?.time?.let {
             return dateFormat.format(it)

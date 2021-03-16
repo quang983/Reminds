@@ -15,6 +15,7 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.example.common.base.model.TopicGroupEntity
 import com.example.framework.local.cache.CacheImpl
 import com.example.reminds.R
+import com.example.reminds.ui.activity.MainActivity
 import com.example.reminds.ui.adapter.TopicAdapter
 import com.example.reminds.utils.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -35,8 +36,6 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
-
-    //    private lateinit var adapter: TopicAdapter
     private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
     private lateinit var customAlertDialogView: View
 
@@ -57,6 +56,11 @@ class HomeFragment : Fragment() {
         setupTransition(view)
         presentShowcaseView()
         observeData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as? MainActivity)?.hideOrShowBottomAppBar(true)
     }
 
     private fun checkAddFirstTopic() {
@@ -81,7 +85,9 @@ class HomeFragment : Fragment() {
         TopicAdapter({ id, title, view ->
             val emailCardDetailTransitionName = getString(R.string.transition_topic_to_detail)
             val extras = FragmentNavigatorExtras(view to emailCardDetailTransitionName)
+            (activity as? MainActivity)?.hideOrShowBottomAppBar(false)
             navigate(HomeFragmentDirections.actionFirstFragmentToSecondFragment(id, title), null, extras)
+
             exitTransition = MaterialElevationScale(false).apply {
                 duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
             }
@@ -97,7 +103,7 @@ class HomeFragment : Fragment() {
         layoutToday.setOnClickListener {
             val emailCardDetailTransitionName = getString(R.string.transition_topic_to_detail)
             val extras = FragmentNavigatorExtras(layoutToday to emailCardDetailTransitionName)
-
+            (activity as? MainActivity)?.hideOrShowBottomAppBar(false)
             navigate(
                 HomeFragmentDirections
                     .actionFirstFragmentToSecondFragment(

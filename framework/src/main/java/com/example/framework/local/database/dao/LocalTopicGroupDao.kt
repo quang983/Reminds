@@ -16,4 +16,7 @@ interface LocalTopicGroupDao : BaseDao<TopicGroup> {
 
     @Query("SELECT * FROM TopicGroup  where idTopic=:id")
     fun fetchTopicByIdData(id: Long): Flow<TopicGroup>
+
+    @Query("SELECT * FROM TopicGroup  where idTopic=:id")
+    fun findTopicByIdData(id: Long): TopicGroup?
 }

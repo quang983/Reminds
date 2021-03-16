@@ -10,14 +10,16 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.example.reminds.R
+import com.example.reminds.service.ScheduledWorker.Companion.TOPIC_ID_OPEN
 import com.example.reminds.ui.activity.MainActivity
 import kotlin.random.Random
 
 
 class NotificationUtil(private val context: Context) {
 
-    fun showNotification(title: String, message: String) {
+    fun showNotification(title: String, message: String,idTopic :Long) {
         val intent = Intent(context, MainActivity::class.java)
+        intent.putExtra(TOPIC_ID_OPEN, idTopic)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(
             context, 0, intent,

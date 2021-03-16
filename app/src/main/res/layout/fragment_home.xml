@@ -120,4 +120,5 @@
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/add_plus" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

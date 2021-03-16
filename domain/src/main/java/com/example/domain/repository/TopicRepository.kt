@@ -12,4 +12,6 @@ interface TopicRepository : BaseRepository<TopicGroupEntity> {
     suspend fun getFastTopicUseCase(): Flow<TopicGroupEntity>
 
     suspend fun getTopicByIdUseCase(id: Long): Flow<TopicGroupEntity>
+
+    suspend fun findTopicByIdUseCase(id: Long): TopicGroupEntity?
 }

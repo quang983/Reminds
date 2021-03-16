@@ -60,14 +60,14 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
                 viewModel.workDataPrepareLiveData.value?.takeIf { it.timerReminder > 0 }?.let {
                     homeSharedViewModel.setNotifyDataInsert(
                         AlarmNotificationEntity(
-                            it.timerReminder, it.id, it.id, it.name, resources.getString(R.string.home_screen_title)
+                            it.timerReminder, it.groupId, it.id, it.name, resources.getString(R.string.home_screen_title)
                         )
                     )
                 }
             } else {
                 Toast.makeText(requireContext(), getString(R.string.warning_title_min), Toast.LENGTH_SHORT).show()
             }
-            Handler().postDelayed({ dismiss() }, 1000)
+            Handler().postDelayed({ dismiss() }, 500)
         })
 
         viewModel.workDataPrepareLiveData.observe(viewLifecycleOwner, {

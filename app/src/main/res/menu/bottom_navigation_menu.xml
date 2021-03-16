@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/pageOne"
+        android:enabled="true"
+        android:icon="@drawable/ic_auto_graph"
+        android:title="@string/page_home"/>
+    <item
+        android:id="@+id/pageSecond"
+        android:enabled="true"
+        android:icon="@drawable/ic_auto_graph"
+        android:title="@string/page_calendar"/>
+
+    <item
+        android:id="@+id/pageThird"
+        android:enabled="true"
+        android:icon="@drawable/ic_auto_graph"
+        android:title="@string/page_focus"/>
+
+    <item
+        android:id="@+id/pageFour"
+        android:enabled="true"
+        android:icon="@drawable/ic_auto_graph"
+        android:title="@string/page_setting"/>
+</menu>

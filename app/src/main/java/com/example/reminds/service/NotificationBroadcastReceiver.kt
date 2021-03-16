@@ -14,11 +14,13 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
         intent?.let {
             val title = it.getStringExtra(ScheduledWorker.NOTIFICATION_TITLE)
             val message = it.getStringExtra(ScheduledWorker.NOTIFICATION_MESSAGE)
+            val idTopic = it.getLongExtra(ScheduledWorker.TOPIC_ID_OPEN, 1)
 
             // Create Notification Data
             val notificationData = Data.Builder()
                 .putString(ScheduledWorker.NOTIFICATION_TITLE, title)
                 .putString(ScheduledWorker.NOTIFICATION_MESSAGE, message)
+                .putLong(ScheduledWorker.TOPIC_ID_OPEN, idTopic)
                 .build()
 
             // Init Worker

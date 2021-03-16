@@ -38,6 +38,12 @@ class TopicGroupSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun findTopic(id: Long): TopicGroupEntity? {
+        return dao.findTopicByIdData(id)?.let {
+            it.toDomain(it)
+        }
+    }
+
     @Transaction
     override suspend fun insert(data: TopicGroupEntity): Long {
         return dao.insert(TopicGroup().toData(data))

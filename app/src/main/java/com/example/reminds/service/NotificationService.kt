@@ -12,7 +12,11 @@ import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.common.base.model.AlarmNotificationEntity
 import com.example.reminds.R
+import com.example.reminds.service.ScheduledWorker.Companion.NOTIFICATION_MESSAGE
+import com.example.reminds.service.ScheduledWorker.Companion.NOTIFICATION_TITLE
+import com.example.reminds.service.ScheduledWorker.Companion.TOPIC_ID_OPEN
 import com.example.reminds.utils.TimestampUtils
+import com.example.reminds.utils.TimestampUtils.DATE_FORMAT_DEFAULT
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -41,7 +45,8 @@ open class NotificationService : Service() {
         val notification = notificationBuilder.setOngoing(true)
             .setColor(ContextCompat.getColor(service.applicationContext, android.R.color.holo_blue_light))
             .setSmallIcon(R.drawable.ic_tasks_new)
-            .setPriority(NotificationCompat.PRIORITY_MIN)
+            .setContentText(getText(R.string.show_running))
+            .setPriority(NotificationCompat.PRIORITY_LOW)
             .setCategory(Notification.CATEGORY_SERVICE)
             .build()
         service.startForeground(101, notification)
@@ -78,8 +83,10 @@ open class NotificationService : Service() {
                 }
                 INSERT_OBJECT_TIMER_DATA -> {
                     val notify = msg.obj as AlarmNotificationEntity
-                    scheduleAlarm(TimestampUtils.getFullFormatTime(notify.timeAlarm, "dd/MM/yyyy HH:mm"),
-                        notify.nameWork, notify.nameContent, notify.idContent.toInt())
+                    scheduleAlarm(
+                        TimestampUtils.getFullFormatTime(notify.timeAlarm, DATE_FORMAT_DEFAULT),
+                        notify, notify.idContent.toInt()
+                    )
                 }
                 else -> super.handleMessage(msg)
             }
@@ -87,25 +94,25 @@ open class NotificationService : Service() {
 
         private fun scheduleAlarm(
             scheduledTimeString: String?,
-            title: String?,
-            message: String?,
+            item: AlarmNotificationEntity,
             idAlarm: Int
         ) {
             val alarmMgr = applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val alarmIntent =
                 Intent(applicationContext, NotificationBroadcastReceiver::class.java).let { intent ->
-                    intent.putExtra(ScheduledWorker.NOTIFICATION_TITLE, title)
-                    intent.putExtra(ScheduledWorker.NOTIFICATION_MESSAGE, message)
+                    intent.putExtra(NOTIFICATION_TITLE, item.nameWork)
+                    intent.putExtra(NOTIFICATION_MESSAGE, item.nameContent)
+                    intent.putExtra(TOPIC_ID_OPEN, item.idTopic)
                     PendingIntent.getBroadcast(applicationContext, idAlarm, intent, 0)
                 }
 
-            val scheduledTime = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+            val scheduledTime = SimpleDateFormat(DATE_FORMAT_DEFAULT, Locale.getDefault())
                 .parse(scheduledTimeString!!)
 
             scheduledTime?.let {
-                alarmMgr.setRepeating(
-                    AlarmManager.RTC_WAKEUP, scheduledTime.time, 24 * 60 * 60 * 1000, alarmIntent
-                )
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                    alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, scheduledTime.time, alarmIntent)
+                else alarmMgr.setExact(AlarmManager.RTC_WAKEUP, scheduledTime.time, alarmIntent)
             }
         }
 
@@ -122,11 +129,6 @@ open class NotificationService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         return START_STICKY
     }
-
-    /**
-     * When binding to the service, we return an interface to our messenger
-     * for sending messages to the service.
-     */
 
     override fun onBind(intent: Intent): IBinder {
         mMessenger = Messenger(IncomingHandler(this))

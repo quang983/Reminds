@@ -11,4 +11,6 @@ interface TopicGroupSource : BaseSource<TopicGroupEntity> {
     suspend fun getFastTopic(): Flow<TopicGroupEntity>
 
     suspend fun getTopic(id: Long): Flow<TopicGroupEntity>
+
+    suspend fun findTopic(id: Long): TopicGroupEntity?
 }

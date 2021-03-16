@@ -15,9 +15,10 @@ class ScheduledWorker(appContext: Context, workerParams: WorkerParameters) :
         // Get Notification Data
         val title = inputData.getString(NOTIFICATION_TITLE)
         val message = inputData.getString(NOTIFICATION_MESSAGE)
+        val idTopic = inputData.getLong(TOPIC_ID_OPEN, 1)
 
         // Show Notification
-        NotificationUtil(applicationContext).showNotification(title!!, message!!)
+        NotificationUtil(applicationContext).showNotification(title.toString(), message.toString(), idTopic)
 
         // TODO Do your other Background Processing
 
@@ -31,5 +32,6 @@ class ScheduledWorker(appContext: Context, workerParams: WorkerParameters) :
         private const val TAG = "ScheduledWorker"
         const val NOTIFICATION_TITLE = "notification_title"
         const val NOTIFICATION_MESSAGE = "notification_message"
+        const val TOPIC_ID_OPEN = "topic_id_open"
     }
 }

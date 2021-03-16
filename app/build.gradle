@@ -14,8 +14,8 @@ android {
         applicationId "com.quangtd.todosimple"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 15
-        versionName "2.15"
+        versionCode 16
+        versionName "2.16"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -50,9 +50,9 @@ android {
     }
 
     buildFeatures {
-        dataBinding true
+        viewBinding true
     }
-    
+
     kotlinOptions {
         jvmTarget = '1.8'
     }

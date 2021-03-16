@@ -91,7 +91,7 @@
         android:id="@+id/OptionForWorkBSFragment"
         android:name="com.example.reminds.ui.fragment.worktoption.OptionForWorkBSFragment"
         android:label="@string/new_topic_fragment_label"
-        tools:layout="@layout/fragment_option_for_work_bs" >
+        tools:layout="@layout/fragment_option_for_work_bs">
         <action
             android:id="@+id/action_OptionForWorkBSFragment_to_dateTimePickerDialog"
             app:destination="@id/dateTimePickerDialog" />
@@ -101,5 +101,11 @@
             app:argType="long"
             app:nullable="false" />
     </dialog>
+
+    <fragment
+        android:id="@+id/FlashCardFragment"
+        android:name="com.example.reminds.ui.fragment.tabflash.flashcard.FlashCardFragment"
+        tools:layout="@layout/fragment_flash_card">
+    </fragment>
 
 </navigation>

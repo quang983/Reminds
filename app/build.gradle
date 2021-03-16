@@ -32,9 +32,8 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-            shrinkResources false
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.keystoreDebug
         }
         release {
             minifyEnabled true
@@ -186,4 +185,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     apply plugin: 'com.google.firebase.crashlytics'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
+
+    //library paint
+    implementation 'com.github.PicnicSupermarket:FingerPaintView:1.0'
 }

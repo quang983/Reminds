@@ -1,18 +1,21 @@
 package com.example.reminds.common
 
+import ExceptionBus
 import SingleLiveEvent
+import android.app.Dialog
 import androidx.annotation.AnyThread
 import androidx.annotation.MainThread
 import androidx.lifecycle.*
+import com.example.common.base.extesion.TagException
+import com.example.reminds.model.ToastBus
 import com.example.reminds.utils.DebounceLiveData
-import com.example.reminds.utils.exception.ExceptionHandler
+import com.example.reminds.utils.exception.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import com.example.reminds.model.ToastBus
 import kotlin.coroutines.CoroutineContext
 import kotlin.experimental.ExperimentalTypeInference
 
@@ -30,6 +33,26 @@ abstract class BaseViewModel : ViewModel {
     }
 
     protected val toast: LiveData<String> = SingleLiveEvent<String>()
+
+    protected val snackBarMessage = SingleLiveEvent<String>()
+    protected val toastMessage = SingleLiveEvent<String>()
+    protected val inlineException = SingleLiveEvent<List<TagException>>()
+    protected val alertException = SingleLiveEvent<Pair<String?, String>>()
+    protected val dialogException = SingleLiveEvent<Dialog>()
+    protected val redirectException = SingleLiveEvent<ProcessBuilder.Redirect>()
+
+
+    fun setThrowable(throwable: Throwable) {
+        when (throwable) {
+            is SnackBarException -> snackBarMessage.value = throwable.message
+            is ToastException -> toastMessage.value = throwable.message
+            is InlineException -> inlineException.value = throwable.tags.toList()
+            is AlertException -> alertException.value = Pair(throwable.title, throwable.message)
+            is DialogException -> dialogException.value = throwable.dialog
+            is RedirectException -> redirectException.value = throwable.redirect
+        }
+    }
+
 
     val handler = CoroutineExceptionHandler { _: CoroutineContext, throwable: Throwable ->
         ExceptionBus.instance.bindException(throwable)

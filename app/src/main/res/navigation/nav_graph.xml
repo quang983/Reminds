@@ -105,7 +105,11 @@
     <fragment
         android:id="@+id/FlashCardFragment"
         android:name="com.example.reminds.ui.fragment.tabflash.flashcard.FlashCardFragment"
-        tools:layout="@layout/fragment_flash_card">
-    </fragment>
+        tools:layout="@layout/fragment_flash_card" />
+
+    <fragment
+        android:id="@+id/UpcomingFragment"
+        android:name="com.example.reminds.ui.fragment.upcoming.UpcomingFragment"
+        tools:layout="@layout/fragment_upcoming" />
 
 </navigation>

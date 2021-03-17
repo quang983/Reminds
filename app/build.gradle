@@ -32,7 +32,7 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-            shrinkResources true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
@@ -188,4 +188,6 @@ dependencies {
 
     //library paint
     implementation 'com.github.PicnicSupermarket:FingerPaintView:1.0'
+
+    implementation 'com.github.jhonnyx2012:horizontal-picker:1.0.6'
 }

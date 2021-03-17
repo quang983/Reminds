@@ -1,7 +1,5 @@
 package com.example.reminds.ui.activity
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -181,18 +179,18 @@ class MainActivity : AppCompatActivity() {
         return onNavigateUp()
     }
 
-  /*  private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name: CharSequence = getString(R.string.notify_name_channel)
-            val description = getString(R.string.content_delete_topic_title)
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel("CHANNEL_ID", name, importance)
-            channel.description = description
-            val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
-    }*/
+    /*  private fun createNotificationChannel() {
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+              val name: CharSequence = getString(R.string.notify_name_channel)
+              val description = getString(R.string.content_delete_topic_title)
+              val importance = NotificationManager.IMPORTANCE_DEFAULT
+              val channel = NotificationChannel("CHANNEL_ID", name, importance)
+              channel.description = description
+              val notificationManager: NotificationManager =
+                  getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+              notificationManager.createNotificationChannel(channel)
+          }
+      }*/
 
     private fun createAdsMode() {
         MobileAds.initialize(this)
@@ -352,6 +350,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.pageSecond -> {
+                    navController.navigate(R.id.UpcomingFragment)
                     true
                 }
                 R.id.pageThird -> {

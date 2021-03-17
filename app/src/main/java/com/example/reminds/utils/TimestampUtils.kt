@@ -13,13 +13,14 @@ object TimestampUtils {
     const val NORMAL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss"
     const val INCREASE_DATE_FORMAT = "HH:mm dd/MM/yyyy"
     const val DATE_FORMAT_ = "yyyy-MM-dd"
+    const val DATE_FORMAT_DEFAULT_WITHOUT_TIME = "dd-MM-yyyy"
     const val DATE_FORMAT_DEFAULT = "dd/MM/yyyy HH:mm"
     const val SAME_DATE = 0
     const val DIFF_DATE_SMALLER = -1
     const val DIFF_DATE_GREATER = 1
 
-    fun getFullFormatTime(iso: String): String {
-        val dateFormat = SimpleDateFormat(DATE_FORMAT_DEFAULT, Locale.US)
+    fun getFullFormatTime(iso: String, pattern: String): String {
+        val dateFormat = SimpleDateFormat(pattern, Locale.US)
         dateFormat.timeZone = TimeZone.getDefault()
         getCalendarFromISO(iso)?.time?.let {
             return dateFormat.format(it)
@@ -278,5 +279,17 @@ object TimestampUtils {
         parse(this@fromISO8601)?.time ?: 0L
     }.getOrElse {
         0L
+    }
+
+    fun mergeDate(date: String) {
+        //default dd-MM-yyyy
+        val merge = date.split("-").joinToString().toLong()
+    }
+
+    fun getLongTimeFromStr(longTime: Long): Long {
+        val df = SimpleDateFormat(DATE_FORMAT_DEFAULT_WITHOUT_TIME)
+        val formattedDate = df.format(longTime)
+        val dateLong = df.parse(formattedDate)
+        return dateLong?.time ?: 0L
     }
 }

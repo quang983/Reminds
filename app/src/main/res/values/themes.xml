@@ -31,8 +31,6 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <item name="fontFamily">@font/sfprodisplay_regular</item>
-        <item name="android:actionMenuTextColor">@color/blue_900</item>
-        <item name="actionMenuTextColor">@color/blue_900</item>
     </style>
 
     <style name="Theme.BaseProjects.AppBarOverlay" parent="Widget.AppCompat.Light.ActionBar" >

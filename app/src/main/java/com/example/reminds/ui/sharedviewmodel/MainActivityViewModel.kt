@@ -29,7 +29,6 @@ class MainActivityViewModel @ViewModelInject constructor(
     }
 
     fun getTopic(idTopic: Long) = viewModelScope.launch(Dispatchers.IO + handler) {
-        Log.d("tasktask", "getTopic: 2")
         findTopicByIdUseCase.invoke(FindTopicByIdUseCase.Param(idTopic))?.let {
             navigateToFragmentFromIntent.postValue(it)
         }

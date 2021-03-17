@@ -33,6 +33,7 @@ abstract class BaseViewModel : ViewModel {
     }
 
     protected val toast: LiveData<String> = SingleLiveEvent<String>()
+/*
 
     protected val snackBarMessage = SingleLiveEvent<String>()
     protected val toastMessage = SingleLiveEvent<String>()
@@ -52,6 +53,7 @@ abstract class BaseViewModel : ViewModel {
             is RedirectException -> redirectException.value = throwable.redirect
         }
     }
+*/
 
 
     val handler = CoroutineExceptionHandler { _: CoroutineContext, throwable: Throwable ->

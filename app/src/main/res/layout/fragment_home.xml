@@ -5,7 +5,6 @@
     android:id="@+id/layoutRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_background"
     android:paddingStart="@dimen/_10sdp"
     android:paddingEnd="@dimen/_10sdp">
 
@@ -14,6 +13,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/cereal_extra_bold"
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_10sdp"
         android:text="@string/title_faster_note"
         android:textColor="@color/black"
         android:textSize="@dimen/_18sdp"
@@ -27,6 +28,7 @@
         layout="@layout/layout_today_home"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_6sdp"
         android:layout_marginTop="@dimen/_6sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitleToday" />
@@ -72,6 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_6sdp"
             android:layout_marginTop="@dimen/_6sdp"
+            app:cardBackgroundColor="@color/gray_50"
             app:cardCornerRadius="@dimen/_6sdp">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -94,23 +97,10 @@
         app:constraint_referenced_ids="layoutCard"
         tools:visibility="visible" />
 
-    <!--  <com.google.android.material.floatingactionbutton.FloatingActionButton
-          android:id="@+id/btnNewTopic"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginBottom="@dimen/_24sdp"
-          android:src="@drawable/ic_plus"
-          android:text="@string/title_create"
-          android:textAllCaps="false"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintHorizontal_bias="0.9"
-          app:layout_constraintStart_toStartOf="parent" />
-  -->
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/btnNewTopic"
-        android:layout_width="@dimen/_60sdp"
-        android:layout_height="@dimen/_60sdp"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
         android:layout_marginBottom="@dimen/_16sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

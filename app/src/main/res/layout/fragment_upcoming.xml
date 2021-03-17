@@ -44,13 +44,11 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/extendedFab"
-        android:layout_width="@dimen/_60sdp"
-        android:layout_height="@dimen/_60sdp"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
         app:lottie_rawRes="@raw/add_plus" />
 </androidx.constraintlayout.widget.ConstraintLayout>

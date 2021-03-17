@@ -4,9 +4,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
@@ -52,11 +50,22 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(false)
         setupUI()
         setupListener()
         setupTransition(view)
         presentShowcaseView()
         observeData()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.findItem(android.R.id.home).isVisible = false
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return super.onOptionsItemSelected(item)
+
     }
 
     override fun onResume() {
@@ -173,8 +182,8 @@ class HomeFragment : Fragment() {
                 }
             })
         }
-        with(homeSharedViewModel){
-            isKeyboardShow.observe(viewLifecycleOwner,{
+        with(homeSharedViewModel) {
+            isKeyboardShow.observe(viewLifecycleOwner, {
                 (requireActivity() as? MainActivity)?.hideOrShowBottomAppBar(!it)
             })
         }

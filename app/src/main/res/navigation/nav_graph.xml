@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/UpcomingFragment">
 
     <fragment
         android:id="@+id/FirstFragment"
@@ -15,9 +15,6 @@
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
-        <action
-            android:id="@+id/action_FirstFragment_to_NewTopicFragment"
-            app:destination="@id/NewTopicFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -44,12 +41,6 @@
             app:destination="@id/OptionForWorkBSFragment" />
 
     </fragment>
-
-    <fragment
-        android:id="@+id/NewTopicFragment"
-        android:name="com.example.reminds.ui.fragment.newtopic.NewTopicBtsFragment"
-        android:label="@string/new_topic_fragment_label"
-        tools:layout="@layout/fragment_new_topic_bts" />
 
     <dialog
         android:id="@+id/dateTimePickerDialog"

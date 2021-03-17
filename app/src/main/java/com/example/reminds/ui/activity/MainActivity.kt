@@ -91,7 +91,6 @@ class MainActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         intent?.extras?.apply {
-            Log.d("tasktask", "getTopic:${getLong(TOPIC_ID_OPEN)}")
             if (containsKey(TOPIC_ID_OPEN)) {
                 viewModel.getTopic(getLong(TOPIC_ID_OPEN))
             }
@@ -346,18 +345,18 @@ class MainActivity : AppCompatActivity() {
         binding.contentMain.bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.pageOne -> {
-                    navController.navigate(R.id.FirstFragment)
-                    true
-                }
-                R.id.pageSecond -> {
                     navController.navigate(R.id.UpcomingFragment)
                     true
                 }
-                R.id.pageThird -> {
+                R.id.pageSecond -> {
+                    navController.navigate(R.id.FirstFragment)
                     true
                 }
+                R.id.pageThird -> {
+                    false
+                }
                 R.id.pageFour -> {
-                    true
+                    false
                 }
                 else -> {
                     false

@@ -12,3 +12,10 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
         database.execSQL("ALTER TABLE WorkFoTopic ADD COLUMN timerReminder LONG DEFAULT 0 NOT NULL")
     }
 }
+
+
+val MIGRATION_2_3 = object : Migration(2, 3) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE TopicGroup ADD COLUMN typeTopic INTEGER DEFAULT 0 NOT NULL")
+    }
+}

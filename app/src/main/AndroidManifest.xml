@@ -29,7 +29,6 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:taskAffinity=""
-            android:theme="@style/Theme.BaseProjects.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

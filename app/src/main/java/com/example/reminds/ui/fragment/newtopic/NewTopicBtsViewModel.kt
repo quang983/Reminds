@@ -3,6 +3,7 @@ package com.example.reminds.ui.fragment.newtopic
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.example.common.base.model.TopicGroupEntity
+import com.example.common.base.model.TopicGroupEntity.Companion.TYPE_NORMAL
 import com.example.common.base.model.WorkDataEntity
 import com.example.domain.usecase.db.topic.InsertTopicUseCase
 import com.example.domain.usecase.db.workintopic.InsertWorkUseCase
@@ -27,7 +28,7 @@ class NewTopicBtsViewModel @ViewModelInject constructor(
                             groupId = idTopic,
                             listContent = mutableListOf(),
                             doneAll = false
-                        )
+                        ), TYPE_NORMAL
                     )
                 )
             }

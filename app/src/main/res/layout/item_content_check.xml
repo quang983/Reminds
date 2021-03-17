@@ -42,11 +42,12 @@
         android:layout_height="wrap_content"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:paddingTop="@dimen/_4sdp">
+        android:paddingTop="@dimen/_2sdp">
 
         <net.igenius.customcheckbox.CustomCheckBox
             android:id="@+id/rbChecked"
-            android:layout_width="@dimen/_20sdp"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_4sdp"
             android:layout_height="wrap_content"
             app:color_checked="@android:color/transparent"
             app:color_tick="@color/blue_900"
@@ -62,11 +63,12 @@
             android:background="@null"
             android:imeOptions="actionDone"
             android:inputType="textMultiLine"
-            android:paddingStart="@dimen/_10sdp"
-            android:paddingTop="@dimen/_8sdp"
+            android:paddingStart="@dimen/_8sdp"
+            android:paddingTop="@dimen/_6sdp"
             android:paddingEnd="@dimen/_6sdp"
-            android:paddingBottom="@dimen/_8sdp"
+            android:paddingBottom="@dimen/_6sdp"
             android:textColor="@color/black"
+            android:gravity="center_vertical"
             app:layout_constraintEnd_toStartOf="@id/imgFlag"
             app:layout_constraintStart_toEndOf="@id/rbChecked"
             app:layout_constraintTop_toTopOf="parent"
@@ -105,7 +107,7 @@
         <View
             android:layout_width="0dp"
             android:layout_height="0.5dp"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_6sdp"
             android:background="@color/bg_divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tvContentCheck"

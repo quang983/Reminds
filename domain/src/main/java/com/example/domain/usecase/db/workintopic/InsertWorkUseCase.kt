@@ -9,14 +9,15 @@ import javax.inject.Inject
 
 class InsertWorkUseCase @Inject constructor(private val workFromTopicRepository: WorkFromTopicRepository, private val topicRepository: TopicRepository) :
     BaseUseCase<InsertWorkUseCase.Param, Long> {
-    class Param(val work: WorkDataEntity)
 
     override suspend fun invoke(params: Param): Long {
         topicRepository.findTopicByIdUseCase(params.work.groupId).apply {
             if (this == null) {
-                topicRepository.insertData(TopicGroupEntity(params.work.groupId, ""))
+                topicRepository.insertData(TopicGroupEntity(params.work.groupId, "", typeTopic = params.typeTopic))
             }
         }
         return workFromTopicRepository.insertData(params.work)
     }
+
+    class Param(val work: WorkDataEntity, val typeTopic: Int)
 }

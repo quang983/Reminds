@@ -14,10 +14,12 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.example.common.base.model.AlarmNotificationEntity
 import com.example.common.base.model.ContentDataEntity
+import com.example.common.base.model.TopicGroupEntity.Companion.TYPE_UPCOMING
 import com.example.framework.local.cache.CacheImpl
 import com.example.reminds.R
 import com.example.reminds.common.BaseFragment
 import com.example.reminds.databinding.FragmentUpcomingBinding
+import com.example.reminds.ui.activity.MainActivity
 import com.example.reminds.ui.adapter.ListContentCheckAdapter
 import com.example.reminds.ui.adapter.ListWorkAdapter
 import com.example.reminds.ui.fragment.detail.ListWorkFragmentDirections
@@ -171,6 +173,12 @@ class UpcomingFragment : BaseFragment<FragmentUpcomingBinding>() {
 
 
     private fun observeData() {
+        with(homeSharedViewModel) {
+            isKeyboardShow.observe(viewLifecycleOwner, {
+                (requireActivity() as? MainActivity)?.hideOrShowBottomAppBar(!it)
+            })
+        }
+
         with(viewModel) {
             listWorkData.observe(viewLifecycleOwner, { it ->
                 when {
@@ -199,6 +207,7 @@ class UpcomingFragment : BaseFragment<FragmentUpcomingBinding>() {
                 adapter.submitList(it)
             })
         }
+
     }
 
     private fun showAlertDeleteDialog(message: String, block: () -> Unit) {
@@ -223,7 +232,7 @@ class UpcomingFragment : BaseFragment<FragmentUpcomingBinding>() {
             .setTitle(resources.getString(R.string.new_data_title))
             .setPositiveButton(resources.getString(R.string.add)) { _, _ ->
                 customAlertDialogView.edtInput.text.toString().takeIf { it.isNotBlank() }?.let {
-                    viewModel.insertNewWork(it)
+                    viewModel.insertNewWork(it, TYPE_UPCOMING)
                 } ?: Toast.makeText(requireContext(), resources.getString(R.string.warning_title_min), Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
@@ -283,7 +292,7 @@ class UpcomingFragment : BaseFragment<FragmentUpcomingBinding>() {
     private fun setupCalendar() {
         val picker = view?.findViewById(R.id.datePicker) as HorizontalPicker
         picker
-            .setDays(20)
+            .setDays(30)
             .setOffset(10)
             .setDateSelectedColor(Color.DKGRAY)
             .setDateSelectedTextColor(Color.WHITE)
@@ -296,10 +305,11 @@ class UpcomingFragment : BaseFragment<FragmentUpcomingBinding>() {
             .setUnselectedDayTextColor(getColor(requireContext(), R.color.bg_gray))
             .showTodayButton(false)
             .init()
-        picker.backgroundColor = Color.LTGRAY
-        picker.setDate(DateTime().plusDays(4))
+        picker.backgroundColor = Color.WHITE
+        picker.setDate(DateTime().plusDays(0))
         picker.setListener {
             mGroupId = TimestampUtils.getLongTimeFromStr(it.millis)
+            viewModel.getListWork(mGroupId)
         }
     }
 }

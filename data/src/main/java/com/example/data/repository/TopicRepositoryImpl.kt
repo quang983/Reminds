@@ -10,8 +10,8 @@ import javax.inject.Inject
 class TopicRepositoryImpl @Inject constructor(
     private val source: TopicGroupSource
 ) : TopicRepository {
-    override suspend fun fetchAllTopicFlowGroups(): Flow<List<TopicGroupEntity>> = source
-        .fetchAllFlow().conflate()
+    override suspend fun fetchAllTopicFlowGroups(typeGroup : Int): Flow<List<TopicGroupEntity>> = source
+        .fetchAllFlow(typeGroup).conflate()
 
     override suspend fun fetchAllTopicGroups(): List<TopicGroupEntity> = source.fetchAll()
 
@@ -19,7 +19,7 @@ class TopicRepositoryImpl @Inject constructor(
         return source.getFastTopic().conflate()
     }
 
-    override suspend fun getTopicByIdUseCase(id: Long): Flow<TopicGroupEntity> {
+    override suspend fun getTopicByIdUseCase(id: Long): Flow<TopicGroupEntity?> {
         return source.getTopic(id).conflate()
     }
 
@@ -28,7 +28,7 @@ class TopicRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insertData(data: TopicGroupEntity): Long {
-        return source.insert(TopicGroupEntity(data.id, data.name))
+        return source.insert(data)
     }
 
     override suspend fun insertDatas(datas: List<TopicGroupEntity>) {

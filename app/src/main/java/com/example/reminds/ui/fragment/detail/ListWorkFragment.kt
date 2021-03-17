@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.common.base.model.AlarmNotificationEntity
 import com.example.common.base.model.ContentDataEntity
+import com.example.common.base.model.TopicGroupEntity.Companion.TYPE_NORMAL
 import com.example.framework.local.cache.CacheImpl
 import com.example.framework.local.cache.CacheImpl.Companion.KEY_SUM_DONE_TASK
 import com.example.reminds.R
@@ -226,7 +227,7 @@ class ListWorkFragment : Fragment() {
             .setTitle(resources.getString(R.string.new_data_title))
             .setPositiveButton(resources.getString(R.string.add)) { _, _ ->
                 customAlertDialogView.edtInput.text.toString().takeIf { it.isNotBlank() }?.let {
-                    viewModel.insertNewWork(it)
+                    viewModel.insertNewWork(it, TYPE_NORMAL)
                 } ?: Toast.makeText(requireContext(), resources.getString(R.string.warning_title_min), Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->

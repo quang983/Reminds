@@ -4,10 +4,10 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.TopicGroupEntity
+import com.example.common.base.model.TopicGroupEntity.Companion.TYPE_FAST
+import com.example.common.base.model.TopicGroupEntity.Companion.TYPE_NORMAL
 import com.example.common.base.model.WorkDataEntity
-import com.example.domain.base.BaseUseCase
 import com.example.domain.usecase.db.topic.DeleteTopicUseCase
 import com.example.domain.usecase.db.topic.FetchTopicFlowUseCase
 import com.example.domain.usecase.db.topic.InsertTopicUseCase
@@ -28,7 +28,7 @@ class HomeViewModel @ViewModelInject constructor(
     private val insertWorkUseCase: InsertWorkUseCase
 ) : BaseViewModel() {
 
-    private val _addFirstTopicDoneLiveData : LiveData<Boolean> = MutableLiveData()
+    private val _addFirstTopicDoneLiveData: LiveData<Boolean> = MutableLiveData()
 
     val fastTopicData: LiveData<List<WorkDataEntity>> = _addFirstTopicDoneLiveData.switchMapLiveData {
         fetchWorksUseCase.invoke(FetchWorksUseCase.Param(1))
@@ -38,7 +38,7 @@ class HomeViewModel @ViewModelInject constructor(
     }
 
     private val _topicData: LiveData<List<TopicGroupEntity>> = liveData {
-        fetchTopicFlowUseCase.invoke(BaseUseCase.Param()).collect {
+        fetchTopicFlowUseCase.invoke(FetchTopicFlowUseCase.Param(TYPE_NORMAL)).collect {
             emit(it.toMutableList())
         }
     }
@@ -68,14 +68,14 @@ class HomeViewModel @ViewModelInject constructor(
                         listContent = mutableListOf(),
                         doneAll = false,
                         isShowContents = false
-                    )
+                    ), TYPE_FAST
                 )
             )
         }
         _addFirstTopicDoneLiveData.postValue(true)
     }
 
-    fun postAddFirstTopic(isAdded :Boolean) = _addFirstTopicDoneLiveData.postValue(isAdded)
+    fun postAddFirstTopic(isAdded: Boolean) = _addFirstTopicDoneLiveData.postValue(isAdded)
 
     fun insertTopic(name: String) {
         viewModelScope.launch(handler + Dispatchers.IO) {
@@ -87,6 +87,4 @@ class HomeViewModel @ViewModelInject constructor(
     }
 
     data class TopicGroupViewItem(val topicGroupEntity: TopicGroupEntity, val totalTask: Int)
-
-    data class FastTopicViewItem(val topicGroupEntity: TopicGroupEntity, val contents: List<ContentDataEntity>)
 }

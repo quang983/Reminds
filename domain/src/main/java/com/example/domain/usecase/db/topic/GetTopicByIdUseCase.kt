@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetTopicByIdUseCase @Inject constructor(private val topicRepository: TopicRepository) :
-    BaseUseCase<GetTopicByIdUseCase.Param, Flow<TopicGroupEntity>> {
-    override suspend fun invoke(params: Param): Flow<TopicGroupEntity> {
+    BaseUseCase<GetTopicByIdUseCase.Param, Flow<TopicGroupEntity?>> {
+    override suspend fun invoke(params: Param): Flow<TopicGroupEntity?> {
         return topicRepository.getTopicByIdUseCase(params.id)
     }
 

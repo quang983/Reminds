@@ -7,9 +7,9 @@
     tools:context=".ui.activity.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/blue_900"
+        android:layout_height="?attr/actionBarSize"
         android:theme="@style/Theme.BaseProjects.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar

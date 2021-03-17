@@ -9,6 +9,24 @@
     android:paddingBottom="@dimen/_36sdp"
     android:transitionName="@string/transition_topic_to_detail">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue_900"
+        android:theme="@style/Theme.BaseProjects.AppBarOverlay"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/Theme.BaseProjects.PopupOverlay"
+            app:titleTextColor="@color/white" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <include
         android:id="@+id/layoutEmpty"
         layout="@layout/layout_empty_animation"
@@ -25,9 +43,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:paddingBottom="@dimen/_6sdp"
-        android:paddingStart="@dimen/_8sdp"
+        android:paddingStart="@dimen/_12sdp"
         android:paddingTop="@dimen/_6sdp"
+        android:paddingBottom="@dimen/_6sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

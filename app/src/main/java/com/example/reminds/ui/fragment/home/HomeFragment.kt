@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.example.common.base.model.TopicGroupEntity
@@ -17,6 +18,7 @@ import com.example.framework.local.cache.CacheImpl
 import com.example.reminds.R
 import com.example.reminds.ui.activity.MainActivity
 import com.example.reminds.ui.adapter.TopicAdapter
+import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import com.example.reminds.utils.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialElevationScale
@@ -36,6 +38,7 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
+    private val homeSharedViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
     private lateinit var customAlertDialogView: View
 
@@ -43,9 +46,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         checkAddFirstTopic()
-
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -170,6 +171,11 @@ class HomeFragment : Fragment() {
                     layoutToday.viewDividerContent.setVisible(false)
                     layoutToday.tvContent.text = getString(R.string.create_notify_new)
                 }
+            })
+        }
+        with(homeSharedViewModel){
+            isKeyboardShow.observe(viewLifecycleOwner,{
+                (requireActivity() as? MainActivity)?.hideOrShowBottomAppBar(!it)
             })
         }
     }

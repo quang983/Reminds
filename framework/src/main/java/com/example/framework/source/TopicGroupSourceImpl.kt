@@ -14,8 +14,8 @@ import javax.inject.Inject
 class TopicGroupSourceImpl @Inject constructor(
     private val dao: LocalTopicGroupDao
 ) : TopicGroupSource {
-    override suspend fun fetchAllFlow(): Flow<List<TopicGroupEntity>> {
-        return dao.fetchTopicGroupDataFlow().distinctUntilChanged().filterNotNull().map { it ->
+    override suspend fun fetchAllFlow(typeGroup: Int): Flow<List<TopicGroupEntity>> {
+        return dao.fetchTopicGroupDataFlow(typeGroup).distinctUntilChanged().filterNotNull().map { it ->
             it.map { it.toDomain(it) }
         }
     }
@@ -32,9 +32,9 @@ class TopicGroupSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun getTopic(id: Long): Flow<TopicGroupEntity> {
-        return dao.fetchTopicByIdData(id).distinctUntilChanged().filterNotNull().map {
-            it.toDomain(it)
+    override suspend fun getTopic(id: Long): Flow<TopicGroupEntity?> {
+        return dao.fetchTopicByIdData(id).distinctUntilChanged().map {
+            it?.toDomain(it)
         }
     }
 

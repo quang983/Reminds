@@ -10,7 +10,8 @@ data class TopicGroup(
     @PrimaryKey(autoGenerate = true) var idTopic: Long = 0,
     var name: String = "",
     var isShowDone: Boolean = true,
-    var optionSelected: Int = TopicGroupEntity.SHOW_ALL_WORKS
+    var optionSelected: Int = TopicGroupEntity.SHOW_ALL_WORKS,
+    var typeTopic: Int = TopicGroupEntity.TYPE_NORMAL
 ) : BaseDataMapper<TopicGroup, TopicGroupEntity> {
 
     override fun toData(entity: TopicGroupEntity): TopicGroup {
@@ -19,13 +20,15 @@ data class TopicGroup(
         topicGroup.name = entity.name
         topicGroup.isShowDone = entity.isShowDone
         topicGroup.optionSelected = entity.optionSelected
+        topicGroup.typeTopic = entity.typeTopic
         return topicGroup
     }
 
     override fun toDomain(model: TopicGroup): TopicGroupEntity {
         return TopicGroupEntity(
             id = model.idTopic, name = model.name,
-            isShowDone = model.isShowDone, optionSelected = model.optionSelected
+            isShowDone = model.isShowDone, optionSelected = model.optionSelected,
+            typeTopic = model.typeTopic
         )
     }
 }

@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.example.framework.local.database.AppDataBase
 import com.example.framework.local.database.dao.*
 import com.example.framework.source.MIGRATION_1_2
+import com.example.framework.source.MIGRATION_2_3
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,7 +20,7 @@ object DataBaseModule {
     @Provides
     fun provideDatabase(@ApplicationContext context: Context): AppDataBase {
         return Room.databaseBuilder(context, AppDataBase::class.java, AppDataBase.DATABASE_NAME)
-            .addMigrations(MIGRATION_1_2)
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
             .fallbackToDestructiveMigration()
             .build()
     }

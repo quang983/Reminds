@@ -37,7 +37,9 @@ class ListWorkViewModel @ViewModelInject constructor(
     private val _optionSelectedLiveData: LiveData<Int> = _idGroup.switchMapLiveData {
         getTopicByIdUseCase.invoke(GetTopicByIdUseCase.Param(_idGroup.value ?: return@switchMapLiveData)).collect {
             _topicGroup = it
-            emit(it.optionSelected)
+            it?.let {
+                emit(it.optionSelected)
+            } ?: _listWorkDataLocal.postValue(emptyList())
         }
     }
 
@@ -96,7 +98,7 @@ class ListWorkViewModel @ViewModelInject constructor(
     }
 
     fun getListWork(idGroup: Long) {
-        this._idGroup.postValue(idGroup)
+        _idGroup.postValue(idGroup)
     }
 
     fun reSaveListWorkToDb(wId: Long) = GlobalScope.launch(handler + Dispatchers.IO) {
@@ -159,7 +161,7 @@ class ListWorkViewModel @ViewModelInject constructor(
         }
     }
 
-    fun insertNewWork(name: String) = viewModelScope.launch(handler + Dispatchers.IO) {
+    fun insertNewWork(name: String, typeTopic: Int) = viewModelScope.launch(handler + Dispatchers.IO) {
         val workInsert = WorkDataEntity(
             id = System.currentTimeMillis(),
             name = name,
@@ -169,7 +171,7 @@ class ListWorkViewModel @ViewModelInject constructor(
         listWorkViewModel.add(workInsert)
         insertWorkUseCase.invoke(
             InsertWorkUseCase.Param(
-                workInsert
+                workInsert, typeTopic
             )
         )
     }

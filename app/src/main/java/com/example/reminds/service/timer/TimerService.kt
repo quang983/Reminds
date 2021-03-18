@@ -7,30 +7,73 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.*
 import androidx.annotation.RequiresApi
+import androidx.core.app.JobIntentService
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_MIN
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.reminds.R
-import com.example.reminds.service.NotificationService
-import com.example.reminds.service.REMOVE_OBJECT_TIMER_DATA
 import java.util.*
 import java.util.concurrent.TimeUnit
+
+const val MESSAGE_START = 1
+const val MESSAGE_STOP = 2
+const val MESSAGE_RESTART = 3
+const val MESSAGE_PAUSE = 4
+const val MESSAGE_CREATE = 0
 
 
 enum class TimerState { STOPPED, PAUSED, RUNNING, TERMINATED }
 
-class TimerService : Service() {
-    private lateinit var mMessenger: Messenger
+class TimerService : JobIntentService() {
+
+    private lateinit var timer: CountDownTimer
+
+    private var secondsRemaining: Long = 0
+    private var setTime: Long = 0
+    private lateinit var showTime: String
 
     companion object {
         var state = TimerState.TERMINATED
+        const val NOTIFICATION_STATE = "NOTIFICATION_STATE"
+        const val NOTIFICATION_START = "NOTIFICATION_START"
+        const val NOTIFICATION_STOP = "NOTIFICATION_STOP"
+        const val NOTIFICATION_RESTART = "NOTIFICATION_RESTART"
+        const val NOTIFICATION_PAUSE = "NOTIFICATION_PAUSE"
+        const val NOTIFICATION_CREATE = "NOTIFICATION_CREATE"
+
+        const val NOTIFICATION_TIMER = "NOTIFICATION_TIMER"
+
+        private const val UNIQUE_JOB_ID = 42
+
+        fun enqueueWork(context: Context, intent: Intent) {
+            enqueueWork(context, TimerService::class.java, UNIQUE_JOB_ID, intent)
+        }
+
+
     }
+
     private val foreGroundId = 55
 
-    override fun onBind(intent: Intent): IBinder {
-        mMessenger = Messenger(NotificationService.IncomingHandler(this))
-        return mMessenger.binder
+    override fun onHandleWork(intent: Intent) {
+        intent.apply {
+            val timer = getLongExtra(NOTIFICATION_TIMER, 0L)
+            when (action) {
+                NOTIFICATION_CREATE -> {
+                    createNotification(timer)
+                }
+                NOTIFICATION_START -> {
+                    playTimer(timer)
+                }
+            }
+        }
     }
+
+    private fun createNotification(timer: Long) {
+        this.setTime = setTime
+        secondsRemaining = setTime
+        NotificationTimer.createNotification(this, timer)
+    }
+
 
     override fun onCreate() {
         super.onCreate()
@@ -69,108 +112,73 @@ class TimerService : Service() {
         return channelId
     }
 
-    internal class IncomingHandler(
-        context: Context,
-        private val applicationContext: Context = context.applicationContext
-    ) : Handler() {
-
-        private lateinit var timer: CountDownTimer
-
-        private var secondsRemaining: Long = 0
-        private var setTime: Long = 0
-        private lateinit var showTime: String
-
-
-        override fun handleMessage(msg: Message) {
-            when (msg.what) {
-                REMOVE_OBJECT_TIMER_DATA -> {
-                    playTimer(
-                        intent.getLongExtra("setTime", 0L),
-                        intent.getBooleanExtra("forReplay", false)
-                    )
-                }
-                else -> super.handleMessage(msg)
-            }
-        }
-        private fun playTimer(setTime: Long, isReplay: Boolean) {
-
-            if (!isReplay) {
-                this.setTime = setTime
-                secondsRemaining = setTime
-                startForeground(foreGroundId, NotificationTimer.createNotification(this, setTime))
-            }
-
-            timer = object : CountDownTimer(secondsRemaining, 1000) {
-                override fun onFinish() {
-                    state = TimerState.STOPPED
-                    val minutesUntilFinished = setTime / 1000 / 60
-                    val secondsInMinuteUntilFinished = ((setTime / 1000) - minutesUntilFinished * 60)
-                    val secondsStr = secondsInMinuteUntilFinished.toString()
-                    val showTime = "$minutesUntilFinished : ${if (secondsStr.length == 2) secondsStr else "0$secondsStr"}"
-                    NotificationTimer.updateStopState(this@TimerService, showTime, true)
-                }
-
-                override fun onTick(millisUntilFinished: Long) {
-                    NotificationTimer.updateUntilFinished(millisUntilFinished + (1000 - (millisUntilFinished % 1000)) - 1000)
-                    secondsRemaining = millisUntilFinished
-                    updateCountdownUI()
-                }
-            }.start()
-
-            state = TimerState.RUNNING
-        }
-
-        override fun onTaskRemoved(rootIntent: Intent?) {
-            super.onTaskRemoved(rootIntent)
-
-            if (::timer.isInitialized) {
-                timer.cancel()
-                state = TimerState.TERMINATED
-            }
-            NotificationTimer.removeNotification()
-            stopSelf()
-        }
-
-        private fun pauseTimer() {
-            if (::timer.isInitialized) {
-                timer.cancel()
-                state = TimerState.PAUSED
-                NotificationTimer.updatePauseState(this, showTime)
-            }
-        }
-
-        private fun stopTimer() {
-            if (::timer.isInitialized) {
-                timer.cancel()
+    private fun playTimer(setTime: Long) {
+        timer = object : CountDownTimer(secondsRemaining, 1000) {
+            override fun onFinish() {
                 state = TimerState.STOPPED
                 val minutesUntilFinished = setTime / 1000 / 60
                 val secondsInMinuteUntilFinished = ((setTime / 1000) - minutesUntilFinished * 60)
                 val secondsStr = secondsInMinuteUntilFinished.toString()
                 val showTime = "$minutesUntilFinished : ${if (secondsStr.length == 2) secondsStr else "0$secondsStr"}"
-                NotificationTimer.updateStopState(this@TimerService, showTime)
+                NotificationTimer.updateStopState(this@TimerService, showTime, true)
             }
-        }
 
-        private fun terminateTimer() {
-            if (::timer.isInitialized) {
-                timer.cancel()
-                state = TimerState.TERMINATED
-                NotificationTimer.removeNotification()
-                stopSelf()
+            override fun onTick(millisUntilFinished: Long) {
+                NotificationTimer.updateUntilFinished(millisUntilFinished + (1000 - (millisUntilFinished % 1000)) - 1000)
+                secondsRemaining = millisUntilFinished
+                updateCountdownUI()
             }
+        }.start()
+
+        state = TimerState.RUNNING
+    }
+/*
+    fun onTaskRemoved(rootIntent: Intent?) {
+        if (::timer.isInitialized) {
+            timer.cancel()
+            state = TimerState.TERMINATED
         }
+        NotificationTimer.removeNotification()
+        applicationContext.stopService(rootIntent)
+    }*/
 
-        private fun updateCountdownUI() {
-            val minutesUntilFinished = (secondsRemaining / 1000) / 60
-            val secondsInMinuteUntilFinished = ((secondsRemaining / 1000) - minutesUntilFinished * 60)
-            val secondsStr = secondsInMinuteUntilFinished.toString()
-            showTime = "$minutesUntilFinished : ${if (secondsStr.length == 2) secondsStr else "0$secondsStr"}"
-
-            NotificationTimer.updateTimeLeft(this, showTime)
+    private fun pauseTimer() {
+        if (::timer.isInitialized) {
+            timer.cancel()
+            state = TimerState.PAUSED
+            NotificationTimer.updatePauseState(this, showTime)
         }
-
     }
 
+    private fun stopTimer() {
+        if (::timer.isInitialized) {
+            timer.cancel()
+            state = TimerState.STOPPED
+            val minutesUntilFinished = setTime / 1000 / 60
+            val secondsInMinuteUntilFinished = ((setTime / 1000) - minutesUntilFinished * 60)
+            val secondsStr = secondsInMinuteUntilFinished.toString()
+            val showTime = "$minutesUntilFinished : ${if (secondsStr.length == 2) secondsStr else "0$secondsStr"}"
+            NotificationTimer.updateStopState(this, showTime)
+        }
+    }
+
+    private fun terminateTimer() {
+        if (::timer.isInitialized) {
+            timer.cancel()
+            state = TimerState.TERMINATED
+            NotificationTimer.removeNotification()
+//                stopservice()
+        }
+    }
+
+    private fun updateCountdownUI() {
+        val minutesUntilFinished = (secondsRemaining / 1000) / 60
+        val secondsInMinuteUntilFinished = ((secondsRemaining / 1000) - minutesUntilFinished * 60)
+        val secondsStr = secondsInMinuteUntilFinished.toString()
+        showTime = "$minutesUntilFinished : ${if (secondsStr.length == 2) secondsStr else "0$secondsStr"}"
+
+        NotificationTimer.updateTimeLeft(this, showTime)
+    }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         return START_NOT_STICKY

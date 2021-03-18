@@ -44,31 +44,31 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
                 .setOnlyAlertOnce(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pendingIntent)
-                .setOnTickListener { mBinding.timeUntilFinishText.text = it.toString() }
+                .setOnTickListener { /*mBinding.timeUntilFinishText.text = it.toString()*/ }
                 .setOnFinishListener { Toast.makeText(requireContext(), "timer finished", Toast.LENGTH_SHORT).show() }
                 .setContentTitle("Timer :)")
         }
         mBinding.playBtn.setOnClickListener {
             if (TimerService.state != TimerState.RUNNING) {
                 Intent(context, TimerService::class.java).apply {
-                    action = "PLAY"
-                    putExtra("setTime", mBinding.timeEditText.text.toString().toLong())
-                    putExtra("forReplay", TimerService.state == TimerState.PAUSED)
+                    action = TimerService.NOTIFICATION_START
+                    putExtra(TimerService.NOTIFICATION_START, mBinding.timeEditText.text.toString().toLong())
+                    TimerService.enqueueWork(requireContext(), this)
                 }
             }
         }
 
-        mBinding.pauseBtn.setOnClickListener {
-            notiTimer.pause()
-        }
+        /*       mBinding.pauseBtn.setOnClickListener {
+                   notiTimer.pause()
+               }
 
-        mBinding.stopBtn.setOnClickListener {
-            notiTimer.stop()
-            mBinding.timeUntilFinishText.text = null
-        }
+               mBinding.stopBtn.setOnClickListener {
+                   notiTimer.stop()
+                   mBinding.timeUntilFinishText.text = null
+               }
 
-        mBinding.terminateBtn.setOnClickListener {
-            notiTimer.terminate()
-        }
+               mBinding.terminateBtn.setOnClickListener {
+                   notiTimer.terminate()
+               }*/
     }
 }

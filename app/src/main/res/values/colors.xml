@@ -24,4 +24,6 @@
     <color name="bg_background">#f5f5f5</color>
     <color name="light_blue_50">#e1f5fe</color>
     <color name="gray_50">#fafafa</color>
+    <color name="gray_50_transparent">#E6fafafa</color>
+    <color name="light_blue_50_transparent">#FFe1f5fe</color>
 </resources>

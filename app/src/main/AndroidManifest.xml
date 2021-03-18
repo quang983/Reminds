@@ -7,8 +7,12 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <meta-data
+        android:name="firebase_crashlytics_collection_enabled"
+        android:value="${crashlyticsCollectionEnabled}" />
 
     <application
         android:name="com.example.reminds.AppComponent"
@@ -20,15 +24,13 @@
         android:theme="@style/Theme.BaseProjects"
         android:usesCleartextTraffic="true">
         <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
-             <meta-data
-                 android:name="com.google.android.gms.ads.APPLICATION_ID"
-                 android:value="ca-app-pub-5558775664447893~7048012476"/>
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-5558775664447893~7048012476" />
 
         <activity
-            android:name="com.example.reminds.ui.activity.MainActivity"
+            android:name="com.example.reminds.ui.activity.splash.SplashScreenActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:taskAffinity=""
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,9 +38,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.example.reminds.ui.activity.MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
         <service android:name=".service.NotificationService" />
 
-        <receiver android:name=".service.NotificationBroadcastReceiver" >
+        <receiver android:name=".service.NotificationBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

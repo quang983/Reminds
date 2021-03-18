@@ -24,7 +24,10 @@
     <color name="bg_background">#f5f5f5</color>
     <color name="light_blue_50">#e1f5fe</color>
     <color name="gray_50">#fafafa</color>
+<<<<<<< HEAD
     <color name="gray_50_transparent">#E6fafafa</color>
     <color name="light_blue_50_transparent">#FFe1f5fe</color>
     <color name="light_blue_200">#b0bec5</color>
+=======
+>>>>>>> parent of 9523147... reset
 </resources>

@@ -1,17 +1,12 @@
 package com.example.reminds.service
 
-import android.annotation.SuppressLint
-import android.app.*
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.*
-import androidx.annotation.RequiresApi
-import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.common.base.model.AlarmNotificationEntity
-import com.example.reminds.R
 import com.example.reminds.service.ScheduledWorker.Companion.NOTIFICATION_MESSAGE
 import com.example.reminds.service.ScheduledWorker.Companion.NOTIFICATION_TITLE
 import com.example.reminds.service.ScheduledWorker.Companion.TOPIC_ID_OPEN
@@ -19,7 +14,6 @@ import com.example.reminds.utils.TimestampUtils
 import com.example.reminds.utils.TimestampUtils.DATE_FORMAT_DEFAULT
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 const val INSERT_OBJECT_TIMER_DATA = 1 // insert or update
@@ -27,48 +21,6 @@ const val REMOVE_OBJECT_TIMER_DATA = 0
 
 open class NotificationService : Service() {
     private lateinit var mMessenger: Messenger
-
-    override fun onCreate() {
-        super.onCreate()
-        startForeground(this)
-    }
-
-    private fun startForeground(service: Service) {
-        val channelId =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                createNotificationChannel(service, service.getString(R.string.notify_channel), "My Background Service")
-            } else {
-                ""
-            }
-
-        val notificationBuilder = NotificationCompat.Builder(service, channelId)
-        val notification = notificationBuilder.setOngoing(true)
-            .setColor(ContextCompat.getColor(service.applicationContext, android.R.color.holo_blue_light))
-            .setSmallIcon(R.drawable.ic_tasks_new)
-            .setContentText(getText(R.string.show_running))
-            .setPriority(NotificationCompat.PRIORITY_LOW)
-            .setCategory(Notification.CATEGORY_SERVICE)
-            .build()
-        service.startForeground(101, notification)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun createNotificationChannel(
-        context: Context,
-        channelId: String,
-        channelName: String
-    ): String {
-        val chan =
-            NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_NONE)
-        chan.lightColor = Color.BLUE
-        chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
-
-        val service =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        service.createNotificationChannel(chan)
-
-        return channelId
-    }
 
     internal class IncomingHandler(
         context: Context,
@@ -133,26 +85,5 @@ open class NotificationService : Service() {
     override fun onBind(intent: Intent): IBinder {
         mMessenger = Messenger(IncomingHandler(this))
         return mMessenger.binder
-    }
-
-    inner class CounterClass(millisInFuture: Long, countDownInterval: Long) : CountDownTimer(millisInFuture, countDownInterval) {
-        @SuppressLint("DefaultLocale")
-        override fun onTick(millisUntilFinished: Long) {
-            val hms = java.lang.String.format(
-                "%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))
-            )
-            println(hms)
-            val timerInfoIntent = Intent("TIME_INFO")
-            timerInfoIntent.putExtra("VALUE", hms)
-            LocalBroadcastManager.getInstance(this@NotificationService).sendBroadcast(timerInfoIntent)
-        }
-
-        override fun onFinish() {
-            val timerInfoIntent = Intent("TIME_INFO")
-            timerInfoIntent.putExtra("VALUE", "Completed")
-            LocalBroadcastManager.getInstance(this@NotificationService).sendBroadcast(timerInfoIntent)
-        }
     }
 }

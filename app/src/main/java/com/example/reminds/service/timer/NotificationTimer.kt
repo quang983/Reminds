@@ -54,7 +54,9 @@ object NotificationTimer: Timer {
             putExtra("setTime", timeMillis)
             putExtra("forReplay", TimerService.state == TimerState.PAUSED)
         }
-        ContextCompat.startForegroundService(context, playIntent)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(playIntent)
+        }
     }
 
     override fun pause(context: Context) {
@@ -63,7 +65,7 @@ object NotificationTimer: Timer {
         val pauseIntent = Intent(context, TimerService::class.java).apply {
             action = "PAUSE"
         }
-        ContextCompat.startForegroundService(context, pauseIntent)
+        context.startForegroundService(pauseIntent)
     }
 
     override fun stop(context: Context) {
@@ -72,7 +74,7 @@ object NotificationTimer: Timer {
         val stopIntent = Intent(context, TimerService::class.java).apply {
             action = "STOP"
         }
-        ContextCompat.startForegroundService(context, stopIntent)
+        context.startForegroundService(stopIntent)
     }
 
     override fun terminate(context: Context) {
@@ -81,7 +83,7 @@ object NotificationTimer: Timer {
         val terminateIntent = Intent(context, TimerService::class.java).apply {
             action = "TERMINATE"
         }
-        ContextCompat.startForegroundService(context, terminateIntent)
+        context.startForegroundService(terminateIntent)
     }
 
     fun createNotification(context: Context, setTime: Long): Notification {

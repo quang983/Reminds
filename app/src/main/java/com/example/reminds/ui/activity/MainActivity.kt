@@ -4,7 +4,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.graphics.Color
 import android.os.*
 import android.util.Log
 import android.view.*
@@ -19,6 +18,7 @@ import com.example.reminds.databinding.ActivityMainBinding
 import com.example.reminds.service.INSERT_OBJECT_TIMER_DATA
 import com.example.reminds.service.NotificationService
 import com.example.reminds.service.ScheduledWorker.Companion.TOPIC_ID_OPEN
+import com.example.reminds.ui.activity.focus.FocusTodoActivity
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import com.example.reminds.utils.gone
 import com.example.reminds.utils.postValue
@@ -175,19 +175,6 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return onNavigateUp()
     }
-
-    /*  private fun createNotificationChannel() {
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-              val name: CharSequence = getString(R.string.notify_name_channel)
-              val description = getString(R.string.content_delete_topic_title)
-              val importance = NotificationManager.IMPORTANCE_DEFAULT
-              val channel = NotificationChannel("CHANNEL_ID", name, importance)
-              channel.description = description
-              val notificationManager: NotificationManager =
-                  getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-              notificationManager.createNotificationChannel(channel)
-          }
-      }*/
 
     private fun createAdsMode() {
         MobileAds.initialize(this)
@@ -351,6 +338,8 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.pageThird -> {
+                    val intent = Intent(this, FocusTodoActivity::class.java)
+                    startActivity(intent)
                     false
                 }
                 R.id.pageFour -> {

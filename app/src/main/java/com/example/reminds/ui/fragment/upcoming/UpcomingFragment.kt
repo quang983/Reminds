@@ -56,12 +56,6 @@ class UpcomingFragment : BaseFragment<FragmentUpcomingBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedElementEnterTransition = MaterialContainerTransform().apply {
-            drawingViewId = R.id.nav_host_fragment
-            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
-            scrimColor = Color.TRANSPARENT
-            setAllContainerColors(requireContext().themeColor(R.attr.colorSurface))
-        }
         calGroupId()
         TimestampUtils.getDate(System.currentTimeMillis())
         viewModel.getListWork(mGroupId)

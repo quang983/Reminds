@@ -54,10 +54,16 @@
             android:name=".service.timer.TimerService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
+        <service
+            android:name=".service.timer.HelloService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
         <receiver android:name=".service.NotificationBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".service.timer.TimerBroadcastReceiver" />
     </application>
 </manifest>

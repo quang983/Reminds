@@ -1,5 +1,7 @@
 package com.example.reminds.ui.activity
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -16,10 +18,13 @@ import com.example.common.base.model.AlarmNotificationEntity
 import com.example.reminds.R
 import com.example.reminds.databinding.ActivityMainBinding
 import com.example.reminds.service.INSERT_OBJECT_TIMER_DATA
+import com.example.reminds.service.NotificationBroadcastReceiver
 import com.example.reminds.service.NotificationService
+import com.example.reminds.service.ScheduledWorker
 import com.example.reminds.service.ScheduledWorker.Companion.TOPIC_ID_OPEN
 import com.example.reminds.ui.activity.focus.FocusTodoActivity
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
+import com.example.reminds.utils.TimestampUtils
 import com.example.reminds.utils.gone
 import com.example.reminds.utils.postValue
 import com.example.reminds.utils.visible
@@ -36,6 +41,8 @@ import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @AndroidEntryPoint
@@ -72,13 +79,13 @@ class MainActivity : AppCompatActivity() {
         navController = findNavController(R.id.nav_host_fragment)
         NavigationUI.setupActionBarWithNavController(this, navController)
 
-        onStartService()
 //        createNotificationChannel()
         catchEventKeyboard()
         setObserver()
         createAdsMode()
         setOnListener()
 //      showRatingApp()
+//        onStartService()
     }
 
     override fun onResume() {
@@ -91,6 +98,7 @@ class MainActivity : AppCompatActivity() {
         intent?.extras?.apply {
             if (containsKey(TOPIC_ID_OPEN)) {
                 viewModel.getTopic(getLong(TOPIC_ID_OPEN))
+                intent.replaceExtras(Bundle())
             }
         }
     }
@@ -98,7 +106,11 @@ class MainActivity : AppCompatActivity() {
     private fun setObserver() {
         viewModel.apply {
             notifyDataInsert.observe(this@MainActivity, {
-                sendActionInsertAlert(it)
+//                sendActionInsertAlert(it)
+                scheduleAlarm(
+                    TimestampUtils.getFullFormatTime(it.timeAlarm, TimestampUtils.DATE_FORMAT_DEFAULT),
+                    it, it.idContent.toInt()
+                )
             })
             showAdsMobile.observe(this@MainActivity, {
                 showAdsMobile()
@@ -113,11 +125,42 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun scheduleAlarm(
+        scheduledTimeString: String?,
+        item: AlarmNotificationEntity,
+        idAlarm: Int
+    ) {
+        val alarmMgr = applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmIntent =
+            Intent(applicationContext, NotificationBroadcastReceiver::class.java).let { intent ->
+                intent.putExtra(ScheduledWorker.NOTIFICATION_TITLE, item.nameWork)
+                intent.putExtra(ScheduledWorker.NOTIFICATION_MESSAGE, item.nameContent)
+                intent.putExtra(TOPIC_ID_OPEN, item.idTopic)
+                PendingIntent.getBroadcast(applicationContext, idAlarm, intent, 0)
+            }
+
+        val scheduledTime = SimpleDateFormat(TimestampUtils.DATE_FORMAT_DEFAULT, Locale.getDefault())
+            .parse(scheduledTimeString!!)
+
+        scheduledTime?.let {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, scheduledTime.time, alarmIntent)
+            else alarmMgr.setExact(AlarmManager.RTC_WAKEUP, scheduledTime.time, alarmIntent)
+        }
+    }
+
+    private fun cancelAlarm(idAlarm: Int) {
+        val alarmMgr = applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        Intent(applicationContext, NotificationBroadcastReceiver::class.java).let { intent ->
+            val pendingIntent = PendingIntent.getBroadcast(applicationContext, idAlarm, intent, 0)
+            alarmMgr.cancel(pendingIntent)
+        }
+    }
+
     private fun onStartService() {
-        super.onStart()
         intentService = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Intent(this, NotificationService::class.java).also { intent ->
-                startForegroundService(intent)
+                startService(intent)
                 bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
             }
 
@@ -126,13 +169,7 @@ class MainActivity : AppCompatActivity() {
                 startService(intent)
                 bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
             }
-
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        stopService(intentService)
     }
 
     /**

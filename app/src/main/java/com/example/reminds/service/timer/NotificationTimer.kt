@@ -9,14 +9,23 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import kotlin.properties.Delegates
+
+
+interface Timer {
+    fun play(context: Context, timeMillis: Long)
+    fun pause(context: Context)
+    fun stop(context: Context)
+    fun terminate(context: Context)
+}
 
 typealias onFinishListener = () -> Unit
 typealias onTickListener = (Long) -> Unit
 
-object NotificationTimer {
+object NotificationTimer: Timer {
 
-    private var notiIcon: Int? = null
+    private var notiIcon:Int? = null
     private var notiTitle: CharSequence = ""
     private var showWhen = false
     private var notiColor = 0x66FFFFFF
@@ -38,45 +47,43 @@ object NotificationTimer {
 
     private var setStartTime by Delegates.notNull<Long>()
 
-/*    override fun play(context: Context, timeMillis: Long) {
-        if(TimerService.state == TimerState.RUNNING) return
+    override fun play(context: Context, timeMillis: Long) {
+        if(HelloService.state == TimerState.RUNNING) return
 
-        val playIntent = Intent(context, TimerService::class.java).apply {
+        val playIntent = Intent(context, HelloService::class.java).apply {
             action = "PLAY"
             putExtra("setTime", timeMillis)
-            putExtra("forReplay", TimerService.state == TimerState.PAUSED)
+            putExtra("forReplay", HelloService.state == TimerState.PAUSED)
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(playIntent)
-        }
+        ContextCompat.startForegroundService(context, playIntent)
     }
 
     override fun pause(context: Context) {
-        if(TimerService.state != TimerState.RUNNING) return
+        if(HelloService.state != TimerState.RUNNING) return
 
-        val pauseIntent = Intent(context, TimerService::class.java).apply {
+        val pauseIntent = Intent(context, HelloService::class.java).apply {
             action = "PAUSE"
         }
-        context.startForegroundService(pauseIntent)
+        ContextCompat.startForegroundService(context, pauseIntent)
     }
 
     override fun stop(context: Context) {
-        if(TimerService.state == TimerState.STOPPED) return
+        if(HelloService.state == TimerState.STOPPED) return
 
-        val stopIntent = Intent(context, TimerService::class.java).apply {
+        val stopIntent = Intent(context, HelloService::class.java).apply {
             action = "STOP"
         }
-        context.startForegroundService(stopIntent)
+        ContextCompat.startForegroundService(context, stopIntent)
     }
 
     override fun terminate(context: Context) {
-        if(!::notificationManager.isInitialized && TimerService.state == TimerState.TERMINATED) return
+        if(!::notificationManager.isInitialized && HelloService.state == TimerState.TERMINATED) return
 
-        val terminateIntent = Intent(context, TimerService::class.java).apply {
+        val terminateIntent = Intent(context, HelloService::class.java).apply {
             action = "TERMINATE"
         }
-        context.startForegroundService(terminateIntent)
-    }*/
+        ContextCompat.startForegroundService(context, terminateIntent)
+    }
 
     fun createNotification(context: Context, setTime: Long): Notification {
         channelId = "${context.packageName}.timer"
@@ -88,16 +95,16 @@ object NotificationTimer {
             notificationManager.createNotificationChannel(channel)
         }
 
-        val pauseIntent = Intent(context, TimerService::class.java).apply { action = "PAUSE" }
-        val stopIntent = Intent(context, TimerService::class.java).apply { action = "STOP" }
+        val pauseIntent = Intent(context, HelloService::class.java).apply { action = "PAUSE" }
+        val stopIntent = Intent(context, HelloService::class.java).apply { action = "STOP" }
 
         pausePendingIntent = PendingIntent.getService(context, 29, pauseIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         stopPendingIntent = PendingIntent.getService(context, 29, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         this.setStartTime = setTime
 
-        val minutesUntilFinished = (setTime / 1000 - 1) / 60
-        val secondsInMinuteUntilFinished = ((setTime / 1000 - 1) - minutesUntilFinished * 60)
+        val minutesUntilFinished = (setTime/1000 - 1) / 60
+        val secondsInMinuteUntilFinished = ((setTime/1000 - 1) - minutesUntilFinished * 60)
         val secondsStr = secondsInMinuteUntilFinished.toString()
         val showTime =
             "$minutesUntilFinished : ${if (secondsStr.length == 2) secondsStr else "0$secondsStr"}"
@@ -111,7 +118,7 @@ object NotificationTimer {
 
     fun updateStopState(context: Context, timeLeft: String, timeUp: Boolean = false) {
         notificationManager.notify(55, standByStateNotification(context, timeLeft))
-        if (timeUp)
+        if(timeUp)
             finishListener?.invoke()
     }
 
@@ -130,13 +137,13 @@ object NotificationTimer {
             setAutoCancel(isAutoCancel)
             setOnlyAlertOnce(isOnlyAlertOnce)
             contentPendingIntent?.let { setContentIntent(it) }
-            if (isControlMode)
+            if(isControlMode)
                 setStyle(androidx.media.app.NotificationCompat.MediaStyle().setShowActionsInCompactView(0, 1))
         }
 
     private fun playStateNotification(context: Context, timeLeft: String): Notification =
         baseNotificationBuilder(context, timeLeft).apply {
-            if (isControlMode) {
+            if(isControlMode) {
                 pauseBtnIcon?.let { addAction(it, "pause", pausePendingIntent) }
                 stopBtnIcon?.let { addAction(it, "stop", stopPendingIntent) }
             }
@@ -144,7 +151,7 @@ object NotificationTimer {
 
     private fun pauseStateNotification(context: Context, timeLeft: String): Notification =
         baseNotificationBuilder(context, timeLeft).apply {
-            if (isControlMode) {
+            if(isControlMode) {
                 playBtnIcon?.let { addAction(it, "play", getPlayPendingIntent(context, true)) }
                 stopBtnIcon?.let { addAction(it, "stop", stopPendingIntent) }
             }
@@ -152,14 +159,14 @@ object NotificationTimer {
 
     private fun standByStateNotification(context: Context, timeLeft: String): Notification =
         baseNotificationBuilder(context, timeLeft).apply {
-            if (isControlMode) {
+            if(isControlMode) {
                 playBtnIcon?.let { addAction(it, "play", getPlayPendingIntent(context)) }
                 stopBtnIcon?.let { addAction(it, "stop", stopPendingIntent) }
             }
         }.build()
 
     private fun getPlayPendingIntent(context: Context, isPausingState: Boolean = false): PendingIntent {
-        val playIntent = Intent(context, TimerService::class.java).apply {
+        val playIntent = Intent(context, HelloService::class.java).apply {
             action = "PLAY"
             putExtra("setTime", setStartTime)
             putExtra("forReplay", isPausingState)
@@ -239,13 +246,13 @@ object NotificationTimer {
             tickListener = listener
             return this
         }
-/*
+
         fun play(timeMillis: Long) = play(context, timeMillis)
 
         fun pause() = pause(context)
 
         fun stop() = stop(context)
 
-        fun terminate() = terminate(context)*/
+        fun terminate() = terminate(context)
     }
 }

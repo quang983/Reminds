@@ -17,60 +17,35 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/build_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="BUILD"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/time_editText"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/time_until_finish_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/play_btn"
-        app:layout_constraintEnd_toEndOf="parent"
+    <com.dinuscxj.progressbar.CircleProgressBar
+        android:id="@+id/circle_custom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/_20sdp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/time_editText" />
-
-    <Button
-        android:id="@+id/play_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="PLAY"
-        app:layout_constraintBottom_toTopOf="@+id/terminate_btn"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/pause_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="PAUSE"
-        app:layout_constraintBottom_toTopOf="@+id/terminate_btn"
-        app:layout_constraintStart_toEndOf="@+id/play_btn" />
-
-    <Button
-        android:id="@+id/stop_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="STOP"
-        app:layout_constraintBottom_toTopOf="@+id/terminate_btn"
-        app:layout_constraintStart_toEndOf="@+id/pause_btn" />
-
-    <Button
-        android:id="@+id/terminate_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="TERMINATE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:progress_style="line"
+        app:progress_stroke_width="1dp"
+        app:progress_start_color="@color/holo_purple"
+        app:progress_end_color="@color/holo_green_light"
+        app:progress_background_color="@color/holo_darker_gray"
+        app:progress_start_degree="-90"
+        app:drawBackgroundOutsideProgress="true"
+        app:progress_shader="sweep"
+        app:progress_stroke_cap="round"
+        app:progress_blur_style="solid"
+        app:progress_blur_radius="50dp"
+        app:line_width="10dp"
+        app:line_count="80"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,19 +1,18 @@
 package com.example.reminds.service.timer
 
-import android.annotation.SuppressLint
-import android.app.*
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.os.*
+import android.os.Build
+import android.os.CountDownTimer
 import androidx.annotation.RequiresApi
 import androidx.core.app.JobIntentService
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_MIN
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.reminds.R
-import java.util.*
-import java.util.concurrent.TimeUnit
 
 const val MESSAGE_START = 1
 const val MESSAGE_STOP = 2
@@ -62,7 +61,7 @@ class TimerService : JobIntentService() {
                     createNotification(timer)
                 }
                 NOTIFICATION_START -> {
-                    playTimer(timer)
+//                    playTimer(timer)
                 }
             }
         }
@@ -110,27 +109,6 @@ class TimerService : JobIntentService() {
         val service = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         service.createNotificationChannel(chan)
         return channelId
-    }
-
-    private fun playTimer(setTime: Long) {
-        timer = object : CountDownTimer(secondsRemaining, 1000) {
-            override fun onFinish() {
-                state = TimerState.STOPPED
-                val minutesUntilFinished = setTime / 1000 / 60
-                val secondsInMinuteUntilFinished = ((setTime / 1000) - minutesUntilFinished * 60)
-                val secondsStr = secondsInMinuteUntilFinished.toString()
-                val showTime = "$minutesUntilFinished : ${if (secondsStr.length == 2) secondsStr else "0$secondsStr"}"
-                NotificationTimer.updateStopState(this@TimerService, showTime, true)
-            }
-
-            override fun onTick(millisUntilFinished: Long) {
-                NotificationTimer.updateUntilFinished(millisUntilFinished + (1000 - (millisUntilFinished % 1000)) - 1000)
-                secondsRemaining = millisUntilFinished
-                updateCountdownUI()
-            }
-        }.start()
-
-        state = TimerState.RUNNING
     }
 /*
     fun onTaskRemoved(rootIntent: Intent?) {
@@ -183,7 +161,10 @@ class TimerService : JobIntentService() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         return START_NOT_STICKY
     }
+}
 
+
+/* Template
     inner class CounterClass(millisInFuture: Long, countDownInterval: Long) : CountDownTimer(millisInFuture, countDownInterval) {
         @SuppressLint("DefaultLocale")
         override fun onTick(millisUntilFinished: Long) {
@@ -203,5 +184,4 @@ class TimerService : JobIntentService() {
             timerInfoIntent.putExtra("VALUE", "Completed")
             LocalBroadcastManager.getInstance(this@TimerService).sendBroadcast(timerInfoIntent)
         }
-    }
-}
+    }*/

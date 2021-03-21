@@ -6,7 +6,8 @@ import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.activityViewModels
@@ -69,11 +70,6 @@ class UpcomingFragment : BaseFragment<FragmentUpcomingBinding>() {
         setupListener()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_main, menu)
-    }
-
     private fun calGroupId() {
         mGroupId = TimestampUtils.getLongTimeFromStr(Calendar.getInstance().timeInMillis)
     }
@@ -96,18 +92,6 @@ class UpcomingFragment : BaseFragment<FragmentUpcomingBinding>() {
 
     private fun setupToolbar() {
         setHasOptionsMenu(true)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_settings -> {
-                navigate(ListWorkFragmentDirections.actionSecondFragmentToSettingFragment(idGroup = mGroupId))
-            }
-            android.R.id.home -> {
-                navigateUp()
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun setupUI() {

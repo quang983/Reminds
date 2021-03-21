@@ -10,20 +10,22 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_36sdp"
+        android:elevation="@dimen/_8sdp"
         android:theme="@style/Theme.BaseProjects.AppBarOverlay"
         app:liftOnScroll="true">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
-            android:elevation="@dimen/_8sdp"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_36sdp"
             android:background="@color/white"
+            android:elevation="@dimen/_8sdp"
             app:layout_scrollFlags="enterAlways|snap"
             app:popupTheme="@style/Theme.BaseProjects.PopupOverlay"
             app:titleTextColor="@color/black" />
 
     </com.google.android.material.appbar.AppBarLayout>
+
 
     <include
         android:id="@+id/content_main"

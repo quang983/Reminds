@@ -3,22 +3,28 @@
         android:id="@+id/pageOne"
         android:enabled="true"
         android:icon="@drawable/ic_auto_graph"
-        android:title="@string/page_home"/>
+        android:title="@string/page_home" />
     <item
         android:id="@+id/pageSecond"
         android:enabled="true"
         android:icon="@drawable/ic_auto_graph"
-        android:title="@string/page_calendar"/>
+        android:title="@string/page_calendar" />
 
     <item
         android:id="@+id/pageThird"
         android:enabled="true"
         android:icon="@drawable/ic_auto_graph"
-        android:title="@string/page_focus"/>
+        android:title="@string/page_focus" />
 
     <item
         android:id="@+id/pageFour"
         android:enabled="true"
         android:icon="@drawable/ic_auto_graph"
-        android:title="@string/page_setting"/>
+        android:title="@string/page_english" />
+
+    <item
+        android:id="@+id/pageFive"
+        android:enabled="true"
+        android:icon="@drawable/ic_auto_graph"
+        android:title="@string/page_setting" />
 </menu>

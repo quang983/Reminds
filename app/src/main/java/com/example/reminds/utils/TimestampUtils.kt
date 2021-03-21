@@ -293,10 +293,11 @@ object TimestampUtils {
         return dateLong?.time ?: 0L
     }
 
-    fun convertMiliTimeToTimeHourStr(miliTime: Long) : String {
+    fun convertMiliTimeToTimeHourStr(miliTime: Long): String {
         val hours = (miliTime / 1000).toInt() / 3600
         val minutes = (miliTime / 1000).toInt() / 60
         val seconds = (miliTime / 1000).toInt() % 60
-        return "$hours h $minutes m $seconds : s"
+
+        return "${if (hours >= 10) hours else "0$hours"}:${if (minutes >= 10) minutes else "0$minutes"}:${if (seconds >= 10) seconds else "0$seconds"}"
     }
 }

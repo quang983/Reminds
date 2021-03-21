@@ -76,6 +76,7 @@
     <string name="page_calendar" translatable="false">Today</string>
     <string name="page_focus" translatable="false">Focus</string>
     <string name="page_setting" translatable="false">Setting</string>
+    <string name="page_english" translatable="false">English</string>
     <string name="show_running" translatable="false">Task Task is Running!</string>
 
 </resources>

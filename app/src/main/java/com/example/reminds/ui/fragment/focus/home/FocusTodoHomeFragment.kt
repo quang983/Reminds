@@ -13,6 +13,7 @@ import com.example.reminds.common.BaseFragment
 import com.example.reminds.databinding.FragmentHomeFocusBinding
 import com.example.reminds.service.timer.NotificationTimer
 import com.example.reminds.ui.activity.focus.FocusTodoActivity
+import com.example.reminds.utils.TimestampUtils
 
 
 class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
@@ -30,6 +31,8 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
     }
 
     private fun setupLayout() {
+        mBinding.tvTime.text= TimestampUtils.convertMiliTimeToTimeHourStr(viewModel.mTimeLeftInMillis)
+
         val pendingIntent = Intent(requireContext(), FocusTodoActivity::class.java).let {
             PendingIntent.getActivity(requireContext(), 0, it, PendingIntent.FLAG_UPDATE_CURRENT)
         }

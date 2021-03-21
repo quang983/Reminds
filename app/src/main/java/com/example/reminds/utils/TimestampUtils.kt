@@ -292,4 +292,11 @@ object TimestampUtils {
         val dateLong = df.parse(formattedDate)
         return dateLong?.time ?: 0L
     }
+
+    fun convertMiliTimeToTimeHourStr(miliTime: Long) : String {
+        val hours = (miliTime / 1000).toInt() / 3600
+        val minutes = (miliTime / 1000).toInt() / 60
+        val seconds = (miliTime / 1000).toInt() % 60
+        return "$hours h $minutes m $seconds : s"
+    }
 }

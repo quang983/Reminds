@@ -14,13 +14,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_MIN
 import com.example.reminds.R
 
-const val MESSAGE_START = 1
-const val MESSAGE_STOP = 2
-const val MESSAGE_RESTART = 3
-const val MESSAGE_PAUSE = 4
-const val MESSAGE_CREATE = 0
-
-
 enum class TimerState { STOPPED, PAUSED, RUNNING, TERMINATED }
 
 class TimerService : JobIntentService() {
@@ -47,8 +40,6 @@ class TimerService : JobIntentService() {
         fun enqueueWork(context: Context, intent: Intent) {
             enqueueWork(context, TimerService::class.java, UNIQUE_JOB_ID, intent)
         }
-
-
     }
 
     private val foreGroundId = 55
@@ -162,26 +153,3 @@ class TimerService : JobIntentService() {
         return START_NOT_STICKY
     }
 }
-
-
-/* Template
-    inner class CounterClass(millisInFuture: Long, countDownInterval: Long) : CountDownTimer(millisInFuture, countDownInterval) {
-        @SuppressLint("DefaultLocale")
-        override fun onTick(millisUntilFinished: Long) {
-            val hms = java.lang.String.format(
-                "%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))
-            )
-            println(hms)
-            val timerInfoIntent = Intent("TIME_INFO")
-            timerInfoIntent.putExtra("VALUE", hms)
-            LocalBroadcastManager.getInstance(this@TimerService).sendBroadcast(timerInfoIntent)
-        }
-
-        override fun onFinish() {
-            val timerInfoIntent = Intent("TIME_INFO")
-            timerInfoIntent.putExtra("VALUE", "Completed")
-            LocalBroadcastManager.getInstance(this@TimerService).sendBroadcast(timerInfoIntent)
-        }
-    }*/

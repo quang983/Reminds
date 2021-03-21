@@ -9,24 +9,6 @@
     android:paddingBottom="@dimen/_36sdp"
     android:transitionName="@string/transition_topic_to_detail">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/blue_900"
-        android:theme="@style/Theme.BaseProjects.AppBarOverlay"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/Theme.BaseProjects.PopupOverlay"
-            app:titleTextColor="@color/white" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
     <include
         android:id="@+id/layoutEmpty"
         layout="@layout/layout_empty_animation"

@@ -96,7 +96,7 @@ class ListWorkFragment : Fragment() {
                 hideSoftKeyboard()
             } else {
                 viewModel.listWorkViewModel.lastOrNull()?.id?.let {
-                    viewModel.reSaveListWorkToDb(it)
+                    showDialogInputWorkTopic()
                 }
             }
         }

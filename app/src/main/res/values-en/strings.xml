@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Task Task</string>
+    <string name="app_name">Focus Todo</string>
     <string name="first_fragment_label">First Fragment</string>
     <string name="new_topic_fragment_label">New Topic Fragment</string>
     <string name="second_fragment_label">%s</string>

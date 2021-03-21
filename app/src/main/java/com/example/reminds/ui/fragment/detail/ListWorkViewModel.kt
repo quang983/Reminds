@@ -31,7 +31,6 @@ class ListWorkViewModel @ViewModelInject constructor(
     private var _workId: Long = -1
 
     private val _idGroup: MediatorLiveData<Long> = MediatorLiveData<Long>()
-
     var listWorkViewModel: ArrayList<WorkDataEntity> = ArrayList()
 
     private val _optionSelectedLiveData: LiveData<Int> = _idGroup.switchMapLiveData {
@@ -81,6 +80,16 @@ class ListWorkViewModel @ViewModelInject constructor(
                 it.listContent.add(newContent)
             }
         }
+    }
+
+    private fun addNewWorkEmpty() {
+        val workInsert = WorkDataEntity(
+            id = System.currentTimeMillis(),
+            name = "",
+            groupId = _idGroup.value ?: 0,
+            listContent = arrayListOf(), doneAll = false
+        )
+        listWorkViewModel.add(workInsert)
     }
 
     private fun reSaveListWorkViewModel(list: List<WorkDataEntity>) {
@@ -198,7 +207,9 @@ class ListWorkViewModel @ViewModelInject constructor(
     }
 
     fun updateWorkChange(work: WorkDataEntity, addNewContent: Boolean) = viewModelScope.launch(Dispatchers.IO + handler) {
-        if (addNewContent) _workId = work.id
+        if (addNewContent) {
+            _workId = work.id
+        }
         updateWorkUseCase.invoke(UpdateWorkUseCase.Param(work))
     }
 }

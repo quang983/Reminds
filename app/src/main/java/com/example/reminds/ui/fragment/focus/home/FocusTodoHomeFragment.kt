@@ -7,16 +7,17 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import androidx.fragment.app.viewModels
 import com.example.reminds.R
 import com.example.reminds.common.BaseFragment
 import com.example.reminds.databinding.FragmentHomeFocusBinding
 import com.example.reminds.service.timer.NotificationTimer
 import com.example.reminds.ui.activity.focus.FocusTodoActivity
-import kotlinx.android.synthetic.main.fragment_home_focus.*
 
 
 class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
     lateinit var notiTimer: NotificationTimer.Builder
+    private val viewModel: FocusTodoHomeViewModel by viewModels()
 
     override fun getViewBinding(): FragmentHomeFocusBinding {
         return FragmentHomeFocusBinding.inflate(layoutInflater)
@@ -25,6 +26,7 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupLayout()
+        setupObserver()
     }
 
     private fun setupLayout() {
@@ -49,9 +51,11 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
             .setContentTitle("Timer :)")
 
         mBinding.btnStart.setOnClickListener {
-            notiTimer.play(time_editText.text.toString().toLong())
-            simulateProgress(time_editText.text.toString().toLong())
+            viewModel.startTimer()
+            notiTimer.play(200000)
+            simulateProgress(200000)
         }
+
 
         /*       mBinding.pauseBtn.setOnClickListener {
                    notiTimer.pause()
@@ -67,14 +71,31 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
                }*/
     }
 
+    private fun setupObserver() {
+        viewModel.timeShowLiveData.observe(viewLifecycleOwner, {
+            mBinding.tvTime.text = it.toString()
+        })
 
-    private fun simulateProgress(duration : Long) {
+        viewModel.stateCalTime.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> {
+
+                }
+                else -> {
+
+                }
+            }
+        })
+    }
+
+
+    private fun simulateProgress(duration: Long) {
         val animator = ValueAnimator.ofInt(0, 100)
         animator.addUpdateListener { animation ->
             val progress = animation.animatedValue as Int
             mBinding.circleCustom.progress = progress
         }
-        animator.repeatCount =0
+        animator.repeatCount = 0
         animator.duration = duration
         animator.start()
     }

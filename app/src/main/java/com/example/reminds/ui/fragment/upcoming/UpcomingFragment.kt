@@ -29,7 +29,6 @@ import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import com.example.reminds.utils.*
 import com.github.jhonnyx2012.horizontalpicker.HorizontalPicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.layout_custom_alert_text_input.view.*
 import org.joda.time.DateTime
@@ -89,7 +88,7 @@ class UpcomingFragment : BaseFragment<FragmentUpcomingBinding>() {
                 hideSoftKeyboard()
             } else {
                 viewModel.listWorkViewModel.lastOrNull()?.id?.let {
-                    viewModel.reSaveListWorkToDb(it)
+                    showDialogInputWorkTopic()
                 }
             }
         }

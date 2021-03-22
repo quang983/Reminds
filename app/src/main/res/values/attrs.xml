@@ -5,7 +5,7 @@
         <attr name="showOuterCircle" format="boolean" />
         <attr name="outerCircleColor" format="string"/>
         <attr name="innerCircleColor" format="string"/>
-        <attr name="textColor" format="string"/>
+        <attr name="textColorCheckBox" format="string"/>
         <attr name="circleBorderColor" format="string"/>
 
         <attr name="outerCircleRadius" format="dimension"/>

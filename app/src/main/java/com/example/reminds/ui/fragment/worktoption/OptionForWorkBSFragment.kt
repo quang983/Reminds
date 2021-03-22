@@ -42,19 +42,30 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupToolbar()
         setupUI()
         setupObserver()
         setListener()
     }
 
     private fun getData() {
-        viewModel.setIdWork(args.idWork)
+        when (args.idWork) {
+            -1L -> {
+                viewModel.idGroup.postValue(args.idTopic)
+            }
+            else -> {
+                viewModel.setIdWork(args.idWork)
+            }
+        }
     }
 
     private fun setupUI() {
     }
 
     private fun setupObserver() {
+        viewModel.idGroup.observe(viewLifecycleOwner, {
+        })
+
         viewModel.progressUpdateWork.observe(viewLifecycleOwner, { it ->
             if (it) {
                 viewModel.workDataPrepareLiveData.value?.takeIf { it.timerReminder > 0 }?.let {
@@ -71,11 +82,6 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
         })
 
         viewModel.workDataPrepareLiveData.observe(viewLifecycleOwner, {
-      /*      if (it.hashTag) {
-                imgFlag.setImageResource(R.drawable.ic_star_fill)
-            } else {
-                imgFlag.setImageResource(R.drawable.ic_star_border)
-            }*/
 
             edtInput.checkDiffAndSetText(it.name)
 
@@ -87,6 +93,9 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
         })
     }
 
+    private fun setupToolbar() {
+        setHasOptionsMenu(true)
+    }
 
     private fun setListener() {
         btnDelete.setOnClickListenerBlock {
@@ -102,21 +111,19 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
 
         btnSave.setOnClickListenerBlock {
             if (edtInput.text.toString().isNotBlank()) {
-                viewModel.saveWorkIntoDataBase()
+                viewModel.saveWorkIntoDataBase(args.typeTopic)
             } else {
                 Toast.makeText(requireContext(), getString(R.string.warning_title_min), Toast.LENGTH_SHORT).show()
             }
         }
 
+        tvClockInfo.setOnClickListenerBlock {
+            setupTimePickerForContent()
+        }
+
         imgSettingClock.setOnClickListenerBlock {
             setupTimePickerForContent()
         }
-/*
-
-        imgFlag.setOnClickListenerBlock {
-            viewModel.setHashTagWorkDataPrepare()
-        }
-*/
 
         edtInput.setTextChangedListener {
             viewModel.setNameWorkDataPrepare(it.text.toString())

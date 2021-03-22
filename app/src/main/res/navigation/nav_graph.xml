@@ -89,6 +89,15 @@
 
         <argument
             android:name="idWork"
+            app:argType="long" />
+
+        <argument
+            android:name="typeTopic"
+            app:argType="integer"
+            app:nullable="false" />
+
+        <argument
+            android:name="idTopic"
             app:argType="long"
             app:nullable="false" />
     </dialog>
@@ -101,6 +110,13 @@
     <fragment
         android:id="@+id/UpcomingFragment"
         android:name="com.example.reminds.ui.fragment.upcoming.UpcomingFragment"
-        tools:layout="@layout/fragment_upcoming" />
+        tools:layout="@layout/fragment_upcoming" >
+        <action
+            android:id="@+id/action_UpcomingFragment_to_OptionForWorkBSFragment"
+            app:destination="@id/OptionForWorkBSFragment" />
+        <action
+            android:id="@+id/action_UpcomingFragment_to_dateTimePickerDialog"
+            app:destination="@id/dateTimePickerDialog" />
+    </fragment>
 
 </navigation>

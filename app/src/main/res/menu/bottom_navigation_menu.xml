@@ -2,29 +2,29 @@
     <item
         android:id="@+id/pageOne"
         android:enabled="true"
-        android:icon="@drawable/ic_auto_graph"
-        android:title="@string/page_home" />
+        android:icon="@drawable/ic_calendar_check"
+        android:title="@string/page_calendar" />
     <item
         android:id="@+id/pageSecond"
         android:enabled="true"
-        android:icon="@drawable/ic_auto_graph"
-        android:title="@string/page_calendar" />
+        android:icon="@drawable/ic_bar_top"
+        android:title="@string/page_home" />
 
     <item
         android:id="@+id/pageThird"
         android:enabled="true"
-        android:icon="@drawable/ic_auto_graph"
+        android:icon="@drawable/ic_alarm"
         android:title="@string/page_focus" />
 
     <item
         android:id="@+id/pageFour"
         android:enabled="true"
-        android:icon="@drawable/ic_auto_graph"
+        android:icon="@drawable/ic_menu_tag"
         android:title="@string/page_english" />
 
     <item
         android:id="@+id/pageFive"
         android:enabled="true"
-        android:icon="@drawable/ic_auto_graph"
+        android:icon="@drawable/ic_settings_filled"
         android:title="@string/page_setting" />
 </menu>

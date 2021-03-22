@@ -15,15 +15,15 @@
         android:layout_height="wrap_content" />
 
     <include
-        android:id="@+id/layout_empty"
-        layout="@layout/layout_empty_animation"
+        android:id="@+id/layoutEmpty"
+        layout="@layout/layout_empty"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:visibility="gone"
+        android:layout_marginTop="@dimen/_60sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerWorks"
@@ -42,13 +42,13 @@
         tools:itemCount="2"
         tools:listitem="@layout/item_work_group" />
 
-    <com.airbnb.lottie.LottieAnimationView
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/extendedFab"
-        android:layout_width="@dimen/_50sdp"
-        android:layout_height="@dimen/_50sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintStart_toStartOf="parent"
-        app:lottie_rawRes="@raw/add_plus" />
+        android:layout_marginEnd="@dimen/_18sdp"
+        app:srcCompat="@drawable/ic_pen" />
 </androidx.constraintlayout.widget.ConstraintLayout>

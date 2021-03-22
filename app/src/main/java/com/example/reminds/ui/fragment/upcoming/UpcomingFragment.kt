@@ -23,7 +23,6 @@ import com.example.reminds.databinding.FragmentUpcomingBinding
 import com.example.reminds.ui.activity.MainActivity
 import com.example.reminds.ui.adapter.ListContentCheckAdapter
 import com.example.reminds.ui.adapter.ListWorkAdapter
-import com.example.reminds.ui.fragment.detail.ListWorkFragmentDirections
 import com.example.reminds.ui.fragment.detail.ListWorkViewModel
 import com.example.reminds.ui.fragment.setting.WorksSettingFragment
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
@@ -45,7 +44,6 @@ class UpcomingFragment : BaseFragment<FragmentUpcomingBinding>() {
     private val homeSharedViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var adapter: ListWorkAdapter
     private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
-    private lateinit var customAlertDialogView: View
 
     private var mGroupId: Long = 0
 
@@ -76,18 +74,26 @@ class UpcomingFragment : BaseFragment<FragmentUpcomingBinding>() {
 
     private fun setupListener() {
         mBinding.extendedFab.setOnClickListenerBlock {
-            showDialogInputWorkTopic()
+            navigate(UpcomingFragmentDirections.actionUpcomingFragmentToOptionForWorkBSFragment(-1, TYPE_UPCOMING, mGroupId))
         }
-        mBinding.rootWork.setOnClickListenerBlock {
-            if (homeSharedViewModel.isKeyboardShow.value == true) {
-                viewModel.reSaveListWorkAndCreateStateFocus()
-                hideSoftKeyboard()
-            } else {
-                viewModel.listWorkViewModel.lastOrNull()?.id?.let {
-                    showDialogInputWorkTopic()
+
+        mBinding.rootWork.setOnClickListener(object : DoubleClickListener() {
+            override fun onSingleClick(v: View?) {
+
+            }
+
+            override fun onDoubleClick(v: View?) {
+                if (homeSharedViewModel.isKeyboardShow.value == true) {
+                    viewModel.reSaveListWorkAndCreateStateFocus()
+                    hideSoftKeyboard()
+                } else {
+                    viewModel.listWorkViewModel.lastOrNull()?.id?.let {
+                        navigate(UpcomingFragmentDirections.actionUpcomingFragmentToOptionForWorkBSFragment(-1, TYPE_UPCOMING, mGroupId))
+                    }
                 }
             }
-        }
+
+        })
     }
 
     private fun setupToolbar() {
@@ -137,7 +143,7 @@ class UpcomingFragment : BaseFragment<FragmentUpcomingBinding>() {
                     viewModel.updateWorkChange(it, false)
                 }
             }, intoSettingFragment = {
-                navigate(ListWorkFragmentDirections.actionSecondFragmentToOptionForWorkBSFragment(it.id))
+                navigate(UpcomingFragmentDirections.actionUpcomingFragmentToOptionForWorkBSFragment(it.id, TYPE_UPCOMING, mGroupId))
             }).apply {
             mBinding.recyclerWorks.adapter = this
         }
@@ -161,19 +167,12 @@ class UpcomingFragment : BaseFragment<FragmentUpcomingBinding>() {
                 when {
                     it.isEmpty() -> {
                         mBinding.layoutEmpty.root.visible()
-                        mBinding.layoutEmpty.imgIconAnimation.setAnimation(R.raw.empty_card)
-                        mBinding.layoutEmpty.imgIconAnimation.repeatCount = 10
-                        mBinding.layoutEmpty.imgIconAnimation.loop(true)
-                        mBinding.layoutEmpty.imgIconAnimation.playAnimation()
-                        mBinding.layoutEmpty.tvEmptyAnimation.text = resources.getString(R.string.empty_list)
+                        mBinding.layoutEmpty.tvEmpty.text = resources.getString(R.string.empty_list)
                     }
                     it.sumByDouble { it.listContent.size.toDouble() }.toInt() == 0 && !checkFirstTapTap() -> {
                         mBinding.layoutEmpty.root.visible()
-                        mBinding.layoutEmpty.imgIconAnimation.setAnimation(R.raw.tap_tap)
-                        mBinding.layoutEmpty.imgIconAnimation.repeatCount = 10
-                        mBinding.layoutEmpty.imgIconAnimation.loop(true)
-                        mBinding.layoutEmpty.imgIconAnimation.playAnimation()
-                        mBinding.layoutEmpty.tvEmptyAnimation.text = resources.getString(R.string.tap_tap)
+                        mBinding.layoutEmpty.tvEmpty.text = resources.getString(R.string.tap_tap)
+                        mBinding.layoutEmpty.imgIcon.gone()
                         val shared = requireActivity().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
                         shared.edit().putBoolean(CacheImpl.KEY_FIRST_TAP_TAP, true).apply()
                     }
@@ -199,34 +198,8 @@ class UpcomingFragment : BaseFragment<FragmentUpcomingBinding>() {
             .show()
     }
 
-    private fun showDialogInputWorkTopic() {
-        customAlertDialogView = LayoutInflater.from(requireContext())
-            .inflate(R.layout.layout_custom_alert_text_input, null, false)
-        customAlertDialogView.setPadding(36.toDp, 0, 36.toDp, 0)
-        customAlertDialogView.rootView.textInput.counterMaxLength = 35
-        customAlertDialogView.rootView.textInput.hint = getString(R.string.add_new_work_hint)
-        materialAlertDialogBuilder.setView(customAlertDialogView)
-            .setTitle(resources.getString(R.string.new_data_title))
-            .setPositiveButton(resources.getString(R.string.add)) { _, _ ->
-                customAlertDialogView.edtInput.text.toString().takeIf { it.isNotBlank() }?.let {
-                    viewModel.insertNewWork(it, TYPE_UPCOMING)
-                } ?: Toast.makeText(requireContext(), resources.getString(R.string.warning_title_min), Toast.LENGTH_SHORT).show()
-            }
-            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show().apply {
-                this.getButton(DialogInterface.BUTTON_POSITIVE).isAllCaps = false
-                this.getButton(DialogInterface.BUTTON_NEGATIVE).isAllCaps = false
-            }
-        customAlertDialogView.requestFocus()
-        Handler().postDelayed({
-            KeyboardUtils.showKeyboard(requireContext())
-        }, 500)
-    }
-
     private fun setupTimePickerForContent(item: ContentDataEntity, wId: Long) {
-        navigate(ListWorkFragmentDirections.actionSecondFragmentToDateTimePickerDialog(System.currentTimeMillis() + (60 * 1000)))
+        navigate(UpcomingFragmentDirections.actionUpcomingFragmentToDateTimePickerDialog(System.currentTimeMillis() + (60 * 1000)))
         setFragmentResultListener(FRAGMENT_RESULT_TIMER) { _, bundle ->
             item.timer = bundle.getLong(TIME_PICKER_BUNDLE)
             viewModel.updateContentData(item, wId)

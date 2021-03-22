@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.daimajia.swipe.SwipeLayout
 import com.example.common.base.model.AlarmNotificationEntity
 import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.TopicGroupEntity.Companion.TYPE_NORMAL
@@ -43,7 +44,6 @@ class ListWorkFragment : Fragment() {
     private val homeSharedViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var adapter: ListWorkAdapter
     private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
-    private lateinit var customAlertDialogView: View
 
     companion object {
         const val FRAGMENT_RESULT_TIMER = "FRAGMENT_RESULT_TIMER"
@@ -87,19 +87,37 @@ class ListWorkFragment : Fragment() {
     }
 
     private fun setupListener() {
-        extendedFab.setOnClickListenerBlock {
-            showDialogInputWorkTopic()
+        extendedFab.setOnClickListener {
+            navigate(ListWorkFragmentDirections.actionSecondFragmentToOptionForWorkBSFragment(-1, TYPE_NORMAL, args.idGroup))
         }
-        rootWork.setOnClickListenerBlock {
+        rootWork.setOnClickListener (object: DoubleClickListener() {
+            override fun onSingleClick(v: View?) {
+
+            }
+
+            override fun onDoubleClick(v: View?) {
+                if (homeSharedViewModel.isKeyboardShow.value == true) {
+                    viewModel.reSaveListWorkAndCreateStateFocus()
+                    hideSoftKeyboard()
+                } else {
+                    viewModel.listWorkViewModel.lastOrNull()?.id?.let {
+                        navigate(ListWorkFragmentDirections.actionSecondFragmentToOptionForWorkBSFragment(-1, TYPE_NORMAL, args.idGroup))
+                    }
+                }
+            }
+
+        })
+
+/*        rootWork.setOnClickListenerBlock {
             if (homeSharedViewModel.isKeyboardShow.value == true) {
                 viewModel.reSaveListWorkAndCreateStateFocus()
                 hideSoftKeyboard()
             } else {
                 viewModel.listWorkViewModel.lastOrNull()?.id?.let {
-                    showDialogInputWorkTopic()
+                    navigate(ListWorkFragmentDirections.actionSecondFragmentToOptionForWorkBSFragment(-1, TYPE_NORMAL, args.idGroup))
                 }
             }
-        }
+        }*/
     }
 
     private fun setupToolbar() {
@@ -162,7 +180,7 @@ class ListWorkFragment : Fragment() {
                     viewModel.updateWorkChange(it, false)
                 }
             }, intoSettingFragment = {
-                navigate(ListWorkFragmentDirections.actionSecondFragmentToOptionForWorkBSFragment(it.id))
+                navigate(ListWorkFragmentDirections.actionSecondFragmentToOptionForWorkBSFragment(it.id, TYPE_NORMAL, args.idGroup))
             }).apply {
             recyclerWorks.adapter = this
         }
@@ -215,32 +233,6 @@ class ListWorkFragment : Fragment() {
                 block.invoke()
             }
             .show()
-    }
-
-    private fun showDialogInputWorkTopic() {
-        customAlertDialogView = LayoutInflater.from(requireContext())
-            .inflate(R.layout.layout_custom_alert_text_input, null, false)
-        customAlertDialogView.setPadding(36.toDp, 0, 36.toDp, 0)
-        customAlertDialogView.rootView.textInput.counterMaxLength = 35
-        customAlertDialogView.rootView.textInput.hint = getString(R.string.add_new_work_hint)
-        materialAlertDialogBuilder.setView(customAlertDialogView)
-            .setTitle(resources.getString(R.string.new_data_title))
-            .setPositiveButton(resources.getString(R.string.add)) { _, _ ->
-                customAlertDialogView.edtInput.text.toString().takeIf { it.isNotBlank() }?.let {
-                    viewModel.insertNewWork(it, TYPE_NORMAL)
-                } ?: Toast.makeText(requireContext(), resources.getString(R.string.warning_title_min), Toast.LENGTH_SHORT).show()
-            }
-            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show().apply {
-                this.getButton(DialogInterface.BUTTON_POSITIVE).isAllCaps = false
-                this.getButton(DialogInterface.BUTTON_NEGATIVE).isAllCaps = false
-            }
-        customAlertDialogView.requestFocus()
-        Handler().postDelayed({
-            KeyboardUtils.showKeyboard(requireContext())
-        }, 500)
     }
 
     private fun setupTimePickerForContent(item: ContentDataEntity, wId: Long) {

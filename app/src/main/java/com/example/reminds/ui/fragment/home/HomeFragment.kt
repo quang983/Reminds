@@ -40,6 +40,11 @@ class HomeFragment : Fragment() {
     private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
     private lateinit var customAlertDialogView: View
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+//        (requireActivity() as? MainActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,12 +65,7 @@ class HomeFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        menu.findItem(android.R.id.home).isVisible = false
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return super.onOptionsItemSelected(item)
-
+        inflater.inflate(R.menu.menu_main, menu)
     }
 
     override fun onResume() {
@@ -89,6 +89,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupUI() {
+
         materialAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
         layoutToday.transitionName = "def"
 

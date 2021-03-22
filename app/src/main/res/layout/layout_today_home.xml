@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/gray_50"
+    android:layout_marginStart="@dimen/_12sdp"
+    android:layout_marginEnd="@dimen/_12sdp"
+    app:cardBackgroundColor="@color/bg_background"
     app:cardCornerRadius="@dimen/_6sdp">
 
     <androidx.constraintlayout.widget.ConstraintLayout

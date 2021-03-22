@@ -41,6 +41,7 @@ import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
+import nl.joery.animatedbottombar.AnimatedBottomBar
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -364,42 +365,45 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setOnListener() {
-        binding.contentMain.bottomNavigation.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.pageOne -> {
-                    navController.navigate(R.id.UpcomingFragment)
-                    true
-                }
-                R.id.pageSecond -> {
-                    navController.navigate(R.id.FirstFragment)
-                    true
-                }
-                R.id.pageThird -> {
-                    val intent = Intent(this, FocusTodoActivity::class.java)
-                    startActivity(intent)
-                    false
-                }
-                R.id.pageFour -> {
-                    false
-                }
-                else -> {
-                    false
+        binding.contentMain.bottomNavigation.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener {
+            override fun onTabSelected(
+                lastIndex: Int,
+                lastTab: AnimatedBottomBar.Tab?,
+                newIndex: Int,
+                newTab: AnimatedBottomBar.Tab
+            ) {
+                when (newIndex) {
+                    0 -> {
+                        navController.navigate(R.id.UpcomingFragment)
+                    }
+                    1 -> {
+                        navController.navigate(R.id.FirstFragment)
+                    }
+                    2 -> {
+                        val intent = Intent(this@MainActivity, FocusTodoActivity::class.java)
+                        startActivity(intent)
+                    }
+                    3 -> {
+                    }
+                    else -> {
+                    }
                 }
             }
-        }
 
-        binding.contentMain.bottomNavigation.setOnNavigationItemReselectedListener { item ->
-            when (item.itemId) {
-                R.id.pageOne -> {
-                }
-                R.id.pageSecond -> {
-                }
-                R.id.pageThird -> {
-                }
-                R.id.pageFour -> {
+            // An optional method that will be fired whenever an already selected tab has been selected again.
+            override fun onTabReselected(index: Int, tab: AnimatedBottomBar.Tab) {
+                when (index) {
+                    R.id.pageOne -> {
+                    }
+                    R.id.pageSecond -> {
+                    }
+                    R.id.pageThird -> {
+                    }
+                    R.id.pageFour -> {
+                    }
                 }
             }
-        }
+        })
     }
 
     fun hideOrShowBottomAppBar(isShow: Boolean) {

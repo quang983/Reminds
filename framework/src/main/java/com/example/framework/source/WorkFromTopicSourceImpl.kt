@@ -101,7 +101,7 @@ class WorkFromTopicSourceImpl @Inject constructor(
                         it.id, it.name, it.idOwnerWork, hashTag = it.hashTag,
                         timer = it.timer, isCheckDone = it.isCheckDone
                     )
-                }.toMutableList(), false, isShowContents = false, false, -1
+                }.toMutableList(), data.doneAll, isShowContents = data.isShowContents, data.hashTag, data.timerReminder
             )
         )
     }

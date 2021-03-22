@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutRoot"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingStart="@dimen/_10sdp"
-    android:paddingEnd="@dimen/_10sdp">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/tvTitleToday"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/cereal_extra_bold"
+        android:paddingStart="@dimen/_12sdp"
         android:paddingTop="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_12sdp"
         android:paddingBottom="@dimen/_10sdp"
         android:text="@string/title_faster_note"
         android:textColor="@color/black"
@@ -26,10 +26,11 @@
     <include
         android:id="@+id/layoutToday"
         layout="@layout/layout_today_home"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_6sdp"
         android:layout_marginTop="@dimen/_6sdp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitleToday" />
 
@@ -39,6 +40,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_16sdp"
         android:fontFamily="@font/cereal_extra_bold"
+        android:paddingStart="@dimen/_12sdp"
+        android:paddingEnd="@dimen/_12sdp"
         android:text="@string/title_home"
         android:textColor="@color/black"
         android:textSize="@dimen/_18sdp"
@@ -73,8 +76,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_6sdp"
+            android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_6sdp"
-            app:cardBackgroundColor="@color/gray_50"
+            android:layout_marginEnd="@dimen/_12sdp"
+            app:cardBackgroundColor="@color/bg_background"
             app:cardCornerRadius="@dimen/_6sdp">
 
             <androidx.recyclerview.widget.RecyclerView

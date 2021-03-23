@@ -55,7 +55,7 @@
     <string name="message_alert_hide_error_work_title">Bạn không thể ẩn danh mục này khi chưa hoàn thành hết các tác vụ</string>
 
     <!--    <string name="empty_list"><![CDATA[<b>Danh sách trống, chọn biểu tượng</b><br>dấu + để thêm 1 danh sách mới]]></string>-->
-    <string name="empty_list">Danh sách trống, Click + để thêm danh sách mới</string>
+    <string name="empty_list">Bạn đang có một ngày rảnh rỗi, hãy bận rộn lên</string>
     <string name="warning_title_min">Tiêu đề phải có tối thiểu 1 ký tự!</string>
     <string name="support_list_reminders">Đây là danh sách ghi chú nhanh, Lưu ý: Ghi chú nhanh sẽ tự động xoá sau khi bạn click Xong</string>
     <string name="support_new_title">Click button để thêm danh sách mới của riêng bạn, danh sách đã xong sẽ được hiển thị theo lựa chọn của bạn</string>

@@ -6,9 +6,9 @@
     <ImageView
         android:id="@+id/imgIcon"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_60sdp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_100sdp"
-        android:src="@drawable/ic_search" />
+        android:src="@drawable/ic_man_reading_newspaper" />
 
     <TextView
         android:id="@+id/tvEmpty"

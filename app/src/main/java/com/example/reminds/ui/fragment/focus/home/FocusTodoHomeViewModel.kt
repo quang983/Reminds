@@ -11,7 +11,7 @@ import com.example.reminds.utils.TimestampUtils
 class FocusTodoHomeViewModel @ViewModelInject constructor() : BaseViewModel() {
     private var mCountDownTimer: CountDownTimer? = null
     private var mTimerRunning = false
-    var mTimeLeftInMillis: Long = 200000
+    var mTimeLeftInMillis: Long = 100000
 
     val timeShowLiveData: LiveData<String> = MutableLiveData()
     val stateCalTime: LiveData<Boolean> = MutableLiveData()

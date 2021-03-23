@@ -9,6 +9,7 @@ import com.example.reminds.common.BaseViewModel
 import kotlinx.coroutines.flow.collect
 
 class UpcomingViewModel @ViewModelInject constructor(fetchTopicFlowUseCase: FetchTopicFlowUseCase) : BaseViewModel() {
+
     private val _getAllTopicUpComing: LiveData<List<TopicGroupEntity>> = liveData {
         fetchTopicFlowUseCase.invoke(FetchTopicFlowUseCase.Param(TYPE_UPCOMING)).collect {
             emit(it)
@@ -18,4 +19,7 @@ class UpcomingViewModel @ViewModelInject constructor(fetchTopicFlowUseCase: Fetc
     val getAllTopicUpComing = _getAllTopicUpComing.switchMapLiveDataEmit {
         it
     }
+
+    var isExpandedCalendar:Boolean = true
+
 }

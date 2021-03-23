@@ -11,9 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.common.base.model.TopicGroupEntity
 import com.example.framework.local.cache.CacheImpl
 import com.example.reminds.R
+import com.example.reminds.common.SpacesItemDecoration
 import com.example.reminds.ui.activity.MainActivity
 import com.example.reminds.ui.adapter.TopicAdapter
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
@@ -89,6 +91,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupUI() {
+        recyclerTopic.layoutManager = GridLayoutManager(requireActivity(), 2)
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen._6sdp)
+        recyclerTopic.addItemDecoration(SpacesItemDecoration(spacingInPixels))
 
         materialAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
         layoutToday.transitionName = "def"

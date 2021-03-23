@@ -12,7 +12,6 @@ import com.example.reminds.common.BaseViewHolder
 import com.example.reminds.ui.fragment.home.HomeViewModel
 import com.example.reminds.utils.inflate
 import com.example.reminds.utils.setOnClickListenerBlock
-import com.example.reminds.utils.setVisible
 import kotlinx.android.synthetic.main.item_topic.view.*
 
 class TopicAdapter(private val onClickDetail: (id: Long,title :String, view: View) -> Unit, private val deleteItemListener: (item: TopicGroupEntity) -> Unit) :
@@ -76,7 +75,7 @@ class TopicAdapter(private val onClickDetail: (id: Long,title :String, view: Vie
         ViewCompat.setTransitionName(view.layoutRootTopic, topic.id.toString())
         refreshName(view, topic)
         refreshCountTask(view, item.totalTask)
-        view.viewDivider.setVisible(position != 0)
+//        view.viewDivider.setVisible(position != 0)
         setupViewBinderHelper(view, topic)
         setOnClickListener(view, topic)
     }

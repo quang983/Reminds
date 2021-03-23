@@ -75,17 +75,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_pen" />
 
-
-    <CheckBox
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:id="@+id/weekModeCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="20dp"
-        android:padding="2dp"
-        android:text="week_mode"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

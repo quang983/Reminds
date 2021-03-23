@@ -55,23 +55,9 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
 
         mBinding.btnStart.setOnClickListener {
             viewModel.startTimer()
-            notiTimer.play(200000)
-            simulateProgress(200000)
+            notiTimer.play(100000)
+            simulateProgress(100000)
         }
-
-
-        /*       mBinding.pauseBtn.setOnClickListener {
-                   notiTimer.pause()
-               }
-
-               mBinding.stopBtn.setOnClickListener {
-                   notiTimer.stop()
-                   mBinding.timeUntilFinishText.text = null
-               }
-
-               mBinding.terminateBtn.setOnClickListener {
-                   notiTimer.terminate()
-               }*/
     }
 
     private fun setupObserver() {

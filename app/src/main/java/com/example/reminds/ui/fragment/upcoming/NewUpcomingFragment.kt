@@ -4,6 +4,9 @@ import DateTimePickerFragment.Companion.TIME_PICKER_BUNDLE
 import android.animation.ValueAnimator
 import android.content.Context
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -23,7 +26,6 @@ import com.example.reminds.common.BaseFragment
 import com.example.reminds.databinding.FragmentUpcomingNewBinding
 import com.example.reminds.databinding.LayoutCalendarDayBinding
 import com.example.reminds.databinding.LayoutCalendarHeaderBinding
-import com.example.reminds.databinding.LayoutUpcomingBinding
 import com.example.reminds.ui.activity.MainActivity
 import com.example.reminds.ui.adapter.ListContentCheckAdapter
 import com.example.reminds.ui.adapter.ListWorkAdapter
@@ -32,7 +34,6 @@ import com.example.reminds.ui.fragment.setting.WorksSettingFragment
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import com.example.reminds.utils.*
 import com.example.reminds.utils.DateUtils.toMilisTime
-import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
@@ -48,7 +49,6 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.math.abs
 
 
 @AndroidEntryPoint
@@ -71,7 +71,6 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>() {
     private var mGroupId: Long = 0
 
 
-
     companion object {
         const val FRAGMENT_RESULT_TIMER = "FRAGMENT_RESULT_TIMER"
         const val FRAGMENT_SETTING_OPTION = "FRAGMENT_SETTING_OPTION"
@@ -92,6 +91,24 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>() {
         setupLayout()
         observeData()
         setupListener()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_upcoming, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_expanded -> {
+                setCalendarChangeSize(viewModelUpcoming.isExpandedCalendar)
+                viewModelUpcoming.isExpandedCalendar = !viewModelUpcoming.isExpandedCalendar
+            }
+            android.R.id.home -> {
+            }
+        }
+        return super.onOptionsItemSelected(item)
+
     }
 
     private fun selectDate(date: LocalDate) {
@@ -383,10 +400,6 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>() {
                 }
             }
         }
-
-/*        binding.weekModeCheckBox.setOnCheckedChangeListener { _, monthToWeek ->
-            setCalendarChangeSize(monthToWeek)
-        }*/
     }
 
     private fun setCalendarChangeSize(monthToWeek: Boolean) {
@@ -399,19 +412,12 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>() {
         val oldHeight = if (monthToWeek) oneMonthHeight else oneWeekHeight
         val newHeight = if (monthToWeek) oneWeekHeight else oneMonthHeight
 
-        // Animate calendar height changes.
         val animator = ValueAnimator.ofInt(oldHeight, newHeight)
         animator.addUpdateListener { animator ->
             mBinding.datePicker.updateLayoutParams {
                 height = animator.animatedValue as Int
             }
         }
-
-        // When changing from month to week mode, we change the calendar's
-        // config at the end of the animation(doOnEnd) but when changing
-        // from week to month mode, we change the calendar's config at
-        // the start of the animation(doOnStart). This is so that the change
-        // in height is visible. You can do this whichever way you prefer.
 
         animator.doOnStart {
             if (!monthToWeek) {
@@ -432,20 +438,13 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>() {
             }
 
             if (monthToWeek) {
-                // We want the first visible day to remain
-                // visible when we change to week mode.
                 mBinding.datePicker.scrollToDate(firstDate)
             } else {
-                // When changing to month mode, we choose current
-                // month if it is the only one in the current frame.
-                // if we have multiple months in one frame, we prefer
-                // the second one unless it's an outDate in the last index.
                 if (firstDate.yearMonth == lastDate.yearMonth) {
                     mBinding.datePicker.scrollToMonth(firstDate.yearMonth)
                 } else {
                     val currentMonth = YearMonth.now()
                     val endMonth = currentMonth.plusMonths(10)
-                    // We compare the next with the last month on the calendar so we don't go over.
                     mBinding.datePicker.scrollToMonth(minOf(firstDate.yearMonth.next, endMonth))
                 }
             }

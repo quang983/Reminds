@@ -27,11 +27,9 @@ import com.example.reminds.ui.fragment.detail.ListWorkViewModel
 import com.example.reminds.ui.fragment.setting.WorksSettingFragment
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import com.example.reminds.utils.*
-import com.github.jhonnyx2012.horizontalpicker.HorizontalPicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.layout_custom_alert_text_input.view.*
-import org.joda.time.DateTime
 import java.util.*
 
 @AndroidEntryPoint

@@ -1,9 +1,17 @@
 package com.example.reminds.utils
 
+import android.content.Context
+import android.os.Build
+import android.widget.TextView
+import androidx.annotation.ColorRes
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import java.lang.reflect.ParameterizedType
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
+import java.time.DayOfWeek
+import java.time.temporal.WeekFields
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -262,3 +270,20 @@ fun String.fromTimeStr(format: String): Long {
     dateFormat.timeZone = TimeZone.getDefault()
     return dateFormat.parse(this).time
 }
+
+fun daysOfWeekFromLocale(): Array<DayOfWeek> {
+    val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek
+    var daysOfWeek = DayOfWeek.values()
+    // Order `daysOfWeek` array so that firstDayOfWeek is at index 0.
+    // Only necessary if firstDayOfWeek != DayOfWeek.MONDAY which has ordinal 0.
+    if (firstDayOfWeek != DayOfWeek.MONDAY) {
+        val rhs = daysOfWeek.sliceArray(firstDayOfWeek.ordinal..daysOfWeek.indices.last)
+        val lhs = daysOfWeek.sliceArray(0 until firstDayOfWeek.ordinal)
+        daysOfWeek = rhs + lhs
+    }
+    return daysOfWeek
+}
+
+internal fun TextView.setTextColorRes(@ColorRes color: Int) = setTextColor(context.getColorCompat(color))
+
+internal fun Context.getColorCompat(@ColorRes color: Int) = ContextCompat.getColor(this, color)

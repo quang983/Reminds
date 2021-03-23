@@ -41,6 +41,7 @@ class UpcomingFragment : BaseFragment<FragmentUpcomingBinding>() {
     }
 
     private val viewModel: ListWorkViewModel by viewModels()
+    private val viewModelUpcoming: UpcomingViewModel by viewModels()
     private val homeSharedViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var adapter: ListWorkAdapter
     private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
@@ -240,7 +241,7 @@ class UpcomingFragment : BaseFragment<FragmentUpcomingBinding>() {
     }
 
     private fun setupCalendar() {
-        val picker = view?.findViewById(R.id.datePicker) as HorizontalPicker
+  /*      val picker = view?.findViewById(R.id.datePicker) as HorizontalPicker
         picker
             .setDays(30)
             .setOffset(10)
@@ -260,6 +261,6 @@ class UpcomingFragment : BaseFragment<FragmentUpcomingBinding>() {
         picker.setListener {
             mGroupId = TimestampUtils.getLongTimeFromStr(it.millis)
             viewModel.getListWork(mGroupId)
-        }
+        }*/
     }
 }

@@ -79,4 +79,12 @@
     <string name="page_english" translatable="false">English</string>
     <string name="show_running" translatable="false">Task Task is Running!</string>
 
+
+<!--    example-->
+    <string name="example_3_dialog_delete_confirmation" translatable="false">Delete this event?</string>
+    <string name="delete" translatable="false">Delete</string>
+    <string name="close" translatable="false">Close</string>
+    <string name="example_3_title" translatable="false">Example 3</string>
+    <string name="example_3_empty_input_text" translatable="false">Text is empty</string>
+
 </resources>

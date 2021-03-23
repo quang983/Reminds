@@ -108,6 +108,18 @@
         tools:layout="@layout/fragment_flash_card" />
 
     <fragment
+        android:id="@+id/NewUpcomingFragment"
+        android:name="com.example.reminds.ui.fragment.upcoming.NewUpcomingFragment"
+        tools:layout="@layout/fragment_upcoming_new" >
+        <action
+            android:id="@+id/action_NewUpcomingFragment_to_OptionForWorkBSFragment"
+            app:destination="@id/OptionForWorkBSFragment" />
+        <action
+            android:id="@+id/action_NewUpcomingFragment_to_dateTimePickerDialog"
+            app:destination="@id/dateTimePickerDialog" />
+    </fragment>
+
+    <fragment
         android:id="@+id/UpcomingFragment"
         android:name="com.example.reminds.ui.fragment.upcoming.UpcomingFragment"
         tools:layout="@layout/fragment_upcoming" >

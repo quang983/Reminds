@@ -374,7 +374,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 when (newIndex) {
                     0 -> {
-                        navController.navigate(R.id.UpcomingFragment)
+                        navController.navigate(R.id.NewUpcomingFragment)
                     }
                     1 -> {
                         navController.navigate(R.id.FirstFragment)

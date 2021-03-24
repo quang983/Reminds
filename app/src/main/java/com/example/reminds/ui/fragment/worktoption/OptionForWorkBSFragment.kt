@@ -29,6 +29,10 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
 
     private val homeSharedViewModel: MainActivityViewModel by activityViewModels()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,6 +64,7 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
     }
 
     private fun setupUI() {
+        edtInput.requestFocus()
     }
 
     private fun setupObserver() {
@@ -78,7 +83,7 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
             } else {
                 Toast.makeText(requireContext(), getString(R.string.warning_title_min), Toast.LENGTH_SHORT).show()
             }
-            Handler().postDelayed({ dismiss() }, 500)
+            Handler().postDelayed({ dismiss() }, 200)
         })
 
         viewModel.workDataPrepareLiveData.observe(viewLifecycleOwner, {

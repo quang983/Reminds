@@ -1,10 +1,7 @@
 package com.example.reminds.ui.adapter
 
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
-import androidx.annotation.MenuRes
 import androidx.recyclerview.widget.DiffUtil
 import com.chauthai.swipereveallayout.ViewBinderHelper
 import com.example.common.base.model.ContentDataEntity
@@ -193,23 +190,6 @@ class ListWorkAdapter(
 
     private fun refreshShowRecyclerView(view: View, item: WorkDataEntity) {
         view.recyclerWorks.visibility = if (item.isShowContents) View.VISIBLE else View.GONE
-    }
-
-    private fun showMenu(v: View, @MenuRes menuRes: Int, workId: Long) {
-        val popup = PopupMenu(v.context, v)
-        popup.menuInflater.inflate(menuRes, popup.menu)
-
-        popup.setOnMenuItemClickListener { menuItem: MenuItem ->
-            when (menuItem.itemId) {
-                R.id.action_delete_work -> {
-                    deleteWorkClick.invoke(workId)
-                }
-            }
-            true
-        }
-        popup.setOnDismissListener {
-        }
-        popup.show()
     }
 
     private fun handleListener(view: View) {

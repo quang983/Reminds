@@ -12,9 +12,9 @@ import android.view.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.common.base.model.AlarmNotificationEntity
 import com.example.reminds.R
 import com.example.reminds.databinding.ActivityMainBinding
@@ -79,8 +79,13 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(findViewById(R.id.toolbar))
         navController = findNavController(R.id.nav_host_fragment)
-        NavigationUI.setupActionBarWithNavController(this, navController)
 
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.NewUpcomingFragment, R.id.FirstFragment
+            )
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
 //        createNotificationChannel()
         catchEventKeyboard()
         setObserver()
@@ -373,21 +378,13 @@ class MainActivity : AppCompatActivity() {
                 newIndex: Int,
                 newTab: AnimatedBottomBar.Tab
             ) {
-                val options = NavOptions.Builder()
-                    .setLaunchSingleTop(true)
-                    .setEnterAnim(R.anim.slide_in_left)
-                    .setExitAnim(R.anim.wait_anim)
-                    .setPopEnterAnim(R.anim.wait_anim)
-                    .setPopExitAnim(R.anim.slide_in_right)
-                    .setPopUpTo(navController.graph.startDestination, false)
-                    .build()
-
                 when (newIndex) {
                     0 -> {
-                        navController.navigate(R.id.NewUpcomingFragment,null,options)
+                        navController.navigate(R.id.NewUpcomingFragment)
                     }
                     1 -> {
-                        navController.navigate(R.id.FirstFragment,null,options)
+                        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                        navController.navigate(R.id.FirstFragment)
                     }
                     2 -> {
                         val intent = Intent(this@MainActivity, FocusTodoActivity::class.java)

@@ -7,7 +7,6 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bg_expanable"
     android:orientation="vertical"
-    android:paddingTop="@dimen/_6sdp"
     android:stateListAnimator="@animator/bg_selector"
     tools:ignore="RtlSymmetry">
 
@@ -24,9 +23,9 @@
 
             <ImageView
                 android:id="@+id/imgSetting"
-                android:layout_width="@dimen/_50sdp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="@drawable/bg_selector_info"
+                android:background="@drawable/bg_selector_timer"
                 android:padding="@dimen/_10sdp"
                 android:src="@drawable/ic_info" />
         </LinearLayout>
@@ -62,7 +61,7 @@
                 android:paddingEnd="@dimen/_6sdp"
                 android:paddingBottom="@dimen/_6sdp"
                 android:textColor="@color/blue_900"
-                android:textSize="@dimen/_14sdp"
+                android:textSize="@dimen/text_medium_2"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@id/tvCount"
                 app:layout_constraintStart_toEndOf="@id/rbCheckedTitle"
@@ -79,8 +78,9 @@
                 android:gravity="center_vertical"
                 android:paddingStart="@dimen/_10sdp"
                 android:paddingEnd="@dimen/_6sdp"
+                android:layout_marginTop="@dimen/_2sdp"
                 android:textColor="@color/pink_500"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_medium_1"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@id/tvTitle"
                 app:layout_constraintTop_toBottomOf="@id/tvTitle"
@@ -133,6 +133,7 @@
         android:clipToPadding="false"
         android:paddingStart="@dimen/_16sdp"
         android:paddingTop="@dimen/_2sdp"
+        android:visibility="gone"
         android:paddingBottom="@dimen/_2sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintStart_toStartOf="parent"

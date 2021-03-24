@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:paddingBottom="@dimen/_36sdp"
     android:transitionName="@string/transition_topic_to_detail">
 
     <com.kizitonwose.calendarview.CalendarView
@@ -50,7 +49,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerWorks"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:clipToPadding="false"
         android:paddingStart="@dimen/_8sdp"
         android:paddingTop="@dimen/_6sdp"
@@ -70,6 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_18sdp"
         app:fabSize="mini"
+        android:layout_marginBottom="@dimen/_28sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_pen" />

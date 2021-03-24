@@ -28,6 +28,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_list_work.*
+import kotlinx.android.synthetic.main.layout_empty.view.*
 import kotlinx.android.synthetic.main.layout_empty_animation.view.*
 
 
@@ -85,26 +86,19 @@ class ListWorkFragment : Fragment(), CallbackItemTouch {
     }
 
     private fun setupListener() {
-        extendedFab.setOnClickListener {
+        extendedFab.setOnClickListenerBlock {
             navigate(ListWorkFragmentDirections.actionSecondFragmentToOptionForWorkBSFragment(-1, TYPE_NORMAL, args.idGroup))
         }
-        rootWork.setOnClickListener(object : DoubleClickListener() {
-            override fun onSingleClick(v: View?) {
-
-            }
-
-            override fun onDoubleClick(v: View?) {
-                if (homeSharedViewModel.isKeyboardShow.value == true) {
-                    viewModel.reSaveListWorkAndCreateStateFocus()
-                    hideSoftKeyboard()
-                } else {
-                    viewModel.listWorkViewModel.lastOrNull()?.id?.let {
-                        navigate(ListWorkFragmentDirections.actionSecondFragmentToOptionForWorkBSFragment(-1, TYPE_NORMAL, args.idGroup))
-                    }
+        rootWork.setOnClickListenerBlock {
+            if (homeSharedViewModel.isKeyboardShow.value == true) {
+                viewModel.reSaveListWorkAndCreateStateFocus()
+                hideSoftKeyboard()
+            } else {
+                viewModel.listWorkViewModel.lastOrNull()?.id?.let {
+                    navigate(ListWorkFragmentDirections.actionSecondFragmentToOptionForWorkBSFragment(-1, TYPE_NORMAL, args.idGroup))
                 }
             }
-
-        })
+        }
 
 /*        rootWork.setOnClickListenerBlock {
             if (homeSharedViewModel.isKeyboardShow.value == true) {
@@ -130,6 +124,7 @@ class ListWorkFragment : Fragment(), CallbackItemTouch {
             }
             android.R.id.home -> {
                 navigateUp()
+                return true
             }
         }
         return super.onOptionsItemSelected(item)
@@ -198,26 +193,17 @@ class ListWorkFragment : Fragment(), CallbackItemTouch {
 
     private fun observeData() {
         with(viewModel) {
-            listWorkData.observe(viewLifecycleOwner, { it ->
+            listWorkViewItems.observe(viewLifecycleOwner, { it ->
                 when {
                     it.isEmpty() -> {
                         layoutEmpty.visible()
-                        layoutEmpty.imgIconAnimation.setAnimation(R.raw.empty_card)
-                        layoutEmpty.imgIconAnimation.repeatCount = 10
-                        layoutEmpty.imgIconAnimation.loop(true)
-                        layoutEmpty.imgIconAnimation.playAnimation()
-                        layoutEmpty.tvEmptyAnimation.text = resources.getString(R.string.empty_list)
+                        layoutEmpty.tvEmpty.text = resources.getString(R.string.empty_list)
                     }
-                    it.sumByDouble { it.listContent.size.toDouble() }.toInt() == 0 && !checkFirstTapTap() -> {
-                        layoutEmpty.visible()
-                        layoutEmpty.imgIconAnimation.setAnimation(R.raw.tap_tap)
-                        layoutEmpty.imgIconAnimation.repeatCount = 10
-                        layoutEmpty.imgIconAnimation.loop(true)
-                        layoutEmpty.imgIconAnimation.playAnimation()
-                        layoutEmpty.tvEmptyAnimation.text = resources.getString(R.string.tap_tap)
-                        val shared = requireActivity().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
-                        shared.edit().putBoolean(CacheImpl.KEY_FIRST_TAP_TAP, true).apply()
-                    }
+                    /*    it.sumByDouble { it.listContent.size.toDouble() }.toInt() == 0 && !checkFirstTapTap() -> {
+                            layoutEmpty.rootView.visible()
+    //                        val shared = requireActivity().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
+    //                        shared.edit().putBoolean(CacheImpl.KEY_FIRST_TAP_TAP, true).apply()
+                        }*/
                     else -> {
                         layoutEmpty.gone()
                     }
@@ -276,6 +262,14 @@ class ListWorkFragment : Fragment(), CallbackItemTouch {
     }
 
     override fun itemTouchOnMove(oldPosition: Int, newPosition: Int) {
-        viewModel.swipeItem(oldPosition, newPosition)
+        val list = adapter.currentList.toMutableList().apply {
+            val item = removeAt(oldPosition)
+            add(newPosition, item)
+        }
+        adapter.submitList(list)
+    }
+
+    override fun itemTouchOnMoveFinish() {
+        viewModel.saveListWork(adapter.currentList)
     }
 }

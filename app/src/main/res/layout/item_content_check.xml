@@ -14,7 +14,7 @@
 
         <ImageView
             android:id="@+id/imgTimer"
-            android:layout_width="@dimen/_50sdp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/bg_selector_timer"
             android:padding="@dimen/_10sdp"
@@ -22,7 +22,7 @@
 
         <ImageView
             android:id="@+id/imgGim"
-            android:layout_width="@dimen/_50sdp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/bg_selector_tags"
             android:padding="@dimen/_10sdp"
@@ -30,7 +30,7 @@
 
         <ImageView
             android:id="@+id/imgDelete"
-            android:layout_width="@dimen/_50sdp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/bg_selector_delete"
             android:padding="@dimen/_10sdp"
@@ -69,6 +69,7 @@
             android:paddingBottom="@dimen/_6sdp"
             android:textColor="@color/black"
             android:gravity="center_vertical"
+            android:textSize="@dimen/text_medium_2"
             app:layout_constraintEnd_toStartOf="@id/imgFlag"
             app:layout_constraintStart_toEndOf="@id/rbChecked"
             app:layout_constraintTop_toTopOf="parent"
@@ -96,7 +97,7 @@
             android:drawableTint="@color/red_200"
             android:drawableStart="@drawable/ic_history_toggle_off"
             android:textColor="@color/pink_500"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_medium_1"
             android:drawablePadding="@dimen/_6sdp"
             android:gravity="center_vertical"
             app:layout_constraintStart_toStartOf="@id/tvContentCheck"

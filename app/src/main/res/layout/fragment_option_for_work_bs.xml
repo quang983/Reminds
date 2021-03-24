@@ -38,20 +38,21 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/_8sdp"
         android:text="@string/title_save"
-        android:textStyle="bold"
         android:textColor="@color/bg_gray"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInput"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_16sdp"
         android:background="@null"
-        app:counterEnabled="true"
+        android:imeOptions="actionDone"
+        android:textColor="@color/black"
         app:counterMaxLength="35"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitleSetting">
@@ -61,7 +62,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:imeOptions="actionDone" />
+            android:hint="Bạn đang nghĩ gì"
+            android:textColor="@color/black" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,19 +98,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvClockInfo" />
 
-    <com.google.android.material.button.MaterialButton
+    <ImageView
         android:id="@+id/btnDelete"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_36sdp"
-        android:layout_marginTop="@dimen/_16sdp"
-        android:layout_marginEnd="@dimen/_36sdp"
-        android:text="@string/action_done"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        app:icon="@drawable/ic_baseline_delete_24"
-        style="@style/Widget.MaterialComponents.Button.Icon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imgSettingClock" />
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:backgroundTint="#2E3A59"
+        android:src="@drawable/ic_baseline_delete_24"
+        app:layout_constraintBottom_toBottomOf="@id/imgSettingClock"
+        app:layout_constraintStart_toEndOf="@id/imgSettingClock"
+        app:layout_constraintTop_toTopOf="@id/imgSettingClock" />
 </androidx.constraintlayout.widget.ConstraintLayout>

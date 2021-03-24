@@ -16,6 +16,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ListWorkViewModel @ViewModelInject constructor(
     private val fetchWorksUseCase: FetchWorksUseCase,
@@ -66,6 +68,10 @@ class ListWorkViewModel @ViewModelInject constructor(
         }.sortedWith(
             compareBy({ it.doneAll }, { it.stt })
         )
+    }
+
+    val listWorkViewItems = listWorkData.switchMapLiveDataEmit {
+        it
     }
 
     private fun addNewContentToListWork(workId: Long) {
@@ -215,17 +221,12 @@ class ListWorkViewModel @ViewModelInject constructor(
         updateWorkUseCase.invoke(UpdateWorkUseCase.Param(work))
     }
 
-    fun swipeItem(oldPosition: Int, newPosition: Int) = viewModelScope.launch(Dispatchers.IO + handler) {
-        val list = listWorkViewModel.map {
-            it.copyFilterNotEmpty()
-        }.toMutableList().apply {
-            val item = removeAt(oldPosition)
-            add(newPosition, item)
+    fun saveListWork(currentList: List<WorkDataEntity>) = viewModelScope.launch(Dispatchers.IO + handler) {
+        val listIndex = mutableListOf<WorkDataEntity>()
+        currentList.forEachIndexed { index, workDataEntity ->
+            workDataEntity.stt = index
+            listIndex.add(workDataEntity)
         }
-        updateListWorkUseCase.invoke(UpdateListWorkUseCase.Param(list.map {
-            it.copyFilterNotEmpty().apply {
-                it.stt = list.indexOf(this)
-            }
-        }))
+        updateListWorkUseCase.invoke(UpdateListWorkUseCase.Param(listIndex))
     }
 }

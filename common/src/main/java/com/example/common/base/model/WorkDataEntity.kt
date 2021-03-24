@@ -8,11 +8,13 @@ data class WorkDataEntity(
     var doneAll: Boolean,
     var isShowContents: Boolean = false,
     var hashTag: Boolean = false,
-    var timerReminder: Long = -1
+    var timerReminder: Long = -1,
+    var createTime: Long = id,
+    var stt: Int = 0
 ) {
     fun copy() = WorkDataEntity(
         id, name, groupId, listContent.map { it.copy() }.toMutableList(),
-        doneAll = doneAll, isShowContents = isShowContents, hashTag, timerReminder
+        doneAll = doneAll, isShowContents = isShowContents, hashTag, timerReminder, createTime, stt
     )
 
     fun copySort() = WorkDataEntity(
@@ -21,7 +23,7 @@ data class WorkDataEntity(
             .map { it.copy() }
             .sortedWith(compareBy({ it.isCheckDone }, { !it.hashTag }, { it.id }))
             .toMutableList(), doneAll = doneAll && listContent.all { it.isCheckDone },
-        isShowContents = isShowContents, hashTag, timerReminder
+        isShowContents = isShowContents, hashTag, timerReminder, createTime, stt
     )
 
     fun copyFilterNotEmpty() = WorkDataEntity(
@@ -29,7 +31,7 @@ data class WorkDataEntity(
         listContent
             .filter { it.name.isNotEmpty() }
             .map { it.copy() }.toMutableList(),
-        doneAll = doneAll && listContent.all { it.isCheckDone }, isShowContents = isShowContents, hashTag, timerReminder
+        doneAll = doneAll && listContent.all { it.isCheckDone }, isShowContents = isShowContents, hashTag, timerReminder, createTime, stt
     )
 
     override fun equals(other: Any?): Boolean {

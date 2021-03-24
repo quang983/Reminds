@@ -264,12 +264,12 @@ class ListWorkAdapter(
             }
         }
 
-        view.tvTitle.setOnLongClickListener {
+    /*    view.tvTitle.setOnLongClickListener {
             (view.tag as? WorkDataEntity)?.copy()?.let { item ->
                 showMenu(it, R.menu.menu_work_title, item.id)
             }
             true
-        }
+        }*/
 
         view.rbCheckedTitle.setOnCheckedChangeListener { button, isChecked ->
             (view.tag as? WorkDataEntity)?.copy()?.let { item ->

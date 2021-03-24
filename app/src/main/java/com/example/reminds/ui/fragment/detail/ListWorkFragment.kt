@@ -2,24 +2,23 @@ package com.example.reminds.ui.fragment.detail
 
 import DateTimePickerFragment.Companion.TIME_PICKER_BUNDLE
 import android.content.Context
-import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import com.daimajia.swipe.SwipeLayout
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.common.base.model.AlarmNotificationEntity
 import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.TopicGroupEntity.Companion.TYPE_NORMAL
 import com.example.framework.local.cache.CacheImpl
 import com.example.framework.local.cache.CacheImpl.Companion.KEY_SUM_DONE_TASK
 import com.example.reminds.R
+import com.example.reminds.common.CallbackItemTouch
+import com.example.reminds.common.MyItemTouchHelperCallback
 import com.example.reminds.ui.adapter.ListContentCheckAdapter
 import com.example.reminds.ui.adapter.ListWorkAdapter
 import com.example.reminds.ui.fragment.setting.WorksSettingFragment.Companion.DATA_OPTION_SELECTED
@@ -29,7 +28,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_list_work.*
-import kotlinx.android.synthetic.main.layout_custom_alert_text_input.view.*
 import kotlinx.android.synthetic.main.layout_empty_animation.view.*
 
 
@@ -37,7 +35,7 @@ import kotlinx.android.synthetic.main.layout_empty_animation.view.*
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 @AndroidEntryPoint
-class ListWorkFragment : Fragment() {
+class ListWorkFragment : Fragment(), CallbackItemTouch {
     private val args by navArgs<ListWorkFragmentArgs>()
 
     private val viewModel: ListWorkViewModel by viewModels()
@@ -90,7 +88,7 @@ class ListWorkFragment : Fragment() {
         extendedFab.setOnClickListener {
             navigate(ListWorkFragmentDirections.actionSecondFragmentToOptionForWorkBSFragment(-1, TYPE_NORMAL, args.idGroup))
         }
-        rootWork.setOnClickListener (object: DoubleClickListener() {
+        rootWork.setOnClickListener(object : DoubleClickListener() {
             override fun onSingleClick(v: View?) {
 
             }
@@ -183,6 +181,12 @@ class ListWorkFragment : Fragment() {
                 navigate(ListWorkFragmentDirections.actionSecondFragmentToOptionForWorkBSFragment(it.id, TYPE_NORMAL, args.idGroup))
             }).apply {
             recyclerWorks.adapter = this
+            val callback: ItemTouchHelper.Callback = MyItemTouchHelperCallback(this@ListWorkFragment)
+
+            val touchHelper = ItemTouchHelper(callback)
+
+            touchHelper.attachToRecyclerView(recyclerWorks)
+
         }
         homeSharedViewModel.isKeyboardShow.observe(viewLifecycleOwner, {
             if (!it) {
@@ -269,5 +273,9 @@ class ListWorkFragment : Fragment() {
     private fun checkFirstTapTap(): Boolean {
         val shared = requireActivity().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
         return shared.getBoolean(CacheImpl.KEY_FIRST_TAP_TAP, false)
+    }
+
+    override fun itemTouchOnMove(oldPosition: Int, newPosition: Int) {
+        viewModel.swipeItem(oldPosition, newPosition)
     }
 }

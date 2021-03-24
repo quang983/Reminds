@@ -64,7 +64,7 @@ class ListWorkViewModel @ViewModelInject constructor(
         }.map {
             it.copySort()
         }.sortedWith(
-            compareBy({ it.doneAll }, { it.id })
+            compareBy({ it.doneAll }, { it.stt })
         )
     }
 
@@ -81,6 +81,7 @@ class ListWorkViewModel @ViewModelInject constructor(
             }
         }
     }
+/*
 
     private fun addNewWorkEmpty() {
         val workInsert = WorkDataEntity(
@@ -91,6 +92,7 @@ class ListWorkViewModel @ViewModelInject constructor(
         )
         listWorkViewModel.add(workInsert)
     }
+*/
 
     private fun reSaveListWorkViewModel(list: List<WorkDataEntity>) {
         listWorkViewModel = arrayListOf()
@@ -170,7 +172,7 @@ class ListWorkViewModel @ViewModelInject constructor(
         }
     }
 
-    fun insertNewWork(name: String, typeTopic: Int) = viewModelScope.launch(handler + Dispatchers.IO) {
+/*    fun insertNewWork(name: String, typeTopic: Int) = viewModelScope.launch(handler + Dispatchers.IO) {
         val workInsert = WorkDataEntity(
             id = System.currentTimeMillis(),
             name = name,
@@ -183,7 +185,7 @@ class ListWorkViewModel @ViewModelInject constructor(
                 workInsert, typeTopic
             )
         )
-    }
+    }*/
 
     fun deleteWork(workId: Long) = viewModelScope.launch(handler + Dispatchers.IO) {
         deleteWorkUseCase.invoke(DeleteWorkUseCase.Param(listWorkViewModel.filter { it.id == workId }.getFirstOrNull()))
@@ -211,5 +213,19 @@ class ListWorkViewModel @ViewModelInject constructor(
             _workId = work.id
         }
         updateWorkUseCase.invoke(UpdateWorkUseCase.Param(work))
+    }
+
+    fun swipeItem(oldPosition: Int, newPosition: Int) = viewModelScope.launch(Dispatchers.IO + handler) {
+        val list = listWorkViewModel.map {
+            it.copyFilterNotEmpty()
+        }.toMutableList().apply {
+            val item = removeAt(oldPosition)
+            add(newPosition, item)
+        }
+        updateListWorkUseCase.invoke(UpdateListWorkUseCase.Param(list.map {
+            it.copyFilterNotEmpty().apply {
+                it.stt = list.indexOf(this)
+            }
+        }))
     }
 }

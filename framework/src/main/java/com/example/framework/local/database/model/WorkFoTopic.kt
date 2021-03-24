@@ -17,4 +17,6 @@ class WorkFoTopic(
     val isShowContents: Boolean = false,
     var hashTag: Boolean = false,
     var timerReminder: Long = -1,
+    var createTime : Long = id,
+    var stt : Int
 )

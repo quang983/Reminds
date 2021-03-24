@@ -7,7 +7,11 @@ import com.example.domain.repository.TopicRepository
 import com.example.domain.repository.WorkFromTopicRepository
 import javax.inject.Inject
 
-class InsertWorkUseCase @Inject constructor(private val workFromTopicRepository: WorkFromTopicRepository, private val topicRepository: TopicRepository) :
+class InsertWorkUseCase @Inject constructor(
+    private val workFromTopicRepository: WorkFromTopicRepository,
+    private val topicRepository: TopicRepository,
+    private val getSizeWorkByGroupIdUseCase: GetSizeWorkByGroupIdUseCase
+) :
     BaseUseCase<InsertWorkUseCase.Param, Long> {
 
     override suspend fun invoke(params: Param): Long {
@@ -16,7 +20,10 @@ class InsertWorkUseCase @Inject constructor(private val workFromTopicRepository:
                 topicRepository.insertData(TopicGroupEntity(params.work.groupId, "", typeTopic = params.typeTopic))
             }
         }
-        return workFromTopicRepository.insertData(params.work)
+        return workFromTopicRepository.insertData(params.work.apply {
+            val size = getSizeWorkByGroupIdUseCase.invoke(GetSizeWorkByGroupIdUseCase.Param(params.work.groupId))
+            this.stt = size
+        })
     }
 
     class Param(val work: WorkDataEntity, val typeTopic: Int)

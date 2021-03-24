@@ -91,10 +91,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupUI() {
-        recyclerTopic.layoutManager = GridLayoutManager(requireActivity(), 2)
-        val spacingInPixels = resources.getDimensionPixelSize(R.dimen._6sdp)
-        recyclerTopic.addItemDecoration(SpacesItemDecoration(spacingInPixels))
-
         materialAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
         layoutToday.transitionName = "def"
 

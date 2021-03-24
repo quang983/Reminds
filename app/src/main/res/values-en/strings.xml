@@ -57,4 +57,15 @@
     <string name="title_setting">Setting</string>
     <string name="option_delete_work_done">Delete the reminders after done</string>
     <string name="title_save">Save</string>
+
+    <string-array name="day">
+        <item>MO</item>
+        <item>TU</item>
+        <item>WE</item>
+        <item>TH</item>
+        <item>FR</item>
+        <item>SA</item>
+        <item>SU</item>
+    </string-array>
+
 </resources>

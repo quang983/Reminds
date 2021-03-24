@@ -12,6 +12,7 @@ import android.view.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.common.base.model.AlarmNotificationEntity
@@ -372,12 +373,21 @@ class MainActivity : AppCompatActivity() {
                 newIndex: Int,
                 newTab: AnimatedBottomBar.Tab
             ) {
+                val options = NavOptions.Builder()
+                    .setLaunchSingleTop(true)
+                    .setEnterAnim(R.anim.slide_in_left)
+                    .setExitAnim(R.anim.wait_anim)
+                    .setPopEnterAnim(R.anim.wait_anim)
+                    .setPopExitAnim(R.anim.slide_in_right)
+                    .setPopUpTo(navController.graph.startDestination, false)
+                    .build()
+
                 when (newIndex) {
                     0 -> {
-                        navController.navigate(R.id.NewUpcomingFragment)
+                        navController.navigate(R.id.NewUpcomingFragment,null,options)
                     }
                     1 -> {
-                        navController.navigate(R.id.FirstFragment)
+                        navController.navigate(R.id.FirstFragment,null,options)
                     }
                     2 -> {
                         val intent = Intent(this@MainActivity, FocusTodoActivity::class.java)

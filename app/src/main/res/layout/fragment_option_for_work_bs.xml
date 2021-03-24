@@ -38,6 +38,7 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/_8sdp"
         android:text="@string/title_save"
+        android:textStyle="bold"
         android:textColor="@color/bg_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -95,18 +96,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvClockInfo" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnDelete"
-        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_36sdp"
         android:layout_marginTop="@dimen/_16sdp"
         android:layout_marginEnd="@dimen/_36sdp"
-        android:background="@color/red_200"
         android:text="@string/action_done"
         android:textAllCaps="false"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_baseline_delete_24"
+        style="@style/Widget.MaterialComponents.Button.Icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imgSettingClock" />

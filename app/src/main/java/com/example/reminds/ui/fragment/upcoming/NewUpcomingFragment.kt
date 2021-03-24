@@ -68,6 +68,8 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>() {
     private lateinit var adapter: ListWorkAdapter
     private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
 
+    private lateinit var dayOfWeek: Array<String>
+
     private var mGroupId: Long = 0
 
 
@@ -151,6 +153,8 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>() {
 
     private fun calGroupId() {
         mGroupId = TimestampUtils.getLongTimeFromStr(Calendar.getInstance().timeInMillis)
+
+        dayOfWeek = resources.getStringArray(R.array.day)
     }
 
     private fun setupListener() {
@@ -246,7 +250,7 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>() {
         with(viewModel) {
             listWorkData.observe(viewLifecycleOwner, { it ->
                 when {
-                    /*         it.isEmpty() -> {
+                    it.isEmpty() -> {
                         mBinding.layoutEmpty.root.visible()
                         mBinding.layoutEmpty.tvEmpty.text = resources.getString(R.string.empty_list)
                     }
@@ -259,7 +263,7 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>() {
                     }
                     else -> {
                         mBinding.layoutEmpty.root.gone()
-                    }*/
+                    }
                 }
                 adapter.submitList(it)
             })
@@ -394,7 +398,7 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>() {
                 if (container.legendLayout.tag == null) {
                     container.legendLayout.tag = month.yearMonth
                     container.legendLayout.children.map { it as TextView }.forEachIndexed { index, tv ->
-                        tv.text = daysOfWeek[index].name.first().toString()
+                        tv.text = dayOfWeek[index]
                         tv.setTextColorRes(R.color.black)
                     }
                 }
@@ -458,7 +462,7 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>() {
     }
 
     inner class DayViewContainer(view: View) : ViewContainer(view) {
-        lateinit var day: CalendarDay // Will be set when this container is bound.
+        lateinit var day: CalendarDay
         val binding = LayoutCalendarDayBinding.bind(view)
 
         init {

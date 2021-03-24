@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.chauthai.swipereveallayout.SwipeRevealLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:dragEdge="right"
+    app:mode="same_level">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imgDelete"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_selector_delete"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/ic_baseline_delete_24" />
+    </LinearLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_16sdp"
+        app:cardBackgroundColor="@color/gallery"
+        app:cardElevation="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutRootTopic"
+            android:layout_width="match_parent"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_height="wrap_content">
+
+            <com.dinuscxj.progressbar.CircleProgressBar
+                android:id="@+id/circle_custom"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:padding="@dimen/_6sdp"
+                app:drawBackgroundOutsideProgress="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.1"
+                app:progress_background_color="@color/example_3_blue_light"
+                app:progress_blur_style="solid"
+                app:progress_end_color="@color/holo_blue_light"
+                app:progress_start_color="@color/holo_orange_dark"
+                app:progress_stroke_width="@dimen/_3sdp"
+                app:progress_style="solid_line"
+                app:progress_text_size="0dp" />
+
+            <TextView
+                android:id="@+id/tvContent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_6sdp"
+                android:textColor="@color/white"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/tvCountTask"
+                app:layout_constraintStart_toStartOf="@id/circle_custom"
+                app:layout_constraintTop_toBottomOf="@id/circle_custom"
+                tools:text="Day la de muc" />
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/_6sdp"
+                android:paddingTop="@dimen/_2sdp"
+                android:paddingEnd="@dimen/_6sdp"
+                android:paddingBottom="@dimen/_2sdp"
+                android:textColor="@color/pink_500"
+                android:textSize="@dimen/_10sdp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/tvContent"
+                app:layout_constraintTop_toBottomOf="@id/tvContent"
+                tools:text="Day la de muc" />
+
+            <TextView
+                android:id="@+id/tvCountTask"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_chevron_right_24px"
+                android:drawableTint="@color/bg_gray"
+                android:padding="@dimen/_6sdp"
+                android:text="10"
+                android:textSize="@dimen/_14sdp"
+                android:textColor="@color/white"
+                app:layout_constraintBaseline_toBaselineOf="@id/tvContent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</com.chauthai.swipereveallayout.SwipeRevealLayout>

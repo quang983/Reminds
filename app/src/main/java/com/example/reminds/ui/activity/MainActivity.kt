@@ -246,7 +246,7 @@ class MainActivity : AppCompatActivity() {
     private fun createRewardAds() {
         val adRequest = AdRequest.Builder().build()
 
-        RewardedAd.load(this, "ca-app-pub-5558775664447893/4511965582", adRequest, object : RewardedAdLoadCallback() {
+        RewardedAd.load(this, "ca-app-pub-8336447374457268/3075405036", adRequest, object : RewardedAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {
                 Log.d(TAG, adError.message)
                 mRewardedAd = null

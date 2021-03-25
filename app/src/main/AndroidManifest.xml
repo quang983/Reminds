@@ -26,7 +26,7 @@
         <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-5558775664447893~7048012476" />
+            android:value="ca-app-pub-8336447374457268~8562701281" />
 
         <activity
             android:name="com.example.reminds.ui.activity.splash.SplashScreenActivity"

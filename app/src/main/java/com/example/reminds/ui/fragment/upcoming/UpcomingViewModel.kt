@@ -20,6 +20,6 @@ class UpcomingViewModel @ViewModelInject constructor(fetchTopicFlowUseCase: Fetc
         it
     }
 
-    var isExpandedCalendar:Boolean = true
+    var isExpandedCalendar: Boolean = true
 
 }

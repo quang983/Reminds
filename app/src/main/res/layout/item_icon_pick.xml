@@ -1,0 +1,5 @@
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/img_icon"
+    android:layout_width="@dimen/_36sdp"
+    android:layout_height="@dimen/_36sdp"
+    android:padding="@dimen/_6sdp" />

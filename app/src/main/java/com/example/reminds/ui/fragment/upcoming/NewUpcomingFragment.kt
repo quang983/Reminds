@@ -17,12 +17,15 @@ import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.common.base.model.AlarmNotificationEntity
 import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.TopicGroupEntity.Companion.TYPE_UPCOMING
 import com.example.framework.local.cache.CacheImpl
 import com.example.reminds.R
 import com.example.reminds.common.BaseFragment
+import com.example.reminds.common.CallbackItemTouch
+import com.example.reminds.common.MyItemTouchHelperCallback
 import com.example.reminds.databinding.FragmentUpcomingNewBinding
 import com.example.reminds.databinding.LayoutCalendarDayBinding
 import com.example.reminds.databinding.LayoutCalendarHeaderBinding
@@ -45,6 +48,7 @@ import com.kizitonwose.calendarview.ui.ViewContainer
 import com.kizitonwose.calendarview.utils.next
 import com.kizitonwose.calendarview.utils.yearMonth
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_list_work.*
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -52,7 +56,7 @@ import java.util.*
 
 
 @AndroidEntryPoint
-class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>() {
+class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), CallbackItemTouch {
     override fun getViewBinding(): FragmentUpcomingNewBinding {
         return FragmentUpcomingNewBinding.inflate(layoutInflater)
     }
@@ -161,24 +165,12 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>() {
         mBinding.extendedFab.setOnClickListenerBlock {
             navigate(NewUpcomingFragmentDirections.actionNewUpcomingFragmentToOptionForWorkBSFragment(-1, TYPE_UPCOMING, mGroupId))
         }
-
-        mBinding.rootWork.setOnClickListener(object : DoubleClickListener() {
-            override fun onSingleClick(v: View?) {
-
+        mBinding.rootWork.setOnClickListenerBlock {
+            if (homeSharedViewModel.isKeyboardShow.value == true) {
+                viewModel.reSaveListWorkAndCreateStateFocus()
+                hideSoftKeyboard()
             }
-
-            override fun onDoubleClick(v: View?) {
-                if (homeSharedViewModel.isKeyboardShow.value == true) {
-                    viewModel.reSaveListWorkAndCreateStateFocus()
-                    hideSoftKeyboard()
-                } else {
-                    viewModel.listWorkViewModel.lastOrNull()?.id?.let {
-                        navigate(NewUpcomingFragmentDirections.actionNewUpcomingFragmentToOptionForWorkBSFragment(-1, TYPE_UPCOMING, mGroupId))
-                    }
-                }
-            }
-
-        })
+        }
     }
 
     private fun setupToolbar() {
@@ -231,6 +223,11 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>() {
                 navigate(NewUpcomingFragmentDirections.actionNewUpcomingFragmentToOptionForWorkBSFragment(it.id, TYPE_UPCOMING, mGroupId))
             }).apply {
             mBinding.recyclerWorks.adapter = this
+            val callback: ItemTouchHelper.Callback = MyItemTouchHelperCallback(this@NewUpcomingFragment)
+
+            val touchHelper = ItemTouchHelper(callback)
+
+            touchHelper.attachToRecyclerView(recyclerWorks)
         }
         homeSharedViewModel.isKeyboardShow.observe(viewLifecycleOwner, {
             if (!it) {
@@ -248,19 +245,19 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>() {
         }
 
         with(viewModel) {
-            listWorkData.observe(viewLifecycleOwner, { it ->
+            listWorkViewItems.observe(viewLifecycleOwner, { it ->
                 when {
                     it.isEmpty() -> {
                         mBinding.layoutEmpty.root.visible()
                         mBinding.layoutEmpty.tvEmpty.text = resources.getString(R.string.empty_list)
                     }
-                    it.sumByDouble { it.listContent.size.toDouble() }.toInt() == 0 && !checkFirstTapTap() -> {
-                        mBinding.layoutEmpty.root.visible()
-                        mBinding.layoutEmpty.tvEmpty.text = resources.getString(R.string.tap_tap)
-                        mBinding.layoutEmpty.imgIcon.gone()
-                        val shared = requireActivity().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
-                        shared.edit().putBoolean(CacheImpl.KEY_FIRST_TAP_TAP, true).apply()
-                    }
+                    /*   it.sumByDouble { it.listContent.size.toDouble() }.toInt() == 0 && !checkFirstTapTap() -> {
+                           mBinding.layoutEmpty.root.visible()
+                           mBinding.layoutEmpty.tvEmpty.text = resources.getString(R.string.tap_tap)
+                           mBinding.layoutEmpty.imgIcon.gone()
+                           val shared = requireActivity().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
+                           shared.edit().putBoolean(CacheImpl.KEY_FIRST_TAP_TAP, true).apply()
+                       }*/
                     else -> {
                         mBinding.layoutEmpty.root.gone()
                     }
@@ -321,11 +318,11 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>() {
             homeSharedViewModel.showAdsMobile.postValue(true)
         }
     }
-
+/*
     private fun checkFirstTapTap(): Boolean {
         val shared = requireActivity().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
         return shared.getBoolean(CacheImpl.KEY_FIRST_TAP_TAP, false)
-    }
+    }*/
 
     private fun setupLayout() {
         setupUI()
@@ -472,5 +469,17 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>() {
                 }
             }
         }
+    }
+
+    override fun itemTouchOnMove(oldPosition: Int, newPosition: Int) {
+        val list = adapter.currentList.toMutableList().apply {
+            val item = removeAt(oldPosition)
+            add(newPosition, item)
+        }
+        adapter.submitList(list)
+    }
+
+    override fun itemTouchOnMoveFinish() {
+        viewModel.saveListWork(adapter.currentList)
     }
 }

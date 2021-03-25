@@ -87,6 +87,8 @@
     <string name="example_3_title" translatable="false">Example 3</string>
     <string name="example_3_empty_input_text" translatable="false">Text is empty</string>
 
+    <string name="title_reminder_fast">Nhắc nhở nhanh</string>
+
     <string-array name="day">
         <item>TH2</item>
         <item>TH3</item>

@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_CreateTopicBSFragment"
+            app:destination="@id/CreateTopicBSFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -110,7 +113,7 @@
     <fragment
         android:id="@+id/NewUpcomingFragment"
         android:name="com.example.reminds.ui.fragment.upcoming.NewUpcomingFragment"
-        tools:layout="@layout/fragment_upcoming_new" >
+        tools:layout="@layout/fragment_upcoming_new">
         <action
             android:id="@+id/action_NewUpcomingFragment_to_OptionForWorkBSFragment"
             app:destination="@id/OptionForWorkBSFragment" />
@@ -118,5 +121,12 @@
             android:id="@+id/action_NewUpcomingFragment_to_dateTimePickerDialog"
             app:destination="@id/dateTimePickerDialog" />
     </fragment>
+
+    <dialog
+        android:id="@+id/CreateTopicBSFragment"
+        android:name="com.example.reminds.ui.fragment.createtopic.CreateTopicBSFragment"
+        android:label="@string/new_topic_fragment_label"
+        tools:layout="@layout/fragment_bs_create_topic" />
+
 
 </navigation>

@@ -43,50 +43,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInput"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edtInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_16sdp"
         android:background="@null"
+        android:hint="Bạn đang nghĩ gì"
         android:imeOptions="actionDone"
+        android:inputType="text"
+        android:maxLines="2"
+        android:paddingTop="@dimen/_12sdp"
+        android:paddingBottom="@dimen/_12sdp"
         android:textColor="@color/black"
-        app:counterMaxLength="35"
+        app:counterMaxLength="36"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvTitleSetting">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:hint="Bạn đang nghĩ gì"
-            android:textColor="@color/black" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintTop_toBottomOf="@id/tvTitleSetting" />
 
     <TextView
         android:id="@+id/tvClockInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12sdp"
         android:background="@drawable/border_textview"
         android:padding="@dimen/_8sdp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textInput" />
+        app:layout_constraintTop_toBottomOf="@id/edtInput" />
 
-
-    <ImageView
-        android:id="@+id/imgFlag"
-        android:layout_width="@dimen/_35sdp"
-        android:layout_height="@dimen/_35sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:src="@drawable/ic_star_border"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvClockInfo" />
 
     <ImageView
         android:id="@+id/imgSettingClock"
@@ -103,7 +86,6 @@
         android:layout_width="@dimen/_25sdp"
         android:layout_height="@dimen/_25sdp"
         android:layout_marginStart="@dimen/_20sdp"
-        android:backgroundTint="#2E3A59"
         android:src="@drawable/ic_baseline_delete_24"
         app:layout_constraintBottom_toBottomOf="@id/imgSettingClock"
         app:layout_constraintStart_toEndOf="@id/imgSettingClock"

@@ -1,5 +1,6 @@
 package com.example.reminds.ui.adapter
 
+import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -11,6 +12,8 @@ import com.example.reminds.common.BaseAdapter
 import com.example.reminds.common.BaseViewHolder
 import com.example.reminds.utils.*
 import kotlinx.android.synthetic.main.item_work_group.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ListWorkAdapter(
     private val onClickTitle: (work: WorkDataEntity) -> Unit,
@@ -127,6 +130,7 @@ class ListWorkAdapter(
         view.tag = item
         view.recyclerWorks.visibility = if (item.isShowContents) View.VISIBLE else View.GONE
         holder.itemView.isActivated = item.isShowContents
+        randomColor(view)
         setupViewBinderHelper(view, item)
         refreshTimer(view, item)
         refreshCountNumber(view, item)
@@ -139,6 +143,13 @@ class ListWorkAdapter(
     private fun setupViewBinderHelper(view: View, item: WorkDataEntity) {
         _viewBinderHelper.setOpenOnlyOne(true)
         _viewBinderHelper.bind(view.swipeLayout, item.id.toString())
+    }
+
+    private fun randomColor(view: View){
+        val rnd = Random()
+        val color: Int = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
+        view.rbCheckedTitle.tickColor = color
+        view.rbCheckedTitle.floorUnCheckedColor = color
     }
 
     private fun refreshTimer(view: View, item: WorkDataEntity) {
@@ -179,7 +190,7 @@ class ListWorkAdapter(
             view.tvTitle.setTextColor(view.context.resources.getColor(R.color.bg_gray))
             view.tvTitle.underLine()
         } else {
-            view.tvTitle.setTextColor(view.context.resources.getColor(R.color.blue_900))
+            view.tvTitle.setTextColor(view.context.resources.getColor(R.color.black))
             view.tvTitle.removeUnderLine()
         }
     }
@@ -193,7 +204,6 @@ class ListWorkAdapter(
     }
 
     private fun handleListener(view: View) {
-
         view.imgArrow.setOnClickListener {
             (view.tag as? WorkDataEntity)?.copy()?.let { item ->
                 item.isShowContents = !item.isShowContents
@@ -243,13 +253,6 @@ class ListWorkAdapter(
                 contentsAdapter?.submitList(item.listContent.toMutableList())
             }
         }
-
-    /*    view.tvTitle.setOnLongClickListener {
-            (view.tag as? WorkDataEntity)?.copy()?.let { item ->
-                showMenu(it, R.menu.menu_work_title, item.id)
-            }
-            true
-        }*/
 
         view.rbCheckedTitle.setOnCheckedChangeListener { button, isChecked ->
             (view.tag as? WorkDataEntity)?.copy()?.let { item ->

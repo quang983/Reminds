@@ -67,11 +67,13 @@
         android:id="@+id/extendedFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="?attr/floatingActionButtonStyle"
+        android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginEnd="@dimen/_18sdp"
+        android:backgroundTint="@color/white"
         app:fabSize="mini"
-        android:layout_marginBottom="@dimen/_28sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_pen" />
+        app:layout_constraintTop_toTopOf="@id/exThreeSelectedDateText"
+        app:srcCompat="@drawable/ic_create" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -87,18 +87,6 @@ class ListWorkViewModel @ViewModelInject constructor(
             }
         }
     }
-/*
-
-    private fun addNewWorkEmpty() {
-        val workInsert = WorkDataEntity(
-            id = System.currentTimeMillis(),
-            name = "",
-            groupId = _idGroup.value ?: 0,
-            listContent = arrayListOf(), doneAll = false
-        )
-        listWorkViewModel.add(workInsert)
-    }
-*/
 
     private fun reSaveListWorkViewModel(list: List<WorkDataEntity>) {
         listWorkViewModel = arrayListOf()

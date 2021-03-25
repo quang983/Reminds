@@ -27,7 +27,7 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/home_screen_title"
+            android:text="@string/title_reminder_fast"
             android:textColor="@color/blue_900"
             android:textSize="16sp"
             android:textStyle="bold"

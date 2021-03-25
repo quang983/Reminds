@@ -19,6 +19,7 @@ import com.example.framework.local.cache.CacheImpl.Companion.KEY_SUM_DONE_TASK
 import com.example.reminds.R
 import com.example.reminds.common.CallbackItemTouch
 import com.example.reminds.common.MyItemTouchHelperCallback
+import com.example.reminds.common.OnSwipeTouchListener
 import com.example.reminds.ui.adapter.ListContentCheckAdapter
 import com.example.reminds.ui.adapter.ListWorkAdapter
 import com.example.reminds.ui.fragment.setting.WorksSettingFragment.Companion.DATA_OPTION_SELECTED
@@ -89,7 +90,20 @@ class ListWorkFragment : Fragment(), CallbackItemTouch {
         extendedFab.setOnClickListenerBlock {
             navigate(ListWorkFragmentDirections.actionSecondFragmentToOptionForWorkBSFragment(-1, TYPE_NORMAL, args.idGroup))
         }
-        rootWork.setOnClickListenerBlock {
+        rootWork.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
+            override fun onSwipeTop() {
+                super.onSwipeTop()
+                if (homeSharedViewModel.isKeyboardShow.value == true) {
+                    viewModel.reSaveListWorkAndCreateStateFocus()
+                    hideSoftKeyboard()
+                } else {
+                    viewModel.listWorkViewModel.lastOrNull()?.id?.let {
+                        navigate(ListWorkFragmentDirections.actionSecondFragmentToOptionForWorkBSFragment(-1, TYPE_NORMAL, args.idGroup))
+                    }
+                }
+            }
+        })
+    /*    rootWork.setOnClickListenerBlock {
             if (homeSharedViewModel.isKeyboardShow.value == true) {
                 viewModel.reSaveListWorkAndCreateStateFocus()
                 hideSoftKeyboard()
@@ -99,7 +113,7 @@ class ListWorkFragment : Fragment(), CallbackItemTouch {
                 }
             }
         }
-
+*/
 /*        rootWork.setOnClickListenerBlock {
             if (homeSharedViewModel.isKeyboardShow.value == true) {
                 viewModel.reSaveListWorkAndCreateStateFocus()

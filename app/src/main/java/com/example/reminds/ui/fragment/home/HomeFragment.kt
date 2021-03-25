@@ -1,11 +1,8 @@
 package com.example.reminds.ui.fragment.home
 
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
-import android.os.Handler
 import android.view.*
-import android.widget.Toast
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -185,7 +182,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun showBottomSheet() {
-        customAlertDialogView = LayoutInflater.from(requireContext())
+     /*   customAlertDialogView = LayoutInflater.from(requireContext())
             .inflate(R.layout.layout_custom_alert_text_input, null, false)
         customAlertDialogView.setPadding(36.toDp, 0, 36.toDp, 0)
         customAlertDialogView.rootView.textInput.hint = getString(R.string.add_new_topic_hint)
@@ -206,7 +203,9 @@ class HomeFragment : Fragment() {
         customAlertDialogView.requestFocus()
         Handler().postDelayed({
             KeyboardUtils.showKeyboard(requireContext())
-        }, 500)
+        }, 500)*/
+
+        navigate(HomeFragmentDirections.actionFirstFragmentToCreateTopicBSFragment())
     }
 
 

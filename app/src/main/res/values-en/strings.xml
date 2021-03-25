@@ -58,6 +58,8 @@
     <string name="option_delete_work_done">Delete the reminders after done</string>
     <string name="title_save">Save</string>
 
+    <string name="title_reminder_fast">Fast Reminders</string>
+
     <string-array name="day">
         <item>MO</item>
         <item>TU</item>

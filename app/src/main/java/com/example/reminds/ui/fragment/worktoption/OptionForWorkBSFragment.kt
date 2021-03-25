@@ -6,6 +6,7 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
@@ -21,6 +22,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_option_for_work_bs.*
 
+
 @AndroidEntryPoint
 class OptionForWorkBSFragment : BottomSheetDialogFragment() {
     private val args by navArgs<OptionForWorkBSFragmentArgs>()
@@ -28,10 +30,6 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
     private val viewModel: OptionForWorkBSViewModel by viewModels()
 
     private val homeSharedViewModel: MainActivityViewModel by activityViewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,6 +63,13 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
 
     private fun setupUI() {
         edtInput.requestFocus()
+        Handler().postDelayed({ KeyboardUtils.showKeyboard(requireContext()) }, 200)
+        edtInput.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                edtInput.clearFocus()
+            }
+            false
+        }
     }
 
     private fun setupObserver() {

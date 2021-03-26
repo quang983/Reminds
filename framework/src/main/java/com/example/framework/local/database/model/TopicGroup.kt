@@ -7,7 +7,8 @@ import com.example.common.base.model.TopicGroupEntity
 
 @Entity
 data class TopicGroup(
-    @PrimaryKey(autoGenerate = true) var idTopic: Long = 0,
+    @PrimaryKey(autoGenerate = true)
+    var idTopic: Long = 0,
     var name: String = "",
     var isShowDone: Boolean = true,
     var optionSelected: Int = TopicGroupEntity.SHOW_ALL_WORKS,

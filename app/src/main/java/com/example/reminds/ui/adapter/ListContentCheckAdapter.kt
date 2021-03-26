@@ -1,5 +1,6 @@
 package com.example.reminds.ui.adapter
 
+import android.graphics.Color
 import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
@@ -108,6 +109,7 @@ class ListContentCheckAdapter(
     override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: ContentDataEntity) {
         view.tag = item
         setupViewBinderHelper(view, item)
+        randomColor(view)
         refreshFlag(view, item)
         refreshTvTimer(view, item)
         refreshEdtContent(view, item)
@@ -118,6 +120,13 @@ class ListContentCheckAdapter(
     private fun setupViewBinderHelper(view: View, item: ContentDataEntity) {
         _viewBinderHelper.setOpenOnlyOne(true)
         _viewBinderHelper.bind(view.swipeLayout, item.id.toString())
+    }
+
+    private fun randomColor(view: View) {
+        val rnd = Random()
+        val color: Int = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
+        view.rbChecked.tickColor = color
+        view.rbChecked.floorUnCheckedColor = color
     }
 
     private fun refreshEdtContent(view: View, item: ContentDataEntity) {

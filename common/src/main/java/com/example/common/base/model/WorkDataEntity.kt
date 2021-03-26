@@ -10,11 +10,12 @@ data class WorkDataEntity(
     var hashTag: Boolean = false,
     var timerReminder: Long = -1,
     var createTime: Long = id,
-    var stt: Int = 0
+    var stt: Int = 0,
+    var description: String = ""
 ) {
     fun copy() = WorkDataEntity(
         id, name, groupId, listContent.map { it.copy() }.toMutableList(),
-        doneAll = doneAll, isShowContents = isShowContents, hashTag, timerReminder, createTime, stt
+        doneAll = doneAll, isShowContents = isShowContents, hashTag, timerReminder, createTime, stt, description
     )
 
     fun copySort() = WorkDataEntity(
@@ -23,7 +24,7 @@ data class WorkDataEntity(
             .map { it.copy() }
             .sortedWith(compareBy({ it.isCheckDone }, { !it.hashTag }, { it.id }))
             .toMutableList(), doneAll = doneAll && listContent.all { it.isCheckDone },
-        isShowContents = isShowContents, hashTag, timerReminder, createTime, stt
+        isShowContents = isShowContents, hashTag, timerReminder, createTime, stt, description
     )
 
     fun copyFilterNotEmpty() = WorkDataEntity(
@@ -31,7 +32,7 @@ data class WorkDataEntity(
         listContent
             .filter { it.name.isNotEmpty() }
             .map { it.copy() }.toMutableList(),
-        doneAll = doneAll && listContent.all { it.isCheckDone }, isShowContents = isShowContents, hashTag, timerReminder, createTime, stt
+        doneAll = doneAll && listContent.all { it.isCheckDone }, isShowContents = isShowContents, hashTag, timerReminder, createTime, stt, description
     )
 
     override fun equals(other: Any?): Boolean {

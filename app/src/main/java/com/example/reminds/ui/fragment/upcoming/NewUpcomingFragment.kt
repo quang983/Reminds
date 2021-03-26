@@ -404,7 +404,7 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun setCalendarChangeSize(monthToWeek: Boolean) {
         (requireActivity() as? MainActivity)?.toolbar?.menu?.findItem(R.id.action_expanded)?.icon = if (monthToWeek)
-            resources.getDrawable(R.drawable.ic_more_horizontal, null) else resources.getDrawable(R.drawable.ic_more_vertical, null)
+            resources.getDrawable(R.drawable.ic_expand, null) else resources.getDrawable(R.drawable.ic_shrink, null)
         val firstDate = homeSharedViewModel.selectedDate
         val lastDate = mBinding.datePicker.findLastVisibleDay()?.date ?: return
 

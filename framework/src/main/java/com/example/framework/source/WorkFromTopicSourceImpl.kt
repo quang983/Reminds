@@ -1,11 +1,9 @@
 package com.example.framework.source
 
 import androidx.room.Transaction
-import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.WorkDataEntity
 import com.example.data.local.source.WorkFromTopicSource
 import com.example.framework.local.database.dao.LocalWorkFromTopicDao
-import com.example.framework.local.database.model.ContentFoWork
 import com.example.framework.local.database.model.WorkFoTopic
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
@@ -18,135 +16,48 @@ class WorkFromTopicSourceImpl @Inject constructor(
 ) : WorkFromTopicSource {
     override suspend fun fetchAllFlow(idGroup: Long): Flow<List<WorkDataEntity>> {
         return dao.fetchWorkFromTopicDataFlow(idGroup).distinctUntilChanged().map { it ->
-            it.listWork.map { it ->
-                WorkDataEntity(
-                    it.id,
-                    it.name,
-                    it.idOwnerGroup,
-                    it.listContent.map {
-                        ContentDataEntity(
-                            it.idContent,
-                            it.name,
-                            it.idOwnerWork,
-                            hashTag = it.hashTag,
-                            timer = it.timer,
-                            isCheckDone = it.isCheckDone
-                        )
-                    } as ArrayList<ContentDataEntity>,
-                    it.doneAll,
-                    it.isShowContents,
-                    it.hashTag,
-                    it.timerReminder, it.createTime, it.stt
-
-                )
+            it.listWork.map {
+                it.convert()
             }
         }.conflate()
     }
 
     override suspend fun fetchAll(idGroup: Long): List<WorkDataEntity> {
         return dao.fetchWorkFromTopicData(idGroup).let { it ->
-            it.listWork.map { it ->
-                WorkDataEntity(
-                    it.id,
-                    it.name,
-                    it.idOwnerGroup,
-                    it.listContent.map {
-                        ContentDataEntity(
-                            it.idContent,
-                            it.name,
-                            it.idOwnerWork,
-                            hashTag = it.hashTag,
-                            timer = it.timer,
-                            isCheckDone = it.isCheckDone
-                        )
-                    } as ArrayList<ContentDataEntity>,
-                    doneAll = it.doneAll,
-                    it.isShowContents,
-                    it.hashTag,
-                    it.timerReminder, it.createTime, it.stt
-                )
+            it.listWork.map {
+                it.convert()
             }
         }
     }
 
     override suspend fun getWorkById(idWork: Long): WorkDataEntity? {
         return dao.findById(idWork)?.let { it ->
-            WorkDataEntity(
-                it.id,
-                it.name,
-                it.idOwnerGroup,
-                it.listContent.map {
-                    ContentDataEntity(
-                        it.idContent,
-                        it.name,
-                        it.idOwnerWork,
-                        hashTag = it.hashTag,
-                        timer = it.timer,
-                        isCheckDone = it.isCheckDone
-                    )
-                } as ArrayList<ContentDataEntity>,
-                doneAll = it.doneAll,
-                it.isShowContents,
-                it.hashTag,
-                it.timerReminder, it.createTime, it.stt
-            )
+            it.convert()
         }
     }
 
     override suspend fun insert(data: WorkDataEntity): Long {
         return dao.insert(
-            WorkFoTopic(
-                data.id, data.name, data.groupId,
-                data.listContent.map {
-                    ContentFoWork(
-                        it.id, it.name, it.idOwnerWork, hashTag = it.hashTag,
-                        timer = it.timer, isCheckDone = it.isCheckDone
-                    )
-                }.toMutableList(), data.doneAll, isShowContents = data.isShowContents, data.hashTag, data.timerReminder, data.createTime, data.stt
-            )
+            WorkFoTopic().copy(data)
         )
     }
 
     override suspend fun inserts(datas: List<WorkDataEntity>) {
-        dao.inserts(*datas.map { it ->
-            WorkFoTopic(
-                it.id, it.name, it.groupId,
-                it.listContent.map {
-                    ContentFoWork(
-                        it.id, it.name, it.idOwnerWork, hashTag = it.hashTag,
-                        timer = it.timer, isCheckDone = it.isCheckDone
-                    )
-                }.toMutableList(), false, isShowContents = false, false, -1, it.createTime, stt = datas.indexOf(it)
-            )
+        dao.inserts(*datas.map {
+            WorkFoTopic().copy(it)
         }.toTypedArray())
     }
 
     @Transaction
     override suspend fun update(data: WorkDataEntity) {
         dao.updateData(
-            WorkFoTopic(
-                data.id, data.name, data.groupId,
-                data.listContent.map {
-                    ContentFoWork(
-                        it.id, it.name, it.idOwnerWork, hashTag = it.hashTag,
-                        timer = it.timer, isCheckDone = it.isCheckDone
-                    )
-                }.toMutableList(), data.doneAll, data.isShowContents, data.hashTag, data.timerReminder, data.createTime, data.stt
-            )
+            WorkFoTopic().copy(data)
         )
     }
 
     override suspend fun updates(datas: List<WorkDataEntity>) {
-        dao.updateDatas(*datas.map { it ->
-            WorkFoTopic(
-                it.id, it.name, it.groupId,
-                it.listContent.map {
-                    ContentFoWork(
-                        it.id, it.name, it.idOwnerWork, hashTag = it.hashTag,
-                        timer = it.timer, isCheckDone = it.isCheckDone
-                    )
-                }.toMutableList(), it.doneAll, it.isShowContents, it.hashTag, it.timerReminder, it.createTime, it.stt
-            )
+        dao.updateDatas(*datas.map {
+            WorkFoTopic().copy(it)
         }.toTypedArray())
     }
 
@@ -155,16 +66,8 @@ class WorkFromTopicSourceImpl @Inject constructor(
     }
 
     override suspend fun deletes(datas: List<WorkDataEntity>) {
-        dao.deleteDatas(*datas.map { it ->
-            WorkFoTopic(
-                it.id, it.name, it.groupId,
-                it.listContent.map {
-                    ContentFoWork(
-                        it.id, it.name, it.idOwnerWork, hashTag = it.hashTag,
-                        timer = it.timer, isCheckDone = it.isCheckDone
-                    )
-                }.toMutableList(), it.doneAll, it.isShowContents, it.hashTag, it.timerReminder, it.createTime, it.stt
-            )
+        dao.deleteDatas(*datas.map {
+            WorkFoTopic().copy(it)
         }.toTypedArray())
     }
 }

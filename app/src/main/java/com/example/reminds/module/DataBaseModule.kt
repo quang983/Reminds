@@ -21,7 +21,7 @@ object DataBaseModule {
     fun provideDatabase(@ApplicationContext context: Context): AppDataBase {
         return Room.databaseBuilder(context, AppDataBase::class.java, AppDataBase.DATABASE_NAME)
             .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
-            .fallbackToDestructiveMigration()
+            .fallbackToDestructiveMigrationFrom()
             .build()
     }
 

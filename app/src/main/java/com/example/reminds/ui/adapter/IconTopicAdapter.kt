@@ -11,7 +11,7 @@ import com.example.reminds.utils.inflate
 import com.example.reminds.utils.setOnClickListenerBlock
 import kotlinx.android.synthetic.main.item_icon_pick.view.*
 
-class IconTopicAdapter(val pickIconListener: (iconResource : Int) -> Unit) : BaseAdapter<Int>(object : DiffUtil.ItemCallback<Int>() {
+class IconTopicAdapter(private val pickIconListener: (iconResource : Int) -> Unit) : BaseAdapter<Int>(object : DiffUtil.ItemCallback<Int>() {
     override fun areItemsTheSame(
         oldItem: Int,
         newItem: Int

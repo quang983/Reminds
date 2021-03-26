@@ -182,29 +182,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun showBottomSheet() {
-     /*   customAlertDialogView = LayoutInflater.from(requireContext())
-            .inflate(R.layout.layout_custom_alert_text_input, null, false)
-        customAlertDialogView.setPadding(36.toDp, 0, 36.toDp, 0)
-        customAlertDialogView.rootView.textInput.hint = getString(R.string.add_new_topic_hint)
-        materialAlertDialogBuilder.setView(customAlertDialogView)
-            .setTitle(resources.getString(R.string.notify_title))
-            .setPositiveButton(resources.getString(R.string.add)) { _, _ ->
-                customAlertDialogView.edtInput.text.toString().takeIf { it.isNotBlank() }?.let {
-                    viewModel.insertTopic(it)
-                } ?: Toast.makeText(requireContext(), resources.getString(R.string.warning_title_min), Toast.LENGTH_SHORT).show()
-            }
-            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show().apply {
-                this.getButton(DialogInterface.BUTTON_POSITIVE).isAllCaps = false
-                this.getButton(DialogInterface.BUTTON_NEGATIVE).isAllCaps = false
-            }
-        customAlertDialogView.requestFocus()
-        Handler().postDelayed({
-            KeyboardUtils.showKeyboard(requireContext())
-        }, 500)*/
-
         navigate(HomeFragmentDirections.actionFirstFragmentToCreateTopicBSFragment())
     }
 

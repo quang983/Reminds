@@ -2,6 +2,7 @@ package com.example.reminds.ui.fragment.upcoming
 
 import DateTimePickerFragment.Companion.TIME_PICKER_BUNDLE
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.Menu
@@ -48,6 +49,7 @@ import com.kizitonwose.calendarview.ui.ViewContainer
 import com.kizitonwose.calendarview.utils.next
 import com.kizitonwose.calendarview.utils.yearMonth
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_list_work.*
 import java.time.LocalDate
 import java.time.YearMonth
@@ -61,8 +63,6 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
         return FragmentUpcomingNewBinding.inflate(layoutInflater)
     }
 
-    private var selectedDate: LocalDate? = null
-    private val today = LocalDate.now()
     private val selectionFormatter = DateTimeFormatter.ofPattern("d MMM yyyy")
     private val events = hashMapOf<Long, String>()
 
@@ -93,7 +93,7 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
-        setupCalendar(savedInstanceState)
+        setupCalendar()
         setupLayout()
         observeData()
         setupListener()
@@ -110,6 +110,10 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
                 setCalendarChangeSize(viewModelUpcoming.isExpandedCalendar)
                 viewModelUpcoming.isExpandedCalendar = !viewModelUpcoming.isExpandedCalendar
             }
+            R.id.action_focus_today -> {
+                selectDate(homeSharedViewModel.today)
+                mBinding.datePicker.scrollToDate(homeSharedViewModel.selectedDate)
+            }
             android.R.id.home -> {
             }
         }
@@ -118,10 +122,10 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
     }
 
     private fun selectDate(date: LocalDate) {
-        if (selectedDate != date) {
-            val oldDate = selectedDate
-            selectedDate = date
-            oldDate?.let { mBinding.datePicker.notifyDateChanged(it) }
+        if (homeSharedViewModel.selectedDate != date) {
+            val oldDate = homeSharedViewModel.selectedDate
+            homeSharedViewModel.selectedDate = date
+            oldDate.let { mBinding.datePicker.notifyDateChanged(it) }
             mBinding.datePicker.notifyDateChanged(date)
             updateAdapterForDate(date)
             getListWork(date)
@@ -137,8 +141,8 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
         if (text.isBlank()) {
             Toast.makeText(requireContext(), R.string.example_3_empty_input_text, Toast.LENGTH_LONG).show()
         } else {
-            selectedDate?.let {
-//                events[it] = events[it].orEmpty().plus(Event(UUID.randomUUID().toString(), text, it))
+            homeSharedViewModel.selectedDate.let {
+                //                events[it] = events[it].orEmpty().plus(Event(UUID.randomUUID().toString(), text, it))
                 updateAdapterForDate(it)
             }
         }
@@ -328,18 +332,12 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
         setupUI()
     }
 
-    private fun setupCalendar(savedInstanceState: Bundle?) {
+    private fun setupCalendar() {
         val daysOfWeek = daysOfWeekFromLocale()
         val currentMonth = YearMonth.now()
         mBinding.datePicker.apply {
             setup(currentMonth.minusMonths(10), currentMonth.plusMonths(10), daysOfWeek.first())
-            scrollToMonth(currentMonth)
-        }
-
-        if (savedInstanceState == null) {
-            mBinding.datePicker.post {
-                selectDate(today)
-            }
+            mBinding.datePicker.scrollToDate(homeSharedViewModel.selectedDate)
         }
 
         mBinding.datePicker.dayBinder = object : DayBinder<DayViewContainer> {
@@ -354,13 +352,13 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
                 if (day.owner == DayOwner.THIS_MONTH) {
                     textView.visible()
                     when (day.date) {
-                        today -> {
+                        homeSharedViewModel.today -> {
                             textView.setTextColorRes(R.color.white)
                             textView.setBackgroundResource(R.drawable.bg_today)
                             dotView.invisible()
                         }
-                        selectedDate -> {
-                            textView.setTextColorRes(R.color.example_3_blue)
+                        homeSharedViewModel.selectedDate -> {
+                            textView.setTextColorRes(R.color.white)
                             textView.setBackgroundResource(R.drawable.bg_selected_date)
                             dotView.invisible()
                         }
@@ -403,8 +401,11 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
         }
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun setCalendarChangeSize(monthToWeek: Boolean) {
-        val firstDate = selectedDate ?: LocalDate.now()
+        (requireActivity() as? MainActivity)?.toolbar?.menu?.findItem(R.id.action_expanded)?.icon = if (monthToWeek)
+            resources.getDrawable(R.drawable.ic_more_horizontal, null) else resources.getDrawable(R.drawable.ic_more_vertical, null)
+        val firstDate = homeSharedViewModel.selectedDate
         val lastDate = mBinding.datePicker.findLastVisibleDay()?.date ?: return
 
         val oneWeekHeight = mBinding.datePicker.daySize.height * 2

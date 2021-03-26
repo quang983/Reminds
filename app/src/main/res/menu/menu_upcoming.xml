@@ -4,8 +4,14 @@
     tools:context=".MainActivity">
 
     <item
+        android:id="@+id/action_focus_today"
+        android:orderInCategory="100"
+        android:title="Today"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_expanded"
-        android:icon="@drawable/ic_done"
+        android:icon="@drawable/ic_more_horizontal"
         android:orderInCategory="100"
         android:title="DONE"
         app:showAsAction="ifRoom" />

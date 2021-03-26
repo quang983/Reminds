@@ -63,7 +63,6 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
 
     private fun setupUI() {
         edtInput.requestFocus()
-        Handler().postDelayed({ KeyboardUtils.showKeyboard(requireContext()) }, 200)
         edtInput.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 edtInput.clearFocus()

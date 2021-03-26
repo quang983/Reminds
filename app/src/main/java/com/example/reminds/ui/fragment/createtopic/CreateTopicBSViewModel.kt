@@ -3,10 +3,16 @@ package com.example.reminds.ui.fragment.createtopic
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.example.common.base.model.TopicGroupEntity
+import com.example.domain.usecase.db.topic.InsertTopicUseCase
 import com.example.reminds.R
 import com.example.reminds.common.BaseViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CreateTopicBSViewModel @ViewModelInject constructor(
+    private val insertTopicUseCase: InsertTopicUseCase
 ) : BaseViewModel() {
     private val _list: IntArray = intArrayOf(
         R.drawable.image_5, R.drawable.image_6, R.drawable.image_8, R.drawable.image_12,
@@ -21,7 +27,23 @@ class CreateTopicBSViewModel @ViewModelInject constructor(
 
     val listIconLiveData: LiveData<IntArray> = MutableLiveData()
 
+    val topicTemp = TopicGroupEntity(System.currentTimeMillis(), "", typeTopic = TopicGroupEntity.TYPE_NORMAL, iconResource = R.drawable.image_8)
+
     init {
         listIconLiveData.postValue(_list)
+    }
+
+    fun setNameTopicTemp(name: String) {
+        topicTemp.name = name
+    }
+
+    fun setIconResourceTopicTemp(resource: Int) {
+        topicTemp.iconResource = resource
+    }
+
+    fun insertTopicToDatabase() = viewModelScope.launch(handler + Dispatchers.IO) {
+        kotlin.runCatching {
+            insertTopicUseCase.invoke(InsertTopicUseCase.Param(topicTemp))
+        }
     }
 }

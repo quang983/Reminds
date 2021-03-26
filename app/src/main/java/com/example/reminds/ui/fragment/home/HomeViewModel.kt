@@ -77,14 +77,5 @@ class HomeViewModel @ViewModelInject constructor(
 
     fun postAddFirstTopic(isAdded: Boolean) = _addFirstTopicDoneLiveData.postValue(isAdded)
 
-    fun insertTopic(name: String) {
-        viewModelScope.launch(handler + Dispatchers.IO) {
-            val data = TopicGroupEntity(System.currentTimeMillis(), name)
-            kotlin.runCatching {
-                insertTopicUseCase.invoke(InsertTopicUseCase.Param(data))
-            }
-        }
-    }
-
     data class TopicGroupViewItem(val topicGroupEntity: TopicGroupEntity, val totalTask: Int)
 }

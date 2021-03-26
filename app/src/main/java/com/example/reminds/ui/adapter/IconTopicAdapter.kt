@@ -8,9 +8,10 @@ import com.example.reminds.R
 import com.example.reminds.common.BaseAdapter
 import com.example.reminds.common.BaseViewHolder
 import com.example.reminds.utils.inflate
+import com.example.reminds.utils.setOnClickListenerBlock
 import kotlinx.android.synthetic.main.item_icon_pick.view.*
 
-class IconTopicAdapter : BaseAdapter<Int>(object : DiffUtil.ItemCallback<Int>() {
+class IconTopicAdapter(val pickIconListener: (iconResource : Int) -> Unit) : BaseAdapter<Int>(object : DiffUtil.ItemCallback<Int>() {
     override fun areItemsTheSame(
         oldItem: Int,
         newItem: Int
@@ -37,6 +38,9 @@ class IconTopicAdapter : BaseAdapter<Int>(object : DiffUtil.ItemCallback<Int>() 
             .centerInside()
             .placeholder(R.drawable.ic_plus)
             .into(view.img_icon)
+        view.img_icon.setOnClickListenerBlock {
+            pickIconListener.invoke(item)
+        }
     }
 
 }

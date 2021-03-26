@@ -11,10 +11,15 @@ import com.example.reminds.common.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 class MainActivityViewModel @ViewModelInject constructor(
     private val findTopicByIdUseCase: FindTopicByIdUseCase
 ) : BaseViewModel() {
+    var selectedDate: LocalDate = LocalDate.now()
+
+    val today: LocalDate = LocalDate.now()
+
     val isKeyboardShow: LiveData<Boolean> = MutableLiveData(false)
 
     val showAdsMobile: LiveData<Boolean> = MutableLiveData(false)

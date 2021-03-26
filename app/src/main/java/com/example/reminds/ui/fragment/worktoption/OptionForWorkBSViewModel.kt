@@ -75,6 +75,13 @@ class OptionForWorkBSViewModel @ViewModelInject constructor(
         }
     }
 
+    fun setDescWorkDataPrepare(desc: String) {
+        _workDataPrepare?.let {
+            it.description = desc
+            workDataPrepareLiveData.postValue(it)
+        }
+    }
+
     fun saveWorkIntoDataBase(typeGroup: Int) = viewModelScope.launch(Dispatchers.IO + handler) {
         workDataPrepareLiveData.getOrNull()?.takeIf { it.name.isNotBlank() }?.let {
             insertWorkUseCase.invoke(InsertWorkUseCase.Param(it.copy(), typeGroup)).let {

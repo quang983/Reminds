@@ -90,12 +90,12 @@
     <string name="title_reminder_fast">Nhắc nhở nhanh</string>
 
     <string-array name="day">
-        <item>TH2</item>
-        <item>TH3</item>
-        <item>TH4</item>
-        <item>TH5</item>
-        <item>TH6</item>
-        <item>TH7</item>
+        <item>T2</item>
+        <item>T3</item>
+        <item>T4</item>
+        <item>T5</item>
+        <item>T6</item>
+        <item>T7</item>
         <item>CN</item>
     </string-array>
 

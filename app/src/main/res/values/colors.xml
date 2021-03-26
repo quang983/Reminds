@@ -63,4 +63,10 @@
     <color name="example_3_blue_light">#D2E3FC</color>
     <color name="pink_a_100">#ff80ab</color>
     <color name="pink_100">#ffcdd2</color>
+
+    <color name="bg_card_1">#dff5f4</color>
+    <color name="bg_card_2">#d4ebfd</color>
+    <color name="bg_card_3">#f9e2de</color>
+    <color name="bg_card_4">#e9e2fc</color>
+    <color name="bg_card_5">#fbf1dd</color>
 </resources>

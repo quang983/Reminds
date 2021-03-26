@@ -8,22 +8,39 @@
     android:background="@color/white"
     android:transitionName="@string/transition_topic_to_detail">
 
-    <com.kizitonwose.calendarview.CalendarView
-        android:id="@+id/datePicker"
+    <io.devlight.xtreeivi.cornercutlinearlayout.CornerCutLinearLayout
+        android:id="@+id/layoutCalendar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cv_dayViewResource="@layout/layout_calendar_day"
-        app:cv_monthHeaderResource="@layout/layout_calendar_header"
-        app:cv_maxRowCount="1"
-        app:cv_orientation="horizontal"
-        app:cv_scrollMode="paged" />
+        android:background="#FFFFFF"
+        android:paddingBottom="2dp"
+        android:orientation="vertical"
+        app:ccll_child_corner_cut_type="oval_inverse"
+        app:ccll_corner_cut_flag="start_bottom|end_bottom"
+        app:ccll_corner_cut_size="24dp"
+        app:ccll_is_custom_shadow_auto_padding_enabled="false"
+        app:ccll_corner_cut_type="oval"
+        app:ccll_custom_shadow_radius="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.kizitonwose.calendarview.CalendarView
+            android:id="@+id/datePicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cv_dayViewResource="@layout/layout_calendar_day"
+            app:cv_maxRowCount="1"
+            app:cv_monthHeaderResource="@layout/layout_calendar_header"
+            app:cv_orientation="horizontal"
+            app:cv_scrollMode="paged"
+            tools:ignore="MissingConstraints" />
+    </io.devlight.xtreeivi.cornercutlinearlayout.CornerCutLinearLayout>
 
     <TextView
         android:id="@+id/exThreeSelectedDateText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="#EEEEEE"
         android:fontFamily="sans-serif-medium"
         android:paddingStart="20dp"
         android:paddingTop="12dp"
@@ -33,7 +50,7 @@
         android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/datePicker"
+        app:layout_constraintTop_toBottomOf="@id/layoutCalendar"
         tools:text="7 Jan, 2019" />
 
 
@@ -52,24 +69,22 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:paddingStart="@dimen/_8sdp"
         android:paddingTop="@dimen/_6sdp"
         android:paddingBottom="@dimen/_6sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/exThreeSelectedDateText"
+        app:layout_constraintTop_toBottomOf="@+id/extendedFab"
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="RtlSymmetry"
         tools:itemCount="2"
-        tools:listitem="@layout/item_work_group" />
+        tools:listitem="@layout/item_work_upcoming" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/extendedFab"
+        style="?attr/floatingActionButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="?attr/floatingActionButtonStyle"
-        android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginEnd="@dimen/_18sdp"
         android:backgroundTint="@color/white"
         app:fabSize="mini"

@@ -31,8 +31,7 @@ import com.example.reminds.databinding.FragmentUpcomingNewBinding
 import com.example.reminds.databinding.LayoutCalendarDayBinding
 import com.example.reminds.databinding.LayoutCalendarHeaderBinding
 import com.example.reminds.ui.activity.MainActivity
-import com.example.reminds.ui.adapter.ListContentCheckAdapter
-import com.example.reminds.ui.adapter.ListWorkAdapter
+import com.example.reminds.ui.adapter.ListWorkUpcomingAdapter
 import com.example.reminds.ui.fragment.detail.ListWorkViewModel
 import com.example.reminds.ui.fragment.setting.WorksSettingFragment
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
@@ -50,7 +49,7 @@ import com.kizitonwose.calendarview.utils.next
 import com.kizitonwose.calendarview.utils.yearMonth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_list_work.*
+import kotlinx.android.synthetic.main.fragment_upcoming_new.*
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -69,7 +68,7 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
     private val viewModelUpcoming: UpcomingViewModel by viewModels()
     private val viewModel: ListWorkViewModel by viewModels()
     private val homeSharedViewModel: MainActivityViewModel by activityViewModels()
-    private lateinit var adapter: ListWorkAdapter
+    private lateinit var adapter: ListWorkUpcomingAdapter
     private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
 
     private lateinit var dayOfWeek: Array<String>
@@ -182,50 +181,12 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
     }
 
     private fun setupUI() {
+        updateAdapterForDate(homeSharedViewModel.selectedDate)
+
         materialAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
-        adapter = ListWorkAdapter(
-            onClickTitle = { wId ->
-                if (homeSharedViewModel.isKeyboardShow.value == true) {
-                    hideSoftKeyboard()
-                } else {
-                    viewModel.updateWorkChange(wId, true)
-                }
-            }, insertContentToWork = { content, wId ->
-                viewModel.updateAndAddContent(content, wId)
-            }, handlerCheckItem = { content, position ->
-                viewModel.handlerCheckedContent(content, position)
-                showAds()
-            }, updateNameContent = { content, wId ->
-                viewModel.updateContentData(content, wId)
-            }, moreActionClick = { item, type, wId ->
-                when (type) {
-                    ListContentCheckAdapter.TYPE_TIMER_CLICK -> {
-                        setupTimePickerForContent(item, wId)
-                    }
-                    ListContentCheckAdapter.TYPE_TAG_CLICK -> {
-                        viewModel.updateContentData(item, wId)
-                    }
-                    ListContentCheckAdapter.TYPE_DELETE_CLICK -> {
-                        showAlertDeleteDialog(resources.getString(R.string.content_delete_topic_title)) {
-                            viewModel.deleteContent(item, wId)
-                        }
-                    }
-                }
-            }, deleteWorkClick = {
-                showAlertDeleteDialog(resources.getString(R.string.message_alert_delete_work_title)) {
-                    viewModel.deleteWork(it)
-                }
-            }, handlerCheckedAll = { workId, doneAll ->
-                viewModel.handleDoneAllContentFromWork(workId, doneAll)
-            }, updateDataChanged = {
-                if (homeSharedViewModel.isKeyboardShow.value == true) {
-                    hideSoftKeyboard()
-                } else {
-                    viewModel.updateWorkChange(it, false)
-                }
-            }, intoSettingFragment = {
-                navigate(NewUpcomingFragmentDirections.actionNewUpcomingFragmentToOptionForWorkBSFragment(it.id, TYPE_UPCOMING, mGroupId))
-            }).apply {
+        adapter = ListWorkUpcomingAdapter(handlerCheckedAll = { workId, doneAll ->
+            viewModel.handleDoneAllContentFromWork(workId, doneAll)
+        }).apply {
             mBinding.recyclerWorks.adapter = this
             val callback: ItemTouchHelper.Callback = MyItemTouchHelperCallback(this@NewUpcomingFragment)
 
@@ -233,11 +194,57 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
 
             touchHelper.attachToRecyclerView(recyclerWorks)
         }
-        homeSharedViewModel.isKeyboardShow.observe(viewLifecycleOwner, {
-            if (!it) {
-                viewModel.reSaveListWorkAndCreateStateFocus()
-            }
-        })
+
+        /*    adapter = ListWorkAdapter(
+                onClickTitle = { wId ->
+                    if (homeSharedViewModel.isKeyboardShow.value == true) {
+                        hideSoftKeyboard()
+                    } else {
+                        viewModel.updateWorkChange(wId, true)
+                    }
+                }, insertContentToWork = { content, wId ->
+                    viewModel.updateAndAddContent(content, wId)
+                }, handlerCheckItem = { content, position ->
+                    viewModel.handlerCheckedContent(content, position)
+                    showAds()
+                }, updateNameContent = { content, wId ->
+                    viewModel.updateContentData(content, wId)
+                }, moreActionClick = { item, type, wId ->
+                    when (type) {
+                        ListContentCheckAdapter.TYPE_TIMER_CLICK -> {
+                            setupTimePickerForContent(item, wId)
+                        }
+                        ListContentCheckAdapter.TYPE_TAG_CLICK -> {
+                            viewModel.updateContentData(item, wId)
+                        }
+                        ListContentCheckAdapter.TYPE_DELETE_CLICK -> {
+                            showAlertDeleteDialog(resources.getString(R.string.content_delete_topic_title)) {
+                                viewModel.deleteContent(item, wId)
+                            }
+                        }
+                    }
+                }, deleteWorkClick = {
+                    showAlertDeleteDialog(resources.getString(R.string.message_alert_delete_work_title)) {
+                        viewModel.deleteWork(it)
+                    }
+                }, handlerCheckedAll = { workId, doneAll ->
+                    viewModel.handleDoneAllContentFromWork(workId, doneAll)
+                }, updateDataChanged = {
+                    if (homeSharedViewModel.isKeyboardShow.value == true) {
+                        hideSoftKeyboard()
+                    } else {
+                        viewModel.updateWorkChange(it, false)
+                    }
+                }, intoSettingFragment = {
+                    navigate(NewUpcomingFragmentDirections.actionNewUpcomingFragmentToOptionForWorkBSFragment(it.id, TYPE_UPCOMING, mGroupId))
+                }).apply {
+                mBinding.recyclerWorks.adapter = this
+                val callback: ItemTouchHelper.Callback = MyItemTouchHelperCallback(this@NewUpcomingFragment)
+
+                val touchHelper = ItemTouchHelper(callback)
+
+                touchHelper.attachToRecyclerView(recyclerWorks)
+            }*/
     }
 
 
@@ -245,6 +252,9 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
         with(homeSharedViewModel) {
             isKeyboardShow.observe(viewLifecycleOwner, {
                 (requireActivity() as? MainActivity)?.hideOrShowBottomAppBar(!it)
+                if (!it) {
+                    viewModel.reSaveListWorkAndCreateStateFocus()
+                }
             })
         }
 
@@ -255,13 +265,6 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
                         mBinding.layoutEmpty.root.visible()
                         mBinding.layoutEmpty.tvEmpty.text = resources.getString(R.string.empty_list)
                     }
-                    /*   it.sumByDouble { it.listContent.size.toDouble() }.toInt() == 0 && !checkFirstTapTap() -> {
-                           mBinding.layoutEmpty.root.visible()
-                           mBinding.layoutEmpty.tvEmpty.text = resources.getString(R.string.tap_tap)
-                           mBinding.layoutEmpty.imgIcon.gone()
-                           val shared = requireActivity().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
-                           shared.edit().putBoolean(CacheImpl.KEY_FIRST_TAP_TAP, true).apply()
-                       }*/
                     else -> {
                         mBinding.layoutEmpty.root.gone()
                     }
@@ -322,11 +325,6 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
             homeSharedViewModel.showAdsMobile.postValue(true)
         }
     }
-/*
-    private fun checkFirstTapTap(): Boolean {
-        val shared = requireActivity().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
-        return shared.getBoolean(CacheImpl.KEY_FIRST_TAP_TAP, false)
-    }*/
 
     private fun setupLayout() {
         setupUI()

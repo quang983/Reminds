@@ -268,16 +268,15 @@ class ListWorkAdapter(
     }
 
     companion object {
-        const val PAYLOAD_CONTENT = "PAYLOAD_CONTENT"
-        const val PAYLOAD_LIST = "PAYLOAD_LIST"
-        const val PAYLOAD_NAME = "PAYLOAD_NAME"
-        const val PAYLOAD_GROUP_ID = "PAYLOAD_GROUP_ID"
-        const val PAYLOAD_DONE_ALL = "PAYLOAD_DONE_ALL"
-        const val PAYLOAD_EXPANDED = "PAYLOAD_EXPANDED"
-        const val PAYLOAD_TIMER = "PAYLOAD_TIMER"
+        private const val PAYLOAD_CONTENT = "PAYLOAD_CONTENT"
+        private const val PAYLOAD_LIST = "PAYLOAD_LIST"
+        private const val PAYLOAD_NAME = "PAYLOAD_NAME"
+        private const val PAYLOAD_GROUP_ID = "PAYLOAD_GROUP_ID"
+        private const val PAYLOAD_DONE_ALL = "PAYLOAD_DONE_ALL"
+        private const val PAYLOAD_EXPANDED = "PAYLOAD_EXPANDED"
+        private const val PAYLOAD_TIMER = "PAYLOAD_TIMER"
     }
 
     override fun setExpanded(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: WorkDataEntity) {
     }
-
 }

@@ -69,6 +69,12 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
             }
             false
         }
+        edtInputDesc.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                edtInput.clearFocus()
+            }
+            false
+        }
     }
 
     private fun setupObserver() {
@@ -91,8 +97,8 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
         })
 
         viewModel.workDataPrepareLiveData.observe(viewLifecycleOwner, {
-
             edtInput.checkDiffAndSetText(it.name)
+            edtInputDesc.checkDiffAndSetText(it.description)
 
             tvClockInfo.visibleOrGone(it.timerReminder > 0)
 
@@ -141,6 +147,9 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
             } else {
                 btnSave.setTextColor(requireContext().resources.getColor(R.color.bg_gray))
             }
+        }
+        edtInputDesc.setTextChangedListener {
+            viewModel.setDescWorkDataPrepare(it.text.toString())
         }
     }
 

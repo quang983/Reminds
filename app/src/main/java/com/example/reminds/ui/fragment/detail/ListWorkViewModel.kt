@@ -202,11 +202,17 @@ class ListWorkViewModel @ViewModelInject constructor(
         }
     }
 
-    fun updateWorkChange(work: WorkDataEntity, addNewContent: Boolean) = viewModelScope.launch(Dispatchers.IO + handler) {
+    fun updateWorkChange(workId: Long, addNewContent: Boolean, isShowContent: Boolean) = viewModelScope.launch(Dispatchers.IO + handler) {
         if (addNewContent) {
-            _workId = work.id
+            _workId = workId
         }
-        updateWorkUseCase.invoke(UpdateWorkUseCase.Param(work))
+        listWorkViewModel.getOrNull {
+            this.id == workId
+        }?.let {
+            updateWorkUseCase.invoke(UpdateWorkUseCase.Param(it.copyFilterNotEmpty().apply {
+                this.isShowContents = isShowContent
+            }))
+        }
     }
 
     fun saveListWork(currentList: List<WorkDataEntity>) = viewModelScope.launch(Dispatchers.IO + handler) {

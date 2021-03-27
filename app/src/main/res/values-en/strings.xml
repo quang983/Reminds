@@ -62,6 +62,7 @@
     <string name="swipe_up_suggest">Swipe up to quickly add a Reminder</string>
     <string name="swipe_up_suggest_1">Hold for a long time on an item and move to change its position</string>
     <string name="reminder_notification">Notification time:</string>
+    <string name="desc_hint">Description (Optional)</string>
     <string-array name="day">
         <item>MO</item>
         <item>TU</item>

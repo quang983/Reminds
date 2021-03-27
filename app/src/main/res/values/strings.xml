@@ -94,6 +94,7 @@
     <string name="swipe_up_suggest">Vuốt lên để thêm nhanh nhắc nhở</string>
     <string name="swipe_up_suggest_1">Giữ lâu vào 1 item và di chuyển để thay đổi vị trí</string>
     <string name="reminder_notification">Nhắc nhở vào:</string>
+    <string name="desc_hint">Mô tả thêm (không bắt buộc)</string>
 
     <string-array name="day">
         <item>T2</item>

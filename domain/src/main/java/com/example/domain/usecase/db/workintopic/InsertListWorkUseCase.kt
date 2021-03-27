@@ -17,16 +17,18 @@ constructor(
     class Param(val works: List<WorkDataEntity>, val typeTopic: Int)
 
     override suspend fun invoke(params: Param) {
+        var size = 0
         params.works.getOrNull(0)?.groupId?.let { it ->
             topicRepository.findTopicByIdUseCase(it).apply {
                 if (this == null) {
                     topicRepository.insertData(TopicGroupEntity(it, "", typeTopic = params.typeTopic))
                 }
             }
+            size = getSizeWorkByGroupIdUseCase.invoke(GetSizeWorkByGroupIdUseCase.Param(it))
             workFromTopicRepository.insertDatas(params.works.map {
                 it.apply {
-                    val size = getSizeWorkByGroupIdUseCase.invoke(GetSizeWorkByGroupIdUseCase.Param(this.groupId))
                     this.stt = size
+                    size++
                 }
             })
         }

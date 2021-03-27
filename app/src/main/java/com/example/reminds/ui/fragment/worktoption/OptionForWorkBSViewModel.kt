@@ -83,7 +83,9 @@ class OptionForWorkBSViewModel @ViewModelInject constructor(
     }
 
     fun saveWorkIntoDataBase(typeGroup: Int) = viewModelScope.launch(Dispatchers.IO + handler) {
+
         workDataPrepareLiveData.getOrNull()?.takeIf { it.name.isNotBlank() }?.let {
+
             insertWorkUseCase.invoke(InsertWorkUseCase.Param(it.copy(), typeGroup)).let {
                 progressUpdateWork.postValue(true)
             }

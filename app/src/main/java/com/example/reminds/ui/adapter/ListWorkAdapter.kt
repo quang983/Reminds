@@ -1,6 +1,7 @@
 package com.example.reminds.ui.adapter
 
 import android.graphics.Color
+import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -16,14 +17,13 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class ListWorkAdapter(
-    private val onClickTitle: (work: WorkDataEntity) -> Unit,
+    private val onClickTitle: (work: Long) -> Unit,
     private val insertContentToWork: (content: ContentDataEntity, workId: Long) -> Unit,
     private val handlerCheckItem: (content: ContentDataEntity, workId: Long) -> Unit,
     private val updateNameContent: (content: ContentDataEntity, workId: Long) -> Unit,
     private val moreActionClick: (item: ContentDataEntity, type: Int, workId: Long) -> Unit,
-    private val deleteWorkClick: (workId: Long) -> Unit,
     private val handlerCheckedAll: (workId: Long, doneAll: Boolean) -> Unit,
-    private val updateDataChanged: (work: WorkDataEntity) -> Unit,
+    private val updateDataChanged: (workId: Long, isShowContent: Boolean) -> Unit,
     private val intoSettingFragment: (work: WorkDataEntity) -> Unit
 ) :
     BaseAdapter<WorkDataEntity>(object : DiffUtil.ItemCallback<WorkDataEntity>() {
@@ -209,7 +209,9 @@ class ListWorkAdapter(
     }
 
     private fun refreshShowRecyclerView(view: View, item: WorkDataEntity) {
-        view.recyclerWorks.visibility = if (item.isShowContents) View.VISIBLE else View.GONE
+        Handler().postDelayed({
+                view.recyclerWorks.visibility = if (item.isShowContents) View.VISIBLE else View.GONE }, 100
+        )
     }
 
     private fun refreshDesc(view: View, item: WorkDataEntity) {
@@ -221,15 +223,13 @@ class ListWorkAdapter(
         view.imgArrow.setOnClickListener {
             (view.tag as? WorkDataEntity)?.copy()?.let { item ->
                 item.isShowContents = !item.isShowContents
-                updateDataChanged.invoke(item)
+                updateDataChanged.invoke(item.id, item.isShowContents)
             }
         }
 
-        view.tvTitle.setOnClickListenerBlock {
+        view.layoutRoot.setOnClickListenerBlock {
             (view.tag as? WorkDataEntity)?.copy()?.let { item ->
-                onClickTitle.invoke(item.apply {
-                    this.isShowContents = true
-                })
+                onClickTitle.invoke(item.id)
             }
         }
 

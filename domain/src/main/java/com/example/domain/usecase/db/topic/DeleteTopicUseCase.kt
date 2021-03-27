@@ -14,10 +14,9 @@ class DeleteTopicUseCase @Inject constructor(
     class Param(val topicList: List<TopicGroupEntity>)
 
     override suspend fun invoke(params: Param) {
+        val worksDelete = workFromTopicRepository
+            .fetchAllWorkFromTopic(params.topicList.getOrNull(0)?.id ?: return)
+        workFromTopicRepository.deleteDatas(worksDelete)
         topicRepository.deleteDatas(params.topicList)
-        workFromTopicRepository.deleteDatas(
-            workFromTopicRepository
-                .fetchAllWorkFromTopic(params.topicList.getOrNull(0)?.id ?: return)
-        )
     }
 }

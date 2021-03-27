@@ -2,6 +2,7 @@ package com.example.domain.usecase.db.workintopic
 
 import com.example.common.base.model.TopicGroupEntity
 import com.example.common.base.model.WorkDataEntity
+import com.example.common.base.model.WorkDataEntity.Companion.STT_WITHOUT_DB
 import com.example.domain.base.BaseUseCase
 import com.example.domain.repository.TopicRepository
 import com.example.domain.repository.WorkFromTopicRepository
@@ -21,8 +22,10 @@ class InsertWorkUseCase @Inject constructor(
             }
         }
         return workFromTopicRepository.insertData(params.work.apply {
-            val size = getSizeWorkByGroupIdUseCase.invoke(GetSizeWorkByGroupIdUseCase.Param(params.work.groupId))
-            this.stt = size
+            if (this.stt == STT_WITHOUT_DB) {
+                val size = getSizeWorkByGroupIdUseCase.invoke(GetSizeWorkByGroupIdUseCase.Param(params.work.groupId))
+                this.stt = size
+            }
         })
     }
 

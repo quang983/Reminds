@@ -20,8 +20,8 @@ object DataBaseModule {
     @Provides
     fun provideDatabase(@ApplicationContext context: Context): AppDataBase {
         return Room.databaseBuilder(context, AppDataBase::class.java, AppDataBase.DATABASE_NAME)
+            .fallbackToDestructiveMigration()
             .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
-            .fallbackToDestructiveMigrationFrom()
             .build()
     }
 

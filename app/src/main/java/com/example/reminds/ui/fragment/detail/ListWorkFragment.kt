@@ -88,7 +88,11 @@ class ListWorkFragment : Fragment(), CallbackItemTouch {
 
     private fun setupListener() {
         extendedFab.setOnClickListenerBlock {
-            navigate(ListWorkFragmentDirections.actionSecondFragmentToOptionForWorkBSFragment(-1, TYPE_NORMAL, args.idGroup))
+            if (homeSharedViewModel.isKeyboardShow.value == true) {
+                hideSoftKeyboard()
+            } else {
+                navigate(ListWorkFragmentDirections.actionSecondFragmentToOptionForWorkBSFragment(-1, TYPE_NORMAL, args.idGroup))
+            }
         }
         rootWork.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
             override fun onSwipeTop() {
@@ -103,27 +107,6 @@ class ListWorkFragment : Fragment(), CallbackItemTouch {
                 }
             }
         })
-    /*    rootWork.setOnClickListenerBlock {
-            if (homeSharedViewModel.isKeyboardShow.value == true) {
-                viewModel.reSaveListWorkAndCreateStateFocus()
-                hideSoftKeyboard()
-            } else {
-                viewModel.listWorkViewModel.lastOrNull()?.id?.let {
-                    navigate(ListWorkFragmentDirections.actionSecondFragmentToOptionForWorkBSFragment(-1, TYPE_NORMAL, args.idGroup))
-                }
-            }
-        }
-*/
-/*        rootWork.setOnClickListenerBlock {
-            if (homeSharedViewModel.isKeyboardShow.value == true) {
-                viewModel.reSaveListWorkAndCreateStateFocus()
-                hideSoftKeyboard()
-            } else {
-                viewModel.listWorkViewModel.lastOrNull()?.id?.let {
-                    navigate(ListWorkFragmentDirections.actionSecondFragmentToOptionForWorkBSFragment(-1, TYPE_NORMAL, args.idGroup))
-                }
-            }
-        }*/
     }
 
     private fun setupToolbar() {
@@ -151,7 +134,7 @@ class ListWorkFragment : Fragment(), CallbackItemTouch {
                 if (homeSharedViewModel.isKeyboardShow.value == true) {
                     hideSoftKeyboard()
                 } else {
-                    viewModel.updateWorkChange(wId, true)
+                    viewModel.updateWorkChange(wId, addNewContent = true, isShowContent = true)
                 }
             }, insertContentToWork = { content, wId ->
                 viewModel.updateAndAddContent(content, wId)
@@ -174,17 +157,13 @@ class ListWorkFragment : Fragment(), CallbackItemTouch {
                         }
                     }
                 }
-            }, deleteWorkClick = {
-                showAlertDeleteDialog(resources.getString(R.string.message_alert_delete_work_title)) {
-                    viewModel.deleteWork(it)
-                }
             }, handlerCheckedAll = { workId, doneAll ->
                 viewModel.handleDoneAllContentFromWork(workId, doneAll)
-            }, updateDataChanged = {
+            }, updateDataChanged = { idWork, isShowContent ->
                 if (homeSharedViewModel.isKeyboardShow.value == true) {
                     hideSoftKeyboard()
                 } else {
-                    viewModel.updateWorkChange(it, false)
+                    viewModel.updateWorkChange(idWork, false, isShowContent)
                 }
             }, intoSettingFragment = {
                 navigate(ListWorkFragmentDirections.actionSecondFragmentToOptionForWorkBSFragment(it.id, TYPE_NORMAL, args.idGroup))
@@ -197,9 +176,13 @@ class ListWorkFragment : Fragment(), CallbackItemTouch {
             touchHelper.attachToRecyclerView(recyclerWorks)
 
         }
+
         homeSharedViewModel.isKeyboardShow.observe(viewLifecycleOwner, {
             if (!it) {
                 viewModel.reSaveListWorkAndCreateStateFocus()
+                extendedFab.setImageResource(R.drawable.ic_create)
+            } else {
+                extendedFab.setImageResource(R.drawable.ic_done_outline)
             }
         })
     }
@@ -213,11 +196,6 @@ class ListWorkFragment : Fragment(), CallbackItemTouch {
                         layoutEmpty.visible()
                         layoutEmpty.tvEmpty.text = resources.getString(R.string.empty_list)
                     }
-                    /*    it.sumByDouble { it.listContent.size.toDouble() }.toInt() == 0 && !checkFirstTapTap() -> {
-                            layoutEmpty.rootView.visible()
-    //                        val shared = requireActivity().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
-    //                        shared.edit().putBoolean(CacheImpl.KEY_FIRST_TAP_TAP, true).apply()
-                        }*/
                     else -> {
                         layoutEmpty.gone()
                     }
@@ -268,11 +246,6 @@ class ListWorkFragment : Fragment(), CallbackItemTouch {
             shared.edit().putInt(KEY_SUM_DONE_TASK, 0).apply()
             homeSharedViewModel.showAdsMobile.postValue(true)
         }
-    }
-
-    private fun checkFirstTapTap(): Boolean {
-        val shared = requireActivity().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
-        return shared.getBoolean(CacheImpl.KEY_FIRST_TAP_TAP, false)
     }
 
     override fun itemTouchOnMove(oldPosition: Int, newPosition: Int) {

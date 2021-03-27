@@ -10,12 +10,13 @@ data class WorkDataEntity(
     var hashTag: Boolean = false,
     var timerReminder: Long = -1,
     var createTime: Long = id,
-    var stt: Int = 0,
+    var stt: Int = STT_WITHOUT_DB,
     var description: String = ""
 ) {
     fun copy() = WorkDataEntity(
         id, name, groupId, listContent.map { it.copy() }.toMutableList(),
-        doneAll = doneAll, isShowContents = isShowContents, hashTag, timerReminder, createTime, stt, description
+        doneAll = doneAll, isShowContents = isShowContents, hashTag,
+        timerReminder, createTime, stt, description
     )
 
     fun copySort() = WorkDataEntity(
@@ -32,7 +33,8 @@ data class WorkDataEntity(
         listContent
             .filter { it.name.isNotEmpty() }
             .map { it.copy() }.toMutableList(),
-        doneAll = doneAll && listContent.all { it.isCheckDone }, isShowContents = isShowContents, hashTag, timerReminder, createTime, stt, description
+        doneAll = doneAll && listContent.all { it.isCheckDone },
+        isShowContents = isShowContents, hashTag, timerReminder, createTime, stt, description
     )
 
     override fun equals(other: Any?): Boolean {
@@ -47,5 +49,9 @@ data class WorkDataEntity(
 
     override fun hashCode(): Int {
         return id.hashCode()
+    }
+
+    companion object {
+        const val STT_WITHOUT_DB = -1
     }
 }

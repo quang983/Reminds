@@ -14,6 +14,7 @@ import com.example.common.base.model.TopicGroupEntity.Companion.NULL_IN_DB
 import com.example.reminds.R
 import com.example.reminds.databinding.FragmentBsCreateTopicBinding
 import com.example.reminds.ui.adapter.IconTopicAdapter
+import com.example.reminds.utils.checkDiffAndSetText
 import com.example.reminds.utils.setOnClickListenerBlock
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -74,6 +75,10 @@ class CreateTopicBSFragment : BottomSheetDialogFragment() {
                 dismissAllowingStateLoss()
             }, 500)
         }
+
+        mBinding.btnBack.setOnClickListenerBlock {
+            dismiss()
+        }
     }
 
 
@@ -91,9 +96,12 @@ class CreateTopicBSFragment : BottomSheetDialogFragment() {
             (mBinding.recyclerIcon.adapter as? IconTopicAdapter)?.submitList(it.toList())
         })
 
-        viewModel.topicGroup.observe(viewLifecycleOwner, {
-            mBinding.edtInput.setText(it.name)
-//            (mBinding.recyclerIcon.adapter as? IconTopicAdapter)?.itemChangeSelected()
+        viewModel.topicGroup.observe(viewLifecycleOwner, { topic ->
+            mBinding.edtInput.checkDiffAndSetText(topic.name)
+            topic.iconResource?.let {
+                (mBinding.recyclerIcon.adapter as? IconTopicAdapter)
+                    ?.itemChangeSelected(viewModel.findPositionIcon(it))
+            }
         })
     }
 }

@@ -106,9 +106,11 @@ class TopicAdapter(
         }
         view.imgDelete.setOnClickListenerBlock {
             deleteItemListener.invoke(topic)
+            view.swipeLayout.close(true)
         }
         view.imgSetting.setOnClickListenerBlock {
             editItemListener.invoke(topic)
+            view.swipeLayout.close(true)
         }
     }
 

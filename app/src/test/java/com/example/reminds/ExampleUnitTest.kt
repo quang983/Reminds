@@ -13,7 +13,6 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
-        getTopicToday()
     }
 
 
@@ -26,5 +25,4 @@ class ExampleUnitTest {
         date2.set(Calendar.MINUTE, 59)
         val time2 = date2.timeInMillis
     }
-
 }

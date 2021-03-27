@@ -55,7 +55,7 @@
         app:layout_constraintTop_toBottomOf="@id/edtInput" />
 
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/edtInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

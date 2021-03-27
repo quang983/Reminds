@@ -29,14 +29,20 @@ class CreateTopicBSViewModel @ViewModelInject constructor(
 
     val listIconLiveData: LiveData<IntArray> = MutableLiveData()
 
-    val topicTemp = TopicGroupEntity(System.currentTimeMillis(), "", typeTopic = TopicGroupEntity.TYPE_NORMAL, iconResource = R.drawable.image_5)
+    var topicTemp = TopicGroupEntity(System.currentTimeMillis(), "", typeTopic = TopicGroupEntity.TYPE_NORMAL, iconResource = R.drawable.image_5)
 
     val idTopicGroup: LiveData<Long> = MutableLiveData()
 
     val topicGroup: LiveData<TopicGroupEntity> = idTopicGroup.switchMapLiveData {
-        findTopicByIdUseCase.invoke(FindTopicByIdUseCase.Param(it))?.let { topic->
+        findTopicByIdUseCase.invoke(FindTopicByIdUseCase.Param(it))?.let { topic ->
+            topicTemp = topic.copy()
             emit(topic)
         }
+    }
+
+    fun findPositionIcon(icon: Int): Int {
+        return _list.indexOf(icon)
+
     }
 
     fun postIdGroup(idTopic: Long) {

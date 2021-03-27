@@ -1,7 +1,6 @@
 package com.example.reminds.ui.adapter
 
 import android.graphics.Color
-import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -209,9 +208,7 @@ class ListWorkAdapter(
     }
 
     private fun refreshShowRecyclerView(view: View, item: WorkDataEntity) {
-        Handler().postDelayed({
-                view.recyclerWorks.visibility = if (item.isShowContents) View.VISIBLE else View.GONE }, 100
-        )
+        view.recyclerWorks.visibility = if (item.isShowContents) View.VISIBLE else View.GONE
     }
 
     private fun refreshDesc(view: View, item: WorkDataEntity) {

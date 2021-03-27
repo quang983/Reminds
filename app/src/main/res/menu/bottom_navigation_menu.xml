@@ -7,7 +7,7 @@
     <item
         android:id="@+id/pageSecond"
         android:enabled="true"
-        android:icon="@drawable/ic_bar_top"
+        android:icon="@drawable/ic_grid_round"
         android:title="@string/page_home" />
 
  <!--   <item

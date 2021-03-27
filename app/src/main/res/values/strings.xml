@@ -92,7 +92,8 @@
     <string name="title_reminder_fast">Nhắc nhở nhanh</string>
     <string name="you_think_hint">Bạn đang nghĩ gì</string>
     <string name="swipe_up_suggest">Vuốt lên để thêm nhanh nhắc nhở</string>
-    <string name="swipe_up_suggest_1">Giữ lâu vào 1 item và di chuyển để thay đổi vị trí</string>
+    <string name="swipe_up_suggest_1">Giữ lâu vào task và di chuyển để thay đổi vị trí</string>
+    <string name="swipe_up_suggest_2">Click vào task lớn để chia nhỏ công việc</string>
     <string name="reminder_notification">Nhắc nhở vào:</string>
     <string name="desc_hint">Mô tả thêm (không bắt buộc)</string>
 

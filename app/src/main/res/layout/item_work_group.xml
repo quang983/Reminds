@@ -58,7 +58,7 @@
                 android:gravity="center_vertical"
                 android:paddingStart="@dimen/_8sdp"
                 android:paddingTop="@dimen/_6sdp"
-                android:paddingEnd="@dimen/_6sdp"
+                android:paddingEnd="@dimen/_8sdp"
                 android:paddingBottom="@dimen/_6sdp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_medium_2"

@@ -56,7 +56,7 @@ class HomeViewModel @ViewModelInject constructor(
     }
 
 
-    fun addFirstTopic(name: String, name1: String) = viewModelScope.launch(handler + Dispatchers.IO) {
+    fun addFirstTopic(name: String, name1: String, name2: String) = viewModelScope.launch(handler + Dispatchers.IO) {
         val dataTopic = TopicGroupEntity(1, "Home", false, TopicGroupEntity.REMOVE_DONE_WORKS)
         val idTopic = insertTopicUseCase.invoke(InsertTopicUseCase.Param(dataTopic))
         val data = WorkDataEntity(
@@ -76,7 +76,17 @@ class HomeViewModel @ViewModelInject constructor(
             isShowContents = false
         )
 
-        val list = listOf(data, data1)
+        val data2 = WorkDataEntity(
+            id = System.currentTimeMillis() + 2,
+            name = name2,
+            groupId = idTopic,
+            listContent = mutableListOf(),
+            doneAll = false,
+            isShowContents = false
+        )
+
+
+        val list = listOf(data, data1, data2)
         insertWorksUseCase.invoke(InsertListWorkUseCase.Param(list, TYPE_FAST))
         _addFirstTopicDoneLiveData.postValue(true)
     }

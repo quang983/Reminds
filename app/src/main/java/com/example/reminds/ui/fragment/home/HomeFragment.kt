@@ -70,7 +70,8 @@ class HomeFragment : Fragment() {
         if (shared.getBoolean(CacheImpl.KEY_FIRST_LOGIN, true)) {
             viewModel.addFirstTopic(
                 resources.getString(R.string.swipe_up_suggest),
-                resources.getString(R.string.swipe_up_suggest_1)
+                resources.getString(R.string.swipe_up_suggest_1),
+                resources.getString(R.string.swipe_up_suggest_2)
             )
             shared.edit().putBoolean(CacheImpl.KEY_FIRST_LOGIN, false).apply()
         } else {
@@ -101,7 +102,7 @@ class HomeFragment : Fragment() {
             }
         }, {
             showAlertDeleteDialog(it)
-        },{
+        }, {
             navigate(HomeFragmentDirections.actionFirstFragmentToCreateTopicBSFragment(it.id))
         }).apply {
             recyclerTopic.adapter = this

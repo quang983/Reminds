@@ -182,7 +182,7 @@ class ListWorkFragment : Fragment(), CallbackItemTouch {
                 viewModel.reSaveListWorkAndCreateStateFocus()
                 extendedFab.setImageResource(R.drawable.ic_create)
             } else {
-                extendedFab.setImageResource(R.drawable.ic_done_outline)
+                extendedFab.setImageResource(R.drawable.ic_check_all)
             }
         })
     }

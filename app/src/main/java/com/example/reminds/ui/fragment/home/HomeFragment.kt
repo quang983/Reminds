@@ -35,7 +35,6 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
     private val homeSharedViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
-    private lateinit var customAlertDialogView: View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,7 +67,7 @@ class HomeFragment : Fragment() {
     private fun checkAddFirstTopic() {
         val shared = requireContext().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
         if (shared.getBoolean(CacheImpl.KEY_FIRST_LOGIN, true)) {
-            viewModel.addFirstTopic(resources.getString(R.string.topic_title))
+            viewModel.addFirstTopic(resources.getString(R.string.swipe_up_suggest))
             shared.edit().putBoolean(CacheImpl.KEY_FIRST_LOGIN, false).apply()
         } else {
             viewModel.postAddFirstTopic(true)

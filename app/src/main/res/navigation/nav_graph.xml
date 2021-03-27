@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/FirstFragment"
         android:name="com.example.reminds.ui.fragment.home.HomeFragment"
-        android:label="@string/home_screen_title"
+        android:label="@string/page_list"
         android:transitionName="@string/transaction_topic_to_detail"
         tools:layout="@layout/fragment_home">
 
@@ -113,6 +113,7 @@
     <fragment
         android:id="@+id/NewUpcomingFragment"
         android:name="com.example.reminds.ui.fragment.upcoming.NewUpcomingFragment"
+        android:label="@string/page_today"
         tools:layout="@layout/fragment_upcoming_new">
         <action
             android:id="@+id/action_NewUpcomingFragment_to_OptionForWorkBSFragment"

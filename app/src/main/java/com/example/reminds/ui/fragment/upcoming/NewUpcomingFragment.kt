@@ -21,6 +21,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.common.base.model.AlarmNotificationEntity
 import com.example.common.base.model.ContentDataEntity
+import com.example.common.base.model.TopicGroupEntity
 import com.example.common.base.model.TopicGroupEntity.Companion.TYPE_UPCOMING
 import com.example.framework.local.cache.CacheImpl
 import com.example.reminds.R
@@ -83,9 +84,8 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        calGroupId()
-        TimestampUtils.getDate(System.currentTimeMillis())
-        viewModel.getListWork(mGroupId)
+        dayOfWeek = resources.getStringArray(R.array.day)
+        getListWork(homeSharedViewModel.selectedDate)
         setFragmentResultListener()
     }
 
@@ -141,7 +141,6 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
             Toast.makeText(requireContext(), R.string.example_3_empty_input_text, Toast.LENGTH_LONG).show()
         } else {
             homeSharedViewModel.selectedDate.let {
-                //                events[it] = events[it].orEmpty().plus(Event(UUID.randomUUID().toString(), text, it))
                 updateAdapterForDate(it)
             }
         }
@@ -160,8 +159,6 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
 
     private fun calGroupId() {
         mGroupId = TimestampUtils.getLongTimeFromStr(Calendar.getInstance().timeInMillis)
-
-        dayOfWeek = resources.getStringArray(R.array.day)
     }
 
     private fun setupListener() {
@@ -186,6 +183,8 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
         materialAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
         adapter = ListWorkUpcomingAdapter(handlerCheckedAll = { workId, doneAll ->
             viewModel.handleDoneAllContentFromWork(workId, doneAll)
+        }, {
+            navigate(NewUpcomingFragmentDirections.actionNewUpcomingFragmentToOptionForWorkBSFragment(it.id, TopicGroupEntity.TYPE_UPCOMING, it.groupId))
         }).apply {
             mBinding.recyclerWorks.adapter = this
             val callback: ItemTouchHelper.Callback = MyItemTouchHelperCallback(this@NewUpcomingFragment)
@@ -259,7 +258,7 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
         }
 
         with(viewModel) {
-            listWorkViewItems.observe(viewLifecycleOwner, { it ->
+            listWorkViewItems.observe(viewLifecycleOwner, {
                 when {
                     it.isEmpty() -> {
                         mBinding.layoutEmpty.root.visible()
@@ -281,18 +280,6 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
                 mBinding.datePicker.notifyCalendarChanged()
             })
         }
-    }
-
-    private fun showAlertDeleteDialog(message: String, block: () -> Unit) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(resources.getString(R.string.notify_title))
-            .setMessage(message)
-            .setNegativeButton(resources.getString(R.string.cancel_action)) { _, _ ->
-            }
-            .setPositiveButton(resources.getString(R.string.accept_action)) { _, _ ->
-                block.invoke()
-            }
-            .show()
     }
 
     private fun setupTimePickerForContent(item: ContentDataEntity, wId: Long) {

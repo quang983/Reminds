@@ -52,7 +52,7 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
 
     private fun getData() {
         when (args.idWork) {
-            -1L -> {
+            ID_WITHOUT_DB -> {
                 viewModel.idGroup.postValue(args.idTopic)
             }
             else -> {
@@ -62,6 +62,8 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
     }
 
     private fun setupUI() {
+        btnDelete.visibleOrGone(args.idWork != ID_WITHOUT_DB)
+
         edtInput.requestFocus()
         edtInput.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -177,4 +179,7 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
             .show()
     }
 
+    companion object {
+        const val ID_WITHOUT_DB = -1L
+    }
 }

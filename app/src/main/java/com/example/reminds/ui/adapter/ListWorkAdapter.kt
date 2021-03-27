@@ -43,7 +43,7 @@ class ListWorkAdapter(
                     && oldItem.listContent.zip(newItem.listContent).all { (x, y) -> x.timer == y.timer && x.hashTag == y.hashTag && x.isCheckDone == y.isCheckDone }
                     && oldItem.listContent == newItem.listContent && oldItem.doneAll == newItem.doneAll
                     && oldItem.listContent.size == newItem.listContent.size && oldItem.isShowContents == newItem.isShowContents
-                    && oldItem.timerReminder == newItem.timerReminder
+                    && oldItem.timerReminder == newItem.timerReminder && oldItem.description == newItem.description
         }
 
         override fun getChangePayload(oldItem: WorkDataEntity, newItem: WorkDataEntity): Any? {
@@ -74,6 +74,10 @@ class ListWorkAdapter(
             }
             if (oldItem.timerReminder != newItem.timerReminder) {
                 payloads.add(PAYLOAD_TIMER)
+            }
+
+            if (oldItem.description != newItem.description) {
+                payloads.add(PAYLOAD_DESCRIPTION)
             }
 
             return if (payloads.size > 0) {
@@ -124,6 +128,10 @@ class ListWorkAdapter(
             refreshTimer(view, item)
         }
 
+        if (payloads.contains(PAYLOAD_DESCRIPTION)) {
+            refreshDesc(view, item)
+        }
+
     }
 
     override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: WorkDataEntity) {
@@ -138,6 +146,7 @@ class ListWorkAdapter(
         refreshContentList(view, item)
         refreshTextTitle(view, item)
         refreshCheckBox(view, item)
+        refreshDesc(view, item)
     }
 
     private fun setupViewBinderHelper(view: View, item: WorkDataEntity) {
@@ -145,7 +154,7 @@ class ListWorkAdapter(
         _viewBinderHelper.bind(view.swipeLayout, item.id.toString())
     }
 
-    private fun randomColor(view: View){
+    private fun randomColor(view: View) {
         val rnd = Random()
         val color: Int = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
         view.rbCheckedTitle.tickColor = color
@@ -201,6 +210,11 @@ class ListWorkAdapter(
 
     private fun refreshShowRecyclerView(view: View, item: WorkDataEntity) {
         view.recyclerWorks.visibility = if (item.isShowContents) View.VISIBLE else View.GONE
+    }
+
+    private fun refreshDesc(view: View, item: WorkDataEntity) {
+        view.tvDescription.visibleOrGone(item.description.isNotBlank())
+        view.tvDescription.text = item.description
     }
 
     private fun handleListener(view: View) {
@@ -275,6 +289,7 @@ class ListWorkAdapter(
         private const val PAYLOAD_DONE_ALL = "PAYLOAD_DONE_ALL"
         private const val PAYLOAD_EXPANDED = "PAYLOAD_EXPANDED"
         private const val PAYLOAD_TIMER = "PAYLOAD_TIMER"
+        private const val PAYLOAD_DESCRIPTION = "PAYLOAD_DESCRIPTION"
     }
 
     override fun setExpanded(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: WorkDataEntity) {

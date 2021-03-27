@@ -68,21 +68,40 @@
                 tools:text="Title" />
 
             <TextView
+                android:id="@+id/tvDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_bias="0"
+                android:drawablePadding="@dimen/_12sdp"
+                android:fontFamily="@font/cereal_extra_bold"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/_8sdp"
+                android:paddingEnd="@dimen/_6sdp"
+                android:paddingBottom="@dimen/_6sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_medium"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/tvTitle"
+                app:layout_constraintStart_toStartOf="@id/tvTitle"
+                app:layout_constraintTop_toBottomOf="@id/tvTitle"
+                tools:text="Desc" />
+
+            <TextView
                 android:id="@+id/tvTimerWork"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
                 android:drawableStart="@drawable/ic_history_toggle_off"
                 android:drawablePadding="@dimen/_6sdp"
                 android:drawableTint="@color/red_200"
                 android:gravity="center_vertical"
                 android:paddingStart="@dimen/_10sdp"
                 android:paddingEnd="@dimen/_6sdp"
-                android:layout_marginTop="@dimen/_2sdp"
                 android:textColor="@color/pink_500"
                 android:textSize="@dimen/text_medium_1"
                 android:visibility="gone"
-                app:layout_constraintStart_toStartOf="@id/tvTitle"
-                app:layout_constraintTop_toBottomOf="@id/tvTitle"
+                app:layout_constraintStart_toStartOf="@id/tvDescription"
+                app:layout_constraintTop_toBottomOf="@id/tvDescription"
                 tools:text="Day la timer"
                 tools:visibility="visible" />
 
@@ -132,8 +151,8 @@
         android:clipToPadding="false"
         android:paddingStart="@dimen/_16sdp"
         android:paddingTop="@dimen/_2sdp"
-        android:visibility="gone"
         android:paddingBottom="@dimen/_2sdp"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"

@@ -8,7 +8,7 @@
         android:id="@+id/pageSecond"
         android:enabled="true"
         android:icon="@drawable/ic_bar_top"
-        android:title="@string/page_home" />
+        android:title="@string/page_list" />
 
     <item
         android:id="@+id/pageThird"

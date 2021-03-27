@@ -12,7 +12,8 @@ data class TopicGroup(
     var name: String = "",
     var isShowDone: Boolean = true,
     var optionSelected: Int = TopicGroupEntity.SHOW_ALL_WORKS,
-    var typeTopic: Int = TopicGroupEntity.TYPE_NORMAL
+    var typeTopic: Int = TopicGroupEntity.TYPE_NORMAL,
+    var imageSource: Int? = null
 ) : BaseDataMapper<TopicGroup, TopicGroupEntity> {
 
     override fun toData(entity: TopicGroupEntity): TopicGroup {
@@ -22,6 +23,7 @@ data class TopicGroup(
         topicGroup.isShowDone = entity.isShowDone
         topicGroup.optionSelected = entity.optionSelected
         topicGroup.typeTopic = entity.typeTopic
+        topicGroup.imageSource = entity.iconResource
         return topicGroup
     }
 
@@ -29,7 +31,7 @@ data class TopicGroup(
         return TopicGroupEntity(
             id = model.idTopic, name = model.name,
             isShowDone = model.isShowDone, optionSelected = model.optionSelected,
-            typeTopic = model.typeTopic
+            typeTopic = model.typeTopic, iconResource = model.imageSource
         )
     }
 }

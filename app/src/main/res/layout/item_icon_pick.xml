@@ -2,4 +2,6 @@
     android:id="@+id/img_icon"
     android:layout_width="@dimen/_36sdp"
     android:layout_height="@dimen/_36sdp"
+    android:background="@drawable/bg_selector_tags"
+    android:src="@drawable/image_8"
     android:padding="@dimen/_6sdp" />

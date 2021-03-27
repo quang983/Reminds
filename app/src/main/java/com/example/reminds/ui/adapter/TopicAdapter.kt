@@ -4,6 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.DiffUtil
+import com.bumptech.glide.Glide
 import com.chauthai.swipereveallayout.ViewBinderHelper
 import com.example.common.base.model.TopicGroupEntity
 import com.example.reminds.R
@@ -15,7 +16,7 @@ import com.example.reminds.utils.setOnClickListenerBlock
 import com.example.reminds.utils.setVisible
 import kotlinx.android.synthetic.main.item_topic.view.*
 
-class TopicAdapter(private val onClickDetail: (id: Long,title :String, view: View) -> Unit, private val deleteItemListener: (item: TopicGroupEntity) -> Unit) :
+class TopicAdapter(private val onClickDetail: (id: Long, title: String, view: View) -> Unit, private val deleteItemListener: (item: TopicGroupEntity) -> Unit) :
     BaseAdapter<HomeViewModel.TopicGroupViewItem>(object : DiffUtil.ItemCallback<HomeViewModel.TopicGroupViewItem>() {
 
         override fun areItemsTheSame(
@@ -32,6 +33,7 @@ class TopicAdapter(private val onClickDetail: (id: Long,title :String, view: Vie
             return oldItem.topicGroupEntity.name == newItem.topicGroupEntity.name
                     && oldItem.topicGroupEntity.isShowDone == newItem.topicGroupEntity.isShowDone
                     && oldItem.totalTask == newItem.totalTask
+                    && oldItem.topicGroupEntity.iconResource == newItem.topicGroupEntity.iconResource
         }
 
         override fun getChangePayload(oldItem: HomeViewModel.TopicGroupViewItem, newItem: HomeViewModel.TopicGroupViewItem): Any? {
@@ -45,6 +47,9 @@ class TopicAdapter(private val onClickDetail: (id: Long,title :String, view: Vie
             }
             if (oldItem.totalTask != newItem.totalTask) {
                 payloads.add(PAYLOAD_COUNT_TASK)
+            }
+            if (oldItem.topicGroupEntity.iconResource != newItem.topicGroupEntity.iconResource) {
+                payloads.add(PAYLOAD_ICON)
             }
 
             return if (payloads.size > 0) {
@@ -61,13 +66,16 @@ class TopicAdapter(private val onClickDetail: (id: Long,title :String, view: Vie
         return parent.inflate(R.layout.item_topic)
     }
 
-    override fun bind(holder: BaseViewHolder,view: View, viewType: Int, position: Int, item: HomeViewModel.TopicGroupViewItem, payloads: MutableList<Any>) {
-        super.bind(holder,view, viewType, position, item, payloads)
+    override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: HomeViewModel.TopicGroupViewItem, payloads: MutableList<Any>) {
+        super.bind(holder, view, viewType, position, item, payloads)
         if (payloads.contains(PAYLOAD_NAME)) {
             refreshName(view, item.topicGroupEntity)
         }
         if (payloads.contains(PAYLOAD_COUNT_TASK)) {
             refreshCountTask(view, item.totalTask)
+        }
+        if (payloads.contains(PAYLOAD_ICON)) {
+            refreshIcon(view, item.topicGroupEntity)
         }
     }
 
@@ -76,6 +84,7 @@ class TopicAdapter(private val onClickDetail: (id: Long,title :String, view: Vie
         ViewCompat.setTransitionName(view.layoutRootTopic, topic.id.toString())
         refreshName(view, topic)
         refreshCountTask(view, item.totalTask)
+        refreshIcon(view, item.topicGroupEntity)
         view.viewDivider.setVisible(position != 0)
         setupViewBinderHelper(view, topic)
         setOnClickListener(view, topic)
@@ -89,7 +98,7 @@ class TopicAdapter(private val onClickDetail: (id: Long,title :String, view: Vie
 
     private fun setOnClickListener(view: View, topic: TopicGroupEntity) {
         view.layoutRootTopic.setOnClickListener {
-            onClickDetail.invoke(topic.id,topic.name, view.layoutRootTopic)
+            onClickDetail.invoke(topic.id, topic.name, view.layoutRootTopic)
         }
         view.imgDelete.setOnClickListenerBlock {
             deleteItemListener.invoke(topic)
@@ -104,9 +113,19 @@ class TopicAdapter(private val onClickDetail: (id: Long,title :String, view: Vie
         view.tvCountTask.text = total.toString()
     }
 
+    private fun refreshIcon(view: View, item: TopicGroupEntity) {
+        Glide
+            .with(view.context)
+            .load(item.iconResource)
+            .placeholder(R.drawable.ic_creativity)
+            .circleCrop()
+            .into(view.imgTopic)
+    }
+
     companion object {
         const val PAYLOAD_NAME = "PAYLOAD_NAME"
         const val PAYLOAD_SHOW_DONE = "PAYLOAD_SHOW_DONE"
         const val PAYLOAD_COUNT_TASK = "PAYLOAD_COUNT_TASK"
+        const val PAYLOAD_ICON = "PAYLOAD_ICON"
     }
 }

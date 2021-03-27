@@ -1,6 +1,5 @@
 package com.example.reminds.ui.adapter
 
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -14,6 +13,7 @@ import kotlinx.android.synthetic.main.item_work_upcoming.view.*
 
 class ListWorkUpcomingAdapter(
     private val handlerCheckedAll: (workId: Long, doneAll: Boolean) -> Unit,
+    private val showOptionChangeItem: (work: WorkDataEntity) -> Unit,
 ) :
     BaseAdapter<WorkDataEntity>(object : DiffUtil.ItemCallback<WorkDataEntity>() {
 
@@ -31,6 +31,7 @@ class ListWorkUpcomingAdapter(
             return oldItem.name == newItem.name && oldItem.groupId == newItem.groupId
                     && oldItem.isShowContents == newItem.isShowContents
                     && oldItem.timerReminder == newItem.timerReminder
+                    && oldItem.doneAll == newItem.doneAll
                     && oldItem.description == newItem.description
         }
 
@@ -97,7 +98,6 @@ class ListWorkUpcomingAdapter(
     override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: WorkDataEntity) {
         view.tag = item
         holder.itemView.isActivated = item.isShowContents
-        Log.d("mausaccheck", "randomColor: ${position / 10} ${position % 10}")
         randomColor(view, position)
         setupViewBinderHelper(view, item)
         refreshTimer(view, item)
@@ -112,7 +112,6 @@ class ListWorkUpcomingAdapter(
     }
 
     private fun randomColor(view: View, position: Int) {
-        Log.d("mausac", "randomColor: ${position / 10} ${position % 10}")
         when (position % 10) {
             0 -> {
                 setColor(view, colorBg[0])
@@ -171,26 +170,28 @@ class ListWorkUpcomingAdapter(
         if (item.doneAll) {
             view.tvTitle.setTextColor(view.context.resources.getColor(R.color.bg_gray))
             view.tvTitle.underLine()
+            view.tvDescription.setTextColor(view.context.resources.getColor(R.color.bg_gray))
+            view.tvDescription.underLine()
         } else {
             view.tvTitle.setTextColor(view.context.resources.getColor(R.color.black))
             view.tvTitle.removeUnderLine()
+            view.tvDescription.setTextColor(view.context.resources.getColor(R.color.black))
+            view.tvDescription.removeUnderLine()
         }
     }
 
     private fun refreshDesc(view: View, item: WorkDataEntity) {
+        view.tvDescription.visibleOrGone(item.description.isNotBlank())
         view.tvDescription.text = item.description
     }
 
     private fun handleListener(view: View) {
-/*
-
         view.imgSetting.setOnClickListenerBlock {
             (view.tag as? WorkDataEntity)?.copy()?.let { item ->
                 view.swipeLayout.close(true)
-                intoSettingFragment.invoke(item)
+                showOptionChangeItem.invoke(item)
             }
         }
-*/
 
         view.rbChecked.setOnCheckedChangeListener { button, isChecked ->
             (view.tag as? WorkDataEntity)?.copy()?.let { item ->

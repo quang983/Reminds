@@ -2,11 +2,10 @@ package com.example.reminds.common
 
 import ExceptionBus
 import SingleLiveEvent
-import android.app.Dialog
 import androidx.annotation.AnyThread
 import androidx.annotation.MainThread
 import androidx.lifecycle.*
-import com.example.common.base.extesion.TagException
+import com.example.common.base.model.TopicGroupEntity
 import com.example.reminds.model.ToastBus
 import com.example.reminds.utils.DebounceLiveData
 import com.example.reminds.utils.exception.*
@@ -97,7 +96,7 @@ abstract class BaseViewModel : ViewModel {
 
     open fun <X, Y> LiveData<X>.switchMapLiveDataEmit(
         dispatcher: CoroutineDispatcher = Dispatchers.IO,
-        block: suspend (X) -> Y
+        block: (Long) -> TopicGroupEntity?
     ): LiveData<Y> = switchMap {
         androidx.lifecycle.liveData(handler + dispatcher) {
             emit(block(it))

@@ -13,7 +13,7 @@ import com.example.domain.usecase.db.topic.FetchTopicFlowUseCase
 import com.example.domain.usecase.db.topic.InsertTopicUseCase
 import com.example.domain.usecase.db.workintopic.FetchWorksUseCase
 import com.example.domain.usecase.db.workintopic.GetTotalTaskOfWorkUseCase
-import com.example.domain.usecase.db.workintopic.InsertWorkUseCase
+import com.example.domain.usecase.db.workintopic.InsertListWorkUseCase
 import com.example.reminds.common.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -25,7 +25,7 @@ class HomeViewModel @ViewModelInject constructor(
     private val getTotalTaskOfWorkUseCase: GetTotalTaskOfWorkUseCase,
     private val insertTopicUseCase: InsertTopicUseCase,
     private val fetchWorksUseCase: FetchWorksUseCase,
-    private val insertWorkUseCase: InsertWorkUseCase
+    private val insertWorksUseCase: InsertListWorkUseCase
 ) : BaseViewModel() {
 
     private val _addFirstTopicDoneLiveData: LiveData<Boolean> = MutableLiveData()
@@ -56,22 +56,28 @@ class HomeViewModel @ViewModelInject constructor(
     }
 
 
-    fun addFirstTopic(topic: String) = viewModelScope.launch(handler + Dispatchers.IO) {
-        val data = TopicGroupEntity(1, "Today", false, TopicGroupEntity.REMOVE_DONE_WORKS)
-        insertTopicUseCase.invoke(InsertTopicUseCase.Param(data)).let {
-            insertWorkUseCase.invoke(
-                InsertWorkUseCase.Param(
-                    WorkDataEntity(
-                        id = System.currentTimeMillis(),
-                        name = topic,
-                        groupId = it,
-                        listContent = mutableListOf(),
-                        doneAll = false,
-                        isShowContents = false
-                    ), TYPE_FAST
-                )
-            )
-        }
+    fun addFirstTopic(name: String, name1: String) = viewModelScope.launch(handler + Dispatchers.IO) {
+        val dataTopic = TopicGroupEntity(1, "Home", false, TopicGroupEntity.REMOVE_DONE_WORKS)
+        val idTopic = insertTopicUseCase.invoke(InsertTopicUseCase.Param(dataTopic))
+        val data = WorkDataEntity(
+            id = System.currentTimeMillis(),
+            name = name,
+            groupId = idTopic,
+            listContent = mutableListOf(),
+            doneAll = false,
+            isShowContents = false
+        )
+        val data1 = WorkDataEntity(
+            id = System.currentTimeMillis() + 1,
+            name = name1,
+            groupId = idTopic,
+            listContent = mutableListOf(),
+            doneAll = false,
+            isShowContents = false
+        )
+
+        val list = listOf(data, data1)
+        insertWorksUseCase.invoke(InsertListWorkUseCase.Param(list, TYPE_FAST))
         _addFirstTopicDoneLiveData.postValue(true)
     }
 

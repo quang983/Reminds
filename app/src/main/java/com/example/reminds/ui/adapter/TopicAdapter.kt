@@ -16,7 +16,11 @@ import com.example.reminds.utils.setOnClickListenerBlock
 import com.example.reminds.utils.setVisible
 import kotlinx.android.synthetic.main.item_topic.view.*
 
-class TopicAdapter(private val onClickDetail: (id: Long, title: String, view: View) -> Unit, private val deleteItemListener: (item: TopicGroupEntity) -> Unit) :
+class TopicAdapter(
+    private val onClickDetail: (id: Long, title: String, view: View) -> Unit,
+    private val deleteItemListener: (item: TopicGroupEntity) -> Unit,
+    private val editItemListener: (item: TopicGroupEntity) -> Unit
+) :
     BaseAdapter<HomeViewModel.TopicGroupViewItem>(object : DiffUtil.ItemCallback<HomeViewModel.TopicGroupViewItem>() {
 
         override fun areItemsTheSame(
@@ -102,6 +106,9 @@ class TopicAdapter(private val onClickDetail: (id: Long, title: String, view: Vi
         }
         view.imgDelete.setOnClickListenerBlock {
             deleteItemListener.invoke(topic)
+        }
+        view.imgSetting.setOnClickListenerBlock {
+            editItemListener.invoke(topic)
         }
     }
 

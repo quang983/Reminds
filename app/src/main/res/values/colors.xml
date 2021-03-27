@@ -69,4 +69,10 @@
     <color name="bg_card_3">#f9e2de</color>
     <color name="bg_card_4">#e9e2fc</color>
     <color name="bg_card_5">#fbf1dd</color>
+
+    <color name="bg_tick_1">#00fff3</color>
+    <color name="bg_tick_2">#028df9</color>
+    <color name="bg_tick_3">#f99d8d</color>
+    <color name="bg_tick_4">#5212ff</color>
+    <color name="bg_tick_5">#f9bd46</color>
 </resources>

@@ -5,12 +5,8 @@ import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import androidx.core.view.children
@@ -18,6 +14,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.common.base.model.AlarmNotificationEntity
 import com.example.common.base.model.ContentDataEntity
@@ -84,9 +81,13 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setFragmentResultListener()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         dayOfWeek = resources.getStringArray(R.array.day)
         getListWork(homeSharedViewModel.selectedDate)
-        setFragmentResultListener()
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -136,29 +137,8 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
         viewModel.getListWork(mGroupId)
     }
 
-    private fun saveEvent(text: String) {
-        if (text.isBlank()) {
-            Toast.makeText(requireContext(), R.string.example_3_empty_input_text, Toast.LENGTH_LONG).show()
-        } else {
-            homeSharedViewModel.selectedDate.let {
-                updateAdapterForDate(it)
-            }
-        }
-    }
-
-/*    private fun deleteEvent(event: Event) {
-        val date = event.date
-//        events[date] = events[date].orEmpty().minus(event)
-        updateAdapterForDate(date)
-    }*/
-
     private fun updateAdapterForDate(date: LocalDate) {
         mBinding.exThreeSelectedDateText.text = selectionFormatter.format(date)
-    }
-
-
-    private fun calGroupId() {
-        mGroupId = TimestampUtils.getLongTimeFromStr(Calendar.getInstance().timeInMillis)
     }
 
     private fun setupListener() {

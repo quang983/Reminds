@@ -7,7 +7,6 @@ import com.example.common.base.model.TopicGroupEntity.Companion.TYPE_UPCOMING
 import com.example.domain.usecase.db.topic.FetchTopicFlowUseCase
 import com.example.reminds.common.BaseViewModel
 import kotlinx.coroutines.flow.collect
-import java.time.LocalDate
 
 class UpcomingViewModel @ViewModelInject constructor(fetchTopicFlowUseCase: FetchTopicFlowUseCase) : BaseViewModel() {
     var isExpandedCalendar: Boolean = false

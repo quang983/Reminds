@@ -13,9 +13,9 @@
 
         <ImageView
             android:id="@+id/imgSetting"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_50sdp"
             android:layout_height="match_parent"
-            android:padding="@dimen/_10sdp"
+            android:padding="@dimen/_16sdp"
             android:src="@drawable/ic_info" />
     </LinearLayout>
 
@@ -80,7 +80,6 @@
                     android:layout_height="wrap_content"
                     android:maxLines="2"
                     android:paddingStart="@dimen/_8sdp"
-                    android:paddingTop="@dimen/_2sdp"
                     android:paddingEnd="@dimen/_6sdp"
                     android:paddingBottom="@dimen/_2sdp"
                     android:textColor="@color/black"
@@ -98,7 +97,7 @@
                     android:paddingTop="@dimen/_2sdp"
                     android:paddingEnd="@dimen/_6sdp"
                     android:paddingBottom="@dimen/_2sdp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/bg_gray"
                     android:textSize="@dimen/text_medium_1"
                     app:layout_constraintStart_toStartOf="@id/tvDescription"
                     app:layout_constraintTop_toBottomOf="@id/tvDescription"

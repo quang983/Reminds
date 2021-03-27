@@ -13,6 +13,14 @@
         android:layout_height="match_parent">
 
         <ImageView
+            android:id="@+id/imgSetting"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_10sdp"
+            android:background="@drawable/bg_selector_info"
+            android:src="@drawable/ic_info" />
+
+        <ImageView
             android:id="@+id/imgDelete"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="match_parent"

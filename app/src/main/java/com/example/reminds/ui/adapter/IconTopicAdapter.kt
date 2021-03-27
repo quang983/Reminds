@@ -51,10 +51,11 @@ class IconTopicAdapter(private val pickIconListener: (iconResource: Int) -> Unit
         }
     }
 
-    private fun itemChangeSelected(position: Int) {
+    fun itemChangeSelected(position: Int) {
         notifyItemChanged(positionSelected)
         positionSelected = position
         notifyItemChanged(positionSelected)
     }
+
 
 }

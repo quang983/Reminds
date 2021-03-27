@@ -1,7 +1,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:state_pressed="true"
-        android:drawable="@color/gallery2"/>
+        android:drawable="@color/yellow_600"/>
     <item
-        android:drawable="@color/gallery2"/>
+        android:drawable="@color/pink_500"/>
 </selector>

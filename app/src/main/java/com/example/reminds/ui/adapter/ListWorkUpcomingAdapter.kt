@@ -68,6 +68,11 @@ class ListWorkUpcomingAdapter(
         R.color.bg_card_3, R.color.bg_card_4, R.color.bg_card_5
     )
 
+    private val colorTick: IntArray = intArrayOf(
+        R.color.bg_tick_1, R.color.bg_tick_2,
+        R.color.bg_tick_3, R.color.bg_tick_4, R.color.bg_tick_5
+    )
+
     override fun createView(parent: ViewGroup, viewType: Int?): View {
         val view = parent.inflate(R.layout.item_work_upcoming)
         handleListener(view)
@@ -107,55 +112,55 @@ class ListWorkUpcomingAdapter(
     }
 
     private fun setupViewBinderHelper(view: View, item: WorkDataEntity) {
-        /*      _viewBinderHelper.setOpenOnlyOne(true)
-              _viewBinderHelper.bind(view.swipeLayout, item.id.toString())*/
+        _viewBinderHelper.setOpenOnlyOne(true)
+        _viewBinderHelper.bind(view.swipeLayout, item.id.toString())
     }
 
     private fun randomColor(view: View, position: Int) {
         when (position % 10) {
             0 -> {
-                setColor(view, colorBg[0])
+                setColor(view, colorBg[0],colorTick[0])
             }
             1 -> {
-                setColor(view, colorBg[1])
+                setColor(view, colorBg[1],colorTick[1])
             }
             2 -> {
-                setColor(view, colorBg[2])
+                setColor(view, colorBg[2],colorTick[2])
             }
             3 -> {
-                setColor(view, colorBg[3])
+                setColor(view, colorBg[3],colorTick[3])
             }
             4 -> {
-                setColor(view, colorBg[4])
+                setColor(view, colorBg[4],colorTick[4])
             }
             5 -> {
-                setColor(view, colorBg[0])
+                setColor(view, colorBg[0],colorTick[0])
             }
             6 -> {
-                setColor(view, colorBg[1])
+                setColor(view, colorBg[1],colorTick[1])
             }
             7 -> {
-                setColor(view, colorBg[2])
+                setColor(view, colorBg[2],colorTick[2])
             }
             8 -> {
-                setColor(view, colorBg[3])
+                setColor(view, colorBg[3],colorTick[3])
             }
             9 -> {
-                setColor(view, colorBg[4])
+                setColor(view, colorBg[4],colorTick[4])
             }
         }
     }
 
-    private fun setColor(view: View, color: Int) {
-        view.rbChecked.tickColor = view.resources.getColor(color)
-        view.rbChecked.floorUnCheckedColor = view.resources.getColor(color)
-        view.cardContainer.setCardBackgroundColor(view.resources.getColor(color))
+    private fun setColor(view: View, colorBg: Int, colorTick: Int) {
+        view.rbChecked.tickColor = view.resources.getColor(colorTick)
+        view.rbChecked.floorUnCheckedColor = view.resources.getColor(colorTick)
+        view.cardContainer.setCardBackgroundColor(view.resources.getColor(colorBg))
     }
 
     private fun refreshTimer(view: View, item: WorkDataEntity) {
         view.tvTimer.visibleOrGone(item.timerReminder > 0)
         if (TimestampUtils.compareDate(item.timerReminder, System.currentTimeMillis())) {
-            view.tvTimer.text = String.format("%s %s", TimestampUtils.getTime(item.timerReminder), view.context.getString(R.string.title_home_today))
+            view.tvTimer.text =String.format("%s %s", TimestampUtils.getTime(item.timerReminder), view.context.getString(R.string.title_home_today))
         } else {
             view.tvTimer.text = TimestampUtils.getFullFormatTime(item.timerReminder, TimestampUtils.INCREASE_DATE_FORMAT)
         }

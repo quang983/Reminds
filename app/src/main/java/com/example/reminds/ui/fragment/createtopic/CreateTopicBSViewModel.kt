@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.common.base.model.TopicGroupEntity
+import com.example.domain.usecase.db.topic.FindTopicByIdUseCase
 import com.example.domain.usecase.db.topic.InsertTopicUseCase
 import com.example.reminds.R
 import com.example.reminds.common.BaseViewModel
@@ -12,7 +13,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CreateTopicBSViewModel @ViewModelInject constructor(
-    private val insertTopicUseCase: InsertTopicUseCase
+    private val insertTopicUseCase: InsertTopicUseCase,
+    private val findTopicByIdUseCase: FindTopicByIdUseCase
 ) : BaseViewModel() {
     private val _list: IntArray = intArrayOf(
         R.drawable.image_5, R.drawable.image_6, R.drawable.image_8, R.drawable.image_12,
@@ -27,7 +29,19 @@ class CreateTopicBSViewModel @ViewModelInject constructor(
 
     val listIconLiveData: LiveData<IntArray> = MutableLiveData()
 
-    val topicTemp = TopicGroupEntity(System.currentTimeMillis(), "", typeTopic = TopicGroupEntity.TYPE_NORMAL, iconResource = R.drawable.image_8)
+    val topicTemp = TopicGroupEntity(System.currentTimeMillis(), "", typeTopic = TopicGroupEntity.TYPE_NORMAL, iconResource = R.drawable.image_5)
+
+    val idTopicGroup: LiveData<Long> = MutableLiveData()
+
+    val topicGroup: LiveData<TopicGroupEntity> = idTopicGroup.switchMapLiveData {
+        findTopicByIdUseCase.invoke(FindTopicByIdUseCase.Param(it))?.let { topic->
+            emit(topic)
+        }
+    }
+
+    fun postIdGroup(idTopic: Long) {
+        idTopicGroup.postValue(idTopic)
+    }
 
     init {
         listIconLiveData.postValue(_list)

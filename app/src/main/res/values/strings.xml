@@ -57,7 +57,7 @@
     <string name="message_alert_hide_error_work_title">Bạn không thể ẩn danh mục này khi chưa hoàn thành hết các tác vụ</string>
 
     <!--    <string name="empty_list"><![CDATA[<b>Danh sách trống, chọn biểu tượng</b><br>dấu + để thêm 1 danh sách mới]]></string>-->
-    <string name="empty_list">Bạn đang nghĩ gì? Để Tickist lo</string>
+    <string name="empty_list">Thêm vào việc cần làm, còn lại để Tickist lo!</string>
     <string name="warning_title_min">Tiêu đề phải có tối thiểu 1 ký tự!</string>
     <string name="support_list_reminders">Đây là danh sách ghi chú nhanh, Lưu ý: Ghi chú nhanh sẽ tự động xoá sau khi bạn click Xong</string>
     <string name="support_new_title">Click button để thêm danh sách mới của riêng bạn, danh sách đã xong sẽ được hiển thị theo lựa chọn của bạn</string>
@@ -74,8 +74,8 @@
     <string name="option_delete_work_done">"Xoá lời nhắc sau khi đã hoàn tất \n (Chỉ tính từ thời điểm hiện tại)"</string>
     <string name="title_save">Lưu lại</string>
     <string name="action_done" translatable="false">Xoá</string>
-    <string name="page_home" translatable="false">Home</string>
-    <string name="page_calendar" translatable="false">Today</string>
+    <string name="page_home" translatable="false">Tasklist</string>
+    <string name="page_calendar" translatable="false">In day</string>
     <string name="page_focus" translatable="false">Focus</string>
     <string name="page_setting" translatable="false">Setting</string>
     <string name="page_english" translatable="false">English</string>
@@ -92,6 +92,8 @@
     <string name="title_reminder_fast">Nhắc nhở nhanh</string>
     <string name="you_think_hint">Bạn đang nghĩ gì</string>
     <string name="swipe_up_suggest">Vuốt lên để thêm nhanh nhắc nhở</string>
+    <string name="swipe_up_suggest_1">Giữ lâu vào 1 item và di chuyển để thay đổi vị trí</string>
+    <string name="reminder_notification">Nhắc nhở vào:</string>
 
     <string-array name="day">
         <item>T2</item>

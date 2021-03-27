@@ -16,7 +16,7 @@ interface LocalWorkFromTopicDao : BaseDao<WorkFoTopic> {
 
     @Transaction
     @Query("SELECT * FROM TopicGroup where idTopic=:id")
-    fun fetchWorkFromTopicData(id: Long): TopicGroupWithWorks
+    fun fetchWorkFromTopicData(id: Long): TopicGroupWithWorks?
 
     @Query("SELECT * FROM WorkFoTopic")
     fun fetchWork(): List<WorkFoTopic>

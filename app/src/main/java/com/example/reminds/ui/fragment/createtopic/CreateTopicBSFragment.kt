@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.common.base.model.TopicGroupEntity.Companion.NULL_IN_DB
 import com.example.reminds.R
 import com.example.reminds.databinding.FragmentBsCreateTopicBinding
 import com.example.reminds.ui.adapter.IconTopicAdapter
@@ -19,6 +21,8 @@ import kotlinx.android.synthetic.main.fragment_option_for_work_bs.*
 
 @AndroidEntryPoint
 class CreateTopicBSFragment : BottomSheetDialogFragment() {
+    private val args by navArgs<CreateTopicBSFragmentArgs>()
+
     private val viewModel: CreateTopicBSViewModel by viewModels()
 
     lateinit var mBinding: FragmentBsCreateTopicBinding
@@ -29,6 +33,10 @@ class CreateTopicBSFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         mBinding = FragmentBsCreateTopicBinding.inflate(inflater)
+
+        if (args.idTopic != NULL_IN_DB) {
+            viewModel.postIdGroup(args.idTopic)
+        }
         return mBinding.root
     }
 
@@ -81,6 +89,11 @@ class CreateTopicBSFragment : BottomSheetDialogFragment() {
     private fun setupObserver() {
         viewModel.listIconLiveData.observe(viewLifecycleOwner, {
             (mBinding.recyclerIcon.adapter as? IconTopicAdapter)?.submitList(it.toList())
+        })
+
+        viewModel.topicGroup.observe(viewLifecycleOwner, {
+            mBinding.edtInput.setText(it.name)
+//            (mBinding.recyclerIcon.adapter as? IconTopicAdapter)?.itemChangeSelected()
         })
     }
 }

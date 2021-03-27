@@ -43,7 +43,7 @@
     <string name="message_alert_hide_work_title">Hiding categories will cause all the tasks in the category to be completed</string>
     <string name="message_alert_delete_work_title">Are you sure you want to remove this category from the list?</string>
     <string name="message_alert_hide_error_work_title">You cannot hide this category without completing the tasks</string>
-    <string name="empty_list">What are you thinking? Let the Tickist care</string>
+    <string name="empty_list">Add to-do, and left to Tickist to take care of!</string>
     <string name="home_screen_title">Reminders</string>
     <string name="add">Add</string>
     <string name="warning_title_min">The title must be at least 1 character!</string>
@@ -60,7 +60,8 @@
     <string name="you_think_hint">what are you thinking?</string>
     <string name="title_reminder_fast">Fast Reminders</string>
     <string name="swipe_up_suggest">Swipe up to quickly add a Reminder</string>
-
+    <string name="swipe_up_suggest_1">Hold for a long time on an item and move to change its position</string>
+    <string name="reminder_notification">Notification time:</string>
     <string-array name="day">
         <item>MO</item>
         <item>TU</item>

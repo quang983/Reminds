@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.example.common.base.model.TopicGroupEntity
+import com.example.common.base.model.TopicGroupEntity.Companion.NULL_IN_DB
 import com.example.framework.local.cache.CacheImpl
 import com.example.reminds.R
 import com.example.reminds.ui.activity.MainActivity
@@ -67,7 +68,10 @@ class HomeFragment : Fragment() {
     private fun checkAddFirstTopic() {
         val shared = requireContext().getSharedPreferences(CacheImpl.SHARED_NAME, Context.MODE_PRIVATE)
         if (shared.getBoolean(CacheImpl.KEY_FIRST_LOGIN, true)) {
-            viewModel.addFirstTopic(resources.getString(R.string.swipe_up_suggest))
+            viewModel.addFirstTopic(
+                resources.getString(R.string.swipe_up_suggest),
+                resources.getString(R.string.swipe_up_suggest_1)
+            )
             shared.edit().putBoolean(CacheImpl.KEY_FIRST_LOGIN, false).apply()
         } else {
             viewModel.postAddFirstTopic(true)
@@ -97,6 +101,8 @@ class HomeFragment : Fragment() {
             }
         }, {
             showAlertDeleteDialog(it)
+        },{
+            navigate(HomeFragmentDirections.actionFirstFragmentToCreateTopicBSFragment(it.id))
         }).apply {
             recyclerTopic.adapter = this
         }
@@ -181,7 +187,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun showBottomSheet() {
-        navigate(HomeFragmentDirections.actionFirstFragmentToCreateTopicBSFragment())
+        navigate(HomeFragmentDirections.actionFirstFragmentToCreateTopicBSFragment(NULL_IN_DB))
     }
 
 

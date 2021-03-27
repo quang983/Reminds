@@ -8,10 +8,9 @@
     <fragment
         android:id="@+id/FirstFragment"
         android:name="com.example.reminds.ui.fragment.home.HomeFragment"
-        android:label="@string/page_list"
+        android:label="@string/page_home"
         android:transitionName="@string/transaction_topic_to_detail"
         tools:layout="@layout/fragment_home">
-
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
@@ -113,8 +112,13 @@
     <fragment
         android:id="@+id/NewUpcomingFragment"
         android:name="com.example.reminds.ui.fragment.upcoming.NewUpcomingFragment"
-        android:label="@string/page_today"
+        android:label="@string/page_calendar"
         tools:layout="@layout/fragment_upcoming_new">
+        <argument
+            android:name="idGroup"
+            android:defaultValue="-1L"
+            app:argType="long" />
+
         <action
             android:id="@+id/action_NewUpcomingFragment_to_OptionForWorkBSFragment"
             app:destination="@id/OptionForWorkBSFragment" />
@@ -127,7 +131,11 @@
         android:id="@+id/CreateTopicBSFragment"
         android:name="com.example.reminds.ui.fragment.createtopic.CreateTopicBSFragment"
         android:label="@string/new_topic_fragment_label"
-        tools:layout="@layout/fragment_bs_create_topic" />
+        tools:layout="@layout/fragment_bs_create_topic">
+        <argument
+            android:name="idTopic"
+            app:argType="long" />
+    </dialog>
 
 
 </navigation>

@@ -16,6 +16,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.common.base.model.AlarmNotificationEntity
+import com.example.common.base.model.TopicGroupEntity.Companion.TYPE_NORMAL
+import com.example.common.base.model.TopicGroupEntity.Companion.TYPE_UPCOMING
 import com.example.reminds.R
 import com.example.reminds.databinding.ActivityMainBinding
 import com.example.reminds.service.INSERT_OBJECT_TIMER_DATA
@@ -44,6 +46,8 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 import nl.joery.animatedbottombar.AnimatedBottomBar
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.ZoneId
 import java.util.*
 
 
@@ -113,7 +117,6 @@ class MainActivity : AppCompatActivity() {
     private fun setObserver() {
         viewModel.apply {
             notifyDataInsert.observe(this@MainActivity, {
-//                sendActionInsertAlert(it)
                 scheduleAlarm(
                     TimestampUtils.getFullFormatTime(it.timeAlarm, TimestampUtils.DATE_FORMAT_DEFAULT),
                     it, it.idContent.toInt()
@@ -127,7 +130,15 @@ class MainActivity : AppCompatActivity() {
                     putLong("idGroup", it.id)
                     putString("titleGroup", it.name)
                 }
-                navController.navigate(R.id.SecondFragment, bundle)
+                when (it.typeTopic) {
+                    TYPE_UPCOMING -> {
+                        viewModel.selectedDate = Instant.ofEpochMilli(it.id).atZone(ZoneId.systemDefault()).toLocalDate()
+                        navController.navigate(R.id.NewUpcomingFragment, bundle)
+                    }
+                    TYPE_NORMAL -> {
+                        navController.navigate(R.id.SecondFragment, bundle)
+                    }
+                }
             })
         }
     }
@@ -403,10 +414,6 @@ class MainActivity : AppCompatActivity() {
                     R.id.pageOne -> {
                     }
                     R.id.pageSecond -> {
-                    }
-                    R.id.pageThird -> {
-                    }
-                    R.id.pageFour -> {
                     }
                 }
             }

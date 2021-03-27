@@ -23,11 +23,11 @@ class WorkFromTopicSourceImpl @Inject constructor(
     }
 
     override suspend fun fetchAll(idGroup: Long): List<WorkDataEntity> {
-        return dao.fetchWorkFromTopicData(idGroup).let { it ->
+        return dao.fetchWorkFromTopicData(idGroup)?.let { it ->
             it.listWork.map {
                 it.convert()
             }
-        }
+        } ?: emptyList()
     }
 
     override suspend fun getWorkById(idWork: Long): WorkDataEntity? {

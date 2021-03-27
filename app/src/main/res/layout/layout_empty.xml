@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/imgIcon"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_250sdp"
+        android:layout_height="@dimen/_200sdp"
         android:src="@drawable/ic_man_reading_newspaper" />
 
     <TextView
@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/imgIcon"
         android:fontFamily="@font/roboto_regular_font"
-        android:padding="@dimen/_20sdp"
+        android:padding="@dimen/_12sdp"
         android:text="@string/empty_list"
         android:textAlignment="center"
         android:textColor="@color/black"

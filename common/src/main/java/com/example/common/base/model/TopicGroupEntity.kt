@@ -13,5 +13,7 @@ data class TopicGroupEntity(
         const val TYPE_NORMAL = 0
         const val TYPE_UPCOMING = 1
         const val TYPE_FAST = 2
+
+        const val NULL_IN_DB = -1L
     }
 }

@@ -14,7 +14,6 @@ import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.common.base.model.AlarmNotificationEntity
 import com.example.common.base.model.ContentDataEntity
@@ -173,57 +172,6 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
 
             touchHelper.attachToRecyclerView(recyclerWorks)
         }
-
-        /*    adapter = ListWorkAdapter(
-                onClickTitle = { wId ->
-                    if (homeSharedViewModel.isKeyboardShow.value == true) {
-                        hideSoftKeyboard()
-                    } else {
-                        viewModel.updateWorkChange(wId, true)
-                    }
-                }, insertContentToWork = { content, wId ->
-                    viewModel.updateAndAddContent(content, wId)
-                }, handlerCheckItem = { content, position ->
-                    viewModel.handlerCheckedContent(content, position)
-                    showAds()
-                }, updateNameContent = { content, wId ->
-                    viewModel.updateContentData(content, wId)
-                }, moreActionClick = { item, type, wId ->
-                    when (type) {
-                        ListContentCheckAdapter.TYPE_TIMER_CLICK -> {
-                            setupTimePickerForContent(item, wId)
-                        }
-                        ListContentCheckAdapter.TYPE_TAG_CLICK -> {
-                            viewModel.updateContentData(item, wId)
-                        }
-                        ListContentCheckAdapter.TYPE_DELETE_CLICK -> {
-                            showAlertDeleteDialog(resources.getString(R.string.content_delete_topic_title)) {
-                                viewModel.deleteContent(item, wId)
-                            }
-                        }
-                    }
-                }, deleteWorkClick = {
-                    showAlertDeleteDialog(resources.getString(R.string.message_alert_delete_work_title)) {
-                        viewModel.deleteWork(it)
-                    }
-                }, handlerCheckedAll = { workId, doneAll ->
-                    viewModel.handleDoneAllContentFromWork(workId, doneAll)
-                }, updateDataChanged = {
-                    if (homeSharedViewModel.isKeyboardShow.value == true) {
-                        hideSoftKeyboard()
-                    } else {
-                        viewModel.updateWorkChange(it, false)
-                    }
-                }, intoSettingFragment = {
-                    navigate(NewUpcomingFragmentDirections.actionNewUpcomingFragmentToOptionForWorkBSFragment(it.id, TYPE_UPCOMING, mGroupId))
-                }).apply {
-                mBinding.recyclerWorks.adapter = this
-                val callback: ItemTouchHelper.Callback = MyItemTouchHelperCallback(this@NewUpcomingFragment)
-
-                val touchHelper = ItemTouchHelper(callback)
-
-                touchHelper.attachToRecyclerView(recyclerWorks)
-            }*/
     }
 
 

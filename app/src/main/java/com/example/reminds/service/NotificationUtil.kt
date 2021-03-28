@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
+import androidx.annotation.Keep
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.example.reminds.R
@@ -15,6 +16,7 @@ import com.example.reminds.ui.activity.MainActivity
 import kotlin.random.Random
 
 
+@Keep
 class NotificationUtil(private val context: Context) {
 
     fun showNotification(title: String, message: String,idTopic :Long) {
@@ -29,8 +31,8 @@ class NotificationUtil(private val context: Context) {
         val channelId = context.getString(R.string.notify_channel)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(context, channelId)
-            .setColor(ContextCompat.getColor(context, android.R.color.holo_blue_light))
-            .setSmallIcon(R.drawable.ic_tasks_new)
+            .setColor(ContextCompat.getColor(context, R.color.red_200))
+            .setSmallIcon(R.drawable.playstore)
             .setContentTitle(title)
             .setContentText(message)
             .setAutoCancel(true)

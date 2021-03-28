@@ -14,7 +14,7 @@ android {
         applicationId "com.quangtd.todosimple"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 17
+        versionCode 20
         versionName "2.2"
         multiDexEnabled true
 

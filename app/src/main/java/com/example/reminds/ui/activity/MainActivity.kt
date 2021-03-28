@@ -16,6 +16,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.common.base.model.AlarmNotificationEntity
+import com.example.common.base.model.TopicGroupEntity.Companion.TYPE_FAST
 import com.example.common.base.model.TopicGroupEntity.Companion.TYPE_NORMAL
 import com.example.common.base.model.TopicGroupEntity.Companion.TYPE_UPCOMING
 import com.example.reminds.R
@@ -136,6 +137,9 @@ class MainActivity : AppCompatActivity() {
                         navController.navigate(R.id.NewUpcomingFragment, bundle)
                     }
                     TYPE_NORMAL -> {
+                        navController.navigate(R.id.SecondFragment, bundle)
+                    }
+                    TYPE_FAST -> {
                         navController.navigate(R.id.SecondFragment, bundle)
                     }
                 }

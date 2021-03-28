@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -60,20 +61,22 @@ class CreateTopicBSFragment : BottomSheetDialogFragment() {
             viewModel.setNameTopicTemp(it.toString())
             when (it.toString().isNotBlank()) {
                 true -> {
-                    mBinding.btnSave.isClickable = true
                     btnSave.setTextColor(requireContext().resources.getColor(R.color.blue_900))
                 }
                 false -> {
-                    mBinding.btnSave.isClickable = false
                     btnSave.setTextColor(requireContext().resources.getColor(R.color.bg_gray))
                 }
             }
         }
         mBinding.btnSave.setOnClickListenerBlock {
-            viewModel.insertTopicToDatabase()
-            Handler().postDelayed({
-                dismissAllowingStateLoss()
-            }, 500)
+            if (mBinding.edtInput.text?.isNotEmpty() == true) {
+                viewModel.insertTopicToDatabase()
+                Handler().postDelayed({
+                    dismissAllowingStateLoss()
+                }, 500)
+            } else {
+                Toast.makeText(requireContext(), getString(R.string.warning_title_min), Toast.LENGTH_SHORT).show()
+            }
         }
 
         mBinding.btnBack.setOnClickListenerBlock {

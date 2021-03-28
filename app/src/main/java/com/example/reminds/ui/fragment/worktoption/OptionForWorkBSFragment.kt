@@ -3,6 +3,7 @@ package com.example.reminds.ui.fragment.worktoption
 import DateTimePickerFragment.Companion.TIME_PICKER_BUNDLE
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -138,7 +139,8 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
             setupTimePickerForContent()
         }
 
-        imgSettingClock.setOnClickListenerBlock {
+        imgSettingClock.setOnClickListener {
+            Log.d("setupTimePickerForContent", "setListener: ")
             setupTimePickerForContent()
         }
 
@@ -164,6 +166,7 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
     }
 
     private fun setupTimePickerForContent() {
+        Log.d("setupTimePickerForContent", "setupTimePickerForContent: nota ction")
         navigate(OptionForWorkBSFragmentDirections.actionOptionForWorkBSFragmentToDateTimePickerDialog(System.currentTimeMillis() + (60 * 1000)))
     }
 

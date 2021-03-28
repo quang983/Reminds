@@ -38,6 +38,9 @@
 -keepattributes SourceFile,LineNumberTable
 
 -keep public class * extends android.app.Activity
+-keep public class * extends androidx.appcompat.app.AppCompatActivity
+-keep public class * extends androidx.fragment.app.Fragment
+-keep public class * extends com.google.android.material.bottomsheet.BottomSheetDialogFragment
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
@@ -47,6 +50,11 @@
 -keep public class * extends android.animation.ValueAnimator
 -keep public class * extends androidx.lifecycle.AndroidViewModel
 -keep public class * extends androidx.lifecycle.ViewModel
+-keep public class * extends androidx.work.Worker
+-keep public class * extends dagger.internal.DaggerCollections
+-keep public class * extends androidx.core.app.NotificationCompat
+-keep public class * extends androidx.core.app.NotificationChannelCompat
+
 
 -keepclassmembers class * implements java.io.Serializable {
     static final long serialVersionUID;

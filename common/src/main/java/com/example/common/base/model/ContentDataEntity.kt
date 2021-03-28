@@ -2,7 +2,6 @@ package com.example.common.base.model
 
 import java.io.Serializable
 
-
 data class ContentDataEntity(
     var id: Long,
     var name: String,

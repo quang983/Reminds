@@ -137,5 +137,9 @@
             app:argType="long" />
     </dialog>
 
+    <fragment
+        android:id="@+id/FocusTodoFragment"
+        android:name="com.example.reminds.ui.fragment.focus.home.FocusTodoHomeFragment"
+        tools:layout="@layout/fragment_home_focus" />
 
 </navigation>

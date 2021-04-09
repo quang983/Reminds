@@ -14,8 +14,9 @@ import com.example.reminds.databinding.FragmentHomeFocusBinding
 import com.example.reminds.service.timer.NotificationTimer
 import com.example.reminds.ui.activity.focus.FocusTodoActivity
 import com.example.reminds.utils.TimestampUtils
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
     lateinit var notiTimer: NotificationTimer.Builder
     private val viewModel: FocusTodoHomeViewModel by viewModels()
@@ -28,10 +29,11 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
         super.onViewCreated(view, savedInstanceState)
         setupLayout()
         setupObserver()
+        setupListener()
     }
 
     private fun setupLayout() {
-        mBinding.tvTime.text= TimestampUtils.convertMiliTimeToTimeHourStr(viewModel.mTimeLeftInMillis)
+        mBinding.tvTime.text = TimestampUtils.convertMiliTimeToTimeHourStr(viewModel.mTimeLeftInMillis)
 
         val pendingIntent = Intent(requireContext(), FocusTodoActivity::class.java).let {
             PendingIntent.getActivity(requireContext(), 0, it, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -75,6 +77,11 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
                 }
             }
         })
+    }
+
+    private fun setupListener() {
+        mBinding.tvTime.setOnClickListener {
+        }
     }
 
 

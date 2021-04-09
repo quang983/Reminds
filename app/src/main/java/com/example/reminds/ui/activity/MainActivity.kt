@@ -26,7 +26,6 @@ import com.example.reminds.service.NotificationBroadcastReceiver
 import com.example.reminds.service.NotificationService
 import com.example.reminds.service.ScheduledWorker
 import com.example.reminds.service.ScheduledWorker.Companion.TOPIC_ID_OPEN
-import com.example.reminds.ui.activity.focus.FocusTodoActivity
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import com.example.reminds.utils.TimestampUtils
 import com.example.reminds.utils.gone
@@ -87,7 +86,7 @@ class MainActivity : AppCompatActivity() {
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.NewUpcomingFragment, R.id.FirstFragment
+                R.id.NewUpcomingFragment, R.id.FirstFragment, R.id.FocusTodoFragment
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -398,12 +397,12 @@ class MainActivity : AppCompatActivity() {
                         navController.navigate(R.id.NewUpcomingFragment)
                     }
                     1 -> {
-                        supportActionBar?.setDisplayHomeAsUpEnabled(false)
                         navController.navigate(R.id.FirstFragment)
                     }
                     2 -> {
-                        val intent = Intent(this@MainActivity, FocusTodoActivity::class.java)
-                        startActivity(intent)
+                        navController.navigate(R.id.FocusTodoFragment)
+                        /*val intent = Intent(this@MainActivity, FocusTodoActivity::class.java)
+                        startActivity(intent)*/
                     }
                     3 -> {
                     }

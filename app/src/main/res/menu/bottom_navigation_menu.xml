@@ -10,21 +10,23 @@
         android:icon="@drawable/ic_grid_round"
         android:title="@string/page_home" />
 
- <!--   <item
+    <item
         android:id="@+id/pageThird"
         android:enabled="true"
         android:icon="@drawable/ic_alarm"
         android:title="@string/page_focus" />
 
+<!--
     <item
         android:id="@+id/pageFour"
         android:enabled="true"
         android:icon="@drawable/ic_menu_tag"
         android:title="@string/page_english" />
+-->
 
     <item
         android:id="@+id/pageFive"
         android:enabled="true"
         android:icon="@drawable/ic_settings_filled"
-        android:title="@string/page_setting" />-->
+        android:title="@string/page_setting" />
 </menu>

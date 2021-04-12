@@ -7,13 +7,16 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.example.reminds.R
 import com.example.reminds.common.BaseFragment
 import com.example.reminds.databinding.FragmentHomeFocusBinding
 import com.example.reminds.service.timer.NotificationTimer
 import com.example.reminds.ui.activity.focus.FocusTodoActivity
+import com.example.reminds.ui.fragment.focus.dialogtimer.DialogTimerFragment
 import com.example.reminds.utils.TimestampUtils
+import com.example.reminds.utils.getOrDefault
 import com.example.reminds.utils.navigate
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,8 +25,23 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
     lateinit var notiTimer: NotificationTimer.Builder
     private val viewModel: FocusTodoHomeViewModel by viewModels()
 
+    companion object {
+        const val RESULTS_MINUTES_PICKER = "RESULTS_MINUTES_PICKER"
+    }
+
     override fun getViewBinding(): FragmentHomeFocusBinding {
         return FragmentHomeFocusBinding.inflate(layoutInflater)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setFragmentResult()
+    }
+
+    private fun setFragmentResult() {
+        setFragmentResultListener(RESULTS_MINUTES_PICKER) { _, bundle ->
+            viewModel.mTimeLeftInMillis.postValue(bundle.getLong(DialogTimerFragment.EXTRAS_MINUTES_DATA))
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,7 +52,7 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
     }
 
     private fun setupLayout() {
-        mBinding.tvTime.text = TimestampUtils.convertMiliTimeToTimeHourStr(viewModel.mTimeLeftInMillis)
+        mBinding.tvTime.text = TimestampUtils.convertMiliTimeToTimeHourStr(viewModel.mTimeLeftInMillis.getOrDefault(10000))
 
         val pendingIntent = Intent(requireContext(), FocusTodoActivity::class.java).let {
             PendingIntent.getActivity(requireContext(), 0, it, PendingIntent.FLAG_UPDATE_CURRENT)

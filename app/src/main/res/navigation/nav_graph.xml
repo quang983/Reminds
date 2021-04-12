@@ -146,7 +146,7 @@
             app:destination="@id/PickTimerFocusFragment" />
     </fragment>
 
-    <fragment
+    <dialog
         android:id="@+id/PickTimerFocusFragment"
         android:name="com.example.reminds.ui.fragment.focus.dialogtimer.DialogTimerFragment"
         tools:layout="@layout/fragment_dialog_timer_picker" />

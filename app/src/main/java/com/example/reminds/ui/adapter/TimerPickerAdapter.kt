@@ -29,10 +29,10 @@ class TimerPickerAdapter : BaseAdapter<Int>(object : DiffUtil.ItemCallback<Int>(
     }
 
     override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: Int) {
-        view.tv_time.text = item.toString()
-    }
-
-    override fun getItemCount(): Int {
-        return 5
+        if(item <=120){
+            view.tv_time.text = item.toString()
+        }else{
+            view.tv_time.text = ""
+        }
     }
 }

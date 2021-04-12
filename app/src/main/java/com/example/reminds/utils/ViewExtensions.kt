@@ -19,6 +19,10 @@ import android.widget.TextView
 import android.widget.TimePicker
 import androidx.annotation.LayoutRes
 import androidx.core.widget.doAfterTextChanged
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SnapHelper
+import com.example.reminds.common.OnSnapPositionChangeListener
+import com.example.reminds.common.SnapOnScrollListener
 import kotlinx.android.synthetic.main.layout_time.view.*
 import kotlin.math.max
 import kotlin.math.min
@@ -196,6 +200,7 @@ fun View.setOnClickListenerBlock(block: () -> Unit) {
         block()
     }
 }
+
 fun TimePicker.getTime(): Pair<Int, Int> {
     return if (Build.VERSION.SDK_INT >= 23) {
         Pair(this.hour, this.minute)
@@ -225,11 +230,11 @@ val Int.toPx: Int
 val Int.toDp: Int
     get() = (this / Resources.getSystem().displayMetrics.density).toInt()
 
-fun TextView.underLine(){
+fun TextView.underLine() {
     paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
 }
 
-fun TextView.removeUnderLine(){
+fun TextView.removeUnderLine() {
     paintFlags = 0
 }
 
@@ -293,3 +298,18 @@ fun EditText.checkDiffAndSetText2(newText: String?) {
     }
 }
 
+fun SnapHelper.getSnapPosition(recyclerView: RecyclerView): Int {
+    val layoutManager = recyclerView.layoutManager ?: return RecyclerView.NO_POSITION
+    val snapView = findSnapView(layoutManager) ?: return RecyclerView.NO_POSITION
+    return layoutManager.getPosition(snapView)
+}
+
+fun RecyclerView.attachSnapHelperWithListener(
+    snapHelper: SnapHelper,
+    behavior: SnapOnScrollListener.Behavior = SnapOnScrollListener.Behavior.NOTIFY_ON_SCROLL,
+    onSnapPositionChangeListener: OnSnapPositionChangeListener
+) {
+    snapHelper.attachToRecyclerView(this)
+    val snapOnScrollListener = SnapOnScrollListener(snapHelper, behavior, onSnapPositionChangeListener)
+    addOnScrollListener(snapOnScrollListener)
+}

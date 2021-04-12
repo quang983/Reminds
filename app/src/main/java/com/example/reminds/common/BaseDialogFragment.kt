@@ -10,7 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.viewbinding.ViewBinding
 import kotlin.math.min
 
-open class BaseDialogFragment<VB : ViewBinding> : DialogFragment() {
+abstract class BaseDialogFragment<VB : ViewBinding> : DialogFragment() {
     protected open val screenWidthPercent = 0.85F
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,9 +18,13 @@ open class BaseDialogFragment<VB : ViewBinding> : DialogFragment() {
         retainInstance = true
     }
 
-    private lateinit var mBinding: VB
+    lateinit var mBinding: VB
 
     abstract fun getViewBinding(): VB
+
+    abstract fun setupLayout()
+
+    abstract fun setupObserver()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = getViewBinding()
@@ -30,6 +34,8 @@ open class BaseDialogFragment<VB : ViewBinding> : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        setupLayout()
+        setupObserver()
     }
 
     override fun onResume() {

@@ -14,6 +14,7 @@ import com.example.reminds.databinding.FragmentHomeFocusBinding
 import com.example.reminds.service.timer.NotificationTimer
 import com.example.reminds.ui.activity.focus.FocusTodoActivity
 import com.example.reminds.utils.TimestampUtils
+import com.example.reminds.utils.navigate
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -81,6 +82,7 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
 
     private fun setupListener() {
         mBinding.tvTime.setOnClickListener {
+            navigate(FocusTodoHomeFragmentDirections.actionFocusTodoFragmentToPickTimerFocusFragment())
         }
     }
 

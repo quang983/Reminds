@@ -140,6 +140,15 @@
     <fragment
         android:id="@+id/FocusTodoFragment"
         android:name="com.example.reminds.ui.fragment.focus.home.FocusTodoHomeFragment"
-        tools:layout="@layout/fragment_home_focus" />
+        tools:layout="@layout/fragment_home_focus" >
+        <action
+            android:id="@+id/action_FocusTodoFragment_to_PickTimerFocusFragment"
+            app:destination="@id/PickTimerFocusFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/PickTimerFocusFragment"
+        android:name="com.example.reminds.ui.fragment.focus.dialogtimer.DialogTimerFragment"
+        tools:layout="@layout/fragment_dialog_timer_picker" />
 
 </navigation>

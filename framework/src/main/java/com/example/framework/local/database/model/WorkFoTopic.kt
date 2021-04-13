@@ -1,5 +1,6 @@
 package com.example.framework.local.database.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
@@ -23,6 +24,8 @@ class WorkFoTopic : BaseConverter<WorkFoTopic, WorkDataEntity> {
     var createTime: Long = id
     var stt: Int = 0
     var description: String = ""
+
+    @ColumnInfo(name = "timerFocus")
     var timerFocus: Long = -1
 
     override fun convert() = WorkDataEntity(

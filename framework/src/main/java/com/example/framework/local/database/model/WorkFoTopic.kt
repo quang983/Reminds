@@ -24,8 +24,6 @@ class WorkFoTopic : BaseConverter<WorkFoTopic, WorkDataEntity> {
     var createTime: Long = id
     var stt: Int = 0
     var description: String = ""
-
-    @ColumnInfo(name = "timerFocus")
     var timerFocus: Long = -1
 
     override fun convert() = WorkDataEntity(

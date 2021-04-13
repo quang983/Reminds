@@ -55,6 +55,7 @@ abstract class BaseViewModel : ViewModel {
 
 
     val handler = CoroutineExceptionHandler { _: CoroutineContext, throwable: Throwable ->
+        throwable.printStackTrace()
         ExceptionBus.instance.bindException(throwable)
     }
 

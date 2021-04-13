@@ -34,10 +34,4 @@ abstract class BaseDialogFragment<VB : ViewBinding> : DialogFragment() {
         setupLayout()
         setupObserver()
     }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return MaterialAlertDialogBuilder(requireActivity(), R.style.MaterialAlertDialog_rounded)
-            .create()
-    }
-
 }

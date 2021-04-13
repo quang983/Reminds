@@ -137,8 +137,8 @@ object NotificationTimer: Timer {
             setAutoCancel(isAutoCancel)
             setOnlyAlertOnce(isOnlyAlertOnce)
             contentPendingIntent?.let { setContentIntent(it) }
-            if(isControlMode)
-                setStyle(androidx.media.app.NotificationCompat.MediaStyle().setShowActionsInCompactView(0, 1))
+//            if(isControlMode)
+//                setStyle(androidx.media.app.NotificationCompat.MediaStyle().setShowActionsInCompactView(0, 1))
         }
 
     private fun playStateNotification(context: Context, timeLeft: String): Notification =

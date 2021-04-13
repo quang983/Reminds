@@ -24,7 +24,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
     lateinit var notiTimer: NotificationTimer.Builder
+
     private val viewModel: FocusTodoHomeViewModel by viewModels()
+
+    lateinit var animator: ValueAnimator
 
     companion object {
         const val RESULTS_MINUTES_PICKER = "RESULTS_MINUTES_PICKER"
@@ -53,6 +56,8 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
     }
 
     private fun setupLayout() {
+        simulateProgress()
+
         mBinding.tvTime.text = TimestampUtils.convertMiliTimeToTimeHourStr(viewModel.mTimeLeftInMillis.getOrDefault(10000))
 
         val pendingIntent = Intent(requireContext(), FocusTodoActivity::class.java).let {
@@ -73,26 +78,36 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
             .setContentTitle("Timer :)")
 
         mBinding.btnStart.setOnClickListener {
-            viewModel.startTimer()
-            notiTimer.play(viewModel.mTimeLeftInMillis.value ?: 100000)
-            simulateProgress(viewModel.mTimeLeftInMillis.value ?: 100000)
+            if (viewModel.mTimerRunning == STATE.INDIE || viewModel.mTimerRunning == STATE.PAUSE) {
+                startTimer()
+            } else {
+                pauseTimer()
+            }
         }
+    }
+
+    private fun startTimer() {
+        mBinding.btnStart.text = "Pause"
+        animator.duration = viewModel.mTimeLeftInMillis.value ?: 100000
+        viewModel.startTimer()
+        notiTimer.play(viewModel.mTimeLeftInMillis.value ?: 100000)
+        if (animator.isStarted) {
+            animator.resume()
+        } else {
+            animator.start()
+        }
+    }
+
+    private fun pauseTimer() {
+        mBinding.btnStart.text = "Start"
+        viewModel.pauseTimer()
+        notiTimer.pause()
+        animator.pause()
     }
 
     private fun setupObserver() {
         viewModel.timeShowLiveData.observe(viewLifecycleOwner, {
             mBinding.tvTime.text = it.toString()
-        })
-
-        viewModel.stateCalTime.observe(viewLifecycleOwner, {
-            when (it) {
-                true -> {
-
-                }
-                else -> {
-
-                }
-            }
         })
     }
 
@@ -106,14 +121,12 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
     }
 
 
-    private fun simulateProgress(duration: Long) {
-        val animator = ValueAnimator.ofInt(0, 100)
+    private fun simulateProgress() {
+        animator = ValueAnimator.ofInt(0, 100)
         animator.addUpdateListener { animation ->
             val progress = animation.animatedValue as Int
             mBinding.circleCustom.progress = progress
         }
         animator.repeatCount = 0
-        animator.duration = duration
-        animator.start()
     }
 }

@@ -56,11 +56,6 @@ abstract class BaseDialogFullsizeFragment<VB : ViewBinding> : DialogFragment() {
         super.onResume()
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return MaterialAlertDialogBuilder(requireActivity(), R.style.MaterialAlertDialog_rounded)
-            .create()
-    }
-
     override fun onDestroyView() {
         if (dialog != null && retainInstance) {
             dialog?.setDismissMessage(null)

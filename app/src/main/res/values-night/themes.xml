@@ -1,43 +1,124 @@
+<!--<resources xmlns:tools="http://schemas.android.com/tools">-->
+<!--    &lt;!&ndash; Base application theme. &ndash;&gt;-->
+<!--    <style name="Theme.BaseProjects" parent="Theme.MaterialComponents.DayNight.NoActionBar">-->
+<!--        &lt;!&ndash; Primary brand color. &ndash;&gt;-->
+<!--        <item name="colorPrimary">@color/purple_700</item>-->
+<!--        <item name="colorPrimaryVariant">@color/purple_700</item>-->
+<!--        <item name="colorOnPrimary">@color/blue_700</item>-->
+<!--        &lt;!&ndash; Secondary brand color. &ndash;&gt;-->
+<!--        <item name="colorSecondary">@color/teal_200</item>-->
+<!--        <item name="colorSecondaryVariant">@color/teal_200</item>-->
+<!--        <item name="colorOnSecondary">@color/white</item>-->
+<!--        &lt;!&ndash; Status bar color. &ndash;&gt;-->
+<!--        <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>-->
+<!--        <item name="android:actionMenuTextColor">@color/blue_900</item>-->
+<!--        <item name="actionMenuTextColor">@color/blue_900</item>-->
+<!--        <item name="fontFamily">@font/roboto_regular_font</item>-->
+<!--        <item name="bottomSheetDialogTheme">@style/DialogStyle</item>-->
+<!--        &lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+<!--    </style>-->
+
+<!--    <style name="Theme.BaseProjects.NoActionBar">-->
+<!--        <item name="windowActionBar">false</item>-->
+<!--        <item name="windowNoTitle">true</item>-->
+<!--        <item name="colorPrimary">@color/purple_700</item>-->
+<!--        <item name="colorPrimaryVariant">@color/purple_700</item>-->
+<!--        <item name="colorOnPrimary">@color/white</item>-->
+<!--        &lt;!&ndash; Secondary brand color. &ndash;&gt;-->
+<!--        <item name="colorSecondary">@color/teal_200</item>-->
+<!--        <item name="colorSecondaryVariant">@color/teal_200</item>-->
+<!--        <item name="colorOnSecondary">@color/white</item>-->
+<!--        &lt;!&ndash; Status bar color. &ndash;&gt;-->
+<!--        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>-->
+<!--        <item name="android:actionMenuTextColor">@color/blue_900</item>-->
+<!--        <item name="actionMenuTextColor">@color/blue_900</item>-->
+<!--    </style>-->
+
+<!--    <style name="Theme.BaseProjects.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />-->
+
+<!--    <style name="Theme.BaseProjects.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >-->
+
+<!--    </style>-->
+
+<!--    <style name="DialogStyle" parent="Theme.Design.Light.BottomSheetDialog">-->
+<!--        <item name="android:windowIsFloating">false</item>-->
+<!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
+<!--        <item name="android:windowSoftInputMode">adjustResize</item>-->
+<!--        <item name="bottomSheetStyle">@style/CustomBottomSheet</item>-->
+<!--    </style>-->
+
+<!--    <style name="MyCardView" parent="@style/Widget.MaterialComponents.CardView">-->
+<!--        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialCardView.Cut</item>-->
+<!--    </style>-->
+
+
+<!--    <style name="ShapeAppearanceOverlay.MaterialCardView.Cut" parent="">-->
+<!--        <item name="cornerFamily">rounded</item>-->
+<!--        <item name="cornerSizeTopRight">0dp</item>-->
+<!--        <item name="cornerSizeTopLeft">0dp</item>-->
+<!--        <item name="cornerSizeBottomRight">24dp</item>-->
+<!--        <item name="cornerSizeBottomLeft">24dp</item>-->
+<!--    </style>-->
+<!--</resources>-->
+
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.BaseProjects" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.BaseProjects" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_700</item>
+        <item name="colorPrimary">@color/blue_700</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/blue_700</item>
+        <item name="colorOnPrimary">@color/blue_900</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
-        <item name="android:actionMenuTextColor">@color/blue_900</item>
-        <item name="actionMenuTextColor">@color/blue_900</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="fontFamily">@font/roboto_regular_font</item>
         <item name="bottomSheetDialogTheme">@style/DialogStyle</item>
+
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.BaseProjects.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="Theme.BaseProjects.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/purple_700</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/blue_900</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <item name="android:actionMenuTextColor">@color/blue_900</item>
-        <item name="actionMenuTextColor">@color/blue_900</item>
+        <item name="fontFamily">@font/sfprodisplay_regular</item>
     </style>
 
-    <style name="Theme.BaseProjects.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.BaseProjects.AppBarOverlay" parent="Widget.AppCompat.Light.ActionBar">
+        <item name="android:fontFamily">@font/roboto_regular_font</item>
+        <item name="android:textStyle">bold</item>
+        <item name="background">@color/bg_background</item>
+    </style>
 
-    <style name="Theme.BaseProjects.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
+    <style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
 
+    </style>
+
+    <style name="CustomBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="shapeAppearanceOverlay">@style/CustomShapeAppearanceBottomSheetDialog</item>
+    </style>
+
+    <style name="CustomShapeAppearanceBottomSheetDialog" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">16dp</item>
+        <item name="cornerSizeTopLeft">16dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
     </style>
 
     <style name="DialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
@@ -59,4 +140,14 @@
         <item name="cornerSizeBottomRight">24dp</item>
         <item name="cornerSizeBottomLeft">24dp</item>
     </style>
+
+    <style name="MaterialAlertDialog_rounded" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="shapeAppearanceOverlay">@style/DialogCorners</item>
+    </style>
+
+    <style name="DialogCorners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
 </resources>

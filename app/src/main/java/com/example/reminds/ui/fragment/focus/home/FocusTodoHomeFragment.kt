@@ -18,6 +18,7 @@ import com.example.reminds.ui.fragment.focus.dialogtimer.DialogTimerFragment
 import com.example.reminds.utils.TimestampUtils
 import com.example.reminds.utils.getOrDefault
 import com.example.reminds.utils.navigate
+import com.example.reminds.utils.setOnClickListenerBlock
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -59,10 +60,7 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
         }
 
         notiTimer = NotificationTimer.Builder(requireContext())
-            .setSmallIcon(R.drawable.ic_creativity)
-            .setPlayButtonIcon(R.drawable.ic_creativity)
-            .setPauseButtonIcon(R.drawable.ic_creativity)
-            .setStopButtonIcon(R.drawable.ic_creativity)
+            .setSmallIcon(R.drawable.playstore_icon)
             .setControlMode(true)
             .setColor(R.color.blue_700)
             .setShowWhen(false)
@@ -76,8 +74,8 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
 
         mBinding.btnStart.setOnClickListener {
             viewModel.startTimer()
-            notiTimer.play(100000)
-            simulateProgress(100000)
+            notiTimer.play(viewModel.mTimeLeftInMillis.value ?: 100000)
+            simulateProgress(viewModel.mTimeLeftInMillis.value ?: 100000)
         }
     }
 
@@ -101,6 +99,9 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
     private fun setupListener() {
         mBinding.tvTime.setOnClickListener {
             navigate(FocusTodoHomeFragmentDirections.actionFocusTodoFragmentToPickTimerFocusFragment())
+        }
+        mBinding.btnAddTask.setOnClickListenerBlock {
+
         }
     }
 

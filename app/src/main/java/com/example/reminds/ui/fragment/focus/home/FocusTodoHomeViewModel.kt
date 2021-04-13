@@ -10,7 +10,6 @@ import com.example.reminds.utils.TimestampUtils
 import com.example.reminds.utils.getOrDefault
 import dagger.hilt.android.scopes.FragmentScoped
 
-@FragmentScoped
 class FocusTodoHomeViewModel @ViewModelInject constructor() : BaseViewModel() {
     private var mCountDownTimer: CountDownTimer? = null
 
@@ -23,10 +22,6 @@ class FocusTodoHomeViewModel @ViewModelInject constructor() : BaseViewModel() {
     }
 
     val stateCalTime: LiveData<Boolean> = MutableLiveData()
-
-    init {
-        Log.d("tickist", "create new item ")
-    }
 
     fun startTimer() {
         mCountDownTimer = object : CountDownTimer(mTimeLeftInMillis.getOrDefault(10000), 1000) {

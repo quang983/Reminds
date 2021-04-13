@@ -18,6 +18,8 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Theme.BaseProjects.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <style name="Theme.BaseProjects.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -74,6 +76,15 @@
         <item name="cornerSizeTopLeft">0dp</item>
         <item name="cornerSizeBottomRight">24dp</item>
         <item name="cornerSizeBottomLeft">24dp</item>
+    </style>
+
+    <style name="MaterialAlertDialog_rounded" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="shapeAppearanceOverlay">@style/DialogCorners</item>
+    </style>
+
+    <style name="DialogCorners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
     </style>
 
 </resources>

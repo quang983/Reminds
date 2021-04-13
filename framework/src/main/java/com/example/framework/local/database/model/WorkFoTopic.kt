@@ -23,10 +23,11 @@ class WorkFoTopic : BaseConverter<WorkFoTopic, WorkDataEntity> {
     var createTime: Long = id
     var stt: Int = 0
     var description: String = ""
+    var timerFocus: Long = -1
 
     override fun convert() = WorkDataEntity(
         id, name, idOwnerGroup, listContent.map { it.convert() }.toMutableList(),
-        doneAll, isShowContents, hashTag, timerReminder, createTime, stt, description
+        doneAll, isShowContents, hashTag, timerReminder, createTime, stt, description, timerFocus
     )
 
     override fun copy(data: WorkDataEntity): WorkFoTopic {
@@ -41,6 +42,7 @@ class WorkFoTopic : BaseConverter<WorkFoTopic, WorkDataEntity> {
         createTime = data.createTime
         stt = data.stt
         description = data.description
+        timerFocus = data.timerFocus
         return this
     }
 }

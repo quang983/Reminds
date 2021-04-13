@@ -1,5 +1,6 @@
 package com.example.reminds.common
 
+import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
@@ -8,6 +9,8 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import androidx.viewbinding.ViewBinding
+import com.example.reminds.R
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlin.math.min
 
 abstract class BaseDialogFullsizeFragment<VB : ViewBinding> : DialogFragment() {
@@ -51,6 +54,11 @@ abstract class BaseDialogFullsizeFragment<VB : ViewBinding> : DialogFragment() {
         window.setGravity(Gravity.CENTER)
 
         super.onResume()
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return MaterialAlertDialogBuilder(requireActivity(), R.style.MaterialAlertDialog_rounded)
+            .create()
     }
 
     override fun onDestroyView() {

@@ -28,6 +28,6 @@ abstract class AppDataBase : RoomDatabase() {
     abstract fun getWorkWithChildDao(): LocalWorkWithChildDao
 
     companion object {
-        const val DATABASE_NAME = "app_db"
+        const val DATABASE_NAME = "app_db_v2"
     }
 }

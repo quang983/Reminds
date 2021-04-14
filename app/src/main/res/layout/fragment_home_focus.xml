@@ -40,10 +40,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="start"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:backgroundTint="@color/red"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_time" />
+        app:layout_constraintTop_toBottomOf="@id/tv_work_name" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:text="reset"
+        android:visibility="gone"
+        android:backgroundTint="@color/blue"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toEndOf="@id/btn_start"
+        app:layout_constraintTop_toTopOf="@id/btn_start" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_add_task"
@@ -51,6 +64,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_12sdp"
         android:text="add"
+        android:backgroundTint="@color/yellow"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@id/btn_start"
         app:layout_constraintTop_toTopOf="@id/btn_start" />
 
@@ -58,6 +73,9 @@
         android:id="@+id/tv_work_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/text_medium_2"
+        android:textStyle="bold"
+        android:padding="@dimen/_16sdp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_add_task" />
+        app:layout_constraintTop_toBottomOf="@id/circle_custom" />
 </androidx.constraintlayout.widget.ConstraintLayout>

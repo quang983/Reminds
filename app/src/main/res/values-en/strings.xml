@@ -64,7 +64,8 @@
     <string name="reminder_notification">Notification time:</string>
     <string name="desc_hint">Description (Optional)</string>
     <string name="swipe_up_suggest_2">Click on large task to break down the work</string>
-
+    <string name="error_messenger_change_time">Time cannot be changed while in a process</string>
+    <string name="setting_review_app">Rate the app (support us to get more motivated)</string>
     <string-array name="day">
         <item>MO</item>
         <item>TU</item>

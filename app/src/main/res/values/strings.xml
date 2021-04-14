@@ -96,6 +96,8 @@
     <string name="swipe_up_suggest_2">Click vào task lớn để chia nhỏ công việc</string>
     <string name="reminder_notification">Nhắc nhở vào:</string>
     <string name="desc_hint">Mô tả thêm (không bắt buộc)</string>
+    <string name="error_messenger_change_time">Không thể thay đổi thời gian khi đang trong 1 quá trình</string>
+    <string name="setting_review_app">Đánh giá ứng dụng(ủng hộ chúng tôi có thêm động lực nhé)</string>
 
     <string-array name="day">
         <item>T2</item>

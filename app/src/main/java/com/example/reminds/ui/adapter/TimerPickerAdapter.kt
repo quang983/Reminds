@@ -29,9 +29,9 @@ class TimerPickerAdapter : BaseAdapter<Int>(object : DiffUtil.ItemCallback<Int>(
     }
 
     override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: Int) {
-        if(item <=120){
+        if (item in 5..120) {
             view.tv_time.text = item.toString()
-        }else{
+        } else {
             view.tv_time.text = ""
         }
     }

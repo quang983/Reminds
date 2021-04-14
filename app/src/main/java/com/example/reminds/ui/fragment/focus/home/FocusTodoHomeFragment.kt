@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.app.NotificationCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -16,11 +17,12 @@ import com.example.reminds.service.timer.NotificationTimer
 import com.example.reminds.ui.activity.focus.FocusTodoActivity
 import com.example.reminds.ui.fragment.focus.dialogtimer.DialogTimerFragment
 import com.example.reminds.ui.sharedviewmodel.FocusActivityViewModel
-import com.example.reminds.utils.TimestampUtils
-import com.example.reminds.utils.getOrDefault
+import com.example.reminds.utils.gone
 import com.example.reminds.utils.navigate
 import com.example.reminds.utils.setOnClickListenerBlock
+import com.example.reminds.utils.visible
 import dagger.hilt.android.AndroidEntryPoint
+import www.sanju.motiontoast.MotionToast
 
 @AndroidEntryPoint
 class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
@@ -47,7 +49,7 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
 
     private fun setFragmentResult() {
         setFragmentResultListener(RESULTS_MINUTES_PICKER) { _, bundle ->
-            viewModel.mTimeLeftInMillis.postValue(bundle.getLong(DialogTimerFragment.EXTRAS_MINUTES_DATA))
+            viewModel.setTimerData(bundle.getLong(DialogTimerFragment.EXTRAS_MINUTES_DATA))
         }
     }
 
@@ -60,19 +62,16 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
 
     private fun setupLayout() {
         simulateProgress()
-
-        mBinding.tvTime.text = TimestampUtils.convertMiliTimeToTimeHourStr(viewModel.mTimeLeftInMillis.getOrDefault(10000))
-
         val pendingIntent = Intent(requireContext(), FocusTodoActivity::class.java).let {
             PendingIntent.getActivity(requireContext(), 0, it, PendingIntent.FLAG_UPDATE_CURRENT)
         }
 
-        notiTimer = NotificationTimer.Builder(requireContext())
+        notiTimer = NotificationTimer.Builder(requireActivity())
             .setSmallIcon(R.drawable.playstore_icon)
             .setControlMode(true)
             .setColor(R.color.blue_700)
             .setShowWhen(false)
-            .setAutoCancel(false)
+            .setAutoCancel(true)
             .setOnlyAlertOnce(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
@@ -90,9 +89,9 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
     }
 
     private fun startTimer() {
-        animator.duration = viewModel.mTimeLeftInMillis.value ?: 100000
+        animator.duration = viewModel.mTimeLeftInMillis
         viewModel.startTimer()
-        notiTimer.play(viewModel.mTimeLeftInMillis.value ?: 100000)
+        notiTimer.play(viewModel.mTimeLeftInMillis)
         if (animator.isStarted) {
             animator.resume()
         } else {
@@ -120,22 +119,32 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
         viewModel.timerRunningStateLiveData.observe(viewLifecycleOwner, {
             when (it) {
                 STATE.INDIE -> {
+                    notiTimer.terminate()
+                    animator.cancel()
+                    mBinding.btnReset.gone()
                     mBinding.btnStart.text = "Start"
                 }
                 STATE.RESUME -> {
+                    mBinding.btnReset.visible()
                     mBinding.btnStart.text = "Pause"
                 }
                 STATE.PAUSE -> {
+                    mBinding.btnReset.visible()
                     mBinding.btnStart.text = "Continue"
                 }
                 STATE.FINISH -> {
-                    mBinding.btnStart.text = "Done"
+                    notiTimer.terminate()
+                    animator.cancel()
+                    mBinding.btnReset.gone()
+                    mBinding.btnStart.text = "Start"
                     //show man hinh chuc mung
+                    viewModel.resetState()
                     viewModelShared.doneAllInWork()
                     navigate(FocusTodoHomeFragmentDirections.actionFocusTodoFragmentToSuccessFocusFragment())
                 }
                 else -> {
-
+                    mBinding.tvTime.isClickable = false
+                    mBinding.btnReset.gone()
                 }
             }
         })
@@ -143,10 +152,27 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
 
     private fun setupListener() {
         mBinding.tvTime.setOnClickListener {
-            navigate(FocusTodoHomeFragmentDirections.actionFocusTodoFragmentToPickTimerFocusFragment())
+            if (viewModel.timerRunningStateLiveData.value == STATE.INDIE) {
+                navigate(FocusTodoHomeFragmentDirections.actionFocusTodoFragmentToPickTimerFocusFragment())
+            } else {
+                MotionToast.createToast(
+                    requireActivity(),
+                    getString(R.string.notify_title),
+                    resources.getString(R.string.error_messenger_change_time),
+                    MotionToast.TOAST_ERROR,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.SHORT_DURATION,
+                    ResourcesCompat.getFont(requireActivity(), R.font.roboto_medium)
+                )
+            }
         }
+
         mBinding.btnAddTask.setOnClickListenerBlock {
             navigate(FocusTodoHomeFragmentDirections.actionFocusTodoFragmentToSearchFocusFragment())
+        }
+
+        mBinding.btnReset.setOnClickListenerBlock {
+            viewModel.resetState()
         }
     }
 

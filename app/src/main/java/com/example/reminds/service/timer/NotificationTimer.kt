@@ -23,9 +23,9 @@ interface Timer {
 typealias onFinishListener = () -> Unit
 typealias onTickListener = (Long) -> Unit
 
-object NotificationTimer: Timer {
+object NotificationTimer : Timer {
 
-    private var notiIcon:Int? = null
+    private var notiIcon: Int? = null
     private var notiTitle: CharSequence = ""
     private var showWhen = false
     private var notiColor = 0x66FFFFFF
@@ -48,7 +48,7 @@ object NotificationTimer: Timer {
     private var setStartTime by Delegates.notNull<Long>()
 
     override fun play(context: Context, timeMillis: Long) {
-        if(HelloService.state == TimerState.RUNNING) return
+        if (HelloService.state == TimerState.RUNNING) return
 
         val playIntent = Intent(context, HelloService::class.java).apply {
             action = "PLAY"
@@ -59,7 +59,7 @@ object NotificationTimer: Timer {
     }
 
     override fun pause(context: Context) {
-        if(HelloService.state != TimerState.RUNNING) return
+        if (HelloService.state != TimerState.RUNNING) return
 
         val pauseIntent = Intent(context, HelloService::class.java).apply {
             action = "PAUSE"
@@ -68,7 +68,7 @@ object NotificationTimer: Timer {
     }
 
     override fun stop(context: Context) {
-        if(HelloService.state == TimerState.STOPPED) return
+        if (HelloService.state == TimerState.STOPPED) return
 
         val stopIntent = Intent(context, HelloService::class.java).apply {
             action = "STOP"
@@ -77,7 +77,7 @@ object NotificationTimer: Timer {
     }
 
     override fun terminate(context: Context) {
-        if(!::notificationManager.isInitialized && HelloService.state == TimerState.TERMINATED) return
+        if (!::notificationManager.isInitialized && HelloService.state == TimerState.TERMINATED) return
 
         val terminateIntent = Intent(context, HelloService::class.java).apply {
             action = "TERMINATE"
@@ -103,8 +103,8 @@ object NotificationTimer: Timer {
 
         this.setStartTime = setTime
 
-        val minutesUntilFinished = (setTime/1000 - 1) / 60
-        val secondsInMinuteUntilFinished = ((setTime/1000 - 1) - minutesUntilFinished * 60)
+        val minutesUntilFinished = (setTime / 1000 - 1) / 60
+        val secondsInMinuteUntilFinished = ((setTime / 1000 - 1) - minutesUntilFinished * 60)
         val secondsStr = secondsInMinuteUntilFinished.toString()
         val showTime =
             "$minutesUntilFinished : ${if (secondsStr.length == 2) secondsStr else "0$secondsStr"}"
@@ -118,7 +118,7 @@ object NotificationTimer: Timer {
 
     fun updateStopState(context: Context, timeLeft: String, timeUp: Boolean = false) {
         notificationManager.notify(55, standByStateNotification(context, timeLeft))
-        if(timeUp)
+        if (timeUp)
             finishListener?.invoke()
     }
 
@@ -143,7 +143,7 @@ object NotificationTimer: Timer {
 
     private fun playStateNotification(context: Context, timeLeft: String): Notification =
         baseNotificationBuilder(context, timeLeft).apply {
-            if(isControlMode) {
+            if (isControlMode) {
                 pauseBtnIcon?.let { addAction(it, "pause", pausePendingIntent) }
                 stopBtnIcon?.let { addAction(it, "stop", stopPendingIntent) }
             }
@@ -151,7 +151,7 @@ object NotificationTimer: Timer {
 
     private fun pauseStateNotification(context: Context, timeLeft: String): Notification =
         baseNotificationBuilder(context, timeLeft).apply {
-            if(isControlMode) {
+            if (isControlMode) {
                 playBtnIcon?.let { addAction(it, "play", getPlayPendingIntent(context, true)) }
                 stopBtnIcon?.let { addAction(it, "stop", stopPendingIntent) }
             }
@@ -159,7 +159,7 @@ object NotificationTimer: Timer {
 
     private fun standByStateNotification(context: Context, timeLeft: String): Notification =
         baseNotificationBuilder(context, timeLeft).apply {
-            if(isControlMode) {
+            if (isControlMode) {
                 playBtnIcon?.let { addAction(it, "play", getPlayPendingIntent(context)) }
                 stopBtnIcon?.let { addAction(it, "stop", stopPendingIntent) }
             }
@@ -245,6 +245,10 @@ object NotificationTimer: Timer {
         fun setOnTickListener(listener: onTickListener): Builder {
             tickListener = listener
             return this
+        }
+
+        fun build(): Notification {
+            return this.build()
         }
 
         fun play(timeMillis: Long) = play(context, timeMillis)

@@ -13,7 +13,7 @@ class DialogTimerViewModel @ViewModelInject constructor() : BaseViewModel() {
     var minuteSelectedItem: Long = 0
 
     init {
-        for (i in 1..122) {
+        for (i in 3..122) {
             _listMinute.add(i)
         }
         listMinuteItemView.postValue(_listMinute)

@@ -28,9 +28,9 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
 
     private val viewModel: FocusTodoHomeViewModel by viewModels()
 
-    lateinit var animator: ValueAnimator
-
     val viewModelShared: FocusActivityViewModel by activityViewModels()
+
+    lateinit var animator: ValueAnimator
 
     companion object {
         const val RESULTS_MINUTES_PICKER = "RESULTS_MINUTES_PICKER"
@@ -131,6 +131,7 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
                 STATE.FINISH -> {
                     mBinding.btnStart.text = "Done"
                     //show man hinh chuc mung
+                    viewModelShared.doneAllInWork()
                     navigate(FocusTodoHomeFragmentDirections.actionFocusTodoFragmentToSuccessFocusFragment())
                 }
                 else -> {

@@ -41,6 +41,9 @@
         <action
             android:id="@+id/action_SecondFragment_to_OptionForWorkBSFragment"
             app:destination="@id/OptionForWorkBSFragment" />
+        <action
+            android:id="@+id/action_SecondFragment_to_FocusTodoFragment"
+            app:destination="@id/FocusTodoFragment" />
 
     </fragment>
 
@@ -125,6 +128,9 @@
         <action
             android:id="@+id/action_NewUpcomingFragment_to_dateTimePickerDialog"
             app:destination="@id/dateTimePickerDialog" />
+        <action
+            android:id="@+id/action_NewUpcomingFragment_to_FocusTodoFragment"
+            app:destination="@id/FocusTodoFragment" />
     </fragment>
 
     <dialog
@@ -140,10 +146,16 @@
     <fragment
         android:id="@+id/FocusTodoFragment"
         android:name="com.example.reminds.ui.fragment.focus.home.FocusTodoHomeFragment"
-        tools:layout="@layout/fragment_home_focus" >
+        tools:layout="@layout/fragment_home_focus">
         <action
             android:id="@+id/action_FocusTodoFragment_to_PickTimerFocusFragment"
             app:destination="@id/PickTimerFocusFragment" />
+        <action
+            android:id="@+id/action_FocusTodoFragment_to_SearchFocusFragment"
+            app:destination="@id/SearchFocusFragment" />
+        <action
+            android:id="@+id/action_FocusTodoFragment_to_SuccessFocusFragment"
+            app:destination="@id/SuccessFocusFragment" />
     </fragment>
 
     <dialog
@@ -151,4 +163,13 @@
         android:name="com.example.reminds.ui.fragment.focus.dialogtimer.DialogTimerFragment"
         tools:layout="@layout/fragment_dialog_timer_picker" />
 
+    <fragment
+        android:id="@+id/SearchFocusFragment"
+        android:name="com.example.reminds.ui.fragment.focus.search.SearchTickistFragment"
+        tools:layout="@layout/fragment_search_tickist" />
+
+    <fragment
+        android:id="@+id/SuccessFocusFragment"
+        android:name="com.example.reminds.ui.fragment.focus.success.SuccessFocusFragment"
+        tools:layout="@layout/fragment_success_focus" />
 </navigation>

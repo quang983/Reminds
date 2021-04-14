@@ -23,7 +23,8 @@ class ListWorkAdapter(
     private val moreActionClick: (item: ContentDataEntity, type: Int, workId: Long) -> Unit,
     private val handlerCheckedAll: (workId: Long, doneAll: Boolean) -> Unit,
     private val updateDataChanged: (workId: Long, isShowContent: Boolean) -> Unit,
-    private val intoSettingFragment: (work: WorkDataEntity) -> Unit
+    private val intoSettingFragment: (work: WorkDataEntity) -> Unit,
+    private val actionFocusListener: (work: WorkDataEntity) -> Unit
 ) :
     BaseAdapter<WorkDataEntity>(object : DiffUtil.ItemCallback<WorkDataEntity>() {
 
@@ -234,6 +235,12 @@ class ListWorkAdapter(
             (view.tag as? WorkDataEntity)?.copy()?.let { item ->
                 view.swipeLayout.close(true)
                 intoSettingFragment.invoke(item)
+            }
+        }
+
+        view.imgFocus.setOnClickListenerBlock {
+            (view.tag as? WorkDataEntity)?.copy()?.let { item ->
+                actionFocusListener.invoke(item)
             }
         }
 

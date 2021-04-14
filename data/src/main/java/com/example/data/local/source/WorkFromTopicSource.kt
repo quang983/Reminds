@@ -9,4 +9,6 @@ interface WorkFromTopicSource :BaseSource<WorkDataEntity>{
     suspend fun fetchAll(idGroup: Long): List<WorkDataEntity>
 
     suspend fun getWorkById(idWork : Long) : WorkDataEntity?
+
+    suspend fun getAllWorkDependState(state : Int) : Flow<List<WorkDataEntity>>
 }

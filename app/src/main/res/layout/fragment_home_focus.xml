@@ -53,4 +53,11 @@
         android:text="add"
         app:layout_constraintEnd_toStartOf="@id/btn_start"
         app:layout_constraintTop_toTopOf="@id/btn_start" />
+
+    <TextView
+        android:id="@+id/tv_work_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_add_task" />
 </androidx.constraintlayout.widget.ConstraintLayout>

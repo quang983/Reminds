@@ -20,6 +20,10 @@ class WorkFromTopicRepositoryImpl @Inject constructor(private val workFromTopicS
         return workFromTopicSource.getWorkById(idWork)
     }
 
+    override suspend fun getAllWorkDependState(state: Int): Flow<List<WorkDataEntity>> {
+        return workFromTopicSource.getAllWorkDependState(state)
+    }
+
     override suspend fun insertData(data: WorkDataEntity): Long {
         return workFromTopicSource.insert(data)
     }

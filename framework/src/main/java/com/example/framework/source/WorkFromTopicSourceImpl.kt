@@ -36,6 +36,32 @@ class WorkFromTopicSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun getAllWorkDependState(state: Int): Flow<List<WorkDataEntity>> {
+        when (state) {
+            0 -> {
+                return dao.getAllWorkDependStateFlow(false).distinctUntilChanged().map { it ->
+                    it.map { it.convert() }
+                }.conflate()
+            }
+            1 -> {
+                return dao.getAllWorkDependStateFlow(true).distinctUntilChanged().map { it ->
+                    it.map { it.convert() }
+                }.conflate()
+            }
+            2 -> {
+                return dao.getAllWorkFlow().distinctUntilChanged().map { it ->
+                    it.map { it.convert() }
+                }.conflate()
+            }
+            else -> {
+                return dao.getAllWorkDependStateFlow(false).distinctUntilChanged().map { it ->
+                    it.map { it.convert() }
+                }.conflate()
+            }
+
+        }
+    }
+
     override suspend fun insert(data: WorkDataEntity): Long {
         return dao.insert(
             WorkFoTopic().copy(data)

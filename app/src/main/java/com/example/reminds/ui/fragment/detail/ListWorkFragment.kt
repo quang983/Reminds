@@ -23,6 +23,7 @@ import com.example.reminds.common.OnSwipeTouchListener
 import com.example.reminds.ui.adapter.ListContentCheckAdapter
 import com.example.reminds.ui.adapter.ListWorkAdapter
 import com.example.reminds.ui.fragment.setting.WorksSettingFragment.Companion.DATA_OPTION_SELECTED
+import com.example.reminds.ui.sharedviewmodel.FocusActivityViewModel
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import com.example.reminds.utils.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -42,6 +43,8 @@ class ListWorkFragment : Fragment(), CallbackItemTouch {
 
     private val viewModel: ListWorkViewModel by viewModels()
     private val homeSharedViewModel: MainActivityViewModel by activityViewModels()
+    private val focusSharedViewModel: FocusActivityViewModel by activityViewModels()
+
     private lateinit var adapter: ListWorkAdapter
     private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
 
@@ -167,6 +170,9 @@ class ListWorkFragment : Fragment(), CallbackItemTouch {
                 }
             }, intoSettingFragment = {
                 navigate(ListWorkFragmentDirections.actionSecondFragmentToOptionForWorkBSFragment(it.id, TYPE_NORMAL, args.idGroup))
+            }, actionFocusListener = {
+                focusSharedViewModel.itemWorkSelected.postValue(it)
+                navigate(ListWorkFragmentDirections.actionSecondFragmentToFocusTodoFragment())
             }).apply {
             recyclerWorks.adapter = this
             val callback: ItemTouchHelper.Callback = MyItemTouchHelperCallback(this@ListWorkFragment)

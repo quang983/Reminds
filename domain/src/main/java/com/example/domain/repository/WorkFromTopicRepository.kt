@@ -9,5 +9,8 @@ interface WorkFromTopicRepository : BaseRepository<WorkDataEntity> {
 
     suspend fun fetchAllWorkFromTopic(idGroup: Long): List<WorkDataEntity>
 
-    suspend fun getWorkFromTopicById(idWork : Long) : WorkDataEntity?
+    suspend fun getWorkFromTopicById(idWork: Long): WorkDataEntity?
+
+    //state = 0: not check, 1:check, 2 getAll
+    suspend fun getAllWorkDependState(state: Int): Flow<List<WorkDataEntity>>
 }

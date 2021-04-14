@@ -15,6 +15,14 @@ interface LocalWorkFromTopicDao : BaseDao<WorkFoTopic> {
     fun fetchWorkFromTopicDataFlow(id: Long): Flow<TopicGroupWithWorks>
 
     @Transaction
+    @Query("SELECT * FROM WorkFoTopic where doneAll=:doneAll")
+    fun getAllWorkDependStateFlow(doneAll: Boolean): Flow<List<WorkFoTopic>>
+
+    @Transaction
+    @Query("SELECT * FROM WorkFoTopic")
+    fun getAllWorkFlow(): Flow<List<WorkFoTopic>>
+
+    @Transaction
     @Query("SELECT * FROM TopicGroup where idTopic=:id")
     fun fetchWorkFromTopicData(id: Long): TopicGroupWithWorks?
 

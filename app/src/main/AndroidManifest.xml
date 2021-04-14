@@ -10,10 +10,6 @@
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
-    <meta-data
-        android:name="firebase_crashlytics_collection_enabled"
-        android:value="${crashlyticsCollectionEnabled}" />
-
     <application
         android:name="com.example.reminds.AppComponent"
         android:allowBackup="true"
@@ -24,6 +20,11 @@
         android:theme="@style/Theme.BaseProjects"
         android:usesCleartextTraffic="true">
         <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="${crashlyticsCollectionEnabled}" />
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-8336447374457268~8562701281" />

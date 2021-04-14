@@ -5,8 +5,8 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.example.reminds.R
@@ -15,6 +15,7 @@ import com.example.reminds.databinding.FragmentHomeFocusBinding
 import com.example.reminds.service.timer.NotificationTimer
 import com.example.reminds.ui.activity.focus.FocusTodoActivity
 import com.example.reminds.ui.fragment.focus.dialogtimer.DialogTimerFragment
+import com.example.reminds.ui.sharedviewmodel.FocusActivityViewModel
 import com.example.reminds.utils.TimestampUtils
 import com.example.reminds.utils.getOrDefault
 import com.example.reminds.utils.navigate
@@ -28,6 +29,8 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
     private val viewModel: FocusTodoHomeViewModel by viewModels()
 
     lateinit var animator: ValueAnimator
+
+    val viewModelShared: FocusActivityViewModel by activityViewModels()
 
     companion object {
         const val RESULTS_MINUTES_PICKER = "RESULTS_MINUTES_PICKER"
@@ -73,12 +76,12 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
             .setOnlyAlertOnce(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
-            .setOnTickListener { /*mBinding.timeUntilFinishText.text = it.toString()*/ }
-            .setOnFinishListener { Toast.makeText(requireContext(), "timer finished", Toast.LENGTH_SHORT).show() }
+            .setOnTickListener { }
+            .setOnFinishListener { }
             .setContentTitle("Timer :)")
 
         mBinding.btnStart.setOnClickListener {
-            if (viewModel.mTimerRunning == STATE.INDIE || viewModel.mTimerRunning == STATE.PAUSE) {
+            if (viewModel.timerRunningStateLiveData.value == STATE.INDIE || viewModel.timerRunningStateLiveData.value == STATE.PAUSE) {
                 startTimer()
             } else {
                 pauseTimer()
@@ -87,7 +90,6 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
     }
 
     private fun startTimer() {
-        mBinding.btnStart.text = "Pause"
         animator.duration = viewModel.mTimeLeftInMillis.value ?: 100000
         viewModel.startTimer()
         notiTimer.play(viewModel.mTimeLeftInMillis.value ?: 100000)
@@ -99,7 +101,6 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
     }
 
     private fun pauseTimer() {
-        mBinding.btnStart.text = "Start"
         viewModel.pauseTimer()
         notiTimer.pause()
         animator.pause()
@@ -109,6 +110,34 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
         viewModel.timeShowLiveData.observe(viewLifecycleOwner, {
             mBinding.tvTime.text = it.toString()
         })
+
+        viewModelShared.itemWorkSelected.observe(viewLifecycleOwner, {
+            it?.let {
+                mBinding.tvWorkName.text = it.name
+            }
+        })
+
+        viewModel.timerRunningStateLiveData.observe(viewLifecycleOwner, {
+            when (it) {
+                STATE.INDIE -> {
+                    mBinding.btnStart.text = "Start"
+                }
+                STATE.RESUME -> {
+                    mBinding.btnStart.text = "Pause"
+                }
+                STATE.PAUSE -> {
+                    mBinding.btnStart.text = "Continue"
+                }
+                STATE.FINISH -> {
+                    mBinding.btnStart.text = "Done"
+                    //show man hinh chuc mung
+                    navigate(FocusTodoHomeFragmentDirections.actionFocusTodoFragmentToSuccessFocusFragment())
+                }
+                else -> {
+
+                }
+            }
+        })
     }
 
     private fun setupListener() {
@@ -116,7 +145,7 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
             navigate(FocusTodoHomeFragmentDirections.actionFocusTodoFragmentToPickTimerFocusFragment())
         }
         mBinding.btnAddTask.setOnClickListenerBlock {
-
+            navigate(FocusTodoHomeFragmentDirections.actionFocusTodoFragmentToSearchFocusFragment())
         }
     }
 

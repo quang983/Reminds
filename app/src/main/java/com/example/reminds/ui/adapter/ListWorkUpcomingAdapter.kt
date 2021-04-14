@@ -9,11 +9,18 @@ import com.example.reminds.R
 import com.example.reminds.common.BaseAdapter
 import com.example.reminds.common.BaseViewHolder
 import com.example.reminds.utils.*
+import kotlinx.android.synthetic.main.item_work_group.view.*
 import kotlinx.android.synthetic.main.item_work_upcoming.view.*
+import kotlinx.android.synthetic.main.item_work_upcoming.view.imgFocus
+import kotlinx.android.synthetic.main.item_work_upcoming.view.imgSetting
+import kotlinx.android.synthetic.main.item_work_upcoming.view.swipeLayout
+import kotlinx.android.synthetic.main.item_work_upcoming.view.tvDescription
+import kotlinx.android.synthetic.main.item_work_upcoming.view.tvTitle
 
 class ListWorkUpcomingAdapter(
     private val handlerCheckedAll: (workId: Long, doneAll: Boolean) -> Unit,
     private val showOptionChangeItem: (work: WorkDataEntity) -> Unit,
+    private val actionFocusListener: (work: WorkDataEntity) -> Unit
 ) :
     BaseAdapter<WorkDataEntity>(object : DiffUtil.ItemCallback<WorkDataEntity>() {
 
@@ -195,6 +202,12 @@ class ListWorkUpcomingAdapter(
             (view.tag as? WorkDataEntity)?.copy()?.let { item ->
                 view.swipeLayout.close(true)
                 showOptionChangeItem.invoke(item)
+            }
+        }
+
+        view.imgFocus.setOnClickListenerBlock {
+            (view.tag as? WorkDataEntity)?.copy()?.let { item ->
+                actionFocusListener.invoke(item)
             }
         }
 

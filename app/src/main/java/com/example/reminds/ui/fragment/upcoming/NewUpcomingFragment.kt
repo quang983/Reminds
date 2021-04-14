@@ -17,7 +17,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.common.base.model.AlarmNotificationEntity
 import com.example.common.base.model.ContentDataEntity
-import com.example.common.base.model.TopicGroupEntity
 import com.example.common.base.model.TopicGroupEntity.Companion.TYPE_UPCOMING
 import com.example.framework.local.cache.CacheImpl
 import com.example.reminds.R
@@ -31,6 +30,7 @@ import com.example.reminds.ui.activity.MainActivity
 import com.example.reminds.ui.adapter.ListWorkUpcomingAdapter
 import com.example.reminds.ui.fragment.detail.ListWorkViewModel
 import com.example.reminds.ui.fragment.setting.WorksSettingFragment
+import com.example.reminds.ui.sharedviewmodel.FocusActivityViewModel
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import com.example.reminds.utils.*
 import com.example.reminds.utils.DateUtils.toMilisTime
@@ -55,6 +55,11 @@ import java.util.*
 
 @AndroidEntryPoint
 class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), CallbackItemTouch {
+    private val viewModelUpcoming: UpcomingViewModel by viewModels()
+    private val viewModelFocusShared: FocusActivityViewModel by activityViewModels()
+    private val viewModel: ListWorkViewModel by viewModels()
+    private val homeSharedViewModel: MainActivityViewModel by activityViewModels()
+
     override fun getViewBinding(): FragmentUpcomingNewBinding {
         return FragmentUpcomingNewBinding.inflate(layoutInflater)
     }
@@ -62,9 +67,6 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
     private val selectionFormatter = DateTimeFormatter.ofPattern("d MMM yyyy")
     private val events = hashMapOf<Long, String>()
 
-    private val viewModelUpcoming: UpcomingViewModel by viewModels()
-    private val viewModel: ListWorkViewModel by viewModels()
-    private val homeSharedViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var adapter: ListWorkUpcomingAdapter
     private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
 
@@ -163,7 +165,10 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
         adapter = ListWorkUpcomingAdapter(handlerCheckedAll = { workId, doneAll ->
             viewModel.handleDoneAllContentFromWork(workId, doneAll)
         }, {
-            navigate(NewUpcomingFragmentDirections.actionNewUpcomingFragmentToOptionForWorkBSFragment(it.id, TopicGroupEntity.TYPE_UPCOMING, it.groupId))
+            navigate(NewUpcomingFragmentDirections.actionNewUpcomingFragmentToOptionForWorkBSFragment(it.id, TYPE_UPCOMING, it.groupId))
+        }, {
+            viewModelFocusShared.itemWorkSelected.postValue(it)
+            navigate(NewUpcomingFragmentDirections.actionNewUpcomingFragmentToFocusTodoFragment())
         }).apply {
             mBinding.recyclerWorks.adapter = this
             val callback: ItemTouchHelper.Callback = MyItemTouchHelperCallback(this@NewUpcomingFragment)

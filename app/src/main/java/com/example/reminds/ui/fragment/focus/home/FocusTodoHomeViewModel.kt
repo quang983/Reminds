@@ -9,13 +9,17 @@ import com.example.reminds.utils.TimestampUtils
 import com.example.reminds.utils.getOrDefault
 
 enum class STATE {
-    START, PAUSE, CANCEL, INDIE
+    RESUME, PAUSE, FINISH, INDIE
 }
 
 class FocusTodoHomeViewModel @ViewModelInject constructor() : BaseViewModel() {
     private var mCountDownTimer: CountDownTimer? = null
 
-    var mTimerRunning = STATE.INDIE
+    private var mTimerRunningState: MutableLiveData<STATE> = MutableLiveData(STATE.INDIE)
+
+    var timerRunningStateLiveData: LiveData<STATE> = mTimerRunningState.switchMapLiveDataEmit {
+        it
+    }
 
     var mTimeLeftInMillis: MutableLiveData<Long> = MutableLiveData()
 
@@ -30,14 +34,14 @@ class FocusTodoHomeViewModel @ViewModelInject constructor() : BaseViewModel() {
             }
 
             override fun onFinish() {
-                mTimerRunning = STATE.CANCEL
+                mTimerRunningState.postValue(STATE.FINISH)
             }
         }.start()
-        mTimerRunning = STATE.START
+        mTimerRunningState.postValue(STATE.RESUME)
     }
 
     fun pauseTimer() {
         mCountDownTimer?.cancel()
-        mTimerRunning = STATE.PAUSE
+        mTimerRunningState.postValue(STATE.PAUSE)
     }
 }

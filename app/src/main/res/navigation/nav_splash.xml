@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_splash"
+    app:startDestination="@id/SplashFragment">
+    <fragment
+        android:id="@+id/SplashFragment"
+        android:name="com.example.reminds.ui.activity.splash.fragment.splash.SplashScreenFragment"
+        android:label="@string/page_home"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_SplashFragment_to_OnboardingDialogFragment"
+            app:destination="@id/OnboardingDialogFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/OnboardingDialogFragment"
+        android:name="com.example.reminds.ui.activity.splash.fragment.onboarding.OnboardingFragment"
+        tools:layout="@layout/fragment_onboarding">
+    </dialog>
+</navigation>

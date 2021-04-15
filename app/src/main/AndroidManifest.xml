@@ -44,11 +44,6 @@
             android:name="com.example.reminds.ui.activity.MainActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
-        <activity
-            android:name="com.example.reminds.ui.activity.focus.FocusTodoActivity"
-            android:theme="@style/Theme.BaseProjects"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-
         <service android:name=".service.NotificationService" />
 
         <service

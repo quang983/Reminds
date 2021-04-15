@@ -87,4 +87,9 @@
         <item name="cornerSize">16dp</item>
     </style>
 
+
+    <style name="DialogFullScreen" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowNoTitle">true</item>
+    </style>
+
 </resources>

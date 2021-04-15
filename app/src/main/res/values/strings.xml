@@ -99,6 +99,9 @@
     <string name="error_messenger_change_time">Không thể thay đổi thời gian khi đang trong 1 quá trình</string>
     <string name="setting_review_app">Đánh giá ứng dụng(ủng hộ chúng tôi có thêm động lực nhé)</string>
 
+    <string name="button_text_complete" translatable="false">Complete</string>
+    <string name="button_text_next" translatable="false">Next</string>
+
     <string-array name="day">
         <item>T2</item>
         <item>T3</item>

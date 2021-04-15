@@ -79,4 +79,15 @@
     <color name="yellow">#ffee33</color>
     <color name="red">#ff2658</color>
     <color name="blue">#3033ff</color>
+
+
+    <color name="onboarding_background">#FFFFFF</color>
+
+    <color name="color_onboarding_page1">#A271F2</color>
+    <color name="color_onboarding_page2">#CC3CB2E2</color>
+    <color name="color_onboarding_page3">#222A7C</color>
+
+    <color name="text_color_onboarding_page1">#f1f1f1</color>
+    <color name="text_color_onboarding_page2">#f1f1f1</color>
+    <color name="text_color_onboarding_page3">#f1f1f1</color>
 </resources>

@@ -71,7 +71,7 @@ class TimerService : JobIntentService() {
     }
 
     private fun startForeground() {
-        val channelId = "${applicationContext.packageName}.timer"
+        val channelId = "${applicationContext.packageName}.timerr"
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
         val notification = notificationBuilder.setOngoing(true)

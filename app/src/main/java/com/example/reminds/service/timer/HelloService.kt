@@ -1,8 +1,11 @@
 package com.example.reminds.service.timer
 
+import android.app.Notification
 import android.app.Service
 import android.content.Intent
 import android.os.*
+import androidx.core.app.NotificationCompat
+import com.example.reminds.R
 
 enum class TimerHelloState { STOPPED, PAUSED, RUNNING, TERMINATED }
 
@@ -20,6 +23,24 @@ class HelloService : Service() {
     private lateinit var showTime: String
 
     override fun onBind(intent: Intent): IBinder? = null
+
+    override fun onCreate() {
+        super.onCreate()
+        startForeground()
+    }
+
+    private fun startForeground() {
+        val channelId = "${applicationContext.packageName}.timer"
+
+        val notificationBuilder = NotificationCompat.Builder(this, channelId)
+        val notification = notificationBuilder.setOngoing(true)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setPriority(NotificationCompat.PRIORITY_MIN)
+            .setCategory(Notification.CATEGORY_SERVICE)
+            .build()
+        startForeground(foreGroundId, notification)
+    }
+
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent != null) {
@@ -60,7 +81,6 @@ class HelloService : Service() {
         timer = object : CountDownTimer(secondsRemaining, 1000) {
             override fun onFinish() {
                 state = TimerState.STOPPED
-                //초기 세팅됬었던 카운트다운 시간값을 노티에 재세팅
                 val minutesUntilFinished = setTime / 1000 / 60
                 val secondsInMinuteUntilFinished = ((setTime / 1000) - minutesUntilFinished * 60)
                 val secondsStr = secondsInMinuteUntilFinished.toString()

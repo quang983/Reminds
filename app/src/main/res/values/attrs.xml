@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="CircleCheckbox">
-<!--        <attr name="tickColor" format="string"/>-->
+        <!--        <attr name="tickColor" format="string"/>-->
         <attr name="showOuterCircle" format="boolean" />
-        <attr name="outerCircleColor" format="string"/>
-        <attr name="innerCircleColor" format="string"/>
-        <attr name="textColorCheckBox" format="string"/>
-        <attr name="circleBorderColor" format="string"/>
+        <attr name="outerCircleColor" format="string" />
+        <attr name="innerCircleColor" format="string" />
+        <attr name="textColorCheckBox" format="string" />
+        <attr name="circleBorderColor" format="string" />
 
-        <attr name="outerCircleRadius" format="dimension"/>
-        <attr name="innerCircleRadius" format="dimension"/>
-        <attr name="textSize" format="dimension"/>
-        <attr name="borderThickness" format="dimension"/>
-        <attr name="tickThickness" format="dimension"/>
+        <attr name="outerCircleRadius" format="dimension" />
+        <attr name="innerCircleRadius" format="dimension" />
+        <attr name="textSize" format="dimension" />
+        <attr name="borderThickness" format="dimension" />
+        <attr name="tickThickness" format="dimension" />
 
-        <attr name="textLeftPadding" format="dimension"/>
-        <attr name="text" format="string"/>
+        <attr name="textLeftPadding" format="dimension" />
+        <attr name="text" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="OnboardingBubbleItem">
+        <attr name="bl_text" format="string" />
+        <attr name="bl_text_color" format="color" />
+        <attr name="bl_description" format="string" />
+        <attr name="bl_margin_top" format="dimension" />
+        <attr name="bl_margin_start" format="dimension" />
+        <attr name="bl_margin_end" format="dimension" />
+        <attr name="bl_margin_bottom" format="dimension" />
+        <attr name="bl_alignment" format="enum">
+            <enum name="start" value="0" />
+            <enum name="center" value="1" />
+            <enum name="end" value="2" />
+        </attr>
     </declare-styleable>
 </resources>

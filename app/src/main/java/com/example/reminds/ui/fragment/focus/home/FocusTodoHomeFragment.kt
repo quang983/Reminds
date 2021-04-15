@@ -14,7 +14,7 @@ import com.example.reminds.R
 import com.example.reminds.common.BaseFragment
 import com.example.reminds.databinding.FragmentHomeFocusBinding
 import com.example.reminds.service.timer.NotificationTimer
-import com.example.reminds.ui.activity.focus.FocusTodoActivity
+import com.example.reminds.ui.activity.MainActivity
 import com.example.reminds.ui.fragment.focus.dialogtimer.DialogTimerFragment
 import com.example.reminds.ui.sharedviewmodel.FocusActivityViewModel
 import com.example.reminds.utils.gone
@@ -62,7 +62,7 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
 
     private fun setupLayout() {
         simulateProgress()
-        val pendingIntent = Intent(requireContext(), FocusTodoActivity::class.java).let {
+        val pendingIntent = Intent(requireContext(), MainActivity::class.java).let {
             PendingIntent.getActivity(requireContext(), 0, it, PendingIntent.FLAG_UPDATE_CURRENT)
         }
 

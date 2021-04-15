@@ -84,4 +84,10 @@
     <dimen name="text_size_normal">12sp</dimen>
     <dimen name="text_size_primary">16sp</dimen>
     <dimen name="bill_print_width">350dp</dimen>
+
+    <dimen name="onboarding_bubble_item_size">380dp</dimen>
+    <dimen name="onboarding_bubble_item_size_xlarge">380dp</dimen>
+    <dimen name="onboarding_bubble_item_size_large">100dp</dimen>
+    <dimen name="onboarding_bubble_item_size_medium">90dp</dimen>
+    <dimen name="onboarding_bubble_item_size_small">60dp</dimen>
 </resources>

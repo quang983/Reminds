@@ -1,20 +1,21 @@
 package com.example.reminds.ui.fragment.focus.home
 
 import android.animation.ValueAnimator
-import android.app.PendingIntent
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
-import android.os.Bundle
+import android.content.ServiceConnection
+import android.os.*
 import android.view.View
-import androidx.core.app.NotificationCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
 import com.example.reminds.R
 import com.example.reminds.common.BaseFragment
 import com.example.reminds.databinding.FragmentHomeFocusBinding
-import com.example.reminds.service.timer.NotificationTimer
-import com.example.reminds.ui.activity.MainActivity
+import com.example.reminds.service.timer.HelloService
+import com.example.reminds.service.timer.HelloService.Companion.MESSAGE_CANCEL_NOTIFICATION
+import com.example.reminds.service.timer.HelloService.Companion.MESSAGE_PAUSE_NOTIFICATION
 import com.example.reminds.ui.fragment.focus.dialogtimer.DialogTimerFragment
 import com.example.reminds.ui.sharedviewmodel.FocusActivityViewModel
 import com.example.reminds.utils.gone
@@ -26,13 +27,13 @@ import www.sanju.motiontoast.MotionToast
 
 @AndroidEntryPoint
 class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
-    lateinit var notiTimer: NotificationTimer.Builder
-
-    private val viewModel: FocusTodoHomeViewModel by viewModels()
-
-    val viewModelShared: FocusActivityViewModel by activityViewModels()
+    private val viewModelShared: FocusActivityViewModel by activityViewModels()
 
     lateinit var animator: ValueAnimator
+
+    private var _serviceMessenger: Messenger? = null
+
+    private var bound: Boolean = false
 
     companion object {
         const val RESULTS_MINUTES_PICKER = "RESULTS_MINUTES_PICKER"
@@ -45,11 +46,14 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setFragmentResult()
+        Intent(requireActivity(), HelloService::class.java).let { intent ->
+            requireActivity().bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
+        }
     }
 
     private fun setFragmentResult() {
         setFragmentResultListener(RESULTS_MINUTES_PICKER) { _, bundle ->
-            viewModel.setTimerData(bundle.getLong(DialogTimerFragment.EXTRAS_MINUTES_DATA))
+            viewModelShared.setTimerData(bundle.getLong(DialogTimerFragment.EXTRAS_MINUTES_DATA))
         }
     }
 
@@ -62,25 +66,9 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
 
     private fun setupLayout() {
         simulateProgress()
-        val pendingIntent = Intent(requireContext(), MainActivity::class.java).let {
-            PendingIntent.getActivity(requireContext(), 0, it, PendingIntent.FLAG_UPDATE_CURRENT)
-        }
-
-        notiTimer = NotificationTimer.Builder(requireActivity())
-            .setSmallIcon(R.drawable.playstore_icon)
-            .setControlMode(true)
-            .setColor(R.color.blue_700)
-            .setShowWhen(false)
-            .setAutoCancel(true)
-            .setOnlyAlertOnce(true)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setContentIntent(pendingIntent)
-            .setOnTickListener { }
-            .setOnFinishListener { }
-            .setContentTitle("Timer :)")
 
         mBinding.btnStart.setOnClickListener {
-            if (viewModel.timerRunningStateLiveData.value == STATE.INDIE || viewModel.timerRunningStateLiveData.value == STATE.PAUSE) {
+            if (viewModelShared.timerRunningStateLiveData.value == STATE.INDIE || viewModelShared.timerRunningStateLiveData.value == STATE.PAUSE) {
                 startTimer()
             } else {
                 pauseTimer()
@@ -89,9 +77,9 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
     }
 
     private fun startTimer() {
-        animator.duration = viewModel.mTimeLeftInMillis
-        viewModel.startTimer()
-        notiTimer.play(viewModel.mTimeLeftInMillis)
+        animator.duration = viewModelShared.mTimeLeftInMillis
+        viewModelShared.startTimer()
+        sendActionInsertAlert(HelloService.MESSAGE_PLAY_NOTIFICATION, viewModelShared.mTimeLeftInMillis)
         if (animator.isStarted) {
             animator.resume()
         } else {
@@ -100,13 +88,13 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
     }
 
     private fun pauseTimer() {
-        viewModel.pauseTimer()
-        notiTimer.pause()
+        viewModelShared.pauseTimer()
         animator.pause()
+        sendActionInsertAlert(MESSAGE_PAUSE_NOTIFICATION, viewModelShared.mTimeLeftInMillis)
     }
 
     private fun setupObserver() {
-        viewModel.timeShowLiveData.observe(viewLifecycleOwner, {
+        viewModelShared.timeShowLiveData.observe(viewLifecycleOwner, {
             mBinding.tvTime.text = it.toString()
         })
 
@@ -116,10 +104,9 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
             }
         })
 
-        viewModel.timerRunningStateLiveData.observe(viewLifecycleOwner, {
+        viewModelShared.timerRunningStateLiveData.observe(viewLifecycleOwner, {
             when (it) {
                 STATE.INDIE -> {
-                    notiTimer.terminate()
                     animator.cancel()
                     mBinding.btnReset.gone()
                     mBinding.btnStart.text = "Start"
@@ -133,13 +120,12 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
                     mBinding.btnStart.text = "Continue"
                 }
                 STATE.FINISH -> {
-                    notiTimer.terminate()
                     animator.cancel()
                     mBinding.btnReset.gone()
                     mBinding.btnStart.text = "Start"
-                    //show man hinh chuc mung
-                    viewModel.resetState()
+                    viewModelShared.resetState()
                     viewModelShared.doneAllInWork()
+                    sendActionInsertAlert(MESSAGE_CANCEL_NOTIFICATION, viewModelShared.mTimeLeftInMillis)
                     navigate(FocusTodoHomeFragmentDirections.actionFocusTodoFragmentToSuccessFocusFragment())
                 }
                 else -> {
@@ -152,7 +138,7 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
 
     private fun setupListener() {
         mBinding.tvTime.setOnClickListener {
-            if (viewModel.timerRunningStateLiveData.value == STATE.INDIE) {
+            if (viewModelShared.timerRunningStateLiveData.value == STATE.INDIE) {
                 navigate(FocusTodoHomeFragmentDirections.actionFocusTodoFragmentToPickTimerFocusFragment())
             } else {
                 MotionToast.createToast(
@@ -172,7 +158,18 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
         }
 
         mBinding.btnReset.setOnClickListenerBlock {
-            viewModel.resetState()
+            viewModelShared.resetState()
+        }
+    }
+
+    private fun sendActionInsertAlert(key: Int, data: Long) {
+        if (!bound) return
+
+        val msg: Message = Message.obtain(null, key, data)
+        try {
+            _serviceMessenger?.send(msg)
+        } catch (e: RemoteException) {
+            e.printStackTrace()
         }
     }
 
@@ -185,4 +182,21 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
         }
         animator.repeatCount = 0
     }
+
+    /**
+     * Class for interacting with the main interface of the service.
+     */
+    private val mConnection = object : ServiceConnection {
+
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            _serviceMessenger = Messenger(service)
+            bound = true
+        }
+
+        override fun onServiceDisconnected(className: ComponentName) {
+            _serviceMessenger = null
+            bound = false
+        }
+    }
+
 }

@@ -30,15 +30,19 @@ open class NotificationService : Service() {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
                 REMOVE_OBJECT_TIMER_DATA -> {
-                    val notify = msg.obj as AlarmNotificationEntity
-                    cancelAlarm(notify.idContent.toInt())
+                    val notify = msg.obj as? AlarmNotificationEntity
+                    notify?.let {
+                        cancelAlarm(notify.idContent.toInt())
+                    }
                 }
                 INSERT_OBJECT_TIMER_DATA -> {
-                    val notify = msg.obj as AlarmNotificationEntity
-                    scheduleAlarm(
-                        TimestampUtils.getFullFormatTime(notify.timeAlarm, DATE_FORMAT_DEFAULT),
-                        notify, notify.idContent.toInt()
-                    )
+                    val notify = msg.obj as? AlarmNotificationEntity
+                    notify?.let {
+                        scheduleAlarm(
+                            TimestampUtils.getFullFormatTime(notify.timeAlarm, DATE_FORMAT_DEFAULT),
+                            notify, notify.idContent.toInt()
+                        )
+                    }
                 }
                 else -> super.handleMessage(msg)
             }

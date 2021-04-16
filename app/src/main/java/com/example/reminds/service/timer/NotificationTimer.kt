@@ -10,6 +10,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import com.example.reminds.R
 import kotlin.properties.Delegates
 
 
@@ -48,14 +49,6 @@ object NotificationTimer : Timer {
     private var setStartTime by Delegates.notNull<Long>()
 
     override fun play(context: Context, timeMillis: Long) {
-        if (HelloService.state == TimerState.RUNNING) return
-
-        val playIntent = Intent(context, HelloService::class.java).apply {
-            action = "PLAY"
-            putExtra("setTime", timeMillis)
-            putExtra("forReplay", HelloService.state == TimerState.PAUSED)
-        }
-        ContextCompat.startForegroundService(context, playIntent)
     }
 
     override fun pause(context: Context) {
@@ -132,6 +125,7 @@ object NotificationTimer : Timer {
             setContentTitle(notiTitle)
             setContentText(timeLeft)
             setShowWhen(showWhen)
+            setSmallIcon(R.drawable.icon_application)
             color = notiColor
             priority = notificationPriority
             setAutoCancel(isAutoCancel)
@@ -142,12 +136,7 @@ object NotificationTimer : Timer {
         }
 
     private fun playStateNotification(context: Context, timeLeft: String): Notification =
-        baseNotificationBuilder(context, timeLeft).apply {
-            if (isControlMode) {
-                pauseBtnIcon?.let { addAction(it, "pause", pausePendingIntent) }
-                stopBtnIcon?.let { addAction(it, "stop", stopPendingIntent) }
-            }
-        }.build()
+        baseNotificationBuilder(context, timeLeft).build()
 
     private fun pauseStateNotification(context: Context, timeLeft: String): Notification =
         baseNotificationBuilder(context, timeLeft).apply {
@@ -219,21 +208,6 @@ object NotificationTimer : Timer {
 
         fun setContentIntent(intent: PendingIntent): Builder {
             contentPendingIntent = intent
-            return this
-        }
-
-        fun setPlayButtonIcon(icon: Int): Builder {
-            playBtnIcon = icon
-            return this
-        }
-
-        fun setPauseButtonIcon(icon: Int): Builder {
-            pauseBtnIcon = icon
-            return this
-        }
-
-        fun setStopButtonIcon(icon: Int): Builder {
-            stopBtnIcon = icon
             return this
         }
 

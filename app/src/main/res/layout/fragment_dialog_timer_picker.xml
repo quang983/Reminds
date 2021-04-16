@@ -2,27 +2,44 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_timer"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="@dimen/_180sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toStartOf="@id/tv_minute"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="10"
         tools:listitem="@layout/item_timer_picker" />
 
     <TextView
+        android:id="@+id/tv_minute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/content_minute"
+        android:textSize="@dimen/text_large_0"
+        android:textColor="@color/black"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/recycler_timer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/recycler_timer" />
+
+    <TextView
         android:id="@+id/tv_apply"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Apply"
-        app:layout_constraintTop_toBottomOf="@id/recycler_timer"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/_12sdp"
         android:padding="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_12sdp" />
+        android:text="@string/apply"
+        android:textColor="@color/bg_tick_2"
+        android:textSize="@dimen/text_medium_2"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recycler_timer" />
 </androidx.constraintlayout.widget.ConstraintLayout>

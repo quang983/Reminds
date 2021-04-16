@@ -108,7 +108,7 @@
         android:layout_height="@dimen/_25sdp"
         android:layout_marginStart="@dimen/_20sdp"
         android:background="?android:attr/selectableItemBackground"
-        android:src="@drawable/ic_highlight_off_24px"
+        android:src="@drawable/ic_close"
         app:layout_constraintBottom_toBottomOf="@id/imgSettingClock"
         app:layout_constraintStart_toEndOf="@id/imgSettingClock"
         app:layout_constraintTop_toTopOf="@id/imgSettingClock" />

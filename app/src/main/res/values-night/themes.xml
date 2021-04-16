@@ -151,7 +151,10 @@
     </style>
 
 
+
     <style name="DialogFullScreen" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowNoTitle">true</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerRadius">24dp</item>
     </style>
 </resources>

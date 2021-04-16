@@ -1,14 +1,13 @@
 package com.example.reminds.ui.fragment.focus.dialogtimer
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.MediatorLiveData
 import com.example.reminds.common.BaseViewModel
 
 class DialogTimerViewModel @ViewModelInject constructor() : BaseViewModel() {
     private val _listMinute = ArrayList<Int>()
 
-    val listMinuteItemView: LiveData<List<Int>> = MutableLiveData()
+    val listMinuteItemView: MediatorLiveData<List<Int>> = MediatorLiveData()
 
     var minuteSelectedItem: Long = 0
 
@@ -18,4 +17,5 @@ class DialogTimerViewModel @ViewModelInject constructor() : BaseViewModel() {
         }
         listMinuteItemView.postValue(_listMinute)
     }
+
 }

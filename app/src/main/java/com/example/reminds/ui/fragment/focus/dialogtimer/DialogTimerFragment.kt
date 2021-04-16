@@ -16,6 +16,7 @@ import com.example.reminds.utils.attachSnapHelperWithListener
 import com.example.reminds.utils.getSnapPosition
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
 class DialogTimerFragment : BaseDialogFullsizeFragment<FragmentDialogTimerPickerBinding>() {
     private val viewModel: DialogTimerViewModel by viewModels()
@@ -34,8 +35,12 @@ class DialogTimerFragment : BaseDialogFullsizeFragment<FragmentDialogTimerPicker
         snapHelper.getSnapPosition(mBinding.recyclerTimer)
         mBinding.recyclerTimer.attachSnapHelperWithListener(snapHelper, SnapOnScrollListener.Behavior.NOTIFY_ON_SCROLL, object : OnSnapPositionChangeListener {
             override fun onSnapPositionChange(position: Int) {
-                viewModel.minuteSelectedItem = TimestampUtils
-                    .convertMinutesToMiliTime((mBinding.recyclerTimer.adapter as? TimerPickerAdapter)?.currentList?.get(position) ?: 0)
+                val adapter = mBinding.recyclerTimer.adapter as? TimerPickerAdapter
+                if (position >= 0 && position < adapter?.currentList?.size ?: 1) {
+                    adapter?.changePositionSelected(position)
+                    viewModel.minuteSelectedItem = TimestampUtils
+                        .convertMinutesToMiliTime(adapter?.currentList?.get(position) ?: 0)
+                }
             }
         })
         TimerPickerAdapter().apply {

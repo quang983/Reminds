@@ -7,8 +7,10 @@
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">%s</string>
     <string name="new_topic_fragment_label">New Topic Fragment</string>
+    <string name="label_focus" translatable="false">Focus</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="apply" translatable="false">Apply</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
@@ -97,11 +99,15 @@
     <string name="reminder_notification">Nhắc nhở vào:</string>
     <string name="desc_hint">Mô tả thêm (không bắt buộc)</string>
     <string name="error_messenger_change_time">Không thể thay đổi thời gian khi đang trong 1 quá trình</string>
-    <string name="setting_review_app">Đánh giá ứng dụng(ủng hộ chúng tôi có thêm động lực nhé)</string>
+    <string name="setting_review_app">Đánh giá ứng dụng (ủng hộ chúng tôi có thêm động lực nhé)</string>
 
     <string name="button_text_complete" translatable="false">Complete</string>
     <string name="button_text_next" translatable="false">Next</string>
-
+    <string name="content_minute">Phút</string>
+    <string name="success_review_app">Bạn đã đánh giá ứng dụng rồi</string>
+    <string name="success_review_app_done">Bạn đã đánh giá ứng dụng của chúng tôi rồi</string>
+    <string name="alert_cancel_focus">Hành động sẽ huỷ bỏ tác vụ đang chạy</string>
+    <string name="desc_select_todo">-> Todo sẽ tự động được hoàn thành khi hết thời gian</string>
     <string-array name="day">
         <item>T2</item>
         <item>T3</item>

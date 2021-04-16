@@ -37,7 +37,6 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
-import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -86,17 +85,14 @@ class MainActivity : AppCompatActivity() {
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.NewUpcomingFragment, R.id.FirstFragment, R.id.FocusTodoFragment
+                R.id.NewUpcomingFragment, R.id.FirstFragment, R.id.FocusTodoFragment, R.id.SettingTabFragment
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-//        createNotificationChannel()
         catchEventKeyboard()
         setObserver()
         createAdsMode()
         setOnListener()
-//      showRatingApp()
-//        onStartService()
     }
 
     override fun onResume() {
@@ -365,25 +361,6 @@ class MainActivity : AppCompatActivity() {
             })
     }
 
-    private fun showRatingApp() {
-        val manager = ReviewManagerFactory.create(this)
-        val request = manager.requestReviewFlow()
-        request.addOnCompleteListener { request ->
-            if (request.isSuccessful) {
-                // We got the ReviewInfo object
-                val reviewInfo = request.result
-                val flow = manager.launchReviewFlow(this, reviewInfo)
-                flow.addOnCompleteListener { _ ->
-                    // The flow has finished. The API does not indicate whether the user
-                    // reviewed or not, or even whether the review dialog was shown. Thus, no
-                    // matter the result, we continue our app flow.
-                }
-            } else {
-                // There was some problem, continue regardless of the result.
-            }
-        }
-    }
-
     private fun setOnListener() {
         binding.contentMain.bottomNavigation.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener {
             override fun onTabSelected(
@@ -401,10 +378,9 @@ class MainActivity : AppCompatActivity() {
                     }
                     2 -> {
                         navController.navigate(R.id.FocusTodoFragment)
-                        /*val intent = Intent(this@MainActivity, FocusTodoActivity::class.java)
-                        startActivity(intent)*/
                     }
                     3 -> {
+                        navController.navigate(R.id.SettingTabFragment)
                     }
                     else -> {
                     }

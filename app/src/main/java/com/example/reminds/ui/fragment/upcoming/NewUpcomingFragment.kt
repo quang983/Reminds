@@ -46,6 +46,7 @@ import com.kizitonwose.calendarview.utils.next
 import com.kizitonwose.calendarview.utils.yearMonth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.fragment_upcoming_new.*
 import java.time.LocalDate
 import java.time.YearMonth
@@ -168,7 +169,7 @@ class NewUpcomingFragment : BaseFragment<FragmentUpcomingNewBinding>(), Callback
             navigate(NewUpcomingFragmentDirections.actionNewUpcomingFragmentToOptionForWorkBSFragment(it.id, TYPE_UPCOMING, it.groupId))
         }, {
             viewModelFocusShared.itemWorkSelected.postValue(it)
-            navigate(NewUpcomingFragmentDirections.actionNewUpcomingFragmentToFocusTodoFragment())
+            (requireActivity() as? MainActivity)?.bottom_navigation?.selectTabAt(2, true)
         }).apply {
             mBinding.recyclerWorks.adapter = this
             val callback: ItemTouchHelper.Callback = MyItemTouchHelperCallback(this@NewUpcomingFragment)

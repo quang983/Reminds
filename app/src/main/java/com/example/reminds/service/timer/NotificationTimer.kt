@@ -31,7 +31,7 @@ object NotificationTimer : Timer {
     private var showWhen = false
     private var notiColor = 0x66FFFFFF
     private var notificationPriority = NotificationCompat.PRIORITY_LOW
-    private var isAutoCancel = false
+    private var isAutoCancel = true
     private var isOnlyAlertOnce = true
     private var isControlMode = false
     private var contentPendingIntent: PendingIntent? = null
@@ -54,28 +54,14 @@ object NotificationTimer : Timer {
     override fun pause(context: Context) {
         if (HelloService.state != TimerState.RUNNING) return
 
-        val pauseIntent = Intent(context, HelloService::class.java).apply {
-            action = "PAUSE"
-        }
-        ContextCompat.startForegroundService(context, pauseIntent)
     }
 
     override fun stop(context: Context) {
         if (HelloService.state == TimerState.STOPPED) return
-
-        val stopIntent = Intent(context, HelloService::class.java).apply {
-            action = "STOP"
-        }
-        ContextCompat.startForegroundService(context, stopIntent)
     }
 
     override fun terminate(context: Context) {
         if (!::notificationManager.isInitialized && HelloService.state == TimerState.TERMINATED) return
-
-        val terminateIntent = Intent(context, HelloService::class.java).apply {
-            action = "TERMINATE"
-        }
-        ContextCompat.startForegroundService(context, terminateIntent)
     }
 
     fun createNotification(context: Context, setTime: Long): Notification {
@@ -117,7 +103,7 @@ object NotificationTimer : Timer {
 
     fun updateUntilFinished(millisUntilFinished: Long) = tickListener?.invoke(millisUntilFinished)
 
-    fun removeNotification() = notificationManager.cancelAll()
+    fun removeNotification() = notificationManager.cancel(55)
 
     private fun baseNotificationBuilder(context: Context, timeLeft: String) =
         NotificationCompat.Builder(context, channelId).apply {
@@ -126,7 +112,7 @@ object NotificationTimer : Timer {
             setContentText(timeLeft)
             setShowWhen(showWhen)
             setSmallIcon(R.drawable.icon_application)
-            color = notiColor
+            color = ContextCompat.getColor(context, R.color.pink_500)
             priority = notificationPriority
             setAutoCancel(isAutoCancel)
             setOnlyAlertOnce(isOnlyAlertOnce)
@@ -139,20 +125,10 @@ object NotificationTimer : Timer {
         baseNotificationBuilder(context, timeLeft).build()
 
     private fun pauseStateNotification(context: Context, timeLeft: String): Notification =
-        baseNotificationBuilder(context, timeLeft).apply {
-            if (isControlMode) {
-                playBtnIcon?.let { addAction(it, "play", getPlayPendingIntent(context, true)) }
-                stopBtnIcon?.let { addAction(it, "stop", stopPendingIntent) }
-            }
-        }.build()
+        baseNotificationBuilder(context, timeLeft).build()
 
     private fun standByStateNotification(context: Context, timeLeft: String): Notification =
-        baseNotificationBuilder(context, timeLeft).apply {
-            if (isControlMode) {
-                playBtnIcon?.let { addAction(it, "play", getPlayPendingIntent(context)) }
-                stopBtnIcon?.let { addAction(it, "stop", stopPendingIntent) }
-            }
-        }.build()
+        baseNotificationBuilder(context, timeLeft).build()
 
     private fun getPlayPendingIntent(context: Context, isPausingState: Boolean = false): PendingIntent {
         val playIntent = Intent(context, HelloService::class.java).apply {

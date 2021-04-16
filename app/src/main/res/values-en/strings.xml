@@ -66,6 +66,11 @@
     <string name="swipe_up_suggest_2">Click on large task to break down the work</string>
     <string name="error_messenger_change_time">Time cannot be changed while in a process</string>
     <string name="setting_review_app">Rate the app (support us to get more motivated)</string>
+    <string name="content_minute">Minute</string>
+    <string name="success_review_app">You have rated the application already</string>
+    <string name="success_review_app_done">You have already rated our app</string>
+    <string name="alert_cancel_focus"> The action will cancel the running task</string>
+    <string name="desc_select_todo">-> The todo will automatically be completed when the time is up</string>
     <string-array name="day">
         <item>MO</item>
         <item>TU</item>

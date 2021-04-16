@@ -7,7 +7,7 @@
     <item
         android:id="@+id/pageSecond"
         android:enabled="true"
-        android:icon="@drawable/ic_grid_round"
+        android:icon="@drawable/ic_dashboard"
         android:title="@string/page_home" />
 
     <item
@@ -16,13 +16,13 @@
         android:icon="@drawable/ic_alarm"
         android:title="@string/page_focus" />
 
-<!--
-    <item
-        android:id="@+id/pageFour"
-        android:enabled="true"
-        android:icon="@drawable/ic_menu_tag"
-        android:title="@string/page_english" />
--->
+    <!--
+        <item
+            android:id="@+id/pageFour"
+            android:enabled="true"
+            android:icon="@drawable/ic_menu_tag"
+            android:title="@string/page_english" />
+    -->
 
     <item
         android:id="@+id/pageFive"

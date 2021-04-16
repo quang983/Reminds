@@ -18,8 +18,8 @@
 
     <com.dinuscxj.progressbar.CircleProgressBar
         android:id="@+id/circle_custom"
-        android:layout_width="@dimen/_300sdp"
-        android:layout_height="@dimen/_300sdp"
+        android:layout_width="@dimen/_260sdp"
+        android:layout_height="@dimen/_260sdp"
         android:padding="@dimen/_20sdp"
         app:drawBackgroundOutsideProgress="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -29,9 +29,9 @@
         app:layout_constraintVertical_bias="0.1"
         app:progress_background_color="@color/example_3_blue_light"
         app:progress_blur_style="solid"
-        app:progress_end_color="@color/holo_blue_light"
-        app:progress_start_color="@color/holo_orange_dark"
-        app:progress_stroke_width="@dimen/_12sdp"
+        app:progress_end_color="@color/red"
+        app:progress_start_color="@color/yellow"
+        app:progress_stroke_width="@dimen/_8sdp"
         app:progress_style="solid_line"
         app:progress_text_size="0dp" />
 
@@ -39,8 +39,9 @@
         android:id="@+id/btn_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="start"
         android:backgroundTint="@color/red"
+        android:text="Start"
+        android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,10 +52,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_12sdp"
-        android:text="reset"
-        android:visibility="gone"
         android:backgroundTint="@color/blue"
+        android:text="Reset"
         android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:visibility="gone"
         app:layout_constraintStart_toEndOf="@id/btn_start"
         app:layout_constraintTop_toTopOf="@id/btn_start" />
 
@@ -63,19 +65,44 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_12sdp"
-        android:text="add"
+        android:textAllCaps="false"
         android:backgroundTint="@color/yellow"
+        android:text="Add Todo"
         android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@id/btn_start"
         app:layout_constraintTop_toTopOf="@id/btn_start" />
 
     <TextView
         android:id="@+id/tv_work_name"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:padding="@dimen/_16sdp"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
         android:textSize="@dimen/text_medium_2"
         android:textStyle="bold"
-        android:padding="@dimen/_16sdp"
+        app:layout_constraintEnd_toStartOf="@id/btn_close"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/circle_custom" />
+
+    <ImageView
+        android:id="@+id/btn_close"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:src="@drawable/ic_close"
+        app:layout_constraintBottom_toBottomOf="@id/tv_work_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_work_name" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="img_close, tv_work_name" />
 </androidx.constraintlayout.widget.ConstraintLayout>

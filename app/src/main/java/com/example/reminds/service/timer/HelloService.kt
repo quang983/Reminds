@@ -19,7 +19,7 @@ class HelloService : Service() {
     companion object {
         var state = TimerState.TERMINATED
 
-        const val MESSAGE_CREATE_NOTIFICATION = 0
+        const val MESSAGE_INDIE_NOTIFICATION = 0
         const val MESSAGE_PLAY_NOTIFICATION = 1
         const val MESSAGE_PAUSE_NOTIFICATION = 2
         const val MESSAGE_CANCEL_NOTIFICATION = 3
@@ -86,19 +86,6 @@ class HelloService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-//        if (intent != null) {
-//            when (intent.action) {
-//                "PLAY" -> {
-//                    playTimer(
-//                        intent.getLongExtra("setTime", 0L),
-//                        intent.getBooleanExtra("forReplay", false)
-//                    )
-//                }
-//                "PAUSE" -> pauseTimer()
-//                "STOP" -> stopTimer()
-//                "TERMINATE" -> terminateTimer()
-//            }
-//        }
         Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show()
 
         // For each start request, send a message to start a job and deliver the
@@ -120,8 +107,7 @@ class HelloService : Service() {
             // For our sample, we just sleep for 5 seconds.
             try {
                 when (msg.what) {
-                    MESSAGE_CREATE_NOTIFICATION -> {
-                        val timer = msg.obj as? Long ?: 0L
+                    MESSAGE_INDIE_NOTIFICATION -> {
                     }
                     MESSAGE_PLAY_NOTIFICATION -> {
                         val timer = msg.obj as? Long ?: 0L
@@ -132,7 +118,7 @@ class HelloService : Service() {
                         pauseTimer()
                     }
                     MESSAGE_CANCEL_NOTIFICATION -> {
-                        terminateTimer()
+                        stopTimer()
                     }
                 }
             } catch (e: InterruptedException) {
@@ -210,7 +196,7 @@ class HelloService : Service() {
             timer.cancel()
             state = TimerState.TERMINATED
             NotificationTimer.removeNotification()
-            stopSelf()
+//            stopSelf()
         }
     }
 

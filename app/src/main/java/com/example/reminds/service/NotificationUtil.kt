@@ -31,7 +31,7 @@ class NotificationUtil(private val context: Context) {
         val channelId = context.getString(R.string.notify_channel)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(context, channelId)
-            .setColor(ContextCompat.getColor(context, R.color.red_200))
+            .setColor(ContextCompat.getColor(context, R.color.pink_500))
             .setSmallIcon(R.drawable.playstore)
             .setContentTitle(title)
             .setContentText(message)

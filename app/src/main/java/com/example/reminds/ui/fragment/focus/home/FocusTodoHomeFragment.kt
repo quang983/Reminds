@@ -22,6 +22,7 @@ import com.example.reminds.utils.gone
 import com.example.reminds.utils.navigate
 import com.example.reminds.utils.setOnClickListenerBlock
 import com.example.reminds.utils.visible
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import www.sanju.motiontoast.MotionToast
 
@@ -49,6 +50,11 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
         Intent(requireActivity(), HelloService::class.java).let { intent ->
             requireActivity().bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        requireActivity().unbindService(mConnection)
     }
 
     private fun setFragmentResult() {
@@ -100,7 +106,10 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
 
         viewModelShared.itemWorkSelected.observe(viewLifecycleOwner, {
             it?.let {
+                mBinding.groupTask.visible()
                 mBinding.tvWorkName.text = it.name
+            } ?: let {
+                mBinding.groupTask.gone()
             }
         })
 
@@ -109,6 +118,7 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
                 STATE.INDIE -> {
                     animator.cancel()
                     mBinding.btnReset.gone()
+                    sendActionInsertAlert(MESSAGE_CANCEL_NOTIFICATION, viewModelShared.mTimeLeftInMillis)
                     mBinding.btnStart.text = "Start"
                 }
                 STATE.RESUME -> {
@@ -158,7 +168,19 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
         }
 
         mBinding.btnReset.setOnClickListenerBlock {
-            viewModelShared.resetState()
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(resources.getString(R.string.notify_title))
+                .setMessage(resources.getString(R.string.alert_cancel_focus))
+                .setNegativeButton(resources.getString(R.string.cancel_action)) { _, _ ->
+                }
+                .setPositiveButton(resources.getString(R.string.accept_action)) { _, _ ->
+                    viewModelShared.resetState()
+                }
+                .show()
+        }
+
+        mBinding.btnClose.setOnClickListenerBlock {
+            viewModelShared.itemWorkSelected.postValue(null)
         }
     }
 

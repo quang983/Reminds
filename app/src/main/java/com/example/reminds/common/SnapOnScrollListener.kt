@@ -1,13 +1,14 @@
 package com.example.reminds.common
 
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.example.reminds.utils.getSnapPosition
 
 class SnapOnScrollListener(
-    private  val  snapHelper :  SnapHelper ,
+    private val snapHelper: SnapHelper,
     var behavior: Behavior = Behavior.NOTIFY_ON_SCROLL,
-    var  onSnapPositionChangeListener :  OnSnapPositionChangeListener ? = null
+    var onSnapPositionChangeListener: OnSnapPositionChangeListener? = null
 ) : RecyclerView.OnScrollListener() {
 
     enum class Behavior {
@@ -19,14 +20,15 @@ class SnapOnScrollListener(
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         if (behavior == Behavior.NOTIFY_ON_SCROLL) {
-            maybeNotifySnapPositionChange (recyclerView)
+            maybeNotifySnapPositionChange(recyclerView)
         }
     }
 
     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
         if (behavior == Behavior.NOTIFY_ON_SCROLL_STATE_IDLE
-            && newState == RecyclerView.SCROLL_STATE_IDLE) {
-            maybeNotifySnapPositionChange (recyclerView)
+            && newState == RecyclerView.SCROLL_STATE_IDLE
+        ) {
+            maybeNotifySnapPositionChange(recyclerView)
         }
     }
 

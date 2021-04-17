@@ -71,6 +71,7 @@
     <string name="success_review_app_done">You have already rated our app</string>
     <string name="alert_cancel_focus"> The action will cancel the running task</string>
     <string name="desc_select_todo">-> The todo will automatically be completed when the time is up</string>
+    <string name="alert_done_focus">Well done, it is time to relax a little bit</string>
     <string-array name="day">
         <item>MO</item>
         <item>TU</item>

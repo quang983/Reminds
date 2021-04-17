@@ -176,6 +176,7 @@
 
     <fragment
         android:id="@+id/SettingTabFragment"
+        android:label="Setting"
         android:name="com.example.reminds.ui.fragment.tabsetting.SettingTabFragment"
         tools:layout="@layout/fragment_setting_tab" />
 </navigation>

@@ -26,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintVertical_bias="0.3"
         app:progress_background_color="@color/example_3_blue_light"
         app:progress_blur_style="solid"
         app:progress_end_color="@color/red"
@@ -41,6 +41,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/red"
         android:text="Start"
+        android:layout_marginTop="@dimen/_36sdp"
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,8 +68,8 @@
         android:layout_marginEnd="@dimen/_12sdp"
         android:textAllCaps="false"
         android:backgroundTint="@color/yellow"
-        android:text="Add Todo"
-        android:textColor="@color/black"
+        android:text="Todos"
+        android:textColor="@color/bg_gray"
         app:layout_constraintEnd_toStartOf="@id/btn_start"
         app:layout_constraintTop_toTopOf="@id/btn_start" />
 

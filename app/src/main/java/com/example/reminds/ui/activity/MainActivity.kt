@@ -2,10 +2,8 @@ package com.example.reminds.ui.activity
 
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
 import android.os.*
 import android.util.Log
 import android.view.*
@@ -15,17 +13,17 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.work.PeriodicWorkRequestBuilder
 import com.example.common.base.model.AlarmNotificationEntity
 import com.example.common.base.model.TopicGroupEntity.Companion.TYPE_FAST
 import com.example.common.base.model.TopicGroupEntity.Companion.TYPE_NORMAL
 import com.example.common.base.model.TopicGroupEntity.Companion.TYPE_UPCOMING
 import com.example.reminds.R
 import com.example.reminds.databinding.ActivityMainBinding
-import com.example.reminds.service.INSERT_OBJECT_TIMER_DATA
 import com.example.reminds.service.NotificationBroadcastReceiver
-import com.example.reminds.service.NotificationService
 import com.example.reminds.service.ScheduledWorker
 import com.example.reminds.service.ScheduledWorker.Companion.TOPIC_ID_OPEN
+import com.example.reminds.service.everyday.NotificationEveryDayWorker
 import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import com.example.reminds.utils.TimestampUtils
 import com.example.reminds.utils.gone
@@ -33,7 +31,6 @@ import com.example.reminds.utils.postValue
 import com.example.reminds.utils.visible
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
@@ -48,14 +45,11 @@ import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.ZoneId
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    /** Flag indicating whether we have called bind on the service.  */
-    private var bound: Boolean = false
-    private var mService: Messenger? = null
-
     private var TAG = "logMain"
     private var mInterstitialAd: InterstitialAd? = null
 
@@ -63,12 +57,8 @@ class MainActivity : AppCompatActivity() {
 
 //    private lateinit var mBannerAd: AdView
 
-    lateinit var intentService: Intent
-
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
-    /** Messenger for communicating with the service.  */
-    private var mMessenger: Messenger? = null
     val viewModel: MainActivityViewModel by viewModels()
     private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
@@ -93,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         setObserver()
         createAdsMode()
         setOnListener()
+        initWorkEveryDay()
     }
 
     override fun onResume() {
@@ -174,47 +165,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun onStartService() {
-        intentService = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Intent(this, NotificationService::class.java).also { intent ->
-                startService(intent)
-                bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
-            }
-
-        } else {
-            Intent(this, NotificationService::class.java).also { intent ->
-                startService(intent)
-                bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
-            }
-        }
-    }
-
-    /**
-     * Class for interacting with the main interface of the service.
-     */
-    private val mConnection = object : ServiceConnection {
-
-        override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            mService = Messenger(service)
-            bound = true
-        }
-
-        override fun onServiceDisconnected(className: ComponentName) {
-            mService = null
-            bound = false
-        }
-    }
-
-    private fun sendActionInsertAlert(data: AlarmNotificationEntity) {
-        if (!bound) return
-        val msg: Message = Message.obtain(null, INSERT_OBJECT_TIMER_DATA, data)
-        try {
-            mService?.send(msg)
-        } catch (e: RemoteException) {
-            e.printStackTrace()
-        }
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
@@ -244,7 +194,6 @@ class MainActivity : AppCompatActivity() {
         createBannerAds()
         createRewardAds()
         setFullScreenRewardAds()
-        eventBannerAds()
     }
 
     private fun createBannerAds() {
@@ -286,51 +235,6 @@ class MainActivity : AppCompatActivity() {
                 mRewardedAd = null
             }
         }
-    }
-
-    private fun eventBannerAds() {
-        /* mBannerAd.adListener = object : AdListener() {
-             override fun onAdLoaded() {
-                 // Code to be executed when an ad finishes loading.
-             }
-
-             override fun onAdFailedToLoad(adError: LoadAdError) {
-                 // Code to be executed when an ad request fails.
-             }
-
-             override fun onAdOpened() {
-                 // Code to be executed when an ad opens an overlay that
-                 // covers the screen.
-             }
-
-             override fun onAdClicked() {
-                 // Code to be executed when the user clicks on an ad.
-             }
-
-             override fun onAdLeftApplication() {
-                 // Code to be executed when the user has left the app.
-             }
-
-             override fun onAdClosed() {
-                 // Code to be executed when the user is about to return
-                 // to the app after tapping on an ad.
-             }
-         }*/
-    }
-
-    private fun createInterstitialAd() {
-        val adRequest = AdRequest.Builder().build()
-        InterstitialAd.load(this, "ca-app-pub-9829869928534139/4215290997", adRequest, object : InterstitialAdLoadCallback() {
-            override fun onAdFailedToLoad(adError: LoadAdError) {
-                Log.d(TAG, adError.message)
-                mInterstitialAd = null
-            }
-
-            override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                Log.d(TAG, "Ad was loaded. release")
-                mInterstitialAd = interstitialAd
-            }
-        })
     }
 
     private fun showAdsMobile() {
@@ -387,7 +291,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            // An optional method that will be fired whenever an already selected tab has been selected again.
             override fun onTabReselected(index: Int, tab: AnimatedBottomBar.Tab) {
                 when (index) {
                     R.id.pageOne -> {
@@ -409,5 +312,13 @@ class MainActivity : AppCompatActivity() {
                 binding.contentMain.bottomNavigation.gone()
             }
         }
+    }
+
+    private fun initWorkEveryDay() {
+        val myWorkNotification = PeriodicWorkRequestBuilder<NotificationEveryDayWorker>(
+            1, TimeUnit.MINUTES, // repeatInterval (the period cycle)
+            15, TimeUnit.MINUTES
+        ) // flexInterval
+            .build()
     }
 }

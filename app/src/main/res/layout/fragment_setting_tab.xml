@@ -22,7 +22,7 @@
         android:layout_marginTop="@dimen/_32sdp"
         android:background="?android:attr/selectableItemBackground"
         android:drawablePadding="@dimen/_16sdp"
-        android:drawableStart="@drawable/ic_pen"
+        android:drawableStart="@drawable/ic_like"
         android:gravity="center_vertical"
         android:padding="@dimen/_16sdp"
         android:text="@string/setting_review_app"

@@ -10,6 +10,9 @@
     <string name="label_focus" translatable="false">Focus</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="start" translatable="false">Start</string>
+    <string name="pause" translatable="false">Pause</string>
+    <string name="continues" translatable="false">Continue</string>
     <string name="apply" translatable="false">Apply</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
@@ -108,6 +111,7 @@
     <string name="success_review_app_done">Bạn đã đánh giá ứng dụng của chúng tôi rồi</string>
     <string name="alert_cancel_focus">Hành động sẽ huỷ bỏ tác vụ đang chạy</string>
     <string name="desc_select_todo">-> Todo sẽ tự động được hoàn thành khi hết thời gian</string>
+    <string name="alert_done_focus">Làm tốt lắm, đến lúc thư giãn một chút rồi</string>
     <string-array name="day">
         <item>T2</item>
         <item>T3</item>

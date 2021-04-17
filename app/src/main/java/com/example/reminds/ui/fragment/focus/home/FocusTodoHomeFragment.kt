@@ -74,10 +74,16 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
         simulateProgress()
 
         mBinding.btnStart.setOnClickListener {
-            if (viewModelShared.timerRunningStateLiveData.value == STATE.INDIE || viewModelShared.timerRunningStateLiveData.value == STATE.PAUSE) {
-                startTimer()
-            } else {
-                pauseTimer()
+            when (viewModelShared.timerRunningStateLiveData.value) {
+                STATE.INDIE -> {
+                    startTimer()
+                }
+                STATE.PAUSE -> {
+                    resumeTimer()
+                }
+                else -> {
+                    pauseTimer()
+                }
             }
         }
     }
@@ -86,16 +92,21 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
         animator.duration = viewModelShared.mTimeLeftInMillis
         viewModelShared.startTimer()
         sendActionInsertAlert(HelloService.MESSAGE_PLAY_NOTIFICATION, viewModelShared.mTimeLeftInMillis)
-        if (animator.isStarted) {
-            animator.resume()
-        } else {
-            animator.start()
-        }
+        animator.start()
+    }
+
+    private fun resumeTimer() {
+//        animator.duration = viewModelShared.mTimeLeftInMillis
+        viewModelShared.startTimer()
+        sendActionInsertAlert(HelloService.MESSAGE_PLAY_NOTIFICATION, viewModelShared.mTimeLeftInMillis)
+        animator.resume()
     }
 
     private fun pauseTimer() {
         viewModelShared.pauseTimer()
-        animator.pause()
+        if (animator.isRunning) {
+            animator.pause()
+        }
         sendActionInsertAlert(MESSAGE_PAUSE_NOTIFICATION, viewModelShared.mTimeLeftInMillis)
     }
 
@@ -116,23 +127,22 @@ class FocusTodoHomeFragment : BaseFragment<FragmentHomeFocusBinding>() {
         viewModelShared.timerRunningStateLiveData.observe(viewLifecycleOwner, {
             when (it) {
                 STATE.INDIE -> {
-                    animator.cancel()
                     mBinding.btnReset.gone()
                     sendActionInsertAlert(MESSAGE_CANCEL_NOTIFICATION, viewModelShared.mTimeLeftInMillis)
-                    mBinding.btnStart.text = "Start"
+                    mBinding.btnStart.text = resources.getString(R.string.start)
                 }
                 STATE.RESUME -> {
                     mBinding.btnReset.visible()
-                    mBinding.btnStart.text = "Pause"
+                    mBinding.btnStart.text = resources.getString(R.string.pause)
                 }
                 STATE.PAUSE -> {
                     mBinding.btnReset.visible()
-                    mBinding.btnStart.text = "Continue"
+                    mBinding.btnStart.text = resources.getString(R.string.continues)
                 }
                 STATE.FINISH -> {
                     animator.cancel()
                     mBinding.btnReset.gone()
-                    mBinding.btnStart.text = "Start"
+                    mBinding.btnStart.text = resources.getString(R.string.start)
                     viewModelShared.resetState()
                     viewModelShared.doneAllInWork()
                     sendActionInsertAlert(MESSAGE_CANCEL_NOTIFICATION, viewModelShared.mTimeLeftInMillis)

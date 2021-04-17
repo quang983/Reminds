@@ -140,7 +140,6 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
         }
 
         imgSettingClock.setOnClickListener {
-            Log.d("setupTimePickerForContent", "setListener: ")
             setupTimePickerForContent()
         }
 
@@ -166,7 +165,6 @@ class OptionForWorkBSFragment : BottomSheetDialogFragment() {
     }
 
     private fun setupTimePickerForContent() {
-        Log.d("setupTimePickerForContent", "setupTimePickerForContent: nota ction")
         navigate(OptionForWorkBSFragmentDirections.actionOptionForWorkBSFragmentToDateTimePickerDialog(System.currentTimeMillis() + (60 * 1000)))
     }
 

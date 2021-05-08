@@ -72,6 +72,12 @@
     <string name="alert_cancel_focus"> The action will cancel the running task</string>
     <string name="desc_select_todo">-> The todo will automatically be completed when the time is up</string>
     <string name="alert_done_focus">Well done, it is time to relax a little bit</string>
+    <string name="onboarding_topic_first">List up reminders</string>
+    <string name="onboarding_topic_second">Deep focus mode</string>
+    <string name="onboarding_topic_third">New dynamic start</string>
+    <string name="onboarding_first">Scheduling daily tasks becomes a habit for a productive day</string>
+    <string name="onboarding_second">It is okay to stay focused in this mode with the goal of completing the reminder in time</string>
+    <string name="onboarding_third">Daily and themed reminder lists are the perfect start to the day</string>
     <string-array name="day">
         <item>MO</item>
         <item>TU</item>

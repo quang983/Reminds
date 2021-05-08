@@ -14,8 +14,8 @@ android {
         applicationId "com.quangtd.todosimple"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 21
-        versionName "2.3"
+        versionCode 22
+        versionName "2.5"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

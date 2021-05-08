@@ -112,6 +112,13 @@
     <string name="alert_cancel_focus">Hành động sẽ huỷ bỏ tác vụ đang chạy</string>
     <string name="desc_select_todo">-> Todo sẽ tự động được hoàn thành khi hết thời gian</string>
     <string name="alert_done_focus">Làm tốt lắm, đến lúc thư giãn một chút rồi</string>
+    <string name="onboarding_topic_first">Lên danh sách nhắc nhở</string>
+    <string name="onboarding_topic_second">Chế độ tập trung sâu</string>
+    <string name="onboarding_topic_third">Khởi đầu ngày mới năng động</string>
+    <string name="onboarding_first">Lên lịch nhắc nhở mỗi ngày sẽ trở thành thói quen để có một ngày năng suất</string>
+    <string name="onboarding_second">Bạn hoàn toàn có thể tập trung khi ở chế độ này với mục tiêu thời gian hoàn thành nhắc nhở đó</string>
+    <string name="onboarding_third">Danh sách nhắc nhở hằng ngày và theo chủ đề là bước khởi động hoàn hảo cho một ngày mới</string>
+    <string name="welcomes" translatable="false">Welcomes ❤️</string>
     <string-array name="day">
         <item>T2</item>
         <item>T3</item>

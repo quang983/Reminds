@@ -31,9 +31,11 @@ import com.example.reminds.utils.postValue
 import com.example.reminds.utils.visible
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
-import com.google.android.gms.ads.rewarded.RewardItem
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -181,31 +183,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createAdsMode() {
-        MobileAds.initialize(this)
-        MobileAds.setRequestConfiguration(
-            RequestConfiguration.Builder()
-                .setTestDeviceIds(
-                    listOf(
-                        "B3EEABB8EE11C2BE770B684D95219ECB", "6EEE3EBFBB63E518F69A46CA2B4676D5"
-                    )
+        MobileAds.initialize(this) { loadRewardInterstitial() }
+        val requestConfiguration = RequestConfiguration.Builder()
+            .setTestDeviceIds(
+                listOf(
+                    "B3EEABB8EE11C2BE770B684D95219ECB", "6EEE3EBFBB63E518F69A46CA2B4676D5"
                 )
-                .build()
-        )
-        createBannerAds()
-        createRewardAds()
-        setFullScreenRewardAds()
-    }
-
-    private fun createBannerAds() {
-        /*       mBannerAd = findViewById(R.id.adBanner)
-               val adRequest = AdRequest.Builder().build()
-               mBannerAd.loadAd(adRequest)*/
+            )
+            .build()
+        MobileAds.setRequestConfiguration(requestConfiguration)
+//        createRewardAds()
+        createInterstitialAd()
+//        setFullScreenRewardAds()
     }
 
     private fun createRewardAds() {
         val adRequest = AdRequest.Builder().build()
-
-        RewardedAd.load(this, "ca-app-pub-9829869928534139/6807620116", adRequest, object : RewardedAdLoadCallback() {
+        RewardedAd.load(this, "ca-app-pub-3940256099942544/5224354917", adRequest, object : RewardedAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {
                 Log.d(TAG, adError.message)
                 mRewardedAd = null
@@ -216,6 +210,42 @@ class MainActivity : AppCompatActivity() {
                 mRewardedAd = rewardedAd
             }
         })
+    }
+
+    private fun createInterstitialAd() {
+        var adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(this, "ca-app-pub-3940256099942544/1033173712", adRequest, object : InterstitialAdLoadCallback() {
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                Log.d(TAG, adError?.message)
+                mInterstitialAd = null
+            }
+
+            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                Log.d(TAG, "Ad was loaded.")
+                mInterstitialAd = interstitialAd
+            }
+        })
+    }
+
+    private fun showInterstitialAd() {
+        if (mInterstitialAd != null) {
+            mInterstitialAd?.show(this)
+        } else {
+            Log.d("TAG", "The interstitial ad wasn't ready yet.")
+        }
+    }
+
+    private fun loadRewardInterstitial() {
+        RewardedInterstitialAd.load(this@MainActivity, "ca-app-pub-3940256099942544/5354046379",
+            AdRequest.Builder().build(), object : RewardedInterstitialAdLoadCallback() {
+                override fun onAdLoaded(ad: RewardedInterstitialAd) {
+                    Log.e(TAG, "onAdLoaded")
+                }
+
+                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                    Log.e(TAG, "onAdFailedToLoad")
+                }
+            })
     }
 
     private fun setFullScreenRewardAds() {
@@ -239,16 +269,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun showAdsMobile() {
         showRewardAds()
+        showInterstitialAd()
     }
 
     private fun showRewardAds() {
         if (mRewardedAd != null) {
             mRewardedAd?.show(this) {
-                fun onUserEarnedReward(rewardItem: RewardItem) {
-//                    var rewardAmount = rewardItem.amount()
-                    var rewardType = rewardItem.type
-                    Log.d("TAG", "User earned the reward.")
-                }
             }
         } else {
             Log.d("TAG", "The rewarded ad wasn't ready yet.")

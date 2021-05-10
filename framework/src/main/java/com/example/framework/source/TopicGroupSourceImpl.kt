@@ -68,7 +68,6 @@ class TopicGroupSourceImpl @Inject constructor(
         dao.deleteDatas(*datas.map { TopicGroup().toData(it) }.toTypedArray())
     }
 
-
 /*    override suspend fun inserts(datas: List<TopicGroupEntity>) {
         dao.inserts(*datas.map { TopicGroup().toData(it) }.toTypedArray())
     }

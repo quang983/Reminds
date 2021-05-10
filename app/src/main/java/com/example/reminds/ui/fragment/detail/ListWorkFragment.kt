@@ -161,6 +161,7 @@ class ListWorkFragment : Fragment(), CallbackItemTouch {
                     }
                 }
             }, handlerCheckedAll = { workId, doneAll ->
+                showAds()
                 viewModel.handleDoneAllContentFromWork(workId, doneAll)
             }, updateDataChanged = { idWork, isShowContent ->
                 if (homeSharedViewModel.isKeyboardShow.value == true) {

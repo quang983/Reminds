@@ -7,6 +7,7 @@ import com.example.framework.local.database.dao.*
 import com.example.framework.source.MIGRATION_1_2
 import com.example.framework.source.MIGRATION_2_3
 import com.example.framework.source.MIGRATION_3_4
+import com.example.framework.source.MIGRATION_4_5
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,7 +22,7 @@ object DataBaseModule {
     @Provides
     fun provideDatabase(@ApplicationContext context: Context): AppDataBase {
         return Room.databaseBuilder(context, AppDataBase::class.java, AppDataBase.DATABASE_NAME)
-            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
             .build()
     }
 
@@ -49,4 +50,10 @@ object DataBaseModule {
     @Provides
     fun provideWorkWithChildDao(database: AppDataBase): LocalWorkWithChildDao =
         database.getWorkWithChildDao()
+
+    @Singleton
+    @Provides
+    fun providerDailyTaskDao(database: AppDataBase): LocalDailyTaskWithDividerDao =
+        database.getDailyTaskDao()
+
 }

@@ -2,18 +2,16 @@ package com.example.reminds.module
 
 import com.example.data.remote.implement.TryRepositoryImpl
 import com.example.data.repository.ContentRepositoryImpl
+import com.example.data.repository.DailyTaskRepositoryImpl
 import com.example.data.repository.TopicRepositoryImpl
 import com.example.data.repository.WorkFromTopicRepositoryImpl
-import com.example.domain.repository.ContentRepository
-import com.example.domain.repository.TopicRepository
-import com.example.domain.repository.TryRepository
-import com.example.domain.repository.WorkFromTopicRepository
+import com.example.domain.repository.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.components.ApplicationComponent
 
-@InstallIn(ActivityComponent::class)
+@InstallIn(ApplicationComponent::class)
 @Module
 abstract class RepositoryModule {
     @Binds
@@ -27,4 +25,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindContentFromWorkRepository(repository: ContentRepositoryImpl): ContentRepository
+
+    @Binds
+    abstract fun bindDailyTaskWithDividerRepository(repository: DailyTaskRepositoryImpl) : DailyTaskRepository
 }

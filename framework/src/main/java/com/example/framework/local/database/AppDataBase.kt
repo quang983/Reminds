@@ -9,7 +9,7 @@ import com.example.framework.local.database.model.*
 
 
 @Database(
-    entities = [TopicGroup::class, WorkFoTopic::class, ContentFoWork::class, DailyTask::class, DailyDivideTaskDone::class],
+    entities = [TopicGroup::class, WorkFoTopic::class, ContentFoWork::class, DailyTask::class, DailyDivideTaskDone::class, DailyTaskWithDivider::class],
     version = 5
 )
 @TypeConverters(DataConverter::class)

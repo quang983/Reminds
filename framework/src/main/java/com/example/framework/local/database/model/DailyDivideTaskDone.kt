@@ -2,6 +2,8 @@ package com.example.framework.local.database.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.common.base.model.daily.DailyDivideTaskDoneEntity
+import com.example.framework.local.database.convert.BaseConverter
 
 @Entity
 data class DailyDivideTaskDone(
@@ -11,7 +13,7 @@ data class DailyDivideTaskDone(
     var name: String,
     var doneTime: Long,
     var remainingTime: Long
-) /*: BaseConverter<DailyDivideTaskDone, DailyDivideTaskDoneEntity> {
+) : BaseConverter<DailyDivideTaskDone, DailyDivideTaskDoneEntity> {
     override fun convert(): DailyDivideTaskDoneEntity =
         DailyDivideTaskDoneEntity(id, idGroup, name, doneTime, remainingTime)
 
@@ -23,4 +25,4 @@ data class DailyDivideTaskDone(
         remainingTime = data.remainingTime
         return this
     }
-}*/
+}

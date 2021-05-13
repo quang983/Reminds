@@ -9,8 +9,8 @@ import com.example.framework.local.database.model.*
 
 
 @Database(
-    entities = [TopicGroup::class, WorkFoTopic::class, ContentFoWork::class, DailyTask::class, DailyDivideTaskDone::class, DailyTaskWithDivider::class],
-    version = 5
+    entities = [TopicGroup::class, WorkFoTopic::class, ContentFoWork::class, DailyTask::class, DailyDivideTaskDone::class],
+    version = 5, exportSchema = true
 )
 @TypeConverters(DataConverter::class)
 abstract class AppDataBase : RoomDatabase() {

@@ -14,6 +14,5 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         mBinding = getViewBinding()
         return mBinding.root
     }
-
     abstract fun getViewBinding(): VB
 }

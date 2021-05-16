@@ -182,7 +182,6 @@
 
     <fragment
         android:id="@+id/DailyTabFragment"
-        android:label="Setting"
         android:name="com.example.reminds.ui.fragment.tabdaily.list.DailyListFragment"
         tools:layout="@layout/fragment_daily_list" />
 </navigation>

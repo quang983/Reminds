@@ -3,24 +3,24 @@ package com.example.reminds.ui.adapter
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import com.example.common.base.model.daily.DailyTaskEntity
+import com.example.common.base.model.daily.DailyTaskWithDividerEntity
 import com.example.reminds.R
 import com.example.reminds.common.BaseAdapter
 import com.example.reminds.common.BaseViewHolder
 import com.example.reminds.utils.inflate
 
-class DailyListAdapter : BaseAdapter<DailyTaskEntity>(object : DiffUtil.ItemCallback<DailyTaskEntity>() {
+class DailyListAdapter : BaseAdapter<DailyTaskWithDividerEntity>(object : DiffUtil.ItemCallback<DailyTaskWithDividerEntity>() {
 
     override fun areItemsTheSame(
-        oldItem: DailyTaskEntity,
-        newItem: DailyTaskEntity
+        oldItem: DailyTaskWithDividerEntity,
+        newItem: DailyTaskWithDividerEntity
     ): Boolean {
         return false
     }
 
     override fun areContentsTheSame(
-        oldItem: DailyTaskEntity,
-        newItem: DailyTaskEntity
+        oldItem: DailyTaskWithDividerEntity,
+        newItem: DailyTaskWithDividerEntity
     ): Boolean {
         return false
     }
@@ -29,7 +29,6 @@ class DailyListAdapter : BaseAdapter<DailyTaskEntity>(object : DiffUtil.ItemCall
         return parent.inflate(R.layout.item_daily_task)
     }
 
-    override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: DailyTaskEntity) {
+    override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: DailyTaskWithDividerEntity) {
     }
-
 }

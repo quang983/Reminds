@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.NewUpcomingFragment, R.id.FirstFragment, R.id.FocusTodoFragment, R.id.SettingTabFragment
+                R.id.DailyTabFragment, R.id.NewUpcomingFragment, R.id.FirstFragment, R.id.FocusTodoFragment, R.id.SettingTabFragment
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -311,6 +311,9 @@ class MainActivity : AppCompatActivity() {
                     }
                     3 -> {
                         navController.navigate(R.id.SettingTabFragment)
+                    }
+                    4 -> {
+                        navController.navigate(R.id.DailyTabFragment)
                     }
                     else -> {
                     }

@@ -29,4 +29,11 @@
         android:enabled="true"
         android:icon="@drawable/ic_settings_filled"
         android:title="@string/page_setting" />
+
+    <item
+        android:id="@+id/pageSix"
+        android:enabled="true"
+        android:icon="@drawable/ic_calendar_check"
+        android:title="@string/page_home" />
+
 </menu>

@@ -12,14 +12,16 @@ data class DailyTask(
     var name: String,
     var createTime: Long,
     var endTime: Long,
+    var remainingTime: Long?
 ) : BaseConverter<DailyTask, DailyTaskEntity> {
-    override fun convert(): DailyTaskEntity = DailyTaskEntity(id, name, createTime, endTime)
+    override fun convert(): DailyTaskEntity = DailyTaskEntity(id, name, createTime, endTime, remainingTime)
 
     override fun copy(data: DailyTaskEntity): DailyTask {
         id = data.id
         name = data.name
         createTime = data.createTime
         endTime = data.endTime
+        remainingTime = data.remainingTime
         return this
     }
 }

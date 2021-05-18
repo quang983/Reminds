@@ -5,5 +5,4 @@ data class DailyDivideTaskDoneEntity(
     val idGroup : Long,
     val name: String,
     val doneTime: Long,
-    val remainingTime: Long
 )

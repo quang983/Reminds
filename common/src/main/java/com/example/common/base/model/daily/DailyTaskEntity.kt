@@ -5,4 +5,5 @@ data class DailyTaskEntity(
     var name: String,
     var createTime: Long,
     var endTime: Long,
+    var remainingTime: Long?,
 )

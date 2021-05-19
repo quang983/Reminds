@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:hint="@string/you_think_hint"
+            android:hint="Tên"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="2"
@@ -51,10 +51,43 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/tv_timer_start"
-        android:text="Thời gian bắt đầu"
-        android:layout_width="0dp"
-        
+        android:id="@+id/tv_title_frequence"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Tần suất"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_input_desc" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group_frequence"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/tv_title_frequence"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_frequence">
+
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hằng ngày" />
+
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hằng tuần" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <TextView
+        android:id="@+id/tv_time_remaining"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nhắc nhở vào lúc"
+        app:layout_constraintStart_toStartOf="@id/chip_group_frequence"
+        app:layout_constraintTop_toBottomOf="@id/chip_group_frequence" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ngày dự kiến kết thúc"
+        app:layout_constraintStart_toStartOf="@id/chip_group_frequence"
+        app:layout_constraintTop_toBottomOf="@id/tv_time_remaining" />
 </androidx.constraintlayout.widget.ConstraintLayout>

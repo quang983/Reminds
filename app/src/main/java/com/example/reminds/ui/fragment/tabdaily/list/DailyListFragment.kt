@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.reminds.common.BaseFragment
 import com.example.reminds.databinding.FragmentDailyListBinding
 import com.example.reminds.ui.adapter.DailyListAdapter
+import com.example.reminds.utils.navigate
 import com.example.reminds.utils.setOnClickListenerBlock
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,7 +37,7 @@ class DailyListFragment : BaseFragment<FragmentDailyListBinding>() {
 
     private fun setupListener(){
         mBinding.btnAddTask.setOnClickListenerBlock {
-            
+            navigate(DailyListFragmentDirections.actionDailyTabFragmentToAddDailyFragment())
         }
     }
 

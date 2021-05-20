@@ -20,7 +20,7 @@ data class DailyTaskWithDivider(
     override fun copy(data: DailyTaskWithDividerEntity): DailyTaskWithDivider {
         dailyTask = DailyTask(data.dailyTask.id, data.dailyTask.name, data.dailyTask.createTime, data.dailyTask.endTime, data.dailyTask.remainingTime)
         (listDaily as? ArrayList)?.clear()
-        (listDaily as? ArrayList)?.addAll(data.dailyList.map { DailyDivideTaskDone(it.id, it.idGroup, it.name, it.doneTime, it.remainingTime) })
+        (listDaily as? ArrayList)?.addAll(data.dailyList.map { DailyDivideTaskDone(it.id, it.idGroup, it.name, it.doneTime) })
         return this
     }
 }

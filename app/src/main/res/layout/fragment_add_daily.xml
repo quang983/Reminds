@@ -76,13 +76,56 @@
             android:text="Hằng tuần" />
     </com.google.android.material.chip.ChipGroup>
 
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group_days"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/chip_group_frequence"
+        app:layout_constraintTop_toBottomOf="@id/chip_group_frequence">
+
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="T2" />
+
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="T3" />
+
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="T4" />
+
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="T5" />
+
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="T6" />
+
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="T7" />
+
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CN" />
+    </com.google.android.material.chip.ChipGroup>
+
     <TextView
         android:id="@+id/tv_time_remaining"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nhắc nhở vào lúc"
-        app:layout_constraintStart_toStartOf="@id/chip_group_frequence"
-        app:layout_constraintTop_toBottomOf="@id/chip_group_frequence" />
+        app:layout_constraintStart_toStartOf="@id/chip_group_days"
+        app:layout_constraintTop_toBottomOf="@id/chip_group_days" />
 
     <TextView
         android:layout_width="wrap_content"

@@ -176,12 +176,21 @@
 
     <fragment
         android:id="@+id/SettingTabFragment"
-        android:label="Setting"
         android:name="com.example.reminds.ui.fragment.tabsetting.SettingTabFragment"
+        android:label="Setting"
         tools:layout="@layout/fragment_setting_tab" />
 
     <fragment
         android:id="@+id/DailyTabFragment"
         android:name="com.example.reminds.ui.fragment.tabdaily.list.DailyListFragment"
-        tools:layout="@layout/fragment_daily_list" />
+        tools:layout="@layout/fragment_daily_list">
+        <action
+            android:id="@+id/action_DailyTabFragment_to_AddDailyFragment"
+            app:destination="@id/AddDailyFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/AddDailyFragment"
+        android:name="com.example.reminds.ui.fragment.tabdaily.add.AddDailyTaskFragment"
+        tools:layout="@layout/fragment_add_daily" />
 </navigation>

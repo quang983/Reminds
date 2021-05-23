@@ -63,57 +63,78 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@id/tv_title_frequence"
-        app:layout_constraintTop_toBottomOf="@id/tv_title_frequence">
+        app:layout_constraintTop_toBottomOf="@id/tv_title_frequence"
+        app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/chip_daily"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hằng ngày" />
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/chip_weeks"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hằng tuần" />
     </com.google.android.material.chip.ChipGroup>
 
+    <TextView
+        android:id="@+id/tv_pick_day_remaining"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chọn ngày đặt nhắc nhở"
+        app:layout_constraintStart_toStartOf="@id/chip_group_frequence"
+        app:layout_constraintTop_toBottomOf="@id/chip_group_frequence" />
+
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chip_group_days"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/chip_group_frequence"
-        app:layout_constraintTop_toBottomOf="@id/chip_group_frequence">
+        app:layout_constraintStart_toStartOf="@id/tv_pick_day_remaining"
+        app:layout_constraintTop_toBottomOf="@id/tv_pick_day_remaining"
+        app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="T2" />
 
         <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="T3" />
 
         <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="T4" />
 
         <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="T5" />
 
         <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="T6" />
 
         <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="T7" />
 
         <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="CN" />
@@ -121,16 +142,56 @@
 
     <TextView
         android:id="@+id/tv_time_remaining"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Nhắc nhở vào lúc"
+        android:lines="1"
+        android:text="Thông báo nhắc nhở vào lúc"
+        app:layout_constraintEnd_toStartOf="@id/guide_half_percent"
         app:layout_constraintStart_toStartOf="@id/chip_group_days"
         app:layout_constraintTop_toBottomOf="@id/chip_group_days" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_time_remaining_value"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:lines="1"
+        app:layout_constraintBottom_toBottomOf="@id/tv_time_remaining"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guide_half_percent"
+        app:layout_constraintTop_toTopOf="@id/tv_time_remaining" />
+
+    <TextView
+        android:id="@+id/tv_time_end"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:lines="1"
         android:text="Ngày dự kiến kết thúc"
+        app:layout_constraintEnd_toStartOf="@id/guide_half_percent"
         app:layout_constraintStart_toStartOf="@id/chip_group_frequence"
         app:layout_constraintTop_toBottomOf="@id/tv_time_remaining" />
+
+
+    <TextView
+        android:id="@+id/tv_time_end_value"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:lines="1"
+        app:layout_constraintBottom_toBottomOf="@id/tv_time_end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guide_half_percent"
+        app:layout_constraintTop_toTopOf="@id/tv_time_end" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_half_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_pick_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="tv_pick_day_remaining,chip_group_days" />
 </androidx.constraintlayout.widget.ConstraintLayout>

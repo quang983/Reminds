@@ -24,7 +24,7 @@ class DailyTaskWithDividerSourceImpl @Inject constructor(private val withDivider
 
     override suspend fun inserts(datas: List<DailyTaskEntity>) {
         withDividerDao.inserts(*datas.map {
-            DailyTask(it.id, it.name, it.createTime, it.endTime, it.remainingTime, it.listDayOfWeek)
+            DailyTask(it.id, it.name, it.desc, it.createTime, it.endTime, it.remainingTime, it.listDayOfWeek)
         }.toTypedArray())
     }
 

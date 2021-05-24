@@ -10,12 +10,13 @@ data class DailyTask(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
     var name: String,
+    var desc : String?,
     var createTime: Long,
     var endTime: Long?,
     var remainingTime: Long?,
     var listDayOfWeek: String?
 ) : BaseConverter<DailyTask, DailyTaskEntity> {
-    override fun convert(): DailyTaskEntity = DailyTaskEntity(id, name, createTime, endTime, remainingTime, listDayOfWeek)
+    override fun convert(): DailyTaskEntity = DailyTaskEntity(id, name,desc, createTime, endTime, remainingTime, listDayOfWeek)
 
     override fun copy(data: DailyTaskEntity): DailyTask {
         id = data.id

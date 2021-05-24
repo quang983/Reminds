@@ -21,6 +21,7 @@ data class DailyTaskWithDivider(
         dailyTask = DailyTask(
             id = data.dailyTask.id,
             name = data.dailyTask.name,
+            desc = data.dailyTask.desc,
             createTime = data.dailyTask.createTime,
             endTime = data.dailyTask.endTime,
             remainingTime = data.dailyTask.remainingTime,

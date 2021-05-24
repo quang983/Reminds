@@ -1,6 +1,7 @@
 package com.example.reminds.ui.fragment.tabdaily.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -35,7 +36,7 @@ class DailyListFragment : BaseFragment<FragmentDailyListBinding>() {
         mBinding.recyclerList.layoutManager = GridLayoutManager(requireContext(), 2)
     }
 
-    private fun setupListener(){
+    private fun setupListener() {
         mBinding.btnAddTask.setOnClickListenerBlock {
             navigate(DailyListFragmentDirections.actionDailyTabFragmentToAddDailyFragment())
         }

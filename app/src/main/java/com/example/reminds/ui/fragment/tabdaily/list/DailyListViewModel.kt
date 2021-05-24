@@ -2,6 +2,7 @@ package com.example.reminds.ui.fragment.tabdaily.list
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.common.base.model.daily.DailyTaskWithDividerEntity
 import com.example.domain.base.BaseUseCase
@@ -12,14 +13,16 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class DailyListViewModel @ViewModelInject constructor(private val dailyTaskFlowUseCase: GetAllDailyTaskFlowUseCase) : BaseViewModel() {
-    private val _dailyTaskWithDivider: LiveData<List<DailyTaskWithDividerEntity>> = liveData {
+    private val _dailyTaskWithDivider: MediatorLiveData<List<DailyTaskWithDividerEntity>> = MediatorLiveData<List<DailyTaskWithDividerEntity>>().apply {
         viewModelScope.launch(handler + Dispatchers.IO) {
             dailyTaskFlowUseCase.invoke(BaseUseCase.Param()).collect {
-                emit(it)
+                postValue(it)
             }
         }
     }
 
-    val dailyTaskWithDivider = _dailyTaskWithDivider.switchMapLiveDataEmit { it }
+    val dailyTaskWithDivider: LiveData<List<DailyTaskWithDividerEntity>> = _dailyTaskWithDivider.switchMapLiveDataEmit {
+        it
+    }
 }
 

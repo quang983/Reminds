@@ -107,7 +107,6 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
                     .build()
             datePicker.show(childFragmentManager, null)
             datePicker.addOnPositiveButtonClickListener {
-                Log.d("setOnClickListener", "setOnClickListener: ${datePicker.selection}")
                 viewModel.taskInsertPreview.getOrNull()?.endTime = datePicker.selection
             }
             datePicker.addOnNegativeButtonClickListener {

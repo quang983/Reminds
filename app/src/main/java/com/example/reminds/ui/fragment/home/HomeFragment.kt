@@ -51,7 +51,7 @@ class HomeFragment : Fragment() {
         setupUI()
         setupListener()
         setupTransition(view)
-        presentShowcaseView()
+//        presentShowcaseView()
         observeData()
     }
 

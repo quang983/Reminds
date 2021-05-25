@@ -44,6 +44,7 @@ open class NotificationService : Service() {
                         )
                     }
                 }
+
                 else -> super.handleMessage(msg)
             }
         }

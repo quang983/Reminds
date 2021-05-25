@@ -1,6 +1,7 @@
 package com.example.reminds.ui.fragment.tabdaily.add
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -12,6 +13,7 @@ import com.example.reminds.common.BaseFragment
 import com.example.reminds.common.RetrieveDataState
 import com.example.reminds.databinding.FragmentAddDailyBinding
 import com.example.reminds.utils.*
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
@@ -99,18 +101,16 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
         }
 
         mBinding.tvTimeEnd.setOnClickListener {
-            val picker =
-                MaterialTimePicker.Builder()
-                    .setTimeFormat(TimeFormat.CLOCK_12H)
-                    .setHour(12)
-                    .setMinute(10)
-                    .setTitleText("Select Appointment time")
+            val datePicker =
+                MaterialDatePicker.Builder.datePicker()
+                    .setTitleText("Select date")
                     .build()
-            picker.show(childFragmentManager, null)
-            picker.addOnPositiveButtonClickListener {
-                viewModel.taskInsertPreview.getOrNull()?.endTime = (picker.hour + picker.minute).toLong()
+            datePicker.show(childFragmentManager, null)
+            datePicker.addOnPositiveButtonClickListener {
+                Log.d("setOnClickListener", "setOnClickListener: ${datePicker.selection}")
+                viewModel.taskInsertPreview.getOrNull()?.endTime = datePicker.selection
             }
-            picker.addOnNegativeButtonClickListener {
+            datePicker.addOnNegativeButtonClickListener {
             }
         }
     }
@@ -135,4 +135,6 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
         viewModel.taskInsertPreview.observe(viewLifecycleOwner, {
         })
     }
+
+    private fun alarm(){}
 }

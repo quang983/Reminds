@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Singleton
 
 @Singleton
-class AddDailyTaskViewModel @ViewModelInject constructor(val insertDailyTaskUseCase: InsertDailyTaskUseCase) : BaseViewModel() {
+class AddDailyTaskViewModel @ViewModelInject constructor(private val insertDailyTaskUseCase: InsertDailyTaskUseCase) : BaseViewModel() {
     val stateInsertData: LiveData<RetrieveDataState<Unit?>> = MutableLiveData()
 
     val taskInsertPreview: MutableLiveData<DailyTaskEntity> = MutableLiveData()

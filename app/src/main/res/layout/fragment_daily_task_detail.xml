@@ -11,6 +11,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ProgressBar
+        android:id="@+id/progress_state_task"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:progress="6"
+        android:max="10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img_welcome" />
+
     <com.kizitonwose.calendarview.CalendarView
         android:id="@+id/calendar_view"
         android:layout_width="match_parent"
@@ -22,6 +31,15 @@
         app:cv_orientation="horizontal"
         app:cv_outDateStyle="none"
         app:cv_scrollMode="continuous"
-        app:layout_constraintTop_toBottomOf="@id/img_welcome" />
+        app:layout_constraintTop_toBottomOf="@id/progress_state_task" />
+
+    <com.ncorti.slidetoact.SlideToActView
+        android:id="@+id/slide_to_unlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_16sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:text="Example" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,8 +8,9 @@ import com.example.reminds.R
 import com.example.reminds.common.BaseAdapter
 import com.example.reminds.common.BaseViewHolder
 import com.example.reminds.utils.inflate
+import com.example.reminds.utils.setOnClickListenerBlock
 
-class DailyListAdapter : BaseAdapter<DailyTaskWithDividerEntity>(object : DiffUtil.ItemCallback<DailyTaskWithDividerEntity>() {
+class DailyListAdapter(val onClickItemListener: (item: DailyTaskWithDividerEntity) -> Unit) : BaseAdapter<DailyTaskWithDividerEntity>(object : DiffUtil.ItemCallback<DailyTaskWithDividerEntity>() {
 
     override fun areItemsTheSame(
         oldItem: DailyTaskWithDividerEntity,
@@ -30,5 +31,8 @@ class DailyListAdapter : BaseAdapter<DailyTaskWithDividerEntity>(object : DiffUt
     }
 
     override fun bind(holder: BaseViewHolder, view: View, viewType: Int, position: Int, item: DailyTaskWithDividerEntity) {
+        view.rootView.setOnClickListenerBlock {
+            onClickItemListener.invoke(item)
+        }
     }
 }

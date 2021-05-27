@@ -9,7 +9,6 @@ import com.example.reminds.R
 import com.example.reminds.utils.navigateUp
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 abstract class BaseFragment<VB : ViewBinding> : Fragment() {
     protected lateinit var mBinding: VB
 

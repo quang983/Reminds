@@ -9,14 +9,13 @@ import com.example.reminds.common.BaseFragment
 import com.example.reminds.databinding.FragmentSearchTickistBinding
 import com.example.reminds.ui.adapter.ListSearchAdapter
 import com.example.reminds.ui.sharedviewmodel.FocusActivityViewModel
-import com.example.reminds.ui.sharedviewmodel.MainActivityViewModel
 import com.example.reminds.utils.navigateUp
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class SearchTickistFragment : BaseFragment<FragmentSearchTickistBinding>() {
-    private val  viewModelShared: FocusActivityViewModel by activityViewModels()
+    private val viewModelShared: FocusActivityViewModel by activityViewModels()
     private val viewModel: SearchTickistViewModel by viewModels()
 
     override fun getViewBinding(): FragmentSearchTickistBinding {
@@ -30,7 +29,7 @@ class SearchTickistFragment : BaseFragment<FragmentSearchTickistBinding>() {
         setupObserver()
     }
 
-    private fun setupToolbar() {
+    fun setupToolbar() {
         setHasOptionsMenu(true)
     }
 

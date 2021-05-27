@@ -8,12 +8,15 @@ import com.example.reminds.R
 import com.example.reminds.common.BaseFragment
 import com.example.reminds.databinding.CalendarDayBinding
 import com.example.reminds.databinding.FragmentDailyTaskDetailBinding
-import com.example.reminds.ui.fragment.tabdaily.list.DailyListViewModel
+import com.example.reminds.ui.activity.MainActivity
 import com.example.reminds.utils.getColorCompat
+import com.example.reminds.utils.gone
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
 import dagger.hilt.android.AndroidEntryPoint
+import nl.joery.animatedbottombar.AnimatedBottomBar
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -38,7 +41,9 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
         setupCalendarView()
     }
 
+
     private fun setupLayout() {
+        (requireActivity() as? MainActivity)?.findViewById<AnimatedBottomBar>(R.id.bottom_navigation)?.gone()
     }
 
     private fun setupCalendarView() {

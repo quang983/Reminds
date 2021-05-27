@@ -4,21 +4,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/img_welcome"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_200sdp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ProgressBar
-        android:id="@+id/progress_state_task"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:progress="6"
-        android:max="10"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/img_welcome" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_between"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+
+            <com.dinuscxj.progressbar.CircleProgressBar
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_120sdp"
+                app:layout_constraintEnd_toStartOf="@id/guideline_between"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_time_remaining"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Thoi gian canh bao"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline_between"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_time_end"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="thoi gian du kien ket thuc"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline_between"
+                app:layout_constraintTop_toBottomOf="@id/tv_time_remaining" />
+
+            <TextView
+                android:id="@+id/tv_day_lost"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="cac ngay da bo lo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline_between"
+                app:layout_constraintTop_toBottomOf="@id/tv_time_end" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
     <com.kizitonwose.calendarview.CalendarView
         android:id="@+id/calendar_view"
@@ -31,7 +70,7 @@
         app:cv_orientation="horizontal"
         app:cv_outDateStyle="none"
         app:cv_scrollMode="continuous"
-        app:layout_constraintTop_toBottomOf="@id/progress_state_task" />
+        app:layout_constraintTop_toBottomOf="@id/card_container" />
 
     <com.ncorti.slidetoact.SlideToActView
         android:id="@+id/slide_to_unlock"

@@ -11,10 +11,11 @@ import com.example.reminds.databinding.FragmentDailyTaskDetailBinding
 import com.example.reminds.ui.activity.MainActivity
 import com.example.reminds.utils.getColorCompat
 import com.example.reminds.utils.gone
-import com.google.android.material.bottomappbar.BottomAppBar
+import com.example.reminds.utils.visibleOrGone
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
+import com.ncorti.slidetoact.SlideToActView
 import dagger.hilt.android.AndroidEntryPoint
 import nl.joery.animatedbottombar.AnimatedBottomBar
 import java.time.DayOfWeek
@@ -39,11 +40,29 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
         super.onViewCreated(view, savedInstanceState)
         setupLayout()
         setupCalendarView()
+        observer()
     }
 
 
     private fun setupLayout() {
         (requireActivity() as? MainActivity)?.findViewById<AnimatedBottomBar>(R.id.bottom_navigation)?.gone()
+        mBinding.slideToUnlock.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
+            override fun onSlideComplete(view: SlideToActView) {
+                if (view.isCompleted()) {
+                    _viewModel.updateDividerInDailyTask()
+                }
+            }
+        }
+    }
+
+    private fun observer() {
+        _viewModel.getDetailDailyTask.observe(viewLifecycleOwner, {
+
+        })
+
+        _viewModel.showCheckInLiveData.observe(viewLifecycleOwner,{
+            mBinding.slideToUnlock.visibleOrGone(it)
+        })
     }
 
     private fun setupCalendarView() {
@@ -96,7 +115,6 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
             binding.tvDate.text = dateFormatter.format(day.date)
             binding.tvDay.text = dayFormatter.format(day.date)
             binding.tvMonth.text = monthFormatter.format(day.date)
-
             binding.tvDate.setTextColor(view.context.getColorCompat(if (day.date == selectedDate) R.color.yellow else R.color.white))
         }
 

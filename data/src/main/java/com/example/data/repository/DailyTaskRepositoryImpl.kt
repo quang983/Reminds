@@ -16,4 +16,8 @@ class DailyTaskRepositoryImpl @Inject constructor(private val dailyTaskWithDivid
     override suspend fun insertsData(datas: List<DailyTaskEntity>) {
         dailyTaskWithDividerSource.inserts(datas)
     }
+
+    override suspend fun getDetailById(id: Long): Flow<DailyTaskWithDividerEntity> {
+        return dailyTaskWithDividerSource.getDetailById(id)
+    }
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.common.base.model.daily.DailyTaskEntity
+import com.example.common.base.model.daily.DailyTaskWithDividerEntity
 import com.example.domain.usecase.db.daily.InsertDailyTaskUseCase
 import com.example.reminds.common.BaseViewModel
 import com.example.reminds.common.RetrieveDataState
@@ -24,7 +25,7 @@ class AddDailyTaskViewModel @ViewModelInject constructor(private val insertDaily
 
     fun insertsDailyTask(taskInsert: DailyTaskEntity) = viewModelScope.launch(Dispatchers.IO + handler) {
         if (checkSatisfy(taskInsert)) {
-            insertDailyTaskUseCase.invoke(InsertDailyTaskUseCase.Param(listOf(taskInsert)))
+            insertDailyTaskUseCase.invoke(InsertDailyTaskUseCase.Param(listOf(DailyTaskWithDividerEntity(taskInsert, emptyList()))))
             stateInsertData.postValue(RetrieveDataState.Success(null))
         } else {
             stateInsertData.postValue(RetrieveDataState.Failure(Throwable()))

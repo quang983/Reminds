@@ -13,4 +13,7 @@ interface LocalDailyTaskWithDividerDao : BaseDao<DailyTask> {
     @Transaction
     @Query("SELECT * FROM DailyTask")
     fun getAllDataFlow(): Flow<List<DailyTaskWithDivider>>
+
+    @Query("SELECT * FROM DailyTask  where id=:id")
+    fun getDetailById(id: Long): Flow<DailyTaskWithDivider>
 }

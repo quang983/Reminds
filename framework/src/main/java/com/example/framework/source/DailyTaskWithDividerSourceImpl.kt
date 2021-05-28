@@ -18,6 +18,12 @@ class DailyTaskWithDividerSourceImpl @Inject constructor(private val withDivider
         }
     }
 
+    override suspend fun getDetailById(id: Long): Flow<DailyTaskWithDividerEntity> {
+        return withDividerDao.getDetailById(id).map {
+            it.convert()
+        }
+    }
+
     override suspend fun insert(data: DailyTaskEntity): Long {
         TODO("Not yet implemented")
     }

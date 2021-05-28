@@ -5,10 +5,11 @@ import com.example.domain.base.BaseUseCase
 import com.example.domain.repository.DailyTaskRepository
 import javax.inject.Inject
 
-class InsertDailyTaskUseCase @Inject constructor(val repository: DailyTaskRepository) : BaseUseCase<InsertDailyTaskUseCase.Param, Unit> {
-    class Param(val datas: List<DailyTaskWithDividerEntity>)
+class UpdateDailyTaskUseCase @Inject constructor(val repository: DailyTaskRepository) : BaseUseCase<UpdateDailyTaskUseCase.Param,Unit> {
 
     override suspend fun invoke(params: Param) {
-        return repository.insertDatas(params.datas)
+        repository.updateDatas(listOf(params.taskUpdate))
     }
+
+    class Param(val taskUpdate: DailyTaskWithDividerEntity)
 }

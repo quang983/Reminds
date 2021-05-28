@@ -5,5 +5,7 @@ import com.example.common.base.model.daily.DailyTaskWithDividerEntity
 import kotlinx.coroutines.flow.Flow
 
 interface DailyTaskWithDividerSource : BaseSource<DailyTaskEntity> {
-    suspend fun getAllDataFlow()  : Flow<List<DailyTaskWithDividerEntity>>
+    suspend fun getAllDataFlow(): Flow<List<DailyTaskWithDividerEntity>>
+
+    suspend fun getDetailById(id: Long) : Flow<DailyTaskWithDividerEntity>
 }

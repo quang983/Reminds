@@ -4,48 +4,42 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.75" />
-
-    <TextView
+    <com.dinuscxj.progressbar.CircleProgressBar
         android:id="@+id/tv_count"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/ic_radio_focus"
         android:gravity="center"
-        android:text="3/5"
+        android:padding="@dimen/_16sdp"
         android:textSize="@dimen/text_medium_2"
+        app:progress_stroke_width="@dimen/_6sdp"
+        app:progress_style="solid_line"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_remind"
+        android:id="@+id/tv_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Nhắc nhở vào"
+        android:text="Tên dự án"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_count" />
 
     <TextView
-        android:id="@+id/tv_check_today"
+        android:id="@+id/tv_time_remaining"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Hôm nay: đã hoàn thành"
+        android:text="Thời gian nhắc nhở"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_remind" />
+        app:layout_constraintTop_toBottomOf="@id/tv_name" />
 
     <TextView
-        android:id="@+id/tv_start_time"
+        android:id="@+id/tv_type"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Bắt đầu vào"
+        android:text="Loại nhắc nhở"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_check_today" />
+        app:layout_constraintTop_toBottomOf="@id/tv_time_remaining" />
 </androidx.constraintlayout.widget.ConstraintLayout>

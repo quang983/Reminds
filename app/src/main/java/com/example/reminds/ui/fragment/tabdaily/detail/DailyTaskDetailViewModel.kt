@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class DailyTaskDetailViewModel @ViewModelInject constructor(
-    private val idTask: Long,
     private val getDailyTaskByIdUseCase: GetDailyTaskByIdUseCase,
     private val updateDailyTaskUseCase: UpdateDailyTaskUseCase
 ) : BaseViewModel() {
@@ -32,7 +31,7 @@ class DailyTaskDetailViewModel @ViewModelInject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO + handler) {
-            getDailyTaskByIdUseCase.invoke(GetDailyTaskByIdUseCase.Param(idTask)).collect {
+            getDailyTaskByIdUseCase.invoke(GetDailyTaskByIdUseCase.Param(0)).collect {
                 _getDetailDailyTask.postValue(it)
             }
         }

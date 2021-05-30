@@ -9,6 +9,6 @@ class InsertDailyTaskUseCase @Inject constructor(val repository: DailyTaskReposi
     class Param(val datas: List<DailyTaskWithDividerEntity>)
 
     override suspend fun invoke(params: Param) {
-        return repository.insertDatas(params.datas)
+        return repository.insertDatas(params.datas.map { it.dailyTask })
     }
 }

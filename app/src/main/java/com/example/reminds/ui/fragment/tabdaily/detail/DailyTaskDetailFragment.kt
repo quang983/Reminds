@@ -60,7 +60,7 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
 
         })
 
-        _viewModel.showCheckInLiveData.observe(viewLifecycleOwner,{
+        _viewModel.showCheckInLiveData.observe(viewLifecycleOwner, {
             mBinding.slideToUnlock.visibleOrGone(it)
         })
     }
@@ -115,7 +115,7 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
             binding.tvDate.text = dateFormatter.format(day.date)
             binding.tvDay.text = dayFormatter.format(day.date)
             binding.tvMonth.text = monthFormatter.format(day.date)
-            binding.tvDate.setTextColor(view.context.getColorCompat(if (day.date == selectedDate) R.color.yellow else R.color.white))
+            binding.tvDate.setTextColor(view.context.getColorCompat(if (day.date == selectedDate) R.color.red else R.color.black))
         }
 
     }

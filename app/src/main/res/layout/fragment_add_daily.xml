@@ -2,12 +2,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/_16sdp"
+    android:paddingEnd="@dimen/_16sdp">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_input_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:background="@null"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -31,6 +35,8 @@
         android:id="@+id/til_input_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:background="@null"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_input_name">
 
@@ -54,6 +60,8 @@
         android:id="@+id/tv_title_frequence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_8sdp"
         android:text="Tần suất"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_input_desc" />
@@ -145,6 +153,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:lines="1"
+        android:paddingTop="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_8sdp"
         android:text="Thông báo nhắc nhở vào lúc"
         app:layout_constraintEnd_toStartOf="@id/guide_half_percent"
         app:layout_constraintStart_toStartOf="@id/chip_group_days"
@@ -165,6 +175,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:lines="1"
+        android:paddingTop="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_8sdp"
         android:text="Ngày dự kiến kết thúc"
         app:layout_constraintEnd_toStartOf="@id/guide_half_percent"
         app:layout_constraintStart_toStartOf="@id/chip_group_frequence"

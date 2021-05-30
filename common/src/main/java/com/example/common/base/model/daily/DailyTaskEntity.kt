@@ -7,5 +7,10 @@ data class DailyTaskEntity(
     var createTime: Long,
     var endTime: Long? = null,
     var remainingTime: Long? = null,
-    var listDayOfWeek: String? = null
-)
+    var listDayOfWeek: String? = null,
+    var type: Int = 0
+) {
+    companion object {
+
+    }
+}

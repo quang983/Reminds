@@ -27,6 +27,8 @@ abstract class AppDataBase : RoomDatabase() {
 
     abstract fun getDailyTaskDao(): LocalDailyTaskWithDividerDao
 
+    abstract fun getDailyDividerDoneDao(): LocalDailyDividerDoneDao
+
     companion object {
         const val DATABASE_NAME = "app_db"
     }

@@ -1,10 +1,7 @@
 package com.example.reminds.module
 
 import com.example.data.remote.implement.TryRepositoryImpl
-import com.example.data.repository.ContentRepositoryImpl
-import com.example.data.repository.DailyTaskRepositoryImpl
-import com.example.data.repository.TopicRepositoryImpl
-import com.example.data.repository.WorkFromTopicRepositoryImpl
+import com.example.data.repository.*
 import com.example.domain.repository.*
 import dagger.Binds
 import dagger.Module
@@ -28,4 +25,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindDailyTaskWithDividerRepository(repository: DailyTaskRepositoryImpl) : DailyTaskRepository
+
+    @Binds
+    abstract fun bindDailyTaskDividerDoneRepository(repository: DailyDivideDoneRepositoryImpl) : DailyDivideDoneRepository
 }

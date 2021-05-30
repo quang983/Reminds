@@ -56,4 +56,8 @@ object DataBaseModule {
     fun providerDailyTaskDao(database: AppDataBase): LocalDailyTaskWithDividerDao =
         database.getDailyTaskDao()
 
+    @Singleton
+    @Provides
+    fun providerDailyTaskDividerDoneDao(database: AppDataBase): LocalDailyDividerDoneDao =
+        database.getDailyDividerDoneDao()
 }

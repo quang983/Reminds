@@ -182,6 +182,7 @@
 
     <navigation
         android:id="@+id/navigation"
+        android:label="Daily"
         app:startDestination="@id/DailyTabFragment">
         <fragment
             android:id="@+id/DailyTabFragment"

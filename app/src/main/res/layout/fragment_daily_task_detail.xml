@@ -26,9 +26,13 @@
             <com.dinuscxj.progressbar.CircleProgressBar
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_120sdp"
+                android:padding="@dimen/_6sdp"
+                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toStartOf="@id/guideline_between"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:progress_stroke_width="@dimen/_6sdp"
+                app:progress_style="solid_line" />
 
             <TextView
                 android:id="@+id/tv_time_remaining"
@@ -63,6 +67,7 @@
         android:id="@+id/calendar_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_48sdp"
+        android:layout_marginTop="@dimen/_16sdp"
         app:cv_dayViewResource="@layout/calendar_day"
         app:cv_hasBoundaries="false"
         app:cv_inDateStyle="none"

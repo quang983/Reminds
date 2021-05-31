@@ -1,6 +1,5 @@
 package com.example.reminds.ui.fragment.home
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -15,11 +14,14 @@ import com.example.domain.usecase.db.workintopic.FetchWorksUseCase
 import com.example.domain.usecase.db.workintopic.GetTotalTaskOfWorkUseCase
 import com.example.domain.usecase.db.workintopic.InsertListWorkUseCase
 import com.example.reminds.common.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel @ViewModelInject constructor(
+@HiltViewModel
+class HomeViewModel @Inject constructor(
     private val fetchTopicFlowUseCase: FetchTopicFlowUseCase,
     private val deleteTopicUseCase: DeleteTopicUseCase,
     private val getTotalTaskOfWorkUseCase: GetTotalTaskOfWorkUseCase,

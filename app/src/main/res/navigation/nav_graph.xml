@@ -202,6 +202,10 @@
         <fragment
             android:id="@+id/DetailDailyFragment"
             android:name="com.example.reminds.ui.fragment.tabdaily.detail.DailyTaskDetailFragment"
-            tools:layout="@layout/fragment_daily_task_detail" />
+            tools:layout="@layout/fragment_daily_task_detail">
+            <argument
+                android:name="id"
+                app:argType="long" />
+        </fragment>
     </navigation>
 </navigation>

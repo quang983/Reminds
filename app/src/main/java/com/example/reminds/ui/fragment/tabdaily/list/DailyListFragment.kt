@@ -35,7 +35,7 @@ class DailyListFragment : BaseFragment<FragmentDailyListBinding>() {
 
     private fun setupLayout() {
         adapter = DailyListAdapter {
-            navigate(DailyListFragmentDirections.actionDailyTabFragmentToDetailDailyFragment())
+            navigate(DailyListFragmentDirections.actionDailyTabFragmentToDetailDailyFragment(0))
         }
         mBinding.recyclerList.adapter = adapter
         mBinding.recyclerList.layoutManager = GridLayoutManager(requireContext(), 2)

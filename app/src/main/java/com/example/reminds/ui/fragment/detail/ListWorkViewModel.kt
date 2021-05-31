@@ -1,6 +1,5 @@
 package com.example.reminds.ui.fragment.detail
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.common.base.model.ContentDataEntity
 import com.example.common.base.model.TopicGroupEntity
@@ -12,14 +11,17 @@ import com.example.reminds.common.BaseViewModel
 import com.example.reminds.utils.getFirstOrNull
 import com.example.reminds.utils.getLastOrNull
 import com.example.reminds.utils.getOrNull
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-class ListWorkViewModel @ViewModelInject constructor(
+@HiltViewModel
+class ListWorkViewModel @Inject constructor(
     private val fetchWorksUseCase: FetchWorksUseCase,
     private val insertWorkUseCase: InsertWorkUseCase,
     private val updateWorkUseCase: UpdateWorkUseCase,

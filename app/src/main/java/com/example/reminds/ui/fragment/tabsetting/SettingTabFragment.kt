@@ -3,9 +3,11 @@ package com.example.reminds.ui.fragment.tabsetting
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.example.reminds.R
 import com.example.reminds.common.BaseFragment
 import com.example.reminds.databinding.FragmentSettingTabBinding
+import com.example.reminds.ui.fragment.upcoming.UpcomingViewModel
 import com.example.reminds.utils.setOnClickListenerBlock
 import com.google.android.play.core.review.ReviewManagerFactory
 import dagger.hilt.android.AndroidEntryPoint
@@ -13,6 +15,7 @@ import www.sanju.motiontoast.MotionToast
 
 @AndroidEntryPoint
 class SettingTabFragment : BaseFragment<FragmentSettingTabBinding>() {
+
     override fun getViewBinding(): FragmentSettingTabBinding {
         return FragmentSettingTabBinding.inflate(layoutInflater)
     }

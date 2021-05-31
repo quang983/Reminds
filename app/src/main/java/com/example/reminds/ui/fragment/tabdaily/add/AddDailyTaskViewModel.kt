@@ -1,6 +1,5 @@
 package com.example.reminds.ui.fragment.tabdaily.add
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -9,12 +8,13 @@ import com.example.common.base.model.daily.DailyTaskWithDividerEntity
 import com.example.domain.usecase.db.daily.InsertDailyTaskUseCase
 import com.example.reminds.common.BaseViewModel
 import com.example.reminds.common.RetrieveDataState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import javax.inject.Singleton
+import javax.inject.Inject
 
-@Singleton
-class AddDailyTaskViewModel @ViewModelInject constructor(private val insertDailyTaskUseCase: InsertDailyTaskUseCase) : BaseViewModel() {
+@HiltViewModel
+class AddDailyTaskViewModel @Inject constructor(private val insertDailyTaskUseCase: InsertDailyTaskUseCase) : BaseViewModel() {
     val stateInsertData: LiveData<RetrieveDataState<Unit?>> = MutableLiveData()
 
     val taskInsertPreview: MutableLiveData<DailyTaskEntity> = MutableLiveData()

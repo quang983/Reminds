@@ -1,7 +1,9 @@
 package com.example.reminds.ui.activity.focus
 
-import androidx.hilt.lifecycle.ViewModelInject
 import com.example.reminds.common.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class FocusTodoViewModel @ViewModelInject constructor(): BaseViewModel() {
+@HiltViewModel
+class FocusTodoViewModel @Inject constructor() : BaseViewModel() {
 }

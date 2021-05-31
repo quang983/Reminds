@@ -13,10 +13,13 @@ import com.example.domain.usecase.db.workintopic.InsertWorkUseCase
 import com.example.domain.usecase.db.workintopic.UpdateWorkUseCase
 import com.example.reminds.common.BaseViewModel
 import com.example.reminds.utils.getOrNull
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class OptionForWorkBSViewModel @ViewModelInject constructor(
+@HiltViewModel
+class OptionForWorkBSViewModel @Inject constructor(
     private val workByIdUseCase: GetWorkByIdUseCase,
     private val updateWorkUseCase: UpdateWorkUseCase,
     private val deleteWorkUseCase: DeleteWorkUseCase,

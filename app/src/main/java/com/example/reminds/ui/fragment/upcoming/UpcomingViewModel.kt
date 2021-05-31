@@ -6,9 +6,12 @@ import com.example.common.base.model.TopicGroupEntity
 import com.example.common.base.model.TopicGroupEntity.Companion.TYPE_UPCOMING
 import com.example.domain.usecase.db.topic.FetchTopicFlowUseCase
 import com.example.reminds.common.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
+import javax.inject.Inject
 
-class UpcomingViewModel @ViewModelInject constructor(fetchTopicFlowUseCase: FetchTopicFlowUseCase) : BaseViewModel() {
+@HiltViewModel
+class UpcomingViewModel @Inject constructor(fetchTopicFlowUseCase: FetchTopicFlowUseCase) : BaseViewModel() {
     var isExpandedCalendar: Boolean = false
 
     private val _getAllTopicUpComing: LiveData<List<TopicGroupEntity>> = liveData {

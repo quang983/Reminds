@@ -22,10 +22,16 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
-    private val _viewModel by viewModels<DailyTaskDetailViewModel>()
+    @Inject
+    lateinit var assistedFactory: DailyDetailViewModelAssistedFactory
+
+    private val _viewModel: DailyTaskDetailViewModel by viewModels {
+        DailyTaskDetailViewModel.Factory(assistedFactory, 0)
+    }
 
     private var selectedDate = LocalDate.now()
     private val dateFormatter = DateTimeFormatter.ofPattern("dd")

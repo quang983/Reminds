@@ -1,7 +1,6 @@
 package com.example.reminds.ui.sharedviewmodel
 
 import android.os.CountDownTimer
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -10,10 +9,13 @@ import com.example.domain.usecase.db.workintopic.UpdateWorkUseCase
 import com.example.reminds.common.BaseViewModel
 import com.example.reminds.ui.fragment.focus.home.STATE
 import com.example.reminds.utils.TimestampUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FocusActivityViewModel @ViewModelInject constructor(private val updateWorkUseCase: UpdateWorkUseCase) : BaseViewModel() {
+@HiltViewModel
+class FocusActivityViewModel @Inject constructor(private val updateWorkUseCase: UpdateWorkUseCase) : BaseViewModel() {
     val itemWorkSelected: MutableLiveData<WorkDataEntity?> = MutableLiveData()
 
     fun doneAllInWork() = viewModelScope.launch(Dispatchers.IO + handler) {

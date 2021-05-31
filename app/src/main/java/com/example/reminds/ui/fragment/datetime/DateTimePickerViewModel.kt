@@ -2,9 +2,12 @@ package com.example.reminds.ui.fragment.datetime
 
 import androidx.lifecycle.MutableLiveData
 import com.example.reminds.common.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.*
+import javax.inject.Inject
 
-class DateTimePickerViewModel : BaseViewModel() {
+@HiltViewModel
+class DateTimePickerViewModel @Inject constructor() : BaseViewModel() {
     val minimum = MutableLiveData<Calendar>()
     val maximum = MutableLiveData<Calendar>()
     val calendar = MutableLiveData<Calendar>()

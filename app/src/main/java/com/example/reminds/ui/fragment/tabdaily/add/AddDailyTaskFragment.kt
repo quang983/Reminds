@@ -1,5 +1,9 @@
 package com.example.reminds.ui.fragment.tabdaily.add
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -11,11 +15,14 @@ import com.example.reminds.R
 import com.example.reminds.common.BaseFragment
 import com.example.reminds.common.RetrieveDataState
 import com.example.reminds.databinding.FragmentAddDailyBinding
+import com.example.reminds.service.ScheduledWorker
+import com.example.reminds.service.everyday.NotificationDailyBroadcastReceiver
 import com.example.reminds.utils.*
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 @AndroidEntryPoint
 class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
@@ -30,6 +37,7 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
         setupToolbar()
         setOnClickListener()
         observerData()
+        alarm()
     }
 
     private fun setupToolbar() {
@@ -123,6 +131,7 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
                 }
 
                 is RetrieveDataState.Success -> {
+                    alarm()
                     navigateUp()
                 }
 
@@ -136,5 +145,29 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
         })
     }
 
-    private fun alarm() {}
+    private var alarmMgr: AlarmManager? = null
+    private lateinit var alarmIntent: PendingIntent
+
+
+    private fun alarm() {
+        alarmMgr = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmIntent = Intent(context, NotificationDailyBroadcastReceiver::class.java).let { intent ->
+            intent.putExtra(ScheduledWorker.NOTIFICATION_TITLE, "Title")
+            intent.putExtra(ScheduledWorker.NOTIFICATION_MESSAGE, "Message")
+            PendingIntent.getBroadcast(context, 0, intent, 0)
+        }
+
+        val calendar: Calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, 22)
+            set(Calendar.MINUTE, 30)
+        }
+
+        alarmMgr?.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            1000 * 60 * 1,
+            alarmIntent
+        )
+    }
 }

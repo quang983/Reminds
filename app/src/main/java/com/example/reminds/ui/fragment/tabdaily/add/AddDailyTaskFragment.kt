@@ -1,7 +1,6 @@
 package com.example.reminds.ui.fragment.tabdaily.add
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -95,6 +94,7 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
             picker.show(childFragmentManager, null)
             picker.addOnPositiveButtonClickListener {
                 viewModel.taskInsertPreview.getOrNull()?.remainingTime = (picker.hour + picker.minute).toLong()
+                mBinding.tvTimeRemainingValue.text = "${picker.hour}:${picker.minute}"
             }
             picker.addOnNegativeButtonClickListener {
             }
@@ -108,6 +108,7 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
             datePicker.show(childFragmentManager, null)
             datePicker.addOnPositiveButtonClickListener {
                 viewModel.taskInsertPreview.getOrNull()?.endTime = datePicker.selection
+                mBinding.tvTimeEndValue.text = TimestampUtils.getDate(datePicker.selection ?: 0)
             }
             datePicker.addOnNegativeButtonClickListener {
             }
@@ -135,5 +136,5 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
         })
     }
 
-    private fun alarm(){}
+    private fun alarm() {}
 }

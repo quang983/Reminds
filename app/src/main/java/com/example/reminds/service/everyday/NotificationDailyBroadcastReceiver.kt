@@ -13,6 +13,7 @@ class NotificationDailyBroadcastReceiver  : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
         intent?.let {
+
             val title = it.getStringExtra(ScheduledWorker.NOTIFICATION_TITLE)
             val message = it.getStringExtra(ScheduledWorker.NOTIFICATION_MESSAGE)
             val idTopic = it.getLongExtra(ScheduledWorker.TOPIC_ID_OPEN, 1)
@@ -25,7 +26,7 @@ class NotificationDailyBroadcastReceiver  : BroadcastReceiver() {
                 .build()
 
             // Init Worker
-            val work = OneTimeWorkRequest.Builder(ScheduledWorker::class.java)
+            val work = OneTimeWorkRequest.Builder(NotificationEveryDayWorker::class.java)
                 .setInputData(notificationData)
                 .build()
 

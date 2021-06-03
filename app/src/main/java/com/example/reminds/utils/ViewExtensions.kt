@@ -12,6 +12,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -312,4 +313,24 @@ fun RecyclerView.attachSnapHelperWithListener(
     snapHelper.attachToRecyclerView(this)
     val snapOnScrollListener = SnapOnScrollListener(snapHelper, behavior, onSnapPositionChangeListener)
     addOnScrollListener(snapOnScrollListener)
+}
+
+/*CHECK KEYBOARD SHOW OR HIDE*/
+inline fun View.doOnLayoutChanged(crossinline action: () -> Unit) {
+
+    val onGlobalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener { action() }
+
+    viewTreeObserver.addOnGlobalLayoutListener(onGlobalLayoutListener)
+
+    addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+        override fun onViewDetachedFromWindow(v: View?) {
+            v?.removeOnAttachStateChangeListener(this)
+            v?.viewTreeObserver?.removeOnGlobalLayoutListener(onGlobalLayoutListener)
+        }
+
+        override fun onViewAttachedToWindow(v: View?) {
+            v?.viewTreeObserver?.removeOnGlobalLayoutListener(onGlobalLayoutListener)
+            v?.viewTreeObserver?.addOnGlobalLayoutListener(onGlobalLayoutListener)
+        }
+    })
 }

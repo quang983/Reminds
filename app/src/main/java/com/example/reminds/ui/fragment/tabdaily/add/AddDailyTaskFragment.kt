@@ -159,14 +159,14 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
 
         val calendar: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, 22)
-            set(Calendar.MINUTE, 30)
+            set(Calendar.HOUR_OF_DAY, 16)
+            set(Calendar.MINUTE, 50)
         }
 
-        alarmMgr?.setRepeating(
+        alarmMgr?.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
-            1000 * 60 * 1,
+            86400000,
             alarmIntent
         )
     }

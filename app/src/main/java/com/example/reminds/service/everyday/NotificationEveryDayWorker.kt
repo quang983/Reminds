@@ -13,7 +13,7 @@ class NotificationEveryDayWorker(appContext: Context, workerParams: WorkerParame
         val message = inputData.getString(DAILY_NOTIFY_MESSAGE)
         val idGroup = inputData.getLong(DAILY_NOTIFY_ID_GROUP, 1)
 
-        NotificationUtil(applicationContext).showNotification(title.toString(), message.toString(), idGroup)
+        NotificationAction(applicationContext).showNotification(title.toString(), message.toString(), idGroup)
         return Result.success()
     }
 

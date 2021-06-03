@@ -57,5 +57,7 @@
         <receiver android:name=".service.NotificationBroadcastReceiver" />
 
         <receiver android:name=".service.timer.TimerBroadcastReceiver" />
+
+        <receiver android:name=".service.everyday.NotificationDailyBroadcastReceiver" />
     </application>
 </manifest>

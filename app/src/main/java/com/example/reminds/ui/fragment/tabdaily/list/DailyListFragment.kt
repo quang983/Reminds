@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.reminds.R
 import com.example.reminds.common.BaseFragment
+import com.example.reminds.common.recyclerview.ItemOffsetDecoration
 import com.example.reminds.databinding.FragmentDailyListBinding
 import com.example.reminds.ui.activity.MainActivity
 import com.example.reminds.ui.adapter.DailyListAdapter
@@ -35,10 +36,12 @@ class DailyListFragment : BaseFragment<FragmentDailyListBinding>() {
 
     private fun setupLayout() {
         adapter = DailyListAdapter {
-            navigate(DailyListFragmentDirections.actionDailyTabFragmentToDetailDailyFragment(0))
+            navigate(DailyListFragmentDirections.actionDailyTabFragmentToDetailDailyFragment(it.dailyTask.id))
         }
         mBinding.recyclerList.adapter = adapter
         mBinding.recyclerList.layoutManager = GridLayoutManager(requireContext(), 2)
+        val itemDecoration = ItemOffsetDecoration(requireContext(), R.dimen._6sdp)
+        mBinding.recyclerList.addItemDecoration(itemDecoration)
 
         (requireActivity() as? MainActivity)?.findViewById<AnimatedBottomBar>(R.id.bottom_navigation)?.visible()
 

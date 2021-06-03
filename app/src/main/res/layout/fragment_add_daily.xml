@@ -3,23 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingStart="@dimen/_16sdp"
-    android:paddingEnd="@dimen/_16sdp">
+    android:padding="@dimen/_16sdp">
+
+    <TextView
+        android:id="@+id/tv_title_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_8sdp"
+        android:text="Thông tin"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_input_desc"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_input_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_8sdp"
-        android:background="@null"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/tv_title_info">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edt_input_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
+            android:background="@color/white"
+            android:backgroundTint="@color/white"
             android:hint="Tên"
             android:imeOptions="actionDone"
             android:inputType="text"
@@ -36,7 +48,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_8sdp"
-        android:background="@null"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_input_name">
 
@@ -44,7 +55,8 @@
             android:id="@+id/edt_input_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
+            android:background="@color/white"
+            android:backgroundTint="@color/white"
             android:hint="@string/desc_hint"
             android:imeOptions="actionDone"
             android:inputType="text"
@@ -60,9 +72,11 @@
         android:id="@+id/tv_title_frequence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/_8sdp"
+        android:paddingTop="@dimen/_16sdp"
         android:paddingBottom="@dimen/_8sdp"
         android:text="Tần suất"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_large"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_input_desc" />
 

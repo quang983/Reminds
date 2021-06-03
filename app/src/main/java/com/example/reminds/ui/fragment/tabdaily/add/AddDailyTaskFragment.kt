@@ -17,11 +17,13 @@ import com.example.reminds.common.RetrieveDataState
 import com.example.reminds.databinding.FragmentAddDailyBinding
 import com.example.reminds.service.ScheduledWorker
 import com.example.reminds.service.everyday.NotificationDailyBroadcastReceiver
+import com.example.reminds.ui.activity.MainActivity
 import com.example.reminds.utils.*
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
+import nl.joery.animatedbottombar.AnimatedBottomBar
 import java.util.*
 
 @AndroidEntryPoint
@@ -35,9 +37,9 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
+        setupLayout()
         setOnClickListener()
         observerData()
-        alarm()
     }
 
     private fun setupToolbar() {
@@ -68,6 +70,10 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun setupLayout() {
+        (requireActivity() as? MainActivity)?.findViewById<AnimatedBottomBar>(R.id.bottom_navigation)?.gone()
     }
 
     private fun setOnClickListener() {

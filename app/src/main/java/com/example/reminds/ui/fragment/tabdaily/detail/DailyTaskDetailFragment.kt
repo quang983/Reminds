@@ -2,8 +2,10 @@ package com.example.reminds.ui.fragment.tabdaily.detail
 
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.example.reminds.R
 import com.example.reminds.common.BaseFragment
 import com.example.reminds.databinding.CalendarDayBinding
@@ -26,11 +28,13 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
+    private val args by navArgs<DailyTaskDetailFragmentArgs>()
+
     @Inject
     lateinit var assistedFactory: DailyDetailViewModelAssistedFactory
 
     private val _viewModel: DailyTaskDetailViewModel by viewModels {
-        DailyTaskDetailViewModel.Factory(assistedFactory, 0)
+        DailyTaskDetailViewModel.Factory(assistedFactory, args.id)
     }
 
     private var selectedDate = LocalDate.now()
@@ -68,6 +72,7 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
 
         _viewModel.showCheckInLiveData.observe(viewLifecycleOwner, {
             mBinding.slideToUnlock.visibleOrGone(it)
+            mBinding.layoutCheckDone.root.visibleOrGone(!it)
         })
     }
 
@@ -122,6 +127,7 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
             binding.tvDay.text = dayFormatter.format(day.date)
             binding.tvMonth.text = monthFormatter.format(day.date)
             binding.tvDate.setTextColor(view.context.getColorCompat(if (day.date == selectedDate) R.color.red else R.color.black))
+            binding.tvDay.setTextColor(view.context.getColorCompat(if (day.date == selectedDate) R.color.red else R.color.black))
         }
 
     }

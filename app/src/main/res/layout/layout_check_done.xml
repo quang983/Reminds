@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/img_icon"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_200sdp"
+        android:src="@drawable/ic_done" />
+
+    <TextView
+        android:id="@+id/tv_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_icon"
+        android:fontFamily="@font/roboto_regular_font"
+        android:padding="@dimen/_12sdp"
+        android:text="Bạn đã checkin, hay quay lại vào ngày mai, chúc bạn một ngày tràn đầy năng lương"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+</RelativeLayout>

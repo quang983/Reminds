@@ -10,7 +10,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.viewModels
-import com.example.common.base.model.daily.DailyTaskEntity
 import com.example.reminds.R
 import com.example.reminds.common.BaseFragment
 import com.example.reminds.common.RetrieveDataState
@@ -59,14 +58,11 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
                 return true
             }
             R.id.action_save -> {
-                viewModel.insertsDailyTask(
-                    viewModel.taskInsertPreview.getOrDefault(
-                        DailyTaskEntity(
-                            System.currentTimeMillis(),
-                            "", "", System.currentTimeMillis()
-                        )
-                    )
-                )
+                viewModel.taskInsertPreview.getOrNull()?.let {
+                    viewModel.insertsDailyTask(it)
+                } ?: apply {
+                    //show error
+                }
             }
         }
         return super.onOptionsItemSelected(item)
@@ -153,7 +149,6 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
 
     private var alarmMgr: AlarmManager? = null
     private lateinit var alarmIntent: PendingIntent
-
 
     private fun alarm() {
         alarmMgr = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager

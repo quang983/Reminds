@@ -7,6 +7,7 @@
         android:id="@+id/action_save"
         android:icon="@drawable/ic_save"
         android:orderInCategory="100"
+        android:iconTint="@color/white"
         android:title="SAVE"
         app:showAsAction="ifRoom" />
 

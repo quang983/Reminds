@@ -38,7 +38,7 @@ class DailyTaskDetailViewModel @AssistedInject constructor(
         it.dailyList
             .map {
                 it.doneTime
-            }
+            }app/src/main/java/com/example/reminds/ui/fragment/tabdaily/add/AddDailyTaskFragment.kt
             .any {
                 TimestampUtils.compareDate(it, System.currentTimeMillis())
             }

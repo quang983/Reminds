@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:backgroundTint="@color/white"
-            android:hint="Tên"
+            android:hint="Tên dự án *"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="2"
@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/_16sdp"
         android:paddingBottom="@dimen/_8sdp"
-        android:text="Tần suất"
+        android:text="Tần suất *"
         android:textColor="@color/black"
         android:textSize="@dimen/text_large"
         app:layout_constraintStart_toStartOf="parent"
@@ -220,4 +220,18 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:constraint_referenced_ids="tv_pick_day_remaining,chip_group_days" />
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:id="@+id/btn_save"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:text="Tạo dự án"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_medium_2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_time_end"
+        app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

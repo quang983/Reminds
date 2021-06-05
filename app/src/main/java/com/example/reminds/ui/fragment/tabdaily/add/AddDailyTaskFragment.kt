@@ -24,7 +24,6 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
 import nl.joery.animatedbottombar.AnimatedBottomBar
-import java.util.*
 
 @AndroidEntryPoint
 class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
@@ -48,7 +47,7 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_save, menu)
+        inflater.inflate(R.menu.menu_text, menu)
 
     }
 
@@ -58,15 +57,7 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
                 navigateUp()
                 return true
             }
-            R.id.action_save -> {
-                viewModel.insertsDailyTask(
-                    viewModel.taskInsertPreview.getOrDefault(
-                        DailyTaskEntity(
-                            System.currentTimeMillis(),
-                            "", "", System.currentTimeMillis()
-                        )
-                    )
-                )
+            R.id.action_reset -> {
             }
         }
         return super.onOptionsItemSelected(item)
@@ -87,6 +78,17 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
                     mBinding.groupPickDay.visible()
                 }
             }
+        }
+
+        mBinding.btnSave.setOnClickListenerBlock {
+            viewModel.insertsDailyTask(
+                viewModel.taskInsertPreview.getOrDefault(
+                    DailyTaskEntity(
+                        System.currentTimeMillis(),
+                        "", "", System.currentTimeMillis()
+                    )
+                )
+            )
         }
 
         mBinding.edtInputName.setTextChangedListener {
@@ -136,8 +138,15 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
 
                 }
 
-                is RetrieveDataState.Success -> {
-                    alarm()
+                is RetrieveDataState.Success<DailyTaskEntity> -> {
+                    it.data.remainingTime?.let { remaining ->
+                        alarm(
+                            remaining, when (it.data.type) {
+                                0 -> 24 * 60 * 60 * 1000
+                                else -> 7 * 24 * 60 * 60 * 1000
+                            }
+                        )
+                    }
                     navigateUp()
                 }
 
@@ -155,7 +164,7 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
     private lateinit var alarmIntent: PendingIntent
 
 
-    private fun alarm() {
+    private fun alarm(timeInMillis: Long, timeIntervalMillis: Long) {
         alarmMgr = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmIntent = Intent(context, NotificationDailyBroadcastReceiver::class.java).let { intent ->
             intent.putExtra(ScheduledWorker.NOTIFICATION_TITLE, "Title")
@@ -163,16 +172,16 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
             PendingIntent.getBroadcast(context, 0, intent, 0)
         }
 
-        val calendar: Calendar = Calendar.getInstance().apply {
-            timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, 16)
-            set(Calendar.MINUTE, 50)
-        }
+//        val calendar: Calendar = Calendar.getInstance().apply {
+//            timeInMillis = System.currentTimeMillis()
+//            set(Calendar.HOUR_OF_DAY, 16)
+//            set(Calendar.MINUTE, 50)
+//        }
 
         alarmMgr?.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            86400000,
+            timeInMillis,
+            timeIntervalMillis,
             alarmIntent
         )
     }

@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddDailyTaskViewModel @Inject constructor(private val insertDailyTaskUseCase: InsertDailyTaskUseCase) : BaseViewModel() {
-    val stateInsertData: LiveData<RetrieveDataState<Unit?>> = MutableLiveData()
+    val stateInsertData: LiveData<RetrieveDataState<DailyTaskEntity>> = MutableLiveData()
 
     val taskInsertPreview: MutableLiveData<DailyTaskEntity> = MutableLiveData()
 
@@ -26,7 +26,7 @@ class AddDailyTaskViewModel @Inject constructor(private val insertDailyTaskUseCa
     fun insertsDailyTask(taskInsert: DailyTaskEntity) = viewModelScope.launch(Dispatchers.IO + handler) {
         if (checkSatisfy(taskInsert)) {
             insertDailyTaskUseCase.invoke(InsertDailyTaskUseCase.Param(listOf(DailyTaskWithDividerEntity(taskInsert, emptyList()))))
-            stateInsertData.postValue(RetrieveDataState.Success(null))
+            stateInsertData.postValue(RetrieveDataState.Success(taskInsert))
         } else {
             stateInsertData.postValue(RetrieveDataState.Failure(Throwable()))
         }
@@ -34,6 +34,9 @@ class AddDailyTaskViewModel @Inject constructor(private val insertDailyTaskUseCa
 
     private fun checkSatisfy(taskPreviewInsert: DailyTaskEntity): Boolean {
         if (taskPreviewInsert.name.isBlank()) {
+            return false
+        }
+        if (taskPreviewInsert.type != 0 && taskPreviewInsert.type != 1) {
             return false
         }
         return true

@@ -4,10 +4,9 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_save"
-        android:icon="@drawable/ic_save"
+        android:id="@+id/action_reset"
         android:orderInCategory="100"
-        android:title="SAVE"
+        android:title="Reset"
         app:showAsAction="ifRoom" />
 
 </menu>

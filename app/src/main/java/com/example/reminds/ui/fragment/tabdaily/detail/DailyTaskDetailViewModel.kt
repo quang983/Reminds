@@ -34,8 +34,14 @@ class DailyTaskDetailViewModel @AssistedInject constructor(
         it
     }
 
-    val showCheckInLiveData = getDetailDailyTask.switchMapLiveDataEmit { it ->
-        (it.dailyList.map { it.doneTime }.any { TimestampUtils.compareDate(it, System.currentTimeMillis()) })
+    val showCheckInLiveData: LiveData<Boolean> = _getDetailDailyTask.switchMapLiveDataEmit { it ->
+        it.dailyList
+            .map {
+                it.doneTime
+            }
+            .any {
+                TimestampUtils.compareDate(it, System.currentTimeMillis())
+            }
     }
 
     init {

@@ -1,8 +1,8 @@
 package com.example.reminds.ui.fragment.tabdaily.detail
 
+import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -11,9 +11,7 @@ import com.example.reminds.common.BaseFragment
 import com.example.reminds.databinding.CalendarDayBinding
 import com.example.reminds.databinding.FragmentDailyTaskDetailBinding
 import com.example.reminds.ui.activity.MainActivity
-import com.example.reminds.utils.getColorCompat
-import com.example.reminds.utils.gone
-import com.example.reminds.utils.visibleOrGone
+import com.example.reminds.utils.*
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
@@ -24,7 +22,9 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
+import java.util.*
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
@@ -51,6 +51,10 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
         setupLayout()
         setupCalendarView()
         observer()
+        setupClickListener()
+    }
+
+    private fun setupClickListener() {
     }
 
 
@@ -78,7 +82,11 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
 
     private fun setupCalendarView() {
         val dm = DisplayMetrics()
-        val display = activity?.display
+        val display = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            activity?.display
+        } else {
+            activity?.windowManager?.defaultDisplay
+        }
         display?.getRealMetrics(dm)
         mBinding.calendarView.apply {
             val dayWidth = dm.widthPixels / 5
@@ -118,6 +126,16 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
                         mBinding.calendarView.notifyDateChanged(it)
                     }
                 }
+                _viewModel.getDetailDailyTask.getOrNull()?.let { data ->
+                    (data.dailyList.map { it.doneTime }.any {
+                        val cal = Calendar.getInstance()
+                        cal.timeInMillis = it
+                        cal[Calendar.YEAR] == day.date.year &&
+                                cal[Calendar.DAY_OF_YEAR] == day.date.dayOfYear
+                    }).let {
+                        _viewModel.showCheckInLiveData.postValue(!it)
+                    }
+                }
             }
         }
 
@@ -129,6 +147,5 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
             binding.tvDate.setTextColor(view.context.getColorCompat(if (day.date == selectedDate) R.color.red else R.color.black))
             binding.tvDay.setTextColor(view.context.getColorCompat(if (day.date == selectedDate) R.color.red else R.color.black))
         }
-
     }
 }

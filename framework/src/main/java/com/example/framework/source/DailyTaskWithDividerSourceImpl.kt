@@ -39,7 +39,9 @@ class DailyTaskWithDividerSourceImpl @Inject constructor(private val withDivider
     }
 
     override suspend fun updates(datas: List<DailyTaskEntity>) {
-        TODO("Not yet implemented")
+        withDividerDao.updateDatas(*datas.map {
+            DailyTask(it.id, it.name, it.desc, it.createTime, it.endTime, it.remainingTime, it.listDayOfWeek)
+        }.toTypedArray())
     }
 
     override suspend fun delete(datas: DailyTaskEntity) {

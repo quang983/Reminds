@@ -1,31 +1,35 @@
 package com.example.reminds.ui.fragment.tabdaily.detail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.common.base.model.daily.DailyDivideTaskDoneEntity
 import com.example.common.base.model.daily.DailyTaskWithDividerEntity
 import com.example.domain.usecase.db.daily.GetDailyTaskByIdUseCase
 import com.example.domain.usecase.db.daily.UpdateDailyTaskUseCase
 import com.example.reminds.common.BaseViewModel
-import com.example.reminds.utils.TimestampUtils
 import com.example.reminds.utils.getOrNull
-import com.example.reminds.utils.toArrayList
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.util.*
 
 class DailyTaskDetailViewModel @AssistedInject constructor(
     @Assisted private val id: Long,
     private val getDailyTaskByIdUseCase: GetDailyTaskByIdUseCase,
     private val updateDailyTaskUseCase: UpdateDailyTaskUseCase
 ) : BaseViewModel() {
+    var localDateChecked: LiveData<LocalDate> = liveData {
+        emit(LocalDate.now())
+    }
+
     private val _getDetailDailyTask: LiveData<DailyTaskWithDividerEntity> = liveData {
-        getDailyTaskByIdUseCase.invoke(GetDailyTaskByIdUseCase.Param(id)).collect {
+        getDailyTaskByIdUseCase.invoke(GetDailyTaskByIdUseCase.Param(id)).distinctUntilChanged().collect {
             emit(it)
         }
     }
@@ -34,14 +38,18 @@ class DailyTaskDetailViewModel @AssistedInject constructor(
         it
     }
 
-    val showCheckInLiveData: LiveData<Boolean> = _getDetailDailyTask.switchMapLiveDataEmit { it ->
-        it.dailyList
-            .map {
+    val showCheckInLiveData: LiveData<Boolean> = MediatorLiveData<Boolean>().apply {
+        combineSources(localDateChecked, getDetailDailyTask) {
+            val result = getDetailDailyTask.getOrNull()?.dailyList.takeIf { it?.isNotEmpty() == true }?.map {
                 it.doneTime
-            }app/src/main/java/com/example/reminds/ui/fragment/tabdaily/add/AddDailyTaskFragment.kt
-            .any {
-                TimestampUtils.compareDate(it, System.currentTimeMillis())
-            }
+            }?.any {
+                val cal = Calendar.getInstance()
+                cal.timeInMillis = it
+                cal[Calendar.YEAR] == localDateChecked.getOrNull()?.year &&
+                        cal[Calendar.DAY_OF_YEAR] == localDateChecked.getOrNull()?.dayOfYear
+            } ?: false
+            postValue(!result)
+        }
     }
 
     init {
@@ -54,8 +62,13 @@ class DailyTaskDetailViewModel @AssistedInject constructor(
 
     fun updateDividerInDailyTask() = viewModelScope.launch(Dispatchers.IO + handler) {
         getDetailDailyTask.getOrNull()?.apply {
-            val taskDone = DailyDivideTaskDoneEntity(System.currentTimeMillis(), this.dailyTask.id, "", System.currentTimeMillis())
-            this.dailyList.toArrayList().add(taskDone)
+            val zoneId: ZoneId = ZoneId.ofOffset("UTC", ZoneOffset.ofHours(0)) // or: ZoneId.of("Europe/Oslo");
+
+            val epoch: Long = localDateChecked.value?.atStartOfDay(zoneId)?.toEpochSecond() ?: System.currentTimeMillis()
+            val taskDone = DailyDivideTaskDoneEntity(System.currentTimeMillis(), this.dailyTask.id, "", epoch)
+
+            (this.dailyList as? ArrayList)?.add(taskDone)
+            this.dailyTask.name = "aaa"
             updateDailyTaskUseCase.invoke(UpdateDailyTaskUseCase.Param(this))
         }
     }

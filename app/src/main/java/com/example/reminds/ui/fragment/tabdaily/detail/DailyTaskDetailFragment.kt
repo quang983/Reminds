@@ -11,7 +11,10 @@ import com.example.reminds.common.BaseFragment
 import com.example.reminds.databinding.CalendarDayBinding
 import com.example.reminds.databinding.FragmentDailyTaskDetailBinding
 import com.example.reminds.ui.activity.MainActivity
-import com.example.reminds.utils.*
+import com.example.reminds.utils.getColorCompat
+import com.example.reminds.utils.gone
+import com.example.reminds.utils.postValue
+import com.example.reminds.utils.visibleOrGone
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
@@ -22,7 +25,6 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
-import java.util.*
 import javax.inject.Inject
 
 
@@ -76,6 +78,7 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
 
         _viewModel.showCheckInLiveData.observe(viewLifecycleOwner, {
             mBinding.slideToUnlock.visibleOrGone(it)
+            mBinding.slideToUnlock.resetSlider()
             mBinding.layoutCheckDone.root.visibleOrGone(!it)
         })
     }
@@ -126,7 +129,8 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
                         mBinding.calendarView.notifyDateChanged(it)
                     }
                 }
-                _viewModel.getDetailDailyTask.getOrNull()?.let { data ->
+                _viewModel.localDateChecked.postValue(day.date)
+                /*_viewModel.getDetailDailyTask.getOrNull()?.let { data ->
                     (data.dailyList.map { it.doneTime }.any {
                         val cal = Calendar.getInstance()
                         cal.timeInMillis = it
@@ -135,7 +139,7 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
                     }).let {
                         _viewModel.showCheckInLiveData.postValue(!it)
                     }
-                }
+                }*/
             }
         }
 

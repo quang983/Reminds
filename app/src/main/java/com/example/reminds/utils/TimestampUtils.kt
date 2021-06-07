@@ -36,8 +36,8 @@ object TimestampUtils {
     }
 
     fun getTimeFormat(timeStart: Long, timeStop: Long): String {
-        var start = timeStart
-        var stop = timeStop
+        val start: Long
+        val stop: Long
         val minuteInMillis = 1000 * 60.toLong()
 
         // clear seconds
@@ -53,9 +53,9 @@ object TimestampUtils {
         val hourInMillis = minuteInMillis * 60
         val dayInMillis = hourInMillis * 24
         val elapsedDays = diff / dayInMillis
-        diff = diff % dayInMillis
+        diff %= dayInMillis
         val elapsedHours = diff / hourInMillis
-        diff = diff % hourInMillis
+        diff %= hourInMillis
         val elapsedMinutes = diff / minuteInMillis
         val time: MutableList<String> = ArrayList()
         if (elapsedDays > 0) {

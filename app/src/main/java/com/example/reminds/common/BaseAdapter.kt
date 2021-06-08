@@ -9,7 +9,7 @@ import com.example.reminds.utils.getPositionOrNull
 import java.util.concurrent.Executors
 
 abstract class BaseAdapter<T>(callBack: DiffUtil.ItemCallback<T>) : ListAdapter<T, BaseViewHolder>(
-    AsyncDifferConfig.Builder<T>(callBack)
+    AsyncDifferConfig.Builder(callBack)
         .setBackgroundThreadExecutor(Executors.newSingleThreadExecutor())
         .build()
 ) {
@@ -66,4 +66,4 @@ abstract class BaseAdapter<T>(callBack: DiffUtil.ItemCallback<T>) : ListAdapter<
     }
 }
 
-class BaseViewHolder(val view: View, val viewType: Int, open var positionExpanded: Int = -1) : RecyclerView.ViewHolder(view)
+open class BaseViewHolder(val view: View, val viewType: Int, open var positionExpanded: Int = -1) : RecyclerView.ViewHolder(view)

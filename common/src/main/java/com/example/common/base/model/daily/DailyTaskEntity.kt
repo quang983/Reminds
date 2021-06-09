@@ -9,8 +9,4 @@ data class DailyTaskEntity(
     var remainingTime: Long? = null,
     var listDayOfWeek: String? = null,
     var type: Int = 0
-) {
-    companion object {
-
-    }
-}
+)

@@ -1,19 +1,13 @@
 package com.example.reminds.common
 
-import com.example.reminds.common.BaseFirebaseMessagingService
-import com.example.reminds.common.BaseService
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 import java.io.Closeable
 import kotlin.coroutines.CoroutineContext
 
-val JOB_KEY = "JOB_KEY"
+const val JOB_KEY = "JOB_KEY"
 
+@ObsoleteCoroutinesApi
 val BaseService.serviceScope: CoroutineScope
-
-
     get() {
         val scope: CoroutineScope? = this.getTag(JOB_KEY)
         if (scope != null) {

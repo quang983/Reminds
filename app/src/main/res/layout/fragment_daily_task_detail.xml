@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/_6sdp">
@@ -98,7 +99,22 @@
         app:cv_orientation="horizontal"
         app:cv_outDateStyle="none"
         app:cv_scrollMode="continuous"
-        app:layout_constraintTop_toBottomOf="@id/card_container" />
+        app:layout_constraintTop_toBottomOf="@id/card_container"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tv_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:paddingStart="@dimen/_16sdp"
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_16sdp"
+        android:paddingBottom="@dimen/_10sdp"
+        android:text="Xem chi tiết"
+        android:textColor="@color/blue_700"
+        app:layout_constraintEnd_toEndOf="@id/calendar_view"
+        app:layout_constraintTop_toBottomOf="@id/calendar_view" />
 
     <include
         android:id="@+id/layout_check_done"

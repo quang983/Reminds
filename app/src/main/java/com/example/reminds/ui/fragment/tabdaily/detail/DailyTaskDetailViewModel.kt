@@ -1,13 +1,12 @@
 package com.example.reminds.ui.fragment.tabdaily.detail
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.common.base.model.daily.DailyDivideTaskDoneEntity
 import com.example.common.base.model.daily.DailyTaskWithDividerEntity
 import com.example.domain.usecase.db.daily.GetDailyTaskByIdUseCase
 import com.example.domain.usecase.db.daily.UpdateDailyTaskUseCase
 import com.example.reminds.common.BaseViewModel
-import com.example.reminds.utils.fromISO8601
+import com.example.reminds.utils.fromTimeStr
 import com.example.reminds.utils.getOrNull
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -19,6 +18,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
+
 
 class DailyTaskDetailViewModel @AssistedInject constructor(
     @Assisted private val id: Long,
@@ -63,15 +63,12 @@ class DailyTaskDetailViewModel @AssistedInject constructor(
 
     fun updateDividerInDailyTask() = viewModelScope.launch(Dispatchers.IO + handler) {
         getDetailDailyTask.getOrNull()?.apply {
-            val localDate = localDateChecked.value
-
-            val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-            val formattedString = localDate?.format(formatter)
-            val taskDone = DailyDivideTaskDoneEntity(System.currentTimeMillis(), this.dailyTask.id, "", formattedString?.fromISO8601() ?: System.currentTimeMillis())
-
-            (this.dailyList as? ArrayList)?.add(taskDone)
-            this.dailyTask.name = "aaa"
-            updateDailyTaskUseCase.invoke(UpdateDailyTaskUseCase.Param(this))
+            val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+            localDateChecked.value?.format(formatter)?.let {
+                val taskDone = DailyDivideTaskDoneEntity(System.currentTimeMillis(), this.dailyTask.id, "", it.fromTimeStr("dd-MM-yyyy"))
+                (this.dailyList as? ArrayList)?.add(taskDone)
+                updateDailyTaskUseCase.invoke(UpdateDailyTaskUseCase.Param(this))
+            }
         }
     }
 

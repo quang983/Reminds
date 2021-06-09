@@ -98,14 +98,14 @@ object TimestampUtils {
         }
     }
 
-    fun getTimestampFromNormalDate(time: String): Long {
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US)
+    fun getTimestampFromNormalDate(time: String): Long? {
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.US)
         return try {
             val date = dateFormat.parse(time)
-            date?.time ?: -1
+            date?.time
         } catch (e: ParseException) {
             e.printStackTrace()
-            -1
+            null
         }
     }
 

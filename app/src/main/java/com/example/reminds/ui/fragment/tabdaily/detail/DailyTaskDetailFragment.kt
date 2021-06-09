@@ -130,16 +130,6 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
                     }
                 }
                 _viewModel.localDateChecked.postValue(day.date)
-                /*_viewModel.getDetailDailyTask.getOrNull()?.let { data ->
-                    (data.dailyList.map { it.doneTime }.any {
-                        val cal = Calendar.getInstance()
-                        cal.timeInMillis = it
-                        cal[Calendar.YEAR] == day.date.year &&
-                                cal[Calendar.DAY_OF_YEAR] == day.date.dayOfYear
-                    }).let {
-                        _viewModel.showCheckInLiveData.postValue(!it)
-                    }
-                }*/
             }
         }
 

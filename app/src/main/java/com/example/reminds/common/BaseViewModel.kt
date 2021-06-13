@@ -31,28 +31,6 @@ abstract class BaseViewModel : ViewModel {
     }
 
     protected val toast: LiveData<String> = SingleLiveEvent<String>()
-/*
-
-    protected val snackBarMessage = SingleLiveEvent<String>()
-    protected val toastMessage = SingleLiveEvent<String>()
-    protected val inlineException = SingleLiveEvent<List<TagException>>()
-    protected val alertException = SingleLiveEvent<Pair<String?, String>>()
-    protected val dialogException = SingleLiveEvent<Dialog>()
-    protected val redirectException = SingleLiveEvent<ProcessBuilder.Redirect>()
-
-
-    fun setThrowable(throwable: Throwable) {
-        when (throwable) {
-            is SnackBarException -> snackBarMessage.value = throwable.message
-            is ToastException -> toastMessage.value = throwable.message
-            is InlineException -> inlineException.value = throwable.tags.toList()
-            is AlertException -> alertException.value = Pair(throwable.title, throwable.message)
-            is DialogException -> dialogException.value = throwable.dialog
-            is RedirectException -> redirectException.value = throwable.redirect
-        }
-    }
-*/
-
 
     val handler = CoroutineExceptionHandler { _: CoroutineContext, throwable: Throwable ->
         throwable.printStackTrace()

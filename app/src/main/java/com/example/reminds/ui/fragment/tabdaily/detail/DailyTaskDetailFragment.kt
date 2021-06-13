@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.reminds.R
@@ -11,10 +12,7 @@ import com.example.reminds.common.BaseFragment
 import com.example.reminds.databinding.CalendarDayBinding
 import com.example.reminds.databinding.FragmentDailyTaskDetailBinding
 import com.example.reminds.ui.activity.MainActivity
-import com.example.reminds.utils.getColorCompat
-import com.example.reminds.utils.gone
-import com.example.reminds.utils.postValue
-import com.example.reminds.utils.visibleOrGone
+import com.example.reminds.utils.*
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
@@ -58,6 +56,9 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
     }
 
     private fun setupClickListener() {
+        mBinding.tvCalendarDetail.setOnClickListenerBlock {
+            navigate(DailyTaskDetailFragmentDirections.actionDetailDailyFragmentToDialogCalendarFragment())
+        }
     }
 
 
@@ -74,13 +75,16 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
 
     private fun observer() {
         _viewModel.getDetailDailyTask.observe(viewLifecycleOwner, {
-
+            mBinding.calendarView.notifyCalendarChanged()
         })
 
         _viewModel.showCheckInLiveData.observe(viewLifecycleOwner, {
             mBinding.slideToUnlock.visibleOrGone(it)
             mBinding.slideToUnlock.resetSlider()
             mBinding.layoutCheckDone.root.visibleOrGone(!it)
+        })
+
+        _viewModel.listDoneTime.observe(viewLifecycleOwner, {
         })
     }
 
@@ -94,14 +98,15 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
         display?.getRealMetrics(dm)
         mBinding.calendarView.apply {
             val dayWidth = dm.widthPixels / 5
-            val dayHeight = (dayWidth * 1.25).toInt()
-            daySize = com.kizitonwose.calendarview.utils.Size(dayWidth, dayHeight)
+            daySize = com.kizitonwose.calendarview.utils.Size(dayWidth, ConstraintLayout.LayoutParams.WRAP_CONTENT)
         }
 
         mBinding.calendarView.dayBinder = object : DayBinder<DayViewContainer> {
+
             override fun create(view: View) = DayViewContainer(view)
+
             override fun bind(container: DayViewContainer, day: CalendarDay) = container
-                .bind(day, _viewModel.getDetailDailyTask.value?.dailyTask?.createTime ?: 0L)
+                .bind(day)
         }
         val currentMonth = YearMonth.now()
         val firstDayOfWeeks = WeekFields.of(Locale.getDefault()).firstDayOfWeek
@@ -115,10 +120,7 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
 
         init {
             view.setOnClickListener {
-                val cal = Calendar.getInstance()
-                cal.timeInMillis = _viewModel.getDetailDailyTask.value?.dailyTask?.createTime ?: 0L
-                if (!(day.date.year < cal[Calendar.YEAR] || day.date.year >= cal[Calendar.YEAR] &&
-                            day.date.dayOfYear < cal[Calendar.DAY_OF_YEAR])
+                if (!checkBeforeTime(day, _viewModel.getDetailDailyTask.value?.dailyTask?.createTime ?: 0L)
                 ) {
                     mBinding.calendarView.smoothScrollToDate(day.date)
                     val firstDay = mBinding.calendarView.findFirstVisibleDay()
@@ -142,17 +144,17 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
             }
         }
 
-        fun bind(day: CalendarDay, startDateMillis: Long) {
+        fun bind(day: CalendarDay) {
+            val createTime = _viewModel.getDetailDailyTask.value?.dailyTask?.createTime ?: 0L
+            val listChecked = _viewModel.listDoneTime.value
+
             this.day = day
             binding.tvDate.text = dateFormatter.format(day.date)
             binding.tvDay.text = dayFormatter.format(day.date)
-            binding.tvMonth.text = monthFormatter.format(day.date)
+//            binding.tvMonth.text = monthFormatter.format(day.date)
             binding.tvDate.setTextColor(view.context.getColorCompat(if (day.date == selectedDate) R.color.red else R.color.black))
             binding.tvDay.setTextColor(view.context.getColorCompat(if (day.date == selectedDate) R.color.red else R.color.black))
-            val cal = Calendar.getInstance()
-            cal.timeInMillis = startDateMillis
-            if (day.date.year < cal[Calendar.YEAR] || day.date.year >= cal[Calendar.YEAR] &&
-                day.date.dayOfYear < cal[Calendar.DAY_OF_YEAR]
+            if (checkBeforeTime(day, createTime)
             ) {
                 binding.tvDate.alpha = 0.3f
                 binding.tvDay.alpha = 0.3f
@@ -160,6 +162,23 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
                 binding.tvDate.alpha = 1f
                 binding.tvDay.alpha = 1f
             }
+            if (listChecked?.takeIf { it.isNotEmpty() }?.any {
+                    val cal = Calendar.getInstance()
+                    cal.timeInMillis = it
+                    cal[Calendar.YEAR] == day.date.year &&
+                            cal[Calendar.DAY_OF_YEAR] == day.date.dayOfYear
+                } == true) {
+                binding.imgChecked.setImageResource(R.drawable.selected_dot)
+            } else {
+                binding.imgChecked.setImageResource(R.drawable.unselected_dot)
+            }
         }
+    }
+
+    private fun checkBeforeTime(day: CalendarDay, timeMillis: Long): Boolean {
+        val cal = Calendar.getInstance()
+        cal.timeInMillis = timeMillis
+        return day.date.year < cal[Calendar.YEAR] || day.date.year >= cal[Calendar.YEAR] &&
+                day.date.dayOfYear < cal[Calendar.DAY_OF_YEAR]
     }
 }

@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="@dimen/_6sdp"
-    app:cardCornerRadius="@dimen/_30sdp">
+    app:cardCornerRadius="@dimen/_16sdp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -13,22 +13,13 @@
         android:background="@color/white">
 
         <TextView
-            android:id="@+id/tv_month"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textColor="@color/black"
-            app:layout_constraintBottom_toTopOf="@id/tv_date"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="Feb" />
-
-        <TextView
             android:id="@+id/tv_date"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:gravity="center_horizontal"
+            android:paddingTop="@dimen/_2sdp"
+            android:paddingBottom="@dimen/_2sdp"
             android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="27" />
@@ -38,9 +29,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
+            android:paddingTop="@dimen/_2sdp"
+            android:paddingBottom="@dimen/_2sdp"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_date"
             tools:text="Feb" />
+
+        <ImageView
+            android:id="@+id/img_checked"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_24sdp"
+            android:paddingTop="@dimen/_2sdp"
+            android:paddingBottom="@dimen/_2sdp"
+            android:src="@drawable/unselected_dot"
+            app:layout_constraintTop_toBottomOf="@id/tv_day" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -35,6 +35,10 @@ class DailyTaskDetailViewModel @AssistedInject constructor(
         }
     }
 
+    val listDoneTime = _getDetailDailyTask.switchMapLiveDataEmit { it ->
+        it.dailyList.map { it.doneTime }
+    }
+
     val getDetailDailyTask = _getDetailDailyTask.switchMapLiveDataEmit {
         it
     }

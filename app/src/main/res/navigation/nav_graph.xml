@@ -206,6 +206,14 @@
             <argument
                 android:name="id"
                 app:argType="long" />
+            <action
+                android:id="@+id/action_DetailDailyFragment_to_DialogCalendarFragment"
+                app:destination="@id/DialogCalendarFragment" />
         </fragment>
+
+        <dialog
+            android:id="@+id/DialogCalendarFragment"
+            android:name="com.example.reminds.ui.fragment.tabdaily.calendar.DialogCalendarFragment"
+            tools:layout="@layout/fragment_calendar_dialog" />
     </navigation>
 </navigation>

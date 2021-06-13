@@ -17,7 +17,7 @@
         android:layout_below="@id/img_icon"
         android:fontFamily="@font/roboto_regular_font"
         android:padding="@dimen/_12sdp"
-        android:text="Bạn đã checkin, hay quay lại vào ngày mai, chúc bạn một ngày tràn đầy năng lương"
+        android:text="Bạn đã checkin, hay quay lại vào tiếp theo, chúc bạn một ngày tràn đầy năng lương"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="18sp" />

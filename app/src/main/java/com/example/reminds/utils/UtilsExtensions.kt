@@ -193,19 +193,11 @@ fun Long.toTimeDDMMYYYY(): String {
     return dateFormat.format(Date(this))
 }
 
-fun Long.toTimeDDMMYYYYHHmm(): String {
-    val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US)
-    dateFormat.timeZone = TimeZone.getDefault()
-    return dateFormat.format(Date(this))
-}
 
 fun Long.toISO8601(): String {
     return toTimeStr("yyyy-MM-dd'T'HH:mm:ss")
 }
 
-fun String.fromISO8601(): Long {
-    return fromTimeStr("yyyy-MM-dd'T'HH:mm:ss")
-}
 
 fun Long.toISO8601Z(): String {
     return toTimeStr("yyyy-MM-dd'T'HH:mm:ssZ")
@@ -213,12 +205,6 @@ fun Long.toISO8601Z(): String {
 
 fun String.fromISO8601Z(): Long {
     return fromTimeStr("yyyy-MM-dd'T'HH:mm:ssZ")
-}
-
-fun Long.toISO8601ZZ(): String {
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZ", Locale.US)
-    dateFormat.timeZone = TimeZone.getDefault()
-    return dateFormat.format(Date(this))
 }
 
 fun String.fromISO8601ZZ(): Long {
@@ -240,11 +226,6 @@ fun String.fromISO8601SSSSSSSZZ(): Long {
     return dateFormat.parse(this).time
 }
 
-fun Long.toISO8601ZZZZZ(): String {
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ", Locale.US)
-    dateFormat.timeZone = TimeZone.getDefault()
-    return dateFormat.format(Date(this))
-}
 
 fun String.fromISO8601ZZZZZ(): Long {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ", Locale.US)

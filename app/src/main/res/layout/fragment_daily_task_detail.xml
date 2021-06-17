@@ -65,24 +65,26 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_time_remaining" />
 
-            <TextView
-                android:id="@+id/tv_lost"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/_2sdp"
-                android:paddingBottom="@dimen/_2sdp"
-                android:text="Các ngày đã bỏ lỡ"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_time_end" />
+<!--            <TextView-->
+<!--                android:id="@+id/tv_lost"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:paddingTop="@dimen/_2sdp"-->
+<!--                android:paddingBottom="@dimen/_2sdp"-->
+<!--                android:text="Các ngày đã bỏ lỡ"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/tv_time_end" />-->
 
             <ProgressBar
+                android:id="@+id/progress_task"
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_26sdp"
+                android:progress="5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_lost" />
+                app:layout_constraintTop_toBottomOf="@id/tv_time_end" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

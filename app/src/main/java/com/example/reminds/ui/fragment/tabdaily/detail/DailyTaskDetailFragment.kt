@@ -5,8 +5,9 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.navGraphViewModels
+import com.example.common.base.model.daily.DailyTaskWithDividerEntity
 import com.example.reminds.R
 import com.example.reminds.common.BaseFragment
 import com.example.reminds.databinding.CalendarDayBinding
@@ -34,7 +35,7 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
     @Inject
     lateinit var assistedFactory: DailyDetailViewModelAssistedFactory
 
-    private val _viewModel: DailyTaskDetailViewModel by viewModels {
+    private val _viewModel: DailyTaskDetailViewModel by navGraphViewModels(R.id.navigation_daily) {
         DailyTaskDetailViewModel.Factory(assistedFactory, args.id)
     }
 
@@ -57,7 +58,7 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
 
     private fun setupClickListener() {
         mBinding.tvCalendarDetail.setOnClickListenerBlock {
-            navigate(DailyTaskDetailFragmentDirections.actionDetailDailyFragmentToDialogCalendarFragment())
+            navigate(DailyTaskDetailFragmentDirections.actionDetailDailyFragmentToDialogCalendarFragment(args.id))
         }
     }
 
@@ -76,6 +77,7 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
     private fun observer() {
         _viewModel.getDetailDailyTask.observe(viewLifecycleOwner, {
             mBinding.calendarView.notifyCalendarChanged()
+            setupInfoView(it)
         })
 
         _viewModel.showCheckInLiveData.observe(viewLifecycleOwner, {
@@ -86,6 +88,16 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
 
         _viewModel.listDoneTime.observe(viewLifecycleOwner, {
         })
+    }
+
+    private fun setupInfoView(dailyTaskWithDivider: DailyTaskWithDividerEntity) {
+        dailyTaskWithDivider.let {
+            mBinding.tvName.text = "Tên dự án: ${it.dailyTask.name}"
+            mBinding.tvDesc.text = "Mô tả thêm: ${it.dailyTask.desc}"
+            mBinding.tvTimeRemaining.text = "Nhắc nhở vào lúc: ${it.dailyTask.remainingTime}"
+            mBinding.tvTimeEnd.text = "Dự án kết thúc vào ngày: ${it.dailyTask.endTime}"
+            mBinding.progressTask.progress = _viewModel.calculatorTimeLost(it.dailyTask.createTime, it.dailyList)
+        }
     }
 
     private fun setupCalendarView() {
@@ -120,7 +132,7 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
 
         init {
             view.setOnClickListener {
-                if (!checkBeforeTime(day, _viewModel.getDetailDailyTask.value?.dailyTask?.createTime ?: 0L)
+                if (!_viewModel.checkBeforeTime(day, _viewModel.getDetailDailyTask.value?.dailyTask?.createTime ?: 0L)
                 ) {
                     mBinding.calendarView.smoothScrollToDate(day.date)
                     val firstDay = mBinding.calendarView.findFirstVisibleDay()
@@ -154,7 +166,7 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
 //            binding.tvMonth.text = monthFormatter.format(day.date)
             binding.tvDate.setTextColor(view.context.getColorCompat(if (day.date == selectedDate) R.color.red else R.color.black))
             binding.tvDay.setTextColor(view.context.getColorCompat(if (day.date == selectedDate) R.color.red else R.color.black))
-            if (checkBeforeTime(day, createTime)
+            if (_viewModel.checkBeforeTime(day, createTime)
             ) {
                 binding.tvDate.alpha = 0.3f
                 binding.tvDay.alpha = 0.3f
@@ -173,12 +185,5 @@ class DailyTaskDetailFragment : BaseFragment<FragmentDailyTaskDetailBinding>() {
                 binding.imgChecked.setImageResource(R.drawable.unselected_dot)
             }
         }
-    }
-
-    private fun checkBeforeTime(day: CalendarDay, timeMillis: Long): Boolean {
-        val cal = Calendar.getInstance()
-        cal.timeInMillis = timeMillis
-        return day.date.year < cal[Calendar.YEAR] || day.date.year >= cal[Calendar.YEAR] &&
-                day.date.dayOfYear < cal[Calendar.DAY_OF_YEAR]
     }
 }

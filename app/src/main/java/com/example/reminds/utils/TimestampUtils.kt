@@ -264,6 +264,20 @@ object TimestampUtils {
         return calendar[Calendar.YEAR] * 1000L + calendar[Calendar.DAY_OF_YEAR]
     }
 
+    fun getDistanceFromDateBetween(time1: Long, time2: Long): Int {
+        val cal1 = Calendar.getInstance()
+        val cal2 = Calendar.getInstance()
+        cal1.timeInMillis = time1
+        cal2.timeInMillis = time2
+        if (cal1[Calendar.YEAR] == cal2[Calendar.YEAR]) {
+            return cal2[Calendar.DAY_OF_YEAR] - cal1[Calendar.DAY_OF_YEAR]
+
+        } else if (cal1[Calendar.YEAR] < cal2[Calendar.YEAR]) {
+            return 365 - cal1[Calendar.DAY_OF_YEAR] + cal2[Calendar.DAY_OF_YEAR]
+        }
+        return 0
+    }
+
     fun convertMinuteToTimeStr(minute: Long): String? {
         return if (minute >= 0) {
             "${minute / 60}:${minute % 60}"

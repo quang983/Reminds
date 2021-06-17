@@ -313,7 +313,7 @@ class MainActivity : AppCompatActivity() {
                         navController.navigate(R.id.SettingTabFragment)
                     }
                     4 -> {
-                        navController.navigate(R.id.navigation)
+                        navController.navigate(R.id.navigation_daily)
                     }
                     else -> {
                     }

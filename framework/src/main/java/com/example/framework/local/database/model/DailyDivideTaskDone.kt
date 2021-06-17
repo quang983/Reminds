@@ -8,7 +8,7 @@ import com.example.framework.local.database.convert.BaseConverter
 @Entity
 data class DailyDivideTaskDone(
     @PrimaryKey
-    var id: Long,
+    var id: String,
     var idGroup: Long,
     var name: String,
     var doneTime: Long

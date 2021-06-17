@@ -9,7 +9,6 @@ import javax.inject.Inject
 class UpdateDailyTaskUseCase @Inject constructor(val taskRepository: DailyTaskRepository, val doneRepository: DailyDivideDoneRepository) : BaseUseCase<UpdateDailyTaskUseCase.Param, Unit> {
 
     override suspend fun invoke(params: Param) {
-
         taskRepository.updateDatas(listOf(params.taskUpdate.dailyTask))
         doneRepository.insertDatas(params.taskUpdate.dailyList)
     }

@@ -181,7 +181,7 @@
         tools:layout="@layout/fragment_setting_tab" />
 
     <navigation
-        android:id="@+id/navigation"
+        android:id="@+id/navigation_daily"
         android:label="Daily"
         app:startDestination="@id/DailyTabFragment">
         <fragment
@@ -214,6 +214,10 @@
         <dialog
             android:id="@+id/DialogCalendarFragment"
             android:name="com.example.reminds.ui.fragment.tabdaily.calendar.DialogCalendarFragment"
-            tools:layout="@layout/fragment_calendar_dialog" />
+            tools:layout="@layout/fragment_calendar_dialog">
+            <argument
+                android:name="id"
+                app:argType="long" />
+        </dialog>
     </navigation>
 </navigation>

@@ -6,8 +6,10 @@ import com.example.common.base.model.daily.DailyTaskWithDividerEntity
 import com.example.domain.usecase.db.daily.GetDailyTaskByIdUseCase
 import com.example.domain.usecase.db.daily.UpdateDailyTaskUseCase
 import com.example.reminds.common.BaseViewModel
+import com.example.reminds.utils.TimestampUtils
 import com.example.reminds.utils.fromTimeStr
 import com.example.reminds.utils.getOrNull
+import com.kizitonwose.calendarview.model.CalendarDay
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -67,13 +69,26 @@ class DailyTaskDetailViewModel @AssistedInject constructor(
 
     fun updateDividerInDailyTask() = viewModelScope.launch(Dispatchers.IO + handler) {
         getDetailDailyTask.getOrNull()?.apply {
-            val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+            val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern(TimestampUtils.DATE_FORMAT_DEFAULT_WITHOUT_TIME)
             localDateChecked.value?.format(formatter)?.let {
-                val taskDone = DailyDivideTaskDoneEntity(System.currentTimeMillis(), this.dailyTask.id, "", it.fromTimeStr("dd-MM-yyyy"))
+                val taskDone = DailyDivideTaskDoneEntity(it, this.dailyTask.id, "", it.fromTimeStr(TimestampUtils.DATE_FORMAT_DEFAULT_WITHOUT_TIME))
                 (this.dailyList as? ArrayList)?.add(taskDone)
                 updateDailyTaskUseCase.invoke(UpdateDailyTaskUseCase.Param(this))
             }
         }
+    }
+
+    fun checkBeforeTime(day: CalendarDay, timeMillis: Long): Boolean {
+        val cal = Calendar.getInstance()
+        cal.timeInMillis = timeMillis
+        return day.date.year < cal[Calendar.YEAR] || day.date.year >= cal[Calendar.YEAR] &&
+                day.date.dayOfYear < cal[Calendar.DAY_OF_YEAR]
+    }
+
+    fun calculatorTimeLost(startTime: Long, listChecked: List<DailyDivideTaskDoneEntity>): Int {
+        val count = listChecked.size
+        val distance = TimestampUtils.getDistanceFromDateBetween(startTime, System.currentTimeMillis())
+        return (count / distance) * 100
     }
 
     class Factory(

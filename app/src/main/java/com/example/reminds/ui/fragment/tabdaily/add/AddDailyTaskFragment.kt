@@ -71,11 +71,80 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
         mBinding.chipGroupFrequence.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.chip_daily -> {
-                    mBinding.groupPickDay.gone()
-
+                    mBinding.tvDescFrequence.text = "(Sẽ được thông báo vào tất cả các ngày trong tuần)"
+                    viewModel.taskInsertPreview.value?.listDayOfWeek?.addAll(listOf(2, 3, 4, 5, 6, 7, 8))
                 }
                 R.id.chip_weeks -> {
-                    mBinding.groupPickDay.visible()
+                    mBinding.tvDescFrequence.text = "(Sẽ được thông báo vào 1 ngày duy nhất trong tuần)"
+                    mBinding.chipGroupDays.isSingleSelection = true
+                }
+            }
+        }
+
+        mBinding.chipGroupDays.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.chip_monday -> {
+                    if (!mBinding.chipMonday.isChecked) {
+                        viewModel.taskInsertPreview.value?.listDayOfWeek?.add(2)
+                    } else {
+                        viewModel.taskInsertPreview.value?.listDayOfWeek?.removeAll { it == 2 }
+                    }
+                }
+                R.id.chip_tuesday -> {
+                    if (!mBinding.chipMonday.isChecked) {
+                        viewModel.taskInsertPreview.value?.listDayOfWeek?.add(3)
+                    } else {
+                        viewModel.taskInsertPreview.value?.listDayOfWeek?.removeAll { it == 3 }
+                    }
+                }
+                R.id.chip_wednesday -> {
+                    if (!mBinding.chipMonday.isChecked) {
+                        viewModel.taskInsertPreview.value?.listDayOfWeek?.add(4)
+                    } else {
+                        viewModel.taskInsertPreview.value?.listDayOfWeek?.removeAll { it == 4 }
+                    }
+                }
+                R.id.chip_thursday -> {
+                    if (!mBinding.chipMonday.isChecked) {
+                        viewModel.taskInsertPreview.value?.listDayOfWeek?.add(5)
+                    } else {
+                        viewModel.taskInsertPreview.value?.listDayOfWeek?.removeAll { it == 5 }
+                    }
+                }
+                R.id.chip_friday -> {
+                    if (!mBinding.chipMonday.isChecked) {
+                        viewModel.taskInsertPreview.value?.listDayOfWeek?.add(6)
+                    } else {
+                        viewModel.taskInsertPreview.value?.listDayOfWeek?.removeAll { it == 6 }
+                    }
+                }
+                R.id.chip_saturday -> {
+                    if (!mBinding.chipMonday.isChecked) {
+                        viewModel.taskInsertPreview.value?.listDayOfWeek?.add(7)
+                    } else {
+                        viewModel.taskInsertPreview.value?.listDayOfWeek?.removeAll { it == 7 }
+                    }
+                }
+                R.id.chip_sunday -> {
+                    if (!mBinding.chipMonday.isChecked) {
+                        viewModel.taskInsertPreview.value?.listDayOfWeek?.add(8)
+                    } else {
+                        viewModel.taskInsertPreview.value?.listDayOfWeek?.removeAll { it == 8 }
+                    }
+                }
+            }
+            viewModel.taskInsertPreview.value?.listDayOfWeek?.distinct()
+        }
+
+        mBinding.cbSetDay.setOnCheckedChangeListener { _, isChecked ->
+            when (isChecked) {
+                true -> {
+                    mBinding.groupNotIncludeDay.visible()
+                    mBinding.chipGroupDays.isSingleSelection = false
+                }
+                else -> {
+                    mBinding.groupNotIncludeDay.gone()
+                    mBinding.chipGroupDays.isSingleSelection = true
                 }
             }
         }
@@ -85,7 +154,7 @@ class AddDailyTaskFragment : BaseFragment<FragmentAddDailyBinding>() {
                 viewModel.taskInsertPreview.getOrDefault(
                     DailyTaskEntity(
                         System.currentTimeMillis(),
-                        "", "", System.currentTimeMillis()
+                        "", "", System.currentTimeMillis(), listDayOfWeek = arrayListOf(2, 3, 4, 5, 6, 7, 8), type = 0
                     )
                 )
             )

@@ -17,11 +17,7 @@ import javax.inject.Inject
 class AddDailyTaskViewModel @Inject constructor(private val insertDailyTaskUseCase: InsertDailyTaskUseCase) : BaseViewModel() {
     val stateInsertData: LiveData<RetrieveDataState<DailyTaskEntity>> = MutableLiveData()
 
-    val taskInsertPreview: MutableLiveData<DailyTaskEntity> = MutableLiveData()
-
-    init {
-        taskInsertPreview.value = DailyTaskEntity(System.currentTimeMillis(), "", "", System.currentTimeMillis())
-    }
+    val taskInsertPreview: MutableLiveData<DailyTaskEntity> = MutableLiveData(DailyTaskEntity(System.currentTimeMillis(), "", "", System.currentTimeMillis()))
 
     fun insertsDailyTask(taskInsert: DailyTaskEntity) = viewModelScope.launch(Dispatchers.IO + handler) {
         if (checkSatisfy(taskInsert)) {

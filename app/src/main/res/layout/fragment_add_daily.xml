@@ -100,16 +100,41 @@
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hằng tuần" />
+            android:text="Hằng tuần"
+            android:visibility="gone" />
     </com.google.android.material.chip.ChipGroup>
+
+    <TextView
+        android:id="@+id/tv_desc_frequence"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="(Sẽ được thông báo vào tất cả các ngày trong tuần)"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chip_group_frequence" />
+
+    <CheckBox
+        android:id="@+id/cb_set_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Loại trừ các ngày"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_desc_frequence" />
 
     <TextView
         android:id="@+id/tv_pick_day_remaining"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Chọn ngày đặt nhắc nhở"
-        app:layout_constraintStart_toStartOf="@id/chip_group_frequence"
-        app:layout_constraintTop_toBottomOf="@id/chip_group_frequence" />
+        app:layout_constraintStart_toStartOf="@id/cb_set_day"
+        app:layout_constraintTop_toBottomOf="@id/cb_set_day" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_not_include_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="tv_pick_day_remaining,chip_group_days" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chip_group_days"
@@ -120,42 +145,49 @@
         app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/chip_monday"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="T2" />
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/chip_tuesday"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="T3" />
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/chip_wednesday"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="T4" />
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/chip_thursday"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="T5" />
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/chip_friday"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="T6" />
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/chip_saturday"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="T7" />
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/chip_sunday"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -170,6 +202,7 @@
         android:paddingTop="@dimen/_8sdp"
         android:paddingBottom="@dimen/_8sdp"
         android:text="Thông báo nhắc nhở vào lúc"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@id/guide_half_percent"
         app:layout_constraintStart_toStartOf="@id/chip_group_days"
         app:layout_constraintTop_toBottomOf="@id/chip_group_days" />
@@ -193,6 +226,7 @@
         android:paddingTop="@dimen/_8sdp"
         android:paddingBottom="@dimen/_8sdp"
         android:text="Ngày dự kiến kết thúc"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@id/guide_half_percent"
         app:layout_constraintStart_toStartOf="@id/chip_group_frequence"
         app:layout_constraintTop_toBottomOf="@id/tv_time_remaining" />
@@ -216,18 +250,11 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_pick_day"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="tv_pick_day_remaining,chip_group_days" />
-
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_12sdp"
-        android:id="@+id/btn_save"
         android:layout_marginEnd="@dimen/_12sdp"
         android:text="Tạo dự án"
         android:textAllCaps="false"

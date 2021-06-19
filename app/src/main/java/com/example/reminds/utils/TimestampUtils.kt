@@ -275,7 +275,7 @@ object TimestampUtils {
         } else if (cal1[Calendar.YEAR] < cal2[Calendar.YEAR]) {
             return 365 - cal1[Calendar.DAY_OF_YEAR] + cal2[Calendar.DAY_OF_YEAR]
         }
-        return 0
+        return 1
     }
 
     fun convertMinuteToTimeStr(minute: Long): String? {

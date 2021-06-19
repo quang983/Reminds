@@ -5,11 +5,13 @@ import com.example.common.base.model.daily.DailyTaskWithDividerEntity
 import com.example.data.local.source.DailyTaskWithDividerSource
 import com.example.framework.local.database.dao.LocalDailyTaskWithDividerDao
 import com.example.framework.local.database.model.DailyTask
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class DailyTaskWithDividerSourceImpl @Inject constructor(private val withDividerDao: LocalDailyTaskWithDividerDao) : DailyTaskWithDividerSource {
+class DailyTaskWithDividerSourceImpl @Inject constructor(private val withDividerDao: LocalDailyTaskWithDividerDao, private val gson : Gson) : DailyTaskWithDividerSource {
+
     override suspend fun getAllDataFlow(): Flow<List<DailyTaskWithDividerEntity>> {
         return withDividerDao.getAllDataFlow().map { it ->
             it.map {
@@ -30,7 +32,7 @@ class DailyTaskWithDividerSourceImpl @Inject constructor(private val withDivider
 
     override suspend fun inserts(datas: List<DailyTaskEntity>) {
         withDividerDao.inserts(*datas.map {
-            DailyTask(it.id, it.name, it.desc, it.createTime, it.endTime, it.remainingTime, it.listDayOfWeek)
+            DailyTask(it.id, it.name, it.desc, it.createTime, it.endTime, it.remainingTime, gson.toJson(it.listDayOfWeek))
         }.toTypedArray())
     }
 
@@ -40,7 +42,7 @@ class DailyTaskWithDividerSourceImpl @Inject constructor(private val withDivider
 
     override suspend fun updates(datas: List<DailyTaskEntity>) {
         withDividerDao.updateDatas(*datas.map {
-            DailyTask(it.id, it.name, it.desc, it.createTime, it.endTime, it.remainingTime, it.listDayOfWeek)
+            DailyTask(it.id, it.name, it.desc, it.createTime, it.endTime, it.remainingTime,gson.toJson(it.listDayOfWeek))
         }.toTypedArray())
     }
 

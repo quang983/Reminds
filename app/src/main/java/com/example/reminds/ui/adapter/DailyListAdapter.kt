@@ -67,6 +67,8 @@ class DailyListAdapter(val onClickItemListener: (item: DailyTaskWithDividerEntit
         refreshName(view, item)
         refreshTimeRemaining(view, item)
         refreshType(view, item)
+
+        view.tv_count.progress = calPercentDoneTask(item)
         view.rootView.setOnClickListenerBlock {
             onClickItemListener.invoke(item)
         }
@@ -83,6 +85,12 @@ class DailyListAdapter(val onClickItemListener: (item: DailyTaskWithDividerEntit
 
     private fun refreshType(view: View, item: DailyTaskWithDividerEntity) {
         view.tv_type.text = item.dailyTask.type.toString()
+    }
+
+    private fun calPercentDoneTask(item: DailyTaskWithDividerEntity): Int {
+        val distance = TimestampUtils.getDistanceFromDateBetween(item.dailyTask.createTime, System.currentTimeMillis())
+        val cal = (distance / 7) * item.dailyTask.listDayOfWeek.size
+        return (distance - cal) / distance
     }
 
     companion object {
